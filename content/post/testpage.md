@@ -2,7 +2,7 @@
 title:       "An Example Post"
 subtitle:    ""
 description: ""
-date:        2018-06-04
+date:        2023-06-04
 author:      ""
 image:       ""
 tags:        ["tag1", "tag2"]

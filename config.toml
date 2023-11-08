@@ -1,0 +1,14 @@
+baseURL = "https://github.com/YufengJin/yufengjin.github.io"
+languageCode = "en-us"
+title = "Yufeng Jin's Blog"
+theme = "m10c"
+
+[params]
+  author = "Yufeng Jin"
+  description = "A blog about all work and study notes related to computer vision and robotics"
+
+  [[params.social]]
+    icon = "github"
+    name = "GitHub"
+    url = "https://github.com/YufengJin"
+

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SE(3)-PoseFlow: Estimating 6D Pose Distributions for Uncertainty-Aware Robotic Manipulation</title>
+  <meta name="description" content="SE(3)-PoseFlow: A probabilistic framework based on flow matching on the SE(3) manifold for 6D object pose estimation. Sample-based pose distributions for uncertainty-aware robotic manipulation.">
+  <meta name="keywords" content="SE3-PoseFlow, 6D pose estimation, pose uncertainty, flow matching, SE(3), robotic manipulation, ICRA 2026">
+
+  <meta property="og:title" content="SE(3)-PoseFlow: Estimating 6D Pose Distributions for Uncertainty-Aware Robotic Manipulation" />
+  <meta property="og:description" content="Probabilistic 6D object pose estimation via flow matching on SE(3). Sample-based pose distributions for ambiguous cases and downstream robotic tasks." />
+  <meta property="og:type" content="website" />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="../6dope-gs/static/css/bulma.min.css">
+  <link rel="stylesheet" href="../6dope-gs/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="../6dope-gs/static/css/index.css">
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-4 publication-title" style="font-size: 2rem;">SE(3)-PoseFlow: Estimating 6D Pose Distributions for Uncertainty-Aware Robotic Manipulation</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://yufengjin.github.io/"><strong>Yufeng Jin</strong></a><sup>1,2</sup>,</span>
+              <span class="author-block"><a href="https://niklasfunk.com/">Niklas Funk</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://pearl-lab.com/vignesh-prasad/">Vignesh Prasad</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://supersglzc.github.io/">Zechu Li</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://www.linkedin.com/in/mathias-franzius-86b17b2b4/">Mathias Franzius</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://www.ias.informatik.tu-darmstadt.de/Team/JanPeters">Jan Peters</a><sup>1,3,4</sup>,</span>
+              <span class="author-block"><a href="https://pearl-lab.com/people/georgia-chalvatzaki/">Georgia Chalvatzaki</a><sup>1,4</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-bottom: 10px;">
+              <span class="author-block" style="margin-right: 1.5em;"><sup>1</sup> TU Darmstadt</span>
+              <span class="author-block" style="margin-right: 1.5em;"><sup>2</sup> Honda Research Europe</span>
+              <span class="author-block" style="margin-right: 1.5em;"><sup>3</sup> DFKI</span>
+              <span class="author-block"><sup>4</sup> Hessian.AI</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2511.01501" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark is-disabled" style="pointer-events: none; opacity: 0.6;">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code (Coming Soon)</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    #teaser-video { max-width: 85%; margin: 0 auto; display: block; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    .hero.teaser { padding-top: 0; margin-top: -3rem; }
+    .hero.teaser .hero-body { padding-top: 0; }
+    #pipeline-img { width: 90%; margin: 0 auto; display: block; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  </style>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser-video" controls playsinline>
+          <source src="./resources/video.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+          <h2 class="title is-4" style="font-weight: 700;">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Standard deterministic deep networks often fail or become "overconfident" when faced with <b>partial observability, occlusions, and object symmetries</b>. We propose <b>SE(3)-PoseFlow</b>, a novel probabilistic framework that leverages <b>flow matching on the SE(3) manifold</b> to estimate full 6D object pose distributions. Unlike methods that regress a single output, our approach models multi-modal hypotheses, enabling robots to reason about uncertainty for safer and more reliable manipulation in the real world.
+            </p>
+          </div>
+
+          <h2 class="title is-4" style="font-weight: 700;">Method</h2>
+          <div class="content has-text-justified">
+            <p>
+              Given an RGB-D input, we extract object-centric RGB crops and partial point clouds using off-the-shelf detectors. These visual and geometric features, together with timestep and sampled poses, are encoded and fused via DiT* blocks with masked cross-attention to predict conditional velocity fields for SE(3) Flow Matching. This process generates a sample-based estimate of the pose distribution that naturally captures uncertainty in ambiguous cases like symmetry or severe occlusion. To resolve final ambiguities, the framework supports two complementary pose selection strategies: a model-free clustering approach (DBSCAN) and a model-based geometric scoring (using SDF or Chamfer distance).
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <img id="pipeline-img" src="./resources/pipeline.png" alt="Pipeline overview">
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-4" style="font-weight: 700;">BibTeX</h2>
+      <pre><code>@article{jin2025se,
+        title={SE (3)-PoseFlow: Estimating 6D Pose Distributions for Uncertainty-Aware Robotic Manipulation},
+        author={Jin, Yufeng and Funk, Niklas and Prasad, Vignesh and Li, Zechu and Franzius, Mathias and Peters, Jan and Chalvatzaki, Georgia},
+        journal={arXiv preprint arXiv:2511.01501},
+        year={2025}
+      }</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This webpage template is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+              under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="../6dope-gs/static/js/fontawesome.all.min.js"></script>
+</body>
+
+</html>

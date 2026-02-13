@@ -3,14 +3,24 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>Yufeng Jin</title>
+    <title>Yufeng Jin – PhD Student, 6D Pose Estimation &amp; Robot Perception | TU Darmstadt</title>
 	<!-- 允许搜索引擎索引页面 -->
 	<meta name="robots" content="index, follow">
+	<link rel="canonical" href="https://yufengjin.github.io/">
+	<link rel="sitemap" type="application/xml" title="Sitemap" href="https://yufengjin.github.io/sitemap.xml">
+	<meta name="google-site-verification" content="zbypC6ZIx5MWDtKEbMOnY5bFP69vT-yOATHi2tm3hw0">
 	
-	<!-- 基本信息 -->
+	<!-- 基本信息与 SEO -->
 	<meta name="author" content="Yufeng Jin">
-	<meta name="description" content="Personal website of Yufeng Jin, a researcher in robot perception and learning.">
-	<meta name="keywords" content="Yufeng Jin, robotics, perception, 6D pose estimation, machine learning, TU Darmstadt">
+	<meta name="description" content="Yufeng Jin, PhD student at TU Darmstadt (PEARL Lab). Research: 6D object pose estimation, SE(3)-PoseFlow (ICRA 2026), 6DOPE-GS (ICCV 2025), uncertainty modeling, Gaussian Splatting, robotic perception.">
+	<meta name="keywords" content="Yufeng Jin, 6D pose estimation, SE3-PoseFlow, 6DOPE-GS, Gaussian Splatting, flow matching, uncertainty estimation, robot perception, TU Darmstadt, PEARL Lab, ICCV 2025, ICRA 2026, robotics, computer vision">
+	
+	<!-- Open Graph：便于 Google / 社交分享 抓取 -->
+	<meta property="og:type" content="profile">
+	<meta property="og:url" content="https://yufengjin.github.io/">
+	<meta property="og:title" content="Yufeng Jin – Robot Perception &amp; 6D Pose Estimation | TU Darmstadt">
+	<meta property="og:description" content="PhD student at PEARL Lab, TU Darmstadt. Research: 6D pose estimation (SE(3)-PoseFlow, 6DOPE-GS), uncertainty modeling, robotic perception.">
+	<meta property="og:locale" content="en_US">
 	
 	<!-- 响应式设计 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +28,34 @@
 	<!-- favicon 和样式 -->
 	<link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+	<!-- 结构化数据：帮助 Google 识别学者与研究方向 -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "Person",
+	  "name": "Yufeng Jin",
+	  "url": "https://yufengjin.github.io/",
+	  "jobTitle": "PhD Student",
+	  "worksFor": {
+	    "@type": "Organization",
+	    "name": "Technische Universität Darmstadt",
+	    "url": "https://www.tu-darmstadt.de/"
+	  },
+	  "alumniOf": {
+	    "@type": "Organization",
+	    "name": "Karlsruhe Institute of Technology (KIT)",
+	    "url": "https://www.kit.edu/"
+	  },
+	  "knowsAbout": ["6D object pose estimation", "robot perception", "uncertainty modeling", "Gaussian Splatting", "flow matching", "SE(3)-PoseFlow", "6DOPE-GS", "computer vision", "robotics"],
+	  "sameAs": [
+	    "https://github.com/YufengJin",
+	    "https://www.linkedin.com/in/yufeng-jin-84414327b/",
+	    "https://x.com/yjin_1118"
+	  ],
+	  "email": "yufeng.jin@tu-darmstadt.de"
+	}
+	</script>
   </head>
 
   <body>
@@ -73,7 +111,31 @@
           </tbody></table>
           <table style="width:100%;border:0px;border-spacing:0px 10px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
 
-
+    <tr>
+      <td style="padding:16px;width:20%;vertical-align:middle">
+        <a href="projects/se3-poseflow/"><img src="projects/se3-poseflow/resources/pipeline.png" width="160" style="border-radius:8px;" alt="SE3-PoseFlow"></a>
+      </td>
+      <td style="padding:8px;width:80%;vertical-align:middle">
+        <papertitle>SE(3)-PoseFlow: Estimating 6D Pose Distributions for Uncertainty-Aware Robotic Manipulation</papertitle>
+        <br>
+        <strong>Yufeng Jin</strong>,
+        <a href="https://niklasfunk.com/">Niklas Funk</a>,
+        <a href="https://pearl-lab.com/vignesh-prasad/">Vignesh Prasad</a>,
+        <a href="https://supersglzc.github.io/">Zechu Li</a>,
+        <a href="https://www.linkedin.com/in/mathias-franzius-86b17b2b4/">Mathias Franzius</a>,
+        <a href="https://www.ias.informatik.tu-darmstadt.de/Team/JanPeters">Jan Peters</a>,
+        <a href="https://pearl-lab.com/people/georgia-chalvatzaki/">Georgia Chalvatzaki</a>
+        <br>
+        <em>ICRA</em>, 2026
+        <br>
+        <a href="https://arxiv.org/abs/2511.01501" target="_blank">paper</a> /
+        <a href="projects/se3-poseflow/" target="_blank">website</a>
+        <p></p>
+        <p>
+        A probabilistic framework that leverages flow matching on the SE(3) manifold to estimate full 6D object pose distributions, enabling uncertainty-aware robotic manipulation under partial observability, occlusions, and symmetries.
+        </p>
+      </td>
+    </tr>
     <tr>
         <td style="padding:16px;width:20%;vertical-align:middle">
             <a href="https://arxiv.org/abs/2505.05287" target="_blank">
@@ -125,6 +187,8 @@
         </p>
       </td>
     </tr>
+
+
 
 				
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>

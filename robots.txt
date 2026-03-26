@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yufengjin.github.io/sitemap.xml

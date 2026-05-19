@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Nautilus: From One Prompt to Plug-and-Play Robot Learning</title>
+  <meta name="description" content="Nautilus is an open-source agentic harness that turns a single natural-language prompt into ready-to-use reproduction, evaluation, fine-tuning, and deployment workflows for robot learning research.">
+  <meta name="keywords" content="Nautilus, robot learning, agentic harness, LLM agent, policy benchmark robot, modular infrastructure, NeurIPS 2026, Claude Code plugin, reproducibility, deployment, nautilus-collect, VR teleoperation, GELLO">
+
+  <meta property="og:title" content="Nautilus: From One Prompt to Plug-and-Play Robot Learning" />
+  <meta property="og:description" content="A chambered, modular harness for agentic robot learning research. One prompt to reproduction, evaluation, fine-tuning, and deployment." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yufengjin.github.io/projects/nautilus/" />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="../6dope-gs/static/css/bulma.min.css">
+  <link rel="stylesheet" href="../6dope-gs/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="../6dope-gs/static/css/index.css">
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-4 publication-title" style="font-size: 2rem;">Nautilus: From One Prompt to Plug-and-Play Robot Learning</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://yufengjin.github.io/">Yufeng Jin</a><sup>1,*</sup>,</span>
+              <span class="author-block"><a href="https://ventusff.github.io/">Jianfei Guo</a><sup>6,*</sup>,</span>
+              <span class="author-block"><a href="https://xiaogangjia.github.io/Personal_Website/">Xiaogang Jia</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://yudeng321.github.io/">Yu Deng</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://supersglzc.github.io/">Zechu Li</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://www.linkedin.com/in/han-liu-697a442aa/">Han Liu</a><sup>6</sup>,</span>
+              <span class="author-block">Weiran Liao<sup>2</sup>,</span>
+              <span class="author-block"><a href="https://pearl-lab.com/vignesh-prasad/">Vignesh Prasad</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://www.linkedin.com/in/mathias-franzius-86b17b2b4/">Mathias Franzius</a><sup>7</sup>,</span>
+              <span class="author-block"><a href="https://alr.iar.kit.edu/21_65.php">Gerhard Neumann</a><sup>2,3</sup>,</span>
+              <span class="author-block"><a href="https://pearl-lab.com/people/georgia-chalvatzaki/">Georgia Chalvatzaki</a><sup>1,4,5</sup></span>
+            </div>
+
+            <div class="is-size-6 publication-authors" style="margin-bottom: 4px; margin-top: 6px;">
+              <span class="author-block"><sup>*</sup>Equal contribution</span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-bottom: 10px;">
+              <span class="author-block" style="margin-right: 1.2em;"><sup>1</sup> TU Darmstadt</span>
+              <span class="author-block" style="margin-right: 1.2em;"><sup>2</sup> KIT</span>
+              <span class="author-block" style="margin-right: 1.2em;"><sup>3</sup> FZI</span>
+              <span class="author-block" style="margin-right: 1.2em;"><sup>4</sup> Hessian.AI</span>
+              <span class="author-block" style="margin-right: 1.2em;"><sup>5</sup> Robotics Institute Germany</span>
+              <span class="author-block" style="margin-right: 1.2em;"><sup>6</sup> Independent Researcher</span>
+              <span class="author-block"><sup>7</sup> Honda Research Institute Europe</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2605.11665v1" class="external-link button is-normal is-rounded is-dark" target="_blank" rel="noopener">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark is-disabled" style="pointer-events: none; opacity: 0.6;">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Nautilus (Coming Soon)</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/YufengJin/role-ros2" class="external-link button is-normal is-rounded is-dark" target="_blank" rel="noopener">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>nautilus-collect</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .hero.teaser { padding-top: 0; margin-top: -3rem; }
+    .hero.teaser .hero-body { padding-top: 0; }
+
+    /* Video placeholder — reserves a 16:9 area before video.mp4 lands */
+    .video-placeholder {
+      max-width: 85%;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #1f2a3a 0%, #2c3e50 100%);
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c8d3df;
+      font-family: "Google Sans", sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      position: relative;
+      overflow: hidden;
+    }
+    .video-placeholder::before {
+      content: "";
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 22px 0 22px 36px;
+      border-color: transparent transparent transparent rgba(255,255,255,0.55);
+      margin-right: 14px;
+    }
+    #teaser-video {
+      max-width: 85%;
+      margin: 0 auto;
+      display: block;
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    #teaser-img {
+      max-width: 95%;
+      margin: 0 auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+    #pipeline-img {
+      width: 92%;
+      margin: 0 auto;
+      display: block;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 0 auto;
+      max-width: 95%;
+    }
+    .image-grid figure { margin: 0; }
+    .image-grid img,
+    .image-grid video {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+      display: block;
+      background: #000;
+    }
+    .image-grid figcaption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+    .prompt-box {
+      background: #0f1a2b;
+      color: #e6edf3;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-family: "Menlo", "Consolas", monospace;
+      font-size: 0.95rem;
+      margin: 0 auto 1rem auto;
+      max-width: 92%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+      text-align: left;
+    }
+    .prompt-box .prompt-arrow { color: #58a6ff; margin-right: 6px; }
+    .prompt-box .prompt-cmd { color: #f0a868; }
+    .prompt-box .prompt-comment { color: #8b949e; font-style: italic; }
+
+    .pillar-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 1rem auto;
+      max-width: 95%;
+    }
+    .pillar-card {
+      background: #f7f9fc;
+      border-left: 4px solid #1565C0;
+      border-radius: 4px;
+      padding: 12px 14px;
+      text-align: left;
+    }
+    .pillar-card h4 {
+      margin: 0 0 6px 0;
+      font-weight: 700;
+      color: #1565C0;
+      font-size: 1rem;
+    }
+    .pillar-card p { margin: 0; font-size: 0.88rem; color: #333; }
+    .pillar-card.robot { border-left-color: #2E7D32; }
+    .pillar-card.robot h4 { color: #2E7D32; }
+    .pillar-card.sim { border-left-color: #EF6C00; }
+    .pillar-card.sim h4 { color: #EF6C00; }
+    .pillar-card.bench { border-left-color: #7B1FA2; }
+    .pillar-card.bench h4 { color: #7B1FA2; }
+
+    /* Trust-validation table */
+    .trust-table-wrap { max-width: 95%; margin: 0 auto; overflow-x: auto; }
+    table.trust-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.92rem;
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    table.trust-table th,
+    table.trust-table td {
+      padding: 7px 10px;
+      text-align: center;
+      border-bottom: 1px solid #ececec;
+    }
+    table.trust-table th {
+      background: #2c3e50;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    table.trust-table td.method,
+    table.trust-table td.bench { text-align: left; }
+    table.trust-table tr.il    td { background: #E8F1FB; }
+    table.trust-table tr.vla   td { background: #E8F5E9; }
+    table.trust-table tr.wam   td { background: #FFF3E0; }
+    table.trust-table td.fam {
+      font-weight: 700;
+      color: #2c3e50;
+      letter-spacing: 0.02em;
+    }
+    .delta-good { color: #2E7D32; font-weight: 600; }
+    .delta-warn { color: #EF6C00; font-weight: 700; }
+
+    /* Cost stat cards */
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 1rem auto;
+      max-width: 95%;
+    }
+    .cost-card {
+      background: #fafbfc;
+      border-radius: 6px;
+      padding: 14px 12px;
+      text-align: center;
+      border: 1px solid #e1e4e8;
+    }
+    .cost-card .cost-label { font-size: 0.82rem; color: #555; margin-bottom: 4px; letter-spacing: 0.03em; }
+    .cost-card .cost-value { font-size: 1.4rem; font-weight: 700; color: #1565C0; line-height: 1.1; }
+    .cost-card .cost-sub { font-size: 0.78rem; color: #777; margin-top: 4px; }
+
+    /* Section question heading */
+    .rq-heading {
+      display: inline-block;
+      background: #1565C0;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .pillar-row, .image-grid, .cost-grid { grid-template-columns: 1fr; }
+      .image-grid img,
+      .image-grid video { height: 220px; }
+      table.trust-table { font-size: 0.82rem; }
+    }
+  </style>
+
+  <!-- Reserved video placeholder (swap in ./resources/video.mp4 later) -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser-video" autoplay muted loop playsinline controls preload="metadata">
+          <source src="./resources/nautilus-video.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+
+          <!-- Abstract -->
+          <h2 class="title is-4" style="font-weight: 700;">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Robot learning research is fragmented across policy families, benchmark suites, and real robots; each implementation is entangled with the others in a complex combination matrix, making it an engineering nightmare to port any single element. General-purpose coding agents may occasionally bridge specific setups, but cannot close this gap at scale because they lack the procedural priors and validation practices that characterize robotics research workflows.
+            </p>
+            <p>
+              We propose <b>Nautilus</b>, an open-source harness that turns a single user prompt&mdash;for example,
+              <i>&ldquo;Evaluate policy A with benchmark B&rdquo;</i>&mdash;into ready-to-use reproduction, evaluation, fine-tuning, and deployment workflows. Nautilus provides: plug-and-play agent skill sets with distilled priors from robotics research; typed contracts among policies, simulators/benchmarks, and real-world robots; unified interfaces and execution environments; and a trustworthy agentic coding workflow with explicit, automated validation and testing at each milestone.
+            </p>
+            <p>
+              Nautilus can not only automatically generate the required adapters and containers for existing implementations, but also wrap and onboard new or user-provided policies, simulators/benchmarks, and robots, all connected via a uniform interface. Like a <b>nautilus shell that grows by adding chambers</b>, Nautilus scales by extending its execution in chambered units&mdash;a research harness for scalability rather than a hand-curated framework.
+            </p>
+          </div>
+
+          <br>
+
+          <!-- Teaser image + caption (moved below Abstract) -->
+          <div class="content has-text-centered">
+            <img id="teaser-img" src="./resources/teaser.png" alt="Nautilus harness: from O(N*M*K) to O(N+M+K)">
+            <p style="font-size: 0.9rem; color: #555; margin-top: 10px; max-width: 92%; margin-left: auto; margin-right: auto;">
+              <b>The harness gap in robot learning, and how Nautilus closes it.</b>
+              Existing workflows repeatedly rebuild policy&ndash;benchmark&ndash;robot glue, yielding a field-scale integration burden of
+              &Theta;(N&middot;M&middot;K). Nautilus introduces a shared harness&mdash;typed contracts, chambered execution, and uniform transport,
+              plus a content layer of Guides, Sensors, and State&mdash;reducing the burden to &Theta;(N+M+K).
+            </p>
+          </div>
+
+          <br>
+
+          <!-- One prompt → Full workflow (replaces Method) -->
+          <h2 class="title is-4" style="font-weight: 700;">One Prompt &rarr; Full Workflow</h2>
+          <div class="content has-text-justified">
+            <p>
+              Nautilus is a <b>Claude Code plugin</b> organized into two layers. The <b>substrate</b> rests on three engineering invariants&mdash;typed interface contracts, chambered execution, and uniform inter-module transport&mdash;giving the agent a stable, policy-agnostic surface to reason over. On top sits a <b>content layer</b>: <b>Guides</b> shape the agent's behavior before code generation, <b>Sensors</b> validate outputs after generation, and <b>State</b> (an MCP-served, JSON-schema-validated contract registry) mediates between modules.
+            </p>
+            <p>
+              A researcher describes the experiment in natural language. The Nautilus orchestrator routes the request to a typed CLI command, dispatches the chambered subagents that generate adapters, runs validation, and writes reproducibility receipts&mdash;all without leaving the prompt.
+            </p>
+          </div>
+
+          <div class="prompt-box">
+            <div><span class="prompt-comment"># Researcher says:</span></div>
+            <div><span class="prompt-arrow">&gt;</span> I want to run and evaluate &pi;<sub>0</sub> on the LIBERO benchmark.</div>
+            <div style="margin-top: 8px;"><span class="prompt-comment"># Nautilus routes the request:</span></div>
+            <div><span class="prompt-arrow">&gt;</span> <span class="prompt-cmd">/nautilus:eval policy=pi0 benchmark=libero</span></div>
+            <div style="margin-top: 8px;"><span class="prompt-comment"># &rarr; State registry checked &middot; policy &amp; benchmark modules generated in parallel &middot;</span></div>
+            <div><span class="prompt-comment">#    contracts compared &middot; WebSocket smoke test executed &middot; receipts written.</span></div>
+          </div>
+
+          <div class="pillar-row">
+            <div class="pillar-card">
+              <h4>Policy</h4>
+              <p><code>infer(obs) &rarr; actions</code> with optional <code>reset</code>. IL / VLA / RL / WAM families behind one typed contract.</p>
+            </div>
+            <div class="pillar-card robot">
+              <h4>Robot</h4>
+              <p><code>reset</code> / <code>get_observation</code> / <code>apply_action</code> / <code>safe_stop</code>. Same surface in sim and on hardware.</p>
+            </div>
+            <div class="pillar-card sim">
+              <h4>Simulator</h4>
+              <p>Isaac&nbsp;Sim, MuJoCo, and SAPIEN treated as <i>benchmark backends</i>, not a separate axis.</p>
+            </div>
+            <div class="pillar-card bench">
+              <h4>Benchmark</h4>
+              <p>Task suite + success criteria + trust-validation hooks. Plug-in extension via 3&ndash;5 typed methods.</p>
+            </div>
+          </div>
+
+          <div class="content has-text-centered">
+            <img id="pipeline-img" src="./resources/pi-libero.png" alt="Execution trace: pi-0 policy on LIBERO benchmark">
+            <p style="font-size: 0.9rem; color: #555; margin-top: 8px;">
+              <b>Execution trace for the running example &pi;<sub>0</sub> on LIBERO.</b> The orchestrator routes the natural-language request to <code>/nautilus:eval</code>; State, subagents, Sensors, and workspace artefacts turn the request into a contract-checked, chambered, reproducible evaluation.
+            </p>
+          </div>
+
+          <br>
+
+          <!-- Q1: Benchmark trust validation -->
+          <span class="rq-heading">RQ&nbsp;1</span>
+          <h2 class="title is-4" style="font-weight: 700;">Are our generated benchmark wrappers faithful to the references they wrap?</h2>
+          <div class="content has-text-justified">
+            <p>
+              For each candidate (method, benchmark) entry, we run a released policy with its official checkpoint through the same Nautilus-generated wrapper and compare the resulting success rate against the corresponding published reference. We impose <b>no fixed pass/fail threshold</b>: small deviations support reuse of the wrapper, while larger deviations are retained transparently for future calibration. The table below covers <b>15 (method, benchmark) pairs</b> spanning the IL, VLA, and WAM families.
+            </p>
+          </div>
+
+          <div class="trust-table-wrap">
+            <table class="trust-table">
+              <thead>
+                <tr>
+                  <th>Family</th>
+                  <th>Method</th>
+                  <th>Benchmark</th>
+                  <th>Success&nbsp;(%)</th>
+                  <th>Reference&nbsp;(%)</th>
+                  <th>&Delta;&nbsp;(%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="il"><td class="fam" rowspan="6">IL</td><td class="method">Diffusion Policy</td><td class="bench">LIBERO</td><td>70.2</td><td>72.4</td><td class="delta-good">&minus;2.2</td></tr>
+                <tr class="il"><td class="method">Diffusion Policy</td><td class="bench">ManiSkill</td><td>32.4</td><td>30.2</td><td class="delta-good">+2.2</td></tr>
+                <tr class="il"><td class="method">Diffusion Policy</td><td class="bench">RoboTwin</td><td>26.4</td><td>28.0</td><td class="delta-good">&minus;1.6</td></tr>
+                <tr class="il"><td class="method">Diffusion Policy</td><td class="bench">ALOHA</td><td>75.8</td><td>77.5</td><td class="delta-good">&minus;1.7</td></tr>
+                <tr class="il"><td class="method">ACT</td><td class="bench">RoboTwin</td><td>30.0</td><td>29.7</td><td class="delta-good">+0.3</td></tr>
+                <tr class="il"><td class="method">ACT</td><td class="bench">ALOHA</td><td>72.8</td><td>72.3</td><td class="delta-good">+0.5</td></tr>
+
+                <tr class="vla"><td class="fam" rowspan="7">VLA</td><td class="method">&pi;<sub>0</sub></td><td class="bench">LIBERO</td><td>93.6</td><td>94.2</td><td class="delta-good">&minus;0.6</td></tr>
+                <tr class="vla"><td class="method">&pi;<sub>0</sub></td><td class="bench">RoboTwin</td><td>42.6</td><td>46.4</td><td class="delta-warn">&minus;3.8</td></tr>
+                <tr class="vla"><td class="method">&pi;<sub>0.5</sub></td><td class="bench">LIBERO</td><td>97.0</td><td>96.8</td><td class="delta-good">+0.2</td></tr>
+                <tr class="vla"><td class="method">&pi;<sub>0.5</sub></td><td class="bench">RoboCasa</td><td>18.6</td><td>16.9</td><td class="delta-good">+1.7</td></tr>
+                <tr class="vla"><td class="method">OpenVLA</td><td class="bench">LIBERO</td><td>78.2</td><td>76.5</td><td class="delta-good">+1.7</td></tr>
+                <tr class="vla"><td class="method">OpenVLA</td><td class="bench">ManiSkill</td><td>4.0</td><td>4.8</td><td class="delta-good">&minus;0.8</td></tr>
+                <tr class="vla"><td class="method">SmolVLA</td><td class="bench">LIBERO</td><td>88.2</td><td>87.3</td><td class="delta-good">+0.9</td></tr>
+
+                <tr class="wam"><td class="fam" rowspan="3">WAM</td><td class="method">cosmos-policy</td><td class="bench">LIBERO</td><td>98.4</td><td>98.5</td><td class="delta-good">&minus;0.1</td></tr>
+                <tr class="wam"><td class="method">cosmos-policy</td><td class="bench">RoboCasa</td><td>66.7</td><td>67.1</td><td class="delta-good">&minus;0.4</td></tr>
+                <tr class="wam"><td class="method">Motus</td><td class="bench">RoboTwin</td><td>86.9</td><td>87.0</td><td class="delta-good">&minus;0.1</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style="font-size: 0.88rem; color: #555; margin-top: 10px; text-align: center;">
+            Most deviations fall within &plusmn;2%; the largest single deviation we observe is <b>&minus;3.8%</b> (&pi;<sub>0</sub> on RoboTwin). Deviations are reported transparently rather than gated by an arbitrary cutoff.
+          </p>
+
+          <br>
+
+          <!-- Q2: Onboarding + cost -->
+          <span class="rq-heading" style="background: #2E7D32;">RQ&nbsp;2</span>
+          <h2 class="title is-4" style="font-weight: 700;">Can Nautilus onboard new implementations, and what is the cost?</h2>
+          <div class="content has-text-justified">
+            <p>
+              We construct a <b>leave-one-benchmark-out</b> testbed across IL and VLA pairs: given a public repository with a released checkpoint for a target benchmark, the agent reconstructs the missing benchmark support. This simulates a realistic researcher workflow while retaining oracle validation against the published score.
+            </p>
+            <p>
+              Achieving a reusable, interface-compliant wrapper costs roughly the same as vanilla one-off integration. The agent reaches the trust band on <b>98.7%</b> of pairs with Opus and <b>98.0%</b> with Sonnet. Removing the typed-interface templates drops wrap success to <b>55.3%</b> and increases token cost <b>3.6&times;</b>&mdash;evidence that the substrate, not raw model capability, is doing the work.
+            </p>
+          </div>
+
+          <div class="cost-grid">
+            <div class="cost-card">
+              <div class="cost-label">Token cost</div>
+              <div class="cost-value">13.8M</div>
+              <div class="cost-sub">Opus &middot; 9.5M Sonnet</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-label">Interaction turns</div>
+              <div class="cost-value">152.4</div>
+              <div class="cost-sub">Opus &middot; 115.5 Sonnet</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-label">Monetary cost</div>
+              <div class="cost-value">$6.36</div>
+              <div class="cost-sub">Opus &middot; $4.76 Sonnet</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-label">Success in trust band</div>
+              <div class="cost-value">98.7%</div>
+              <div class="cost-sub">Opus &middot; 98.0% Sonnet</div>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Q3: Real-robot deployment -->
+          <span class="rq-heading" style="background: #EF6C00;">RQ&nbsp;3</span>
+          <h2 class="title is-4" style="font-weight: 700;">Real-Robot Deployment</h2>
+          <div class="content has-text-justified">
+            <p>
+              The same <code>Policy</code> interface, WebSocket endpoint, and <code>Robot</code> contract carry across embodiments. On <b>Franka Panda</b>, we deploy the reproduced &pi;<sub>0.5</sub> wrapper to a pick-and-place task with <b>zero policy-code changes</b>; time from a passing simulation run to the first real-arm rollout is <b>~1.5 hours</b>, dominated by Docker build rather than per-policy integration. On <b>Unitree H1</b>, an RL-trained locomotion policy is deployed through the same WebSocket endpoint and platform container&mdash;only the hardware container and launch namespace differ.
+            </p>
+          </div>
+
+          <div class="image-grid">
+            <figure>
+              <img src="./resources/pick_and_place.png" alt="Pick-and-place on Franka Panda">
+              <figcaption>Franka Panda &mdash; &pi;<sub>0.5</sub> pick-and-place</figcaption>
+            </figure>
+            <figure>
+              <img src="./resources/h1.png" alt="Unitree H1 humanoid locomotion">
+              <figcaption>Unitree H1 &mdash; RL locomotion</figcaption>
+            </figure>
+          </div>
+
+          <br>
+
+          <!-- nautilus-collect -->
+          <h2 class="title is-4" style="font-weight: 700;"><code>nautilus-collect</code> &mdash; VR &amp; GELLO Teleoperation</h2>
+          <div class="content has-text-justified">
+            <p>
+              <code>nautilus-collect</code> is a chambered data-collection platform implementing the same <code>Robot</code> typed contract used in evaluation and deployment. The same code path serves <b>teleoperated data collection</b> and <b>closed-loop policy rollout</b>&mdash;differing only in the action source. Adding a new teleoperation modality is a one-class extension.
+            </p>
+            <ul style="text-align: left; margin: 0 auto; max-width: 92%;">
+              <li><b>VR teleoperation</b> drives Meta Quest 2/3 controllers in relative-pose mode with <i>in-band</i> episode boundaries and success/failure labels&mdash;the operator triggers the final flag mid-recording, eliminating the post-hoc relabelling pass that other open data-collection pipelines defer to.</li>
+              <li><b>GELLO leader-arm teleoperation</b> uses a kinematically-similar leader arm whose joint stream is mapped one-to-one onto the follower&mdash;well-suited to contact-rich tasks where the free-hand impedance of a held-in-hand controller is a poor match.</li>
+            </ul>
+          </div>
+
+          <div class="image-grid" style="margin-top: 14px;">
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata">
+                <source src="./resources/vr_franka_telep_anon.mp4" type="video/mp4">
+              </video>
+              <figcaption>VR teleoperation &mdash; Meta Quest 2/3</figcaption>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata">
+                <source src="./resources/gello_teleop_anon.mp4" type="video/mp4">
+              </video>
+              <figcaption>GELLO leader-arm teleoperation</figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This webpage template is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+              under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="../6dope-gs/static/js/fontawesome.all.min.js"></script>
+</body>
+
+</html>

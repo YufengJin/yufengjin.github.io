@@ -5,17 +5,17 @@
 是**生成的**，不要手改。
 
 > **流水线脚本在本仓库** `papers/pipeline/`（唯一权威，详见 `pipeline/README.md`）。
-> **重资产工作目录在仓库之外** `$POSTERS_SRC`（默认 `~/Downloads/papers/posters/`）：收件箱 + 原始图源，永不入库。
-> 本仓库只存最终产物（WebP 海报）。
+> **工作目录也在项目内** `papers/_src/`（收件箱 + 原始图源），但**整目录 git-ignored、永不入库**——
+> 仓库只提交最终产物（`papers/<slug>/` 的 WebP 海报）。可用 `$POSTERS_SRC` 改到别处。零外部依赖。
 
 ## 每日更新一篇（end to end）
 
 ```bash
-# 1) 把论文加入收件箱（三选一），收件箱在外部工作目录
-echo "<arxiv-id|url|title>" >> ~/Downloads/papers/posters/_inbox/queue.txt   # 写队列，一行一个
-#   或：cp some_paper.pdf ~/Downloads/papers/posters/_inbox/                  # 直接拖 PDF 进收件箱
+# 1) 把论文加入收件箱（三选一），收件箱就在项目内 papers/_src/_inbox/
+echo "<arxiv-id|url|title>" >> papers/_src/_inbox/queue.txt   # 写队列，一行一个
+#   或：cp some_paper.pdf papers/_src/_inbox/                  # 直接拖 PDF 进收件箱
 
-# 2) 生成海报（Sonnet via `claude -p`，按 paper-poster skill 产出到 $POSTERS_SRC/<slug>/）
+# 2) 生成海报（Sonnet via `claude -p`，按 paper-poster skill 产出到 papers/_src/<slug>/）
 papers/pipeline/run_inbox.sh
 
 # 3) 发布到本仓库：图转 WebP、改写 <img src>、拷贝 <slug>/，再重建 papers/index.html
@@ -44,7 +44,7 @@ git add papers && git commit -m "papers: add <slug>" && git push
   所有数字逐字摘自论文，**不得编造**；每篇海报头部和底部都要有 arXiv / 来源链接；6–10 个关键词；
   章节固定为 动机 / 方法 / 实验 / 局限性。
 - **资产只放 WebP，保持仓库精简**：海报图一律 WebP（`publish_to_site.sh` 会自动 `cwebp -q 80 -resize 1280 0` 转换并改写 HTML 里的 `.png/.jpg → .webp`）。
-  **不要把原始大图 / PDF 提交进来**——源文件留在 `~/Downloads/papers/posters/`，永不入库。
+  **不要把原始大图 / PDF 提交进来**——源文件在 `papers/_src/`（git-ignored），永不入库。
 - **链接保持相对路径**，让站点与域名无关。
 - **发布脚本可重复跑**（idempotent）：图片已是最新就跳过；`meta.json` 一并拷贝。
 - **可选定时**：流水线默认手动触发。想每天自动跑，用 launchd 指向 `run_inbox.sh`

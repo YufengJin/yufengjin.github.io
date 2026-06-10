@@ -3,3 +3,7 @@
 
 # local-only: paper-poster skill + heavy/private tooling (see CLAUDE.md)
 .claude/
+
+# paper-notes working dir (inbox + raw figure sources, heavy/transient) — only the
+# published WebP under papers/<slug>/ is committed; see papers/pipeline/README.md
+papers/_src/

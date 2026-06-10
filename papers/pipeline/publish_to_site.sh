@@ -6,7 +6,7 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-SRC="${POSTERS_SRC:-/Users/yjin/Downloads/papers/posters}"   # external source posters (raw figs)
+SRC="${POSTERS_SRC:-$(cd "$HERE/.." && pwd)/_src}"   # in-repo working dir (papers/_src; raw figs)
 SITE="${SITE_DIR:-$(cd "$HERE/../.." && pwd)}"               # repo root (pipeline -> papers -> repo)
 DST="$SITE/papers"
 QUAL="${WEBP_QUALITY:-80}"

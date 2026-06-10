@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Process everything in the inbox (PDFs + queue.txt lines), then rebuild the source index.
-# These scripts are version-controlled here in the repo; the heavy working dir (inbox + raw
-# figure sources) lives OUTSIDE the repo at $POSTERS_SRC (default ~/Downloads/papers/posters).
+# These scripts are version-controlled here in the repo; the working dir (inbox + raw figure
+# sources) is in-repo but git-ignored at $POSTERS_SRC (default papers/_src). No external deps.
 # Idempotent: a dedup ledger (_processed/processed.tsv) skips already-done inputs.
 # Manual trigger:  papers/pipeline/run_inbox.sh
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-POSTERS="${POSTERS_SRC:-/Users/yjin/Downloads/papers/posters}"   # external working dir
+POSTERS="${POSTERS_SRC:-$(cd "$HERE/.." && pwd)/_src}"   # in-repo working dir (papers/_src)
 INBOX="$POSTERS/_inbox"
 PROC="$POSTERS/_processed"
 LOGS="$POSTERS/_logs"

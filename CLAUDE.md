@@ -8,7 +8,8 @@ Personal academic site (Jon Barron template, table-based static HTML) served via
 - `projects/<name>/` — per-project pages + `resources/` (figures, videos).
 - `images/` — homepage assets.
 - `papers/` — **Paper Notes**: 中文 illustrated posters of papers I read (generated, see below).
-- `papers/pipeline/` — the automation scripts (run_inbox / add_paper / publish_to_site / build_index); version-controlled here, operate on an external working dir via `$POSTERS_SRC`.
+- `papers/pipeline/` — the automation scripts (run_inbox / add_paper / publish_to_site / build_index); version-controlled here, operate on the in-repo working dir `papers/_src/` (git-ignored).
+- `papers/_src/` — **git-ignored** working dir: `_inbox/` + `_processed/` + raw-figure source `<slug>/` (heavy/transient). In the project, never committed. Override with `$POSTERS_SRC`.
 - `.claude/skills/paper-poster/` — the project skill that builds posters (local only; `.claude/` is gitignored).
 - `.nojekyll` — serve as-is (no Jekyll).
 
@@ -26,16 +27,17 @@ sections = 动机 / 方法 / 实验 / 局限性.
 
 ## Generation & publish pipeline
 The **pipeline scripts are version-controlled in this repo** at `papers/pipeline/` (the single source of
-truth — see its `README.md`). The **heavy working dir stays OUTSIDE the repo** at `$POSTERS_SRC`
-(default `~/Downloads/papers/posters/`): `_inbox/`, `_processed/`, and the raw-figure source `<slug>/`
-dirs — never committed. Scripts reach it via the `POSTERS_SRC` env var.
-- `pipeline/run_inbox.sh` — drop a PDF in `$POSTERS_SRC/_inbox/` or add an arXiv id/url/title to `_inbox/queue.txt`, then run it → generates the poster into `$POSTERS_SRC/<slug>/` (Sonnet via `claude -p`, following the project skill).
+truth — see its `README.md`). The **working dir lives in-repo but git-ignored** at `papers/_src/`
+(overridable via `$POSTERS_SRC`): `_inbox/`, `_processed/`, and the raw-figure source `<slug>/`
+dirs — physically in the project, never committed (only the published WebP under `papers/<slug>/` is).
+No dependency on any path outside the repo.
+- `pipeline/run_inbox.sh` — drop a PDF in `papers/_src/_inbox/` or add an arXiv id/url/title to `_inbox/queue.txt`, then run it → generates the poster into `papers/_src/<slug>/` (Sonnet via `claude -p`, following the project skill).
 - `pipeline/publish_to_site.sh` — WebP-compresses figures + copies `<slug>/{index.html,img,meta.json}` into this repo's `papers/`, then rebuilds `papers/index.html` (`pipeline/build_index.py`, `POSTERS_ROOT` env).
 - Then commit + push here; Pages redeploys.
 
 To add a paper, end to end:
 ```bash
-echo "<arxiv-id|url|title>" >> ~/Downloads/papers/posters/_inbox/queue.txt   # or drop a PDF in _inbox/
+echo "<arxiv-id|url|title>" >> papers/_src/_inbox/queue.txt   # or drop a PDF in papers/_src/_inbox/
 papers/pipeline/run_inbox.sh
 papers/pipeline/publish_to_site.sh
 git add papers && git commit -m "papers: add <slug>" && git push

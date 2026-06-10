@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legato: Learning Native Continuation for Action Chunking Flow Policies</title>
+<meta name="keywords" content="action chunking, flow policy, VLA, 视觉语言动作模型, trajectory smoothness, native continuation, 机器人操作, per-step guidance, schedule conditioning, multimodal switching">
+<meta name="description" content="Legato 将平滑续接能力内嵌到 flow-based VLA 策略中，通过 schedule-shaped 引导与速度场重塑，消除 action chunk 边界的不连续性，在五项真实机械臂任务上将轨迹平滑度与完成时间提升约 10%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2602.12978</span>
+    <h1>Legato: Learning Native Continuation for Action Chunking Flow Policies</h1>
+    <div class="sub">将平滑续接能力内嵌到流匹配 VLA 策略中，从根本上消除 chunk 边界的不连续性</div>
+    <div class="authors">Yufeng Liu, Hang Yu, Juntu Zhao, Bocheng Li, Di Zhang, Mingzhu Li, Wenxuan Wu, Yingdong Hu, Junyuan Xie, Junliang Guo, Dequan Wang†, Yang Gao† &nbsp;·&nbsp; Spirit AI / Shanghai Jiao Tong University / Tsinghua University / Tongji University / USTC</div>
+    <p class="lead">Action chunking 让 VLA 模型得以实时运行，但 chunk 边界处的不连续性会导致机器人犹豫、抖动与模态切换。Legato 通过训练时的 schedule-shaped 引导与速度场重塑，使策略在推理时自然延续，无需外部补丁。在五项真实双臂操作任务上，Legato 相比 RTC 将轨迹平滑度与完成时间均提升约 10%。</p>
+    <div class="meta">
+      <span>📄 <a href="https://arxiv.org/abs/2602.12978">arXiv 2602.12978</a></span>
+      <span>🌐 <a href="https://lyfeng001.github.io/Legato/">Project Page</a></span>
+      <span>🤖 5 项真实操作任务</span>
+      <span>📅 2025</span>
+    </div>
+    <div class="kw">
+      <span>action chunking</span>
+      <span>flow policy</span>
+      <span>VLA</span>
+      <span>视觉语言动作模型</span>
+      <span>trajectory smoothness</span>
+      <span>native continuation</span>
+      <span>机器人操作</span>
+      <span>per-step guidance</span>
+      <span>schedule conditioning</span>
+      <span>multimodal switching</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">Action chunking 是让大型 VLA 模型在机器人上实时运行的关键技术——每次推理预测一段动作序列（chunk），避免逐帧调用昂贵模型。然而，当前一个 chunk 执行完毕、新的 chunk 接续时，两段轨迹之间往往出现明显的跳变与不连续。</p>
+
+    <div class="grid2" style="margin:20px 0">
+      <div class="card">
+        <h3>问题一：chunk 边界不连续</h3>
+        <p>原始 action chunking 的执行在 chunk 边界处会产生速度/加速度跳变，机械臂抖动明显，影响任务成功率。</p>
+      </div>
+      <div class="card">
+        <h3>问题二：RTC 存在外部 patch 缺陷</h3>
+        <p>Real-Time Chunking (RTC) 在推理时做 inpainting，将已执行动作作为约束注入去噪过程。但它与训练目标不一致，导致<strong>虚假模态切换</strong>（spurious multimodal switching）——机械臂在不同抓取目标和执行臂之间反复横跳，产生大量犹豫动作。</p>
+      </div>
+    </div>
+
+    <blockquote>"RTC applies inference-time inpainting... leading to spurious multimodal switching and trajectories that are not intrinsically smooth."</blockquote>
+
+    <figure>
+      <img src="img/x1.webp" alt="teaser：五项任务的完成时间与轨迹平滑度对比">
+      <figcaption><strong>图 1：</strong>五项真实操作任务上，Legato 与 RTC 的完成时间（横轴，越低越好）和 NSPARC 平滑度（纵轴，越低越好）对比。Legato 在所有任务上均更快、更平滑，整体右下方向偏移明显（箭头所示）。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>~10%</b><small>轨迹平滑度提升（NSPARC↓）</small></div>
+      <div><b>~10%</b><small>任务完成时间缩短</small></div>
+      <div><b>5</b><small>项真实双臂操作任务</small></div>
+      <div><b>&lt;31%</b><small>Overlap RMSE 降低（Pour 任务）</small></div>
+    </div>
+
+    <figure>
+      <img src="img/x3.webp" alt="单步引导在去噪过程中漂移">
+      <figcaption><strong>图 3：</strong>单次（one-shot）prefix 引导无法在整个去噪过程中保持约束。随着去噪步骤推进（颜色从蓝→红），overlap 动作逐渐偏离参考轨迹（GT），说明必须在每步去噪中持续施加引导。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">Legato 的核心思路是将 continuation 约束直接编码进 flow matching 的训练目标，使网络在推理时能够自然地延续已执行的前缀动作，而无需任何推理时 patch。</p>
+
+    <figure>
+      <img src="img/x2.webp" alt="Legato 架构图">
+      <figcaption><strong>图 2：</strong>Legato 的整体框架。调度参数定义如下：<code>s</code> 为每个周期执行的动作长度；<code>d</code> 为完全引导的前缀长度（inference delay）；<code>r</code> 控制引导强度在剩余 horizon 上的线性衰减长度。训练时随机采样 (d, s, r) 并条件化，使单一模型适应不同推理延迟。</figcaption>
+    </figure>
+
+    <h3>1. Action-Noise Mixture（动作-噪声混合初始化）</h3>
+    <p>去噪的起点不再是纯噪声，而是混合了已知前缀动作 <em>A</em> 与噪声 <em>ε</em> 的有效噪声：</p>
+    <blockquote>ε_eff = (1 − ω) ⊙ ε + ω ⊙ A</blockquote>
+    <p>其中 ω 是 schedule-shaped 的引导权重向量，前缀区域权重接近 1（强约束），远端逐渐降为 0（自由生成）。这使模型在去噪起点便已感知到部分动作信息。</p>
+
+    <h3>2. Schedule-Shaped Velocity Reshaping（速度场重塑）</h3>
+    <p>训练目标被重新加权，前缀区域的速度场目标受到抑制：</p>
+    <blockquote>v_target = (1 − κ ⊙ (1 − t)) ⊙ (A − ε)</blockquote>
+    <p>这使得网络在高引导区域倾向于"停留"，而非切换到另一种模态，从根本上抑制了虚假模态切换。</p>
+
+    <h3>3. Per-Step Guidance ODE（每步引导的精确动力学）</h3>
+    <p>在推理时，每步去噪后都会重新施加引导，等效于如下 ODE：</p>
+    <blockquote>Ẏ(t) = (1 − ω) ⊙ f_θ(Y(t), t) − κ ⊙ (Y(t) − A)</blockquote>
+    <p>Legato 通过推导网络目标使训练动力学与上述推理 ODE 精确一致，消除训练-推理的不对齐（training-inference inconsistency）。</p>
+
+    <h3>4. Schedule Randomization & Conditioning（调度随机化与条件化）</h3>
+    <p>训练时随机采样 (d, s, r) 三元组，并将其作为额外条件输入策略网络。这使得<strong>单一模型即可适应不同推理延迟</strong>，无需为每种延迟单独训练。</p>
+
+    <figure>
+      <img src="img/x4.webp" alt="真实机器人实验任务">
+      <figcaption><strong>图 4：</strong>在双臂机器人上评估的五项操作任务：叠碗（Bowl）、倒水（Pour）、拾放（PickPlace）、折毛巾（Towel）、开抽屉（Drawer），覆盖多种运动模式与多模态选择场景。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在真实双臂机器人上评估五项操作任务，每个任务 30–50 次 trials，与 RTC 及其训练时版本进行对比。评估指标涵盖任务完成得分、完成时间、NSPARC（频域平滑度）、NLDLJ（冲击积分）和 Overlap RMSE（chunk 边界一致性）。</p>
+
+    <h3>Table I：五项任务主要结果（vs. RTC）</h3>
+    <table>
+      <tr><th>任务</th><th>完成时间 RTC (s)</th><th>完成时间 Legato (s)</th><th>NSPARC RTC</th><th>NSPARC Legato</th><th>Overlap RMSE RTC (×10³)</th><th>Overlap RMSE Legato (×10³)</th></tr>
+      <tr><td>Bowl（叠碗）</td><td>52.88 ± 3.54</td><td class="good">42.66 ± 2.68</td><td>1.82 ± 0.04</td><td class="good">1.63 ± 0.02</td><td>6.83 ± 0.50</td><td class="good">4.58 ± 0.17</td></tr>
+      <tr><td>Pour（倒水）</td><td>95.07 ± 2.86</td><td class="good">75.73 ± 1.51</td><td>2.85 ± 0.24</td><td class="good">1.65 ± 0.08</td><td>7.64 ± 0.70</td><td class="good">5.14 ± 0.17</td></tr>
+      <tr><td>PickPlace（拾放）</td><td>35.53 ± 1.24</td><td class="good">30.37 ± 0.65</td><td>2.10 ± 0.08</td><td class="good">1.89 ± 0.05</td><td>10.17 ± 0.66</td><td class="good">5.98 ± 0.40</td></tr>
+      <tr><td>Drawer（抽屉）</td><td>25.97 ± 0.74</td><td class="good">21.80 ± 0.72</td><td>2.24 ± 0.05</td><td class="good">1.99 ± 0.08</td><td>12.11 ± 0.66</td><td class="good">11.74 ± 0.55</td></tr>
+      <tr><td>Towel（毛巾）</td><td>25.93 ± 0.98</td><td class="good">20.00 ± 0.78</td><td>2.17 ± 0.07</td><td class="good">1.97 ± 0.05</td><td>11.28 ± 0.55</td><td class="good">6.22 ± 0.66</td></tr>
+    </table>
+
+    <h3>Table II：与训练时 RTC 对比（Pour 任务）</h3>
+    <table>
+      <tr><th>方法</th><th>完成时间↓ (s)</th><th>NSPARC↓</th><th>Overlap RMSE↓ (×10³)</th></tr>
+      <tr><td>Training-Time RTC</td><td>81.73 ± 1.12</td><td>2.46 ± 0.14</td><td>—</td></tr>
+      <tr><td><strong>Legato</strong></td><td class="good">75.73 ± 1.51</td><td class="good">1.65 ± 0.08</td><td class="good">5.14 ± 0.17</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/x5.webp" alt="定性对比：碗堆叠模态切换">
+      <figcaption><strong>图 5：</strong>叠碗任务的定性对比。RTC 在连续 chunk 间反复在不同抓取目标与执行臂之间切换，产生明显犹豫和冗余纠正动作。Legato 始终保持一致的抓取目标与臂的选择，执行流畅。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>通过改变 (d, s, r) 三元组进行调度参数消融（Table III）：减小 stride 可提升 overlap 一致性（Overlap RMSE↓），但可能轻微牺牲全局平滑度；schedule conditioning（条件化调度参数）对两个指标均有稳定改善（Table IV）。π₀ 主干模型上也复现了 Legato 的优势（Table V，完成时间 88.30s vs RTC 92.93s），证明方法的通用性。</p>
+
+    <figure>
+      <img src="img/x6.webp" alt="调度参数消融">
+      <figcaption><strong>图 6：</strong>调度参数消融揭示 overlap 一致性与全局平滑度之间存在可控权衡。在所有配置下，Legato 均优于 RTC，且随 stride 减小改善更显著。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>说明：</b>以下局限性结合论文明确陈述与设计层面推断，已标注来源。</div>
+
+    <details class="lim" open>
+      <summary>去噪步数在训练时固定，推理时无法动态调整（论文明确陈述）</summary>
+      <p>论文指出："the denoise step is specified at training time, limiting the ability to adjust it during inference." 一旦训练完成，不同推理延迟只能通过 schedule conditioning 来适配，无法完全自由地改变去噪步数。</p>
+    </details>
+
+    <details class="lim">
+      <summary>续接方案的灵活性仍有提升空间（论文明确陈述）</summary>
+      <p>论文将 "more flexible native continuation schemes" 列为未来工作方向，暗示当前 schedule-shaped 线性衰减的引导形式尚有局限，更复杂的引导曲线或自适应调度仍待探索。</p>
+    </details>
+
+    <details class="lim">
+      <summary>实验仅覆盖流匹配（flow matching）框架（设计推断）</summary>
+      <p>Legato 的速度场重塑与 per-step guidance ODE 专为 flow-based 策略设计。能否推广到扩散（diffusion）或自回归动作策略尚未验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>评估局限于双臂桌面操作任务（设计推断）</summary>
+      <p>所有实验均在固定桌面操作场景下进行，对移动操作、腿式机器人或高动态任务的泛化能力尚未验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    论文阅读笔记 · 仅供学习参考 · Compiled from the paper's sources and figures<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.12978">https://arxiv.org/abs/2602.12978</a>
+    &nbsp;·&nbsp; Project Page: <a href="https://lyfeng001.github.io/Legato/">lyfeng001.github.io/Legato</a>
+  </div>
+</footer>
+
+</body>
+</html>

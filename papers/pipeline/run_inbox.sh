@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Process everything in the inbox (PDFs + queue.txt lines), then rebuild the source index.
+# Process everything in the inbox — PDFs, paper screenshots (.jpg/.png), .txt/.bib reference
+# lists (arXiv ids extracted), and queue.txt lines — then rebuild the source index.
 # These scripts are version-controlled here in the repo; the working dir (inbox + raw figure
 # sources) is in-repo but git-ignored at $POSTERS_SRC (default papers/_src). No external deps.
 # Idempotent: a dedup ledger (_processed/processed.tsv) skips already-done inputs.
@@ -43,6 +44,25 @@ shopt -s nullglob
 for pdf in "$INBOX"/*.pdf "$INBOX"/*.PDF; do
   base="$(basename "$pdf")"
   process "pdf:$base" "$pdf" "mv -f \"$pdf\" \"$PROC/\" 2>/dev/null || true"
+done
+
+# 1b) Paper screenshots/images dropped in _inbox/ (key = filename). add_paper reads the
+#     image, lifts the title, then finds the paper on arXiv. Quoted globs handle spaces/中文 names.
+for img in "$INBOX"/*.jpg "$INBOX"/*.jpeg "$INBOX"/*.png "$INBOX"/*.JPG "$INBOX"/*.JPEG "$INBOX"/*.PNG; do
+  base="$(basename "$img")"
+  process "img:$base" "$img" "mv -f \"$img\" \"$PROC/\" 2>/dev/null || true"
+done
+
+# 1c) Reference lists (.txt/.bib): extract every arXiv id and process each (keyed q:<id> so it
+#     dedups against queue.txt), then archive the list. queue.txt itself is handled in step 2.
+for ref in "$INBOX"/*.txt "$INBOX"/*.bib; do
+  base="$(basename "$ref")"
+  case "$base" in queue.txt) continue;; esac
+  ids="$(grep -oiE 'arxiv[.:]?[0-9]{4}\.[0-9]{4,5}' "$ref" | grep -oE '[0-9]{4}\.[0-9]{4,5}' | sort -u)"
+  if [ -z "$ids" ]; then log "no arXiv ids in $base; leaving in inbox"; continue; fi
+  log "ref $base -> $(printf '%s\n' "$ids" | grep -c .) arXiv ids"
+  while IFS= read -r id; do [ -n "$id" ] && process "q:$id" "$id"; done <<< "$ids"
+  mv -f "$ref" "$PROC/" 2>/dev/null || true
 done
 
 # 2) queue.txt lines (key = the line itself; lines kept in file, ledger prevents redo)

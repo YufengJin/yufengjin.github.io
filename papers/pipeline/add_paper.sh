@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Generate ONE Chinese paper poster from an input, via headless claude -p.
-# Input may be: a local PDF path | an arXiv id | an arXiv/project URL | a paper title.
+# Input may be: a local PDF path | an image/screenshot of a paper | an arXiv id | a URL | a title.
 # Writes <slug>/index.html + img/ + meta.json into $POSTERS_SRC. Does NOT touch the index.
 # Usage: papers/pipeline/add_paper.sh "<input>"
 set -uo pipefail
@@ -26,10 +26,10 @@ You are generating ONE Chinese-language paper poster. Work autonomously; never a
 FIRST read and follow this skill completely: $SKILL
 (template: $SITE/.claude/skills/paper-poster/assets/poster-template.html)
 
-INPUT (a PDF path, arXiv id, URL, or title): $INPUT
+INPUT (a PDF path, an image/screenshot of a paper, an arXiv id, a URL, or a title): $INPUT
 
 Do all of this:
-1. Identify the paper. If it is an arXiv id/url, verify it (fetch arxiv.org/abs/<id>, confirm title). If a PDF path, Read it to get the title; if a title/url, WebSearch to find the arXiv id. Prefer the arXiv HTML render for clean figures (per the skill); fall back to the local PDF.
+1. Identify the paper. If it is an arXiv id/url, verify it (fetch arxiv.org/abs/<id>, confirm title). If a PDF OR an image/screenshot path, Read it — for an image, lift the paper title (and authors) off the screenshot — then WebSearch that title to find the arXiv id. If a title/url, WebSearch to find the arXiv id. Once you have the id, prefer the arXiv HTML render for clean figures (per the skill); fall back to the local PDF/image only if no arXiv source exists.
 2. Choose a short, url-safe lowercase slug (e.g. "g3t", "pi0", "shortcut-models").
 3. Generate the 中文 poster to $POSTERS/<slug>/index.html with figures in $POSTERS/<slug>/img/ — cover 动机/方法/实验/局限性, 6-10 keyword chips + <meta name=keywords>, and the original-paper link in header AND footer. Body in 中文, keep academic terms/metrics/quotes in English. All numbers verbatim from the paper.
 4. ALSO write $POSTERS/<slug>/meta.json with EXACTLY these fields:

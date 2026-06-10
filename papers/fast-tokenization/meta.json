@@ -1,0 +1,22 @@
+{
+  "slug": "fast-tokenization",
+  "title": "FAST：面向视觉-语言-动作模型的高效动作分词",
+  "arxiv_id": "2501.09747",
+  "url": "https://arxiv.org/abs/2501.09747",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "action tokenization",
+    "VLA模型",
+    "离散余弦变换",
+    "字节对编码",
+    "机器人操作",
+    "自回归策略",
+    "灵巧操作",
+    "动作压缩",
+    "高频控制",
+    "零样本泛化"
+  ],
+  "summary_zh": "FAST 提出基于DCT与BPE的动作分词方案，将机器人动作序列转换到频域后压缩为少量低相关性token，使自回归VLA模型在高频灵巧操作任务上性能媲美扩散基线，同时将训练GPU时间压缩至1/5。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

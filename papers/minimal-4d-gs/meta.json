@@ -1,0 +1,21 @@
+{
+  "slug": "minimal-4d-gs",
+  "title": "OMG4：优化的最小化 4D Gaussian Splatting",
+  "arxiv_id": "2510.03857",
+  "url": "https://arxiv.org/abs/2510.03857",
+  "category": "三维 / 四维重建 · 几何 · 分割",
+  "keywords": [
+    "4D Gaussian Splatting",
+    "动态场景重建",
+    "模型压缩",
+    "Gaussian Pruning",
+    "Sub-Vector Quantization",
+    "实时渲染",
+    "Rate-Distortion",
+    "动态场景压缩",
+    "Neural 3D Video"
+  ],
+  "summary_zh": "OMG4 提出一套四阶段渐进式压缩框架（Sampling、Pruning、Merging、Attribute Compression），将 4D Gaussian Splatting 动态场景模型从 2 GB 压缩至约 3.6 MB（约 580 倍），在 N3DV 等基准上以 246 FPS 维持与未压缩基线相当的渲染质量。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

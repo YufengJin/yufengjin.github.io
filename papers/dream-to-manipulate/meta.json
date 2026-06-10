@@ -1,0 +1,22 @@
+{
+  "slug": "dream-to-manipulate",
+  "title": "Dream to Manipulate: 组合式世界模型赋能机器人模仿学习",
+  "arxiv_id": "2412.14957",
+  "url": "https://arxiv.org/abs/2412.14957",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "robot manipulation",
+    "imitation learning",
+    "world model",
+    "Gaussian Splatting",
+    "compositional scene representation",
+    "数据增广",
+    "模仿学习",
+    "等变变换",
+    "物理仿真",
+    "one-shot learning"
+  ],
+  "summary_zh": "DreMa 将场景分解为物体级 2D Gaussian Splatting 表示并结合 PyBullet 物理仿真器构建组合式世界模型，通过等变变换生成合成示范数据，使机器人在真实 Franka Emika Panda 上实现每任务变体仅需单次示范的操控策略学习。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

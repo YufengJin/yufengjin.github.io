@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!--
+  SymSkill 论文海报 — 中文版
+  基于 arXiv:2510.01661 (SymSkill: Symbol and Skill Co-Invention for Data-Efficient and Reactive Long-Horizon Manipulation)
+  仅供学习参考
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SymSkill：符号与技能协同发明，用于数据高效的反应式长视野操作</title>
+<meta name="keywords" content="long-horizon manipulation, imitation learning, 符号规划, task and motion planning, LPV-DS, 符号发现, skill learning, 相对位姿谓词, 故障恢复, 数据高效机器人学习">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.3px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  .bad{color:#f77;}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .highlight{color:var(--acc2);font-weight:700}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">机器人操作 · 符号规划 · 模仿学习</span>
+    <h1>SymSkill：符号与技能协同发明，用于数据高效的反应式长视野操作</h1>
+    <div class="sub">Symbol and Skill Co-Invention for Data-Efficient and Reactive Long-Horizon Manipulation</div>
+    <div class="authors">Yifei Simon Shao, Yuchen Zheng, Sunan Sun, Pratik Chaudhari, Vijay Kumar, Nadia Figueroa &nbsp;·&nbsp; GRASP Laboratory, University of Pennsylvania</div>
+    <p class="lead">SymSkill 从无标签、未分段的演示数据中联合学习符号谓词、算子和运动技能，将模仿学习的反应性与任务与运动规划（TAMP）的组合性有机结合，仅需 <strong>1–10 条演示</strong>即可完成多步骤操作任务，并支持实时故障恢复。</p>
+    <div class="meta">
+      <span>arXiv 2510.01661</span>
+      <span>cs.RO · 2025</span>
+      <span>RoboCasa 仿真 + 真实 Franka 机械臂</span>
+      <span><a href="https://arxiv.org/abs/2510.01661">论文原文 →</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">long-horizon manipulation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">imitation learning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">符号规划</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">task and motion planning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">LPV-DS</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">符号发现</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">skill learning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">相对位姿谓词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">故障恢复</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">数据高效机器人学习</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前机器人操作领域的两大主流范式——模仿学习与任务规划——分别存在根本性缺陷：前者缺乏可组合性，后者规划延迟高达数十秒，无法在动态环境中实时恢复故障。SymSkill 旨在融合两者的优势。</p>
+
+    <blockquote>"Recent imitation learning approaches excel at reproducing skills from large datasets but tend to learn monolithic policies rather than reusable skills and predicates that compose into multi-step plans."</blockquote>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>模仿学习的问题</h3>
+        <ul>
+          <li>学习的是单块式策略（monolithic policy），难以跨任务复用</li>
+          <li>缺乏符号结构，无法通过规划组合成多步骤计划</li>
+          <li>依赖大量标注演示（如 NSIL 需要 200 条）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>任务与运动规划（TAMP）的问题</h3>
+        <ul>
+          <li>规划延迟极高（&gt;50 秒），无法实时应对动态变化</li>
+          <li>需要人工设计谓词和算子，工程量大</li>
+          <li>低层运动规划器对扰动鲁棒性不足</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/x1.webp" alt="SymSkill 整体流程图">
+      <figcaption><strong>图1：SymSkill 离线与在线流程概览。</strong> 离线阶段从无标签演示中联合学习符号谓词、算子和 SE(3) LPV-DS 技能；在线阶段执行符号规划（&lt;100ms）并通过三重监控机制实时恢复故障。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>1–10</b><small>所需演示条数（对比 NSIL/LAMP 的 200 条）</small></div>
+      <div><b>85%</b><small>RoboCasa 12 任务平均成功率</small></div>
+      <div><b>&lt;100ms</b><small>符号规划延迟（对比 LAMP/NOD-TAMP 的 &gt;50s）</small></div>
+      <div><b>5 分钟</b><small>真实机器人所需 play data 时长</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SymSkill 的核心思想是利用操作任务中普遍存在的以物体为中心的相对位姿结构。系统在相对坐标系下学习谓词和技能，仅离线调用视觉语言模型（VLM）确定参考物体，从而同时保证数据效率和在线反应速度。</p>
+
+    <figure>
+      <img src="img/x2.webp" alt="SymSkill 详细方法流程">
+      <figcaption><strong>图2：SymSkill 详细方法流程。</strong> 五个阶段：(A) 演示分段与参考系选择；(B) 相对位姿谓词学习；(C) 算子学习；(D) SE(3) 技能学习；(E) 在线执行监控与自适应恢复。VLM（Gemini 2.5-Pro）仅用于离线识别参考物体，避免在线推理瓶颈。</figcaption>
+    </figure>
+
+    <h3>阶段一：演示分段与参考系选择</h3>
+    <p>根据速度阈值将每条演示分为<strong>预运动段</strong>（premotion，仅末端执行器运动）和<strong>运动段</strong>（motion，末端执行器 + 操作物体同时运动）。对运动段，使用 VLM（Gemini 2.5-Pro）在 n 个均匀采样帧上查询参考物体 o_ref，输出限制为已知场景物体集合，最大程度抑制幻觉。</p>
+
+    <h3>阶段二：相对位姿谓词学习</h3>
+    <p>谓词 ψ 建模为相对位姿的正态分布：平移分量 <em>p_ee^o ~ N(μ_pos, Σ_pos)</em>，旋转分量用对数映射 <em>log(R) ~ N(μ_ori, Σ_ori)</em> 表示。当 Mahalanobis 距离低于阈值 ε_pos 和 ε_ori 时谓词激活。运动段还额外学习物体-物体相对位姿谓词 ψ_o_int^o_ref，并在运动结束后约 2 秒的稳定窗口内增强鲁棒性。</p>
+
+    <h3>阶段三：算子学习</h3>
+    <p>通过在分段边界处评估谓词，将演示转化为抽象状态序列，识别具有相同效果的重复转换组。算子 α = &lt;params, pre, eff, maintain, skill&gt; 的前条件、效果和维持条件分别通过集合交集运算自动提取，无需人工标注。</p>
+
+    <h3>阶段四：SE(3) LPV-DS 技能学习</h3>
+    <p>每个算子关联一个在相对坐标系下的 SE(3) Linear Parameter Varying Dynamical Systems（LPV-DS）技能。位置控制使用线性时不变系统的混合 <em>v = Σ γ_k(x) A_k(x - x*)</em>，稳定性约束通过半正定规划（SDP）保证。技能的收敛反馈场使其对大范围初始位姿仍能鲁棒追踪目标。</p>
+
+    <figure>
+      <img src="img/ds_policy5.webp" alt="SE(3) LPV-DS 技能可视化">
+      <figcaption><strong>图3：SE(3) LPV-DS 策略可视化（Op3，抓取任务）。</strong> 学习到的动力系统展示了从各种初始位姿向目标汇聚的流场，体现了策略的全局稳定性和强鲁棒性。</figcaption>
+    </figure>
+
+    <h3>阶段五：在线执行监控与三重恢复机制</h3>
+    <p>在线执行时系统持续检查维持条件和预期效果。故障触发以下三种恢复机制之一：</p>
+    <ul>
+      <li><strong>障碍物规避（Obstacle Avoidance）：</strong>通过特征值分解对策略进行调制，绕过非操作物体</li>
+      <li><strong>失败后重采样（Resampling after Failure）：</strong>当目标效果未满足（如物体掉落），从效果分布中重新采样策略吸引子并变换策略</li>
+      <li><strong>实时符号重规划（Real-Time Replanning）：</strong>在符号层进行 A* 重规划，延迟 &lt;100ms，使机器人能响应动态环境变化</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在两个平台上验证：(1) RoboCasa 仿真环境中的 12 个单步任务及多步骤组合；(2) 真实 Franka 机械臂，仅从 5 分钟无结构 play data 中学习。每个任务仅使用 5–10 条演示，并与多个基线方法对比。</p>
+
+    <h3>表一：与相关工作的对比（Table I，论文原始数据）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>谓词类型</th>
+        <th>技能类型</th>
+        <th>演示数量</th>
+        <th>规划延迟</th>
+      </tr>
+      <tr>
+        <td><strong>SymSkill（本文）</strong></td>
+        <td>Relative Pose Cluster (Start/End Motion)</td>
+        <td class="good">SE(3) LPV-DS</td>
+        <td class="good">1–10</td>
+        <td class="good">&lt;100ms</td>
+      </tr>
+      <tr>
+        <td>NSIL</td>
+        <td>Relative Pose Cluster (Low Relative Velocity)</td>
+        <td>MLP BC</td>
+        <td>200</td>
+        <td>&lt;100ms</td>
+      </tr>
+      <tr>
+        <td>LAMP</td>
+        <td>Relational Critical Regions</td>
+        <td>Motion Planning (MP)</td>
+        <td>200</td>
+        <td class="bad">&gt;50s</td>
+      </tr>
+      <tr>
+        <td>NOD-TAMP</td>
+        <td>NDF Features</td>
+        <td>Optimization + MP</td>
+        <td>1–10</td>
+        <td class="bad">&gt;50s</td>
+      </tr>
+    </table>
+
+    <h3>表二：RoboCasa 单步仿真结果（Table II，每任务 10 次测试）</h3>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th class="good">本文方法</th>
+        <th>本文（无监控）</th>
+        <th>本文（用 Diffusion Policy）</th>
+      </tr>
+      <tr><td>OpenSingleDoor（开单扇门）</td><td class="good">100%</td><td>100%</td><td>0%</td></tr>
+      <tr><td>CloseSingleDoor（关单扇门）</td><td class="good">100%</td><td>80%</td><td>0%</td></tr>
+      <tr><td>PnPCounterToCab（台面→橱柜抓放）</td><td class="good">80%</td><td>70%</td><td>0%</td></tr>
+      <tr><td>PnPCabToCounter（橱柜→台面抓放）</td><td class="good">100%</td><td>40%</td><td>0%</td></tr>
+      <tr><td>PnPStoveToCounter（灶台→台面抓放）</td><td class="good">70%</td><td>30%</td><td>0%</td></tr>
+      <tr><td>PnPCounterToStove（台面→灶台抓放）</td><td>20%</td><td>0%</td><td>0%</td></tr>
+      <tr><td>OpenDrawer（开抽屉）</td><td class="good">100%</td><td>100%</td><td>0%</td></tr>
+      <tr><td>CloseDrawer（关抽屉）</td><td class="good">70%</td><td>50%</td><td>40%</td></tr>
+      <tr><td>TurnOnStove（打开燃气灶）</td><td class="good">100%</td><td>100%</td><td>0%</td></tr>
+      <tr><td>TurnOffStove（关闭燃气灶）</td><td class="good">80%</td><td>30%</td><td>0%</td></tr>
+      <tr><td>TurnOnSinkFaucet（打开水龙头）</td><td class="good">100%</td><td>100%</td><td>0%</td></tr>
+      <tr><td>TurnOffSinkFaucet（关闭水龙头）</td><td class="good">100%</td><td>90%</td><td>0%</td></tr>
+      <tr><th><strong>平均</strong></th><th class="good"><strong>85.0%</strong></th><th>65.0%</th><th>3.3%</th></tr>
+    </table>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/door_figure.webp" alt="门操作任务谓词与技能示意">
+        <figcaption><strong>图4：DoorOpen 任务谓词与技能学习示意。</strong> 系统在相对坐标系下学习末端执行器到门把手的相对位姿谓词（绿色高亮区域），以及对应的 LPV-DS 运动策略。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/demo_timelapse_short.webp" alt="真实世界数据采集流程">
+        <figcaption><strong>图5：真实机器人 play data 采集流程。</strong> 仅需 5 分钟无结构演示数据（包含积木、香蕉、盘子、碗架、锅盖等多种物体），即可完成离线阶段的谓词与技能发现。</figcaption>
+      </figure>
+    </div>
+
+    <h3>多步骤任务组合（StoreCheese）</h3>
+    <p>在 RoboCasa 中定义新任务 "StoreCheese"，由四步组成：开门 → 抓起奶酪 → 放到台面 → 关门，共串联六个技能。<strong>无需任何额外数据</strong>，直接复用已学谓词/算子/技能完成多步规划，并在执行过程中成功触发多次符号层错误恢复。</p>
+
+    <h3>真实机器人实验</h3>
+    <p>在真实 Franka 机械臂上，从 5 分钟 play data 中发现 11 个算子（Op1–Op11），涵盖拿放积木、操作锅盖、移动盘子等语义上有意义的操作原语。系统自动发现了诸如 "Thing-in-container"（物体在容器内）此类数据集特有的前条件结构，展示了无监督符号发现的能力。实验验证了三种恢复机制均有效工作。</p>
+
+    <figure>
+      <img src="img/real_world_purturb.webp" alt="真实机器人执行与扰动恢复">
+      <figcaption><strong>图6：真实 Franka 机械臂执行多步骤操作并恢复扰动。</strong> 图示展示了关锅盖触发符号重规划、移动盘子由 DS 反馈处理、以及通过障碍物规避调制绕过干扰物体的完整过程。</figcaption>
+    </figure>
+
+    <h3>消融实验分析</h3>
+    <p>关键消融结论：</p>
+    <ul>
+      <li><strong>监控机制的重要性：</strong>去掉监控后平均成功率从 85.0% 下降至 65.0%，证明实时故障检测与恢复的价值</li>
+      <li><strong>SE(3) LPV-DS 远优于 Diffusion Policy：</strong>在相同少量数据条件下，Diffusion Policy 平均成功率仅 3.3%，因为"预运动技能从宽泛初始位姿出发但测试状态迅速落出分布"，而 LPV-DS 的收敛反馈场克服了这一问题</li>
+      <li><strong>NSIL 基线失效：</strong>重新实现的 NSIL 由于"频繁选择能解释演示但对规划无语义意义的伪相对位姿谓词"而失败，在包含干扰物体时尤为明显</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文无单独的"Limitations"章节，以下各点来源标注：已在结论或讨论中明确提及的标为<strong>作者陈述</strong>，由方法设计合理推断的标为<em>推断（inferred）</em>。</div>
+
+    <details class="lim" open>
+      <summary>未来扩展方向：自我中心视频学习（作者陈述）</summary>
+      <p>论文结论明确指出："As future work, we plan to extend our framework to learn directly from egocentric video"。当前系统依赖精确的 6DoF 物体位姿，这在无标记、无结构环境中难以获取，限制了部署通用性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>未来扩展方向：移动操作的规模化（作者陈述）</summary>
+      <p>论文明确提出计划"scale toward mobile manipulation scenarios"。当前方法聚焦于桌面操作，固定基座机械臂场景；移动操作引入的运动基座自由度和更复杂的环境交互尚未处理。</p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖预定义的物体类型（推断 inferred）</summary>
+      <p>问题定义（Section II）假设物体具有预定义类型 λ(o)，且场景中的物体需事先已知。这使得系统无法泛化到未见过类型的物体，限制了开放世界部署能力。</p>
+    </details>
+
+    <details class="lim">
+      <summary>单一固定装置变体（推断 inferred）</summary>
+      <p>仿真实验中通过"过滤到每个任务仅一种装置变体"来减少场景变化。现实中厨房、家具等装置存在大量几何和外观多样性，系统对此类变化的鲁棒性尚未充分验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>VLM 用于参考系识别存在局限（推断 inferred）</summary>
+      <p>尽管 VLM（Gemini 2.5-Pro）的输出被约束到已知场景物体以减少幻觉，但其识别质量仍依赖提示工程，且在物体遮挡严重或外观相似时可能出错。此外，VLM 为闭源模型，存在可重复性和版本依赖问题。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    内容整理自论文原文与图表 · SymSkill: Symbol and Skill Co-Invention for Data-Efficient and Reactive Long-Horizon Manipulation · 仅供学习参考<br>
+    <a href="https://arxiv.org/abs/2510.01661">https://arxiv.org/abs/2510.01661</a>
+  </div>
+</footer>
+
+</body>
+</html>

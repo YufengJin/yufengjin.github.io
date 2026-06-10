@@ -1,0 +1,22 @@
+{
+  "slug": "sam3d-body",
+  "title": "SAM 3D Body：全身人体网格重建 | 中文海报",
+  "arxiv_id": "2602.15989",
+  "url": "https://arxiv.org/abs/2602.15989",
+  "category": "三维 / 四维重建 · 几何 · 分割",
+  "keywords": [
+    "human mesh recovery",
+    "3D human pose estimation",
+    "全身人体重建",
+    "parametric body model",
+    "encoder-decoder",
+    "可提示推理",
+    "MHR参数化表示",
+    "单图像三维重建",
+    "hand pose estimation",
+    "数据引擎"
+  ],
+  "summary_zh": "SAM 3D Body 提出基于 Momentum Human Rig（MHR）参数化表示与双解码器可提示架构，从单张图像实现稳健的全身（含手部）三维人体网格恢复，并通过大规模高质量数据引擎在多个标准基准上达到业界最优性能。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

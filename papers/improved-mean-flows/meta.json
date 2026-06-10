@@ -1,0 +1,22 @@
+{
+  "slug": "improved-mean-flows",
+  "title": "Improved Mean Flows：加速生成模型的挑战与改进",
+  "arxiv_id": "2512.02012",
+  "url": "https://arxiv.org/abs/2512.02012",
+  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "keywords": [
+    "MeanFlow",
+    "flow matching",
+    "单步生成",
+    "classifier-free guidance",
+    "velocity loss",
+    "in-context conditioning",
+    "图像生成",
+    "快速生成模型",
+    "FID",
+    "ImageNet"
+  ],
+  "summary_zh": "本文提出 iMF，通过将 MeanFlow 训练目标重构为瞬时速度损失、引入灵活的 CFG 条件化和轻量级 in-context conditioning，在 ImageNet 256×256 上实现单步（1-NFE）FID 1.72，无需预训练或蒸馏。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

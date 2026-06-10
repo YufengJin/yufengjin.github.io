@@ -1,0 +1,22 @@
+{
+  "slug": "simplevla-rl",
+  "title": "SimpleVLA-RL：通过强化学习扩展 VLA 训练",
+  "arxiv_id": "2509.09674",
+  "url": "https://arxiv.org/abs/2509.09674",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "Vision-Language-Action",
+    "强化学习",
+    "机器人操控",
+    "sim-to-real迁移",
+    "在线策略优化",
+    "PPO",
+    "结果奖励",
+    "分布式训练",
+    "veRL",
+    "探索增强"
+  ],
+  "summary_zh": "SimpleVLA-RL 将 LLM 强化学习框架 veRL 扩展至 VLA 模型，通过二值结果奖励与探索增强策略，在 LIBERO 和 RoboTwin 基准上显著超越 SFT 基线，并在无真实机器人数据条件下实现 sim-to-real 迁移。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

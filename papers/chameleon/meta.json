@@ -1,0 +1,22 @@
+{
+  "slug": "chameleon",
+  "title": "Chameleon: 面向视觉运动操作的控制索引前瞻性记忆",
+  "arxiv_id": "2603.24576",
+  "url": "https://arxiv.org/abs/2603.24576",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "visuomotor manipulation",
+    "prospective memory",
+    "control-indexed retrieval",
+    "非马尔可夫决策",
+    "observation-action delay",
+    "状态空间模型",
+    "imitation learning",
+    "robot manipulation",
+    "Control-JEPA",
+    "视觉别名"
+  ],
+  "summary_zh": "Chameleon 提出控制索引前瞻性记忆模块，通过选择性状态空间模型实现可分离、可寻址的历史轨迹检索，并以 Control-JEPA 训练目标赋予记忆前瞻性，解决视觉运动操作中的观测-动作延迟问题，在真实机器人任务中将决策成功率从 22.5% 提升至 80.8%。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

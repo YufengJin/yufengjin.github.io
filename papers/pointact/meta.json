@@ -1,0 +1,22 @@
+{
+  "slug": "pointact",
+  "title": "PointACT：多尺度点云-动作交互的视觉-语言-动作模型",
+  "arxiv_id": "2605.21414",
+  "url": "https://arxiv.org/abs/2605.21414",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "Vision-Language-Action model",
+    "point cloud",
+    "robot manipulation",
+    "multi-scale interaction",
+    "Bottleneck Window Self-Attention",
+    "点云-动作交互",
+    "dual-system architecture",
+    "3D geometry",
+    "action expert",
+    "RLBench"
+  ],
+  "summary_zh": "PointACT 通过分层 Bottleneck 窗口自注意力机制，将 Point Transformer v3 提取的多尺度三维点云几何特征与动作 token 深度融合进 VLA 模型的动作解码阶段，在 RLBench（82.3%）和 LIBERO（96.0%）基准上超越现有最优方法，并在真实机器人上验证了有效性。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<!--
+  论文海报 — 中文版
+  论文: π*₀.₆: A VLA That Learns From Experience
+  arXiv: 2511.14759
+-->
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>π*₀.₆：能从经验中学习的视觉-语言-动作模型</title>
+<meta name="keywords" content="VLA, 视觉-语言-动作模型, 机器人强化学习, advantage-conditioned policy, offline RL, 机器人操作, imitation learning, flow matching, iterative fine-tuning, dexterous manipulation">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .lead{font-size:18px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;} @media(max-width:760px){.grid4{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .step{display:flex;gap:16px;align-items:flex-start;margin:18px 0;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+  .step-num{min-width:36px;height:36px;border-radius:50%;background:var(--acc);color:#000;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-body h4{margin:0 0 4px;color:var(--ink);font-size:16px} .step-body p{margin:0;color:var(--muted);font-size:15px}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  .badge-blue{background:rgba(110,168,254,.2);color:var(--acc);border:1px solid rgba(110,168,254,.3)}
+  .badge-green{background:rgba(126,231,135,.2);color:var(--acc2);border:1px solid rgba(126,231,135,.3)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">机器人学习 · NeurIPS 2025 区域</span>
+    <h1>π*₀.₆：能从经验中学习的视觉-语言-动作模型</h1>
+    <div class="sub">π*₀.₆: A VLA That Learns From Experience</div>
+    <div class="authors">
+      Ali Amin, Raichelle Aniceto, Ashwin Balakrishna, Kevin Black, Chelsea Finn, Karol Hausman, Brian Ichter, Sergey Levine 等55位作者 ·
+      <strong>Physical Intelligence</strong>
+    </div>
+    <p class="lead">
+      本文提出 <strong>Recap</strong>（Reinforcement Learning with Experience and Corrections via Advantage-conditioned Policies），
+      一种让大型视觉-语言-动作（VLA）模型通过真实世界部署经验持续自我提升的强化学习框架。
+      在洗衣折叠、盒子组装和咖啡制作等家庭任务上，π*₀.₆ 实现了任务吞吐量翻倍、失败率减半的显著改进，
+      并完成了连续 13 小时无人监督自动制作浓缩咖啡的实际部署。
+    </p>
+    <div class="meta">
+      <span>arXiv · 2025年11月</span>
+      <span>Physical Intelligence</span>
+      <span>机器人强化学习</span>
+      <!-- REQUIRED: 原文链接 -->
+      <span><a href="https://arxiv.org/abs/2511.14759">📄 arXiv:2511.14759</a></span>
+      <span><a href="https://arxiv.org/pdf/2511.14759">📥 PDF</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">VLA</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">视觉-语言-动作模型</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">机器人强化学习</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">advantage-conditioned policy</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">offline RL</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">机器人操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">imitation learning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">flow matching</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">iterative fine-tuning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">dexterous manipulation</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      机器人基础模型能否像人类一样"熟能生巧"——通过实际操作积累经验来持续提升技能？
+      现有 VLA 模型依赖大量人工示范进行模仿学习，但"示范数据永远无法覆盖真实环境的所有变化"，
+      导致模型在部署时仍会遭遇大量失败。如何高效地利用机器人自主采集的轨迹数据（包括失败、成功和人工干预），
+      是迈向实用级机器人自主性的关键障碍。
+    </p>
+    <blockquote>
+      "Practice makes perfect — humans need many attempts at complex tasks to achieve mastery…
+      We need methods that can learn from autonomous experience, can correct actual deployment mistakes,
+      and can improve speed beyond human teleoperation."
+    </blockquote>
+
+    <figure>
+      <img src="img/filmstrip.webp" alt="任务展示胶卷">
+      <figcaption>
+        <strong>任务展示：</strong>π*₀.₆ 在洗衣折叠（家庭场景）、咖啡馆制作浓缩咖啡、工厂流水线盒子组装等真实场景中的操作画面。
+        这些任务均在 Recap 自我改进迭代后得到显著提升。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>&gt;2×</b><small>多样化洗衣与咖啡任务<br>吞吐量提升倍数</small></div>
+      <div><b>~50%</b><small>失败率下降幅度<br>（最难任务）</small></div>
+      <div><b>13 小时</b><small>咖啡制作连续无间断<br>实际部署记录</small></div>
+      <div><b>97%</b><small>领口朝向校正子任务<br>严格标准下成功率</small></div>
+    </div>
+
+    <figure>
+      <img src="img/task.webp" alt="任务类别示意图">
+      <figcaption>
+        <strong>四类评估任务：</strong>洗衣折叠（T恤/短裤）、多样洗衣（最难物品）、制作浓缩咖啡、盒子组装。
+        每个任务均在多轮 Recap 迭代后测量成功率与每小时完成任务数（throughput）。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Recap 将异构数据（人工示范、自主采集轨迹、专家干预）统一纳入 VLA 的训练管线，
+      通过<strong>优势条件化策略（advantage-conditioned policy）</strong>实现策略提升——
+      无需显式策略梯度，只需对成功动作与失败动作分别建模即可从经验中学习。
+    </p>
+
+    <figure>
+      <img src="img/model_architecture.webp" alt="模型架构图">
+      <figcaption>
+        <strong>π*₀.₆ 系统架构：</strong>以 Gemma 3 4B 语言骨干网络 + 860M 参数流匹配（flow-matching）动作专家为核心。
+        训练时在提示中附加二值化优势指示符 I_t（advantage indicator），使模型同时学习无条件行为
+        π(a|o,ℓ) 和优势条件化行为 π(a|I,o,ℓ)，推断时用高优势分数引导策略输出。
+      </figcaption>
+    </figure>
+
+    <h3>Recap 三步循环流程</h3>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>数据采集</h4>
+        <p>机器人自主执行任务，标注员在必要时远程干预并提供示范修正。干预轨迹的优势指示符强制置为 True，
+        为模型提供"改进性动作"样例。每次迭代采集约 300–600 条自主轨迹和 280–380 条干预轨迹。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>价值函数训练</h4>
+        <p>训练一个分布式价值函数（distributional value function），以负剩余步数（归一化至 (-1,0)）为目标。
+        优化目标：最小化 H(R<sup>B</sup><sub>t</sub>(τ), p<sub>φ</sub>(V|o<sub>t</sub>,ℓ))，
+        即预测分布与真实返回的交叉熵。任务阈值 ε<sub>ℓ</sub> 设为预训练阶段价值预测的第 30 百分位数。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>优势条件化策略提取</h4>
+        <p>
+          改进策略遵循：π̂(a|o,ℓ) ∝ π<sub>ref</sub>(a|o,ℓ) · (π<sub>ref</sub>(a|I,o,ℓ) / π<sub>ref</sub>(a|o,ℓ))<sup>β</sup>。
+          训练目标（Eq.3）为最小化 E[−log π<sub>θ</sub>(a<sub>t</sub>|o<sub>t</sub>,ℓ) − α log π<sub>θ</sub>(a<sub>t</sub>|I<sub>t</sub>,o<sub>t</sub>,ℓ)]，
+          其中 I<sub>t</sub> = 1(A<sup>π<sub>ref</sub></sup>(o<sub>t</sub>,a<sub>t</sub>,ℓ) &gt; ε<sub>ℓ</sub>)。
+        </p>
+      </div>
+    </div>
+
+    <h3>预训练 + 任务特化两阶段设计</h3>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3>离线 RL 预训练 <span class="badge badge-blue">Pre-training</span></h3>
+        <p>在数万小时的多机器人数据上用 Recap 进行大规模离线 RL 预训练，
+        使 π*₀.₆ 获得广泛的"何时需要改进"先验知识，为下游任务特化提供更好的初始化。</p>
+      </div>
+      <div class="card">
+        <h3>任务迭代精调 <span class="badge badge-green">Task-specific</span></h3>
+        <p>针对具体部署任务，循环执行上述三步流程（通常 2 轮迭代），
+        利用任务特定的成功/失败奖励信号逐步消除失败模式并提升操作速度。</p>
+      </div>
+    </div>
+
+    <h3>稀疏奖励定义</h3>
+    <p>
+      任务奖励函数定义为：r<sub>t</sub> = 0（成功）、−C<sub>fail</sub>（失败）、−1（每步惩罚）。
+      该稀疏奖励仅依赖人工标记的片段级成功/失败标签，无需设计复杂的密集奖励函数。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 4 个真实机器人任务上对比 π*₀.₆（有/无 Recap）及多个基线方法，
+      主要指标为每小时成功完成任务数（throughput）和成功率（success rate）。
+    </p>
+
+    <h3>主要量化结果</h3>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th>基线 π₀.₆（无RL）</th>
+        <th>π*₀.₆ + Recap</th>
+        <th>提升</th>
+      </tr>
+      <tr>
+        <td>洗衣折叠（T恤/短裤）</td>
+        <td>~5.5 任务/时, ~90%</td>
+        <td class="good">~8.5 任务/时, ~95%</td>
+        <td>吞吐量 +55%</td>
+      </tr>
+      <tr>
+        <td>洗衣折叠（多样·最难物品）</td>
+        <td>~3 任务/时, ~50%</td>
+        <td class="good">~7 任务/时, ~75%</td>
+        <td>&gt;2× 吞吐量</td>
+      </tr>
+      <tr>
+        <td>制作浓缩咖啡</td>
+        <td>~2 任务/时, ~45%</td>
+        <td class="good">~5 任务/时, ~90%</td>
+        <td>&gt;2× 吞吐量</td>
+      </tr>
+      <tr>
+        <td>盒子组装</td>
+        <td>~5 任务/时, ~75%</td>
+        <td class="good">~9.5 任务/时, ~90%</td>
+        <td>&gt;2× 吞吐量</td>
+      </tr>
+    </table>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/laundry_diverse.webp" alt="多样洗衣实验结果">
+        <figcaption>
+          <strong>多样洗衣（最难物品）：</strong>Recap 每轮迭代持续提升吞吐量，
+          最终超过 2× 的基线水平，而对比基线（π₀.₅、纯SFT、AWR、PPO）均未达到同等效果。
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="img/espresso.webp" alt="咖啡制作实验结果">
+        <figcaption>
+          <strong>制作浓缩咖啡：</strong>π*₀.₆+Recap 在成功率和吞吐量上均超过 2× 基线，
+          并完成了连续 <strong>13 小时</strong>无间断自动制作浓缩咖啡的实际部署测试。
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/laundry_tshirt.webp" alt="T恤折叠实验结果">
+        <figcaption>
+          <strong>洗衣折叠（T恤/短裤）：</strong>经过两轮 Recap 迭代后吞吐量提升约 50%，
+          成功率从 ~90% 提升至 ~95%。每轮采集约 300 条轨迹（4台机器人并行）。
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="img/box_assembly.webp" alt="盒子组装实验结果">
+        <figcaption>
+          <strong>盒子组装：</strong>两轮迭代后吞吐量提升约 2×，在工厂部署场景下各子任务
+          （取件 90%、组装 95%、贴标 85%、放置 85%）均达到高成功率。
+        </figcaption>
+      </figure>
+    </div>
+
+    <h3>基线方法对比</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>类型</th>
+        <th>表现</th>
+      </tr>
+      <tr>
+        <td>π₀.₅</td>
+        <td>上一代通用模型，无RL</td>
+        <td>最低基线</td>
+      </tr>
+      <tr>
+        <td>π₀.₆（SL baseline）</td>
+        <td>监督学习，无优势条件化</td>
+        <td>中等</td>
+      </tr>
+      <tr>
+        <td>Offline RL + SFT</td>
+        <td>仅使用示范精调</td>
+        <td>略高于SL</td>
+      </tr>
+      <tr>
+        <td>AWR（优势加权回归）</td>
+        <td>替代RL算法</td>
+        <td>低于Recap</td>
+      </tr>
+      <tr>
+        <td>PPO（策略梯度）</td>
+        <td>在线RL</td>
+        <td>显著低于Recap</td>
+      </tr>
+      <tr>
+        <td class="good"><strong>π*₀.₆ + Recap（本文）</strong></td>
+        <td>离线优势条件化RL</td>
+        <td class="good">最优</td>
+      </tr>
+    </table>
+
+    <h3>消融实验与迭代改进</h3>
+    <p>
+      消融实验验证了三个关键设计选择的必要性：
+      <ul>
+        <li><strong>RL 预训练的必要性：</strong>跳过大规模预训练直接进行任务特化的效果明显更差，
+        说明广泛先验知识对适应具体任务至关重要。</li>
+        <li><strong>优势条件化 vs AWR：</strong>与优势加权回归相比，优势条件化在多任务场景下更稳定，
+        能更有效地利用失败轨迹。</li>
+        <li><strong>干预数据的价值：</strong>专家远程干预（intervention）的轨迹标记为高优势，
+        为模型提供了"如何在当前状态下做得更好"的直接示例，显著加速收敛。</li>
+      </ul>
+      领口朝向校正专项任务（collar-orientation）：经过 2 轮 Recap 迭代（共采集 1,200 条轨迹），
+      在严格标准下成功率达到 <strong>97%</strong>，在家庭环境中折叠新款洗衣连续运行 <strong>超过 2 小时</strong>无需人工干预。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性均为论文作者在 Limitations 章节中明确陈述（stated），
+      非推断（inferred）。原文引用如下。
+    </div>
+
+    <details class="lim" open>
+      <summary>依赖人工标注与人工干预</summary>
+      <p>
+        "Our system is not fully autonomous: it relies on human labeling and effort for reward
+        feedback, interventions, and episode resets."
+        ——系统并非完全自主，每轮迭代需要标注员提供片段级成功/失败标签，并在机器人卡死时进行重置或干预，
+        限制了大规模自动化部署的可行性。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>探索策略较为朴素</summary>
+      <p>
+        "Our system is relatively naïve in how it approaches exploration."
+        ——Recap 的探索依赖策略自身的随机性和人工干预来访问新状态，缺乏主动探索（active exploration）
+        机制，对于需要大幅偏离当前策略才能改进的任务可能效率较低。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>批量离线 RL，非完全在线学习</summary>
+      <p>
+        "Recap performs iterated 'offline' updates rather than running a fully online RL loop."
+        ——每次策略更新需要先收集一批数据再离线更新，而非实时在线强化学习，
+        导致样本效率低于理论最优的在线方法，且难以快速响应分布偏移。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>规模化与推广性尚待验证</summary>
+      <p>
+        推断（inferred）：目前评估任务数量有限（4个），且均在 Physical Intelligence 内部场景测试，
+        对更广泛的任务类别（如动态环境、多物体复杂操作）的泛化能力尚未系统验证。
+        此外，预训练阶段需要"数万小时"多机器人数据，数据获取成本对外部研究者构成较大门槛。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    论文海报由原文图表与数据整理，仅供学习参考 · π*₀.₆: A VLA That Learns From Experience<br>
+    <br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.14759">https://arxiv.org/abs/2511.14759</a>
+    &nbsp;·&nbsp;
+    Physical Intelligence &copy; 2025
+  </div>
+</footer>
+
+</body>
+</html>

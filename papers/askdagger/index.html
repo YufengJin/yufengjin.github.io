@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+  ASkDAgger 中文海报
+  TMLR 2025 | https://askdagger.github.io
+  Generated from: https://openreview.net/pdf?id=987Az9f8fT
+-->
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASkDAgger：面向交互式模仿学习的主动技能级数据聚合</title>
+<meta name="keywords" content="interactive imitation learning, DAgger, 主动学习, 机器人操作, covariate shift, experience replay, 语言条件化操作, skill-level control, 人机交互示范, 查询策略">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .component-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+  @media(max-width:760px){.component-grid{grid-template-columns:1fr}}
+  .comp-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .comp-card .comp-title{font-size:16px;font-weight:700;color:var(--acc);margin-bottom:8px}
+  .comp-card p{color:var(--muted);font-size:14.5px;margin:0;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">TMLR 2025 · 交互式模仿学习</span>
+    <h1>ASkDAgger：面向交互式模仿学习的<br>主动技能级数据聚合</h1>
+    <div class="sub">Active Skill-level Data Aggregation for Interactive Imitation Learning</div>
+    <div class="authors">
+      Jelle Luijkx · Zlatan Ajanović · Laura Ferranti · Jens Kober<br>
+      <span style="font-size:13px">Delft University of Technology &amp; RWTH Aachen University</span>
+    </div>
+    <p class="lead">
+      ASkDAgger 是一个交互式模仿学习框架，通过让机器人"菜鸟"（novice）在不确定时向人类教师提交其<em>计划动作</em>，从而充分利用该计划所蕴含的信息——自适应调节查询门控阈值、将菜鸟动作复用为示范、并按优先级回放经验——在显著减少人类标注量的同时提升策略性能与泛化能力。
+    </p>
+    <div class="meta">
+      <span>TMLR 2025（08/2025）</span>
+      <span>语言条件化机器人操作</span>
+      <span>仿真 + 真实世界验证</span>
+      <span><a href="https://askdagger.github.io" target="_blank">项目主页 &amp; 代码</a></span>
+      <span><a href="https://openreview.net/forum?id=987Az9f8fT" target="_blank">OpenReview</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">interactive imitation learning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">DAgger</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">主动学习</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">机器人操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">covariate shift</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">experience replay</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">语言条件化操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">skill-level control</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">人机交互示范</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">查询策略</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机（Motivation）</h2>
+    <p class="lead">交互式模仿学习（Interactive Imitation Learning, IIL）允许人类在机器人执行任务时提供示范与纠错，是解决协方差偏移（covariate shift）问题的有效手段。然而，<strong>人类的教学代价</strong>是 IIL 大规模落地的核心瓶颈。</p>
+
+    <blockquote>
+      "Human teaching effort is a significant bottleneck for the broader applicability of interactive imitation learning."
+      —— ASkDAgger 摘要
+    </blockquote>
+
+    <h3>现有方法的不足</h3>
+    <p>现有主动 DAgger 方法（如 SafeDAgger、ThriftyDAgger）在向教师发出查询时，只是简单地<strong>移交控制权</strong>，完全<strong>抛弃了菜鸟的计划动作</strong>。这造成两个损失：</p>
+    <ul>
+      <li>无法利用菜鸟动作所揭示的不确定性分布来动态调节查询阈值；</li>
+      <li>即便菜鸟动作是正确的，也不能将其复用为示范，白白浪费了潜在的训练信号。</li>
+    </ul>
+
+    <h3>ASkDAgger 的核心思路</h3>
+    <p>ASkDAgger 让菜鸟在不确定时说："<em>I plan to do this, but I am uncertain.</em>"——教师随即对该计划进行<strong>验证（validate）、重标注（relabel）或拒绝（reject）</strong>，并将反馈信息用于三个方面：自适应门控、示范数据集构建、优先回放。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="ASkDAgger 系统概览">
+      <figcaption>
+        <strong>图 1（论文 Fig.1）：ASkDAgger 系统概览。</strong>
+        框架由三个核心组件构成：S-Aware Gating (SAG) 动态调节查询阈值；Foresight Interactive Experience Replay (FIER) 将已验证或重标注的菜鸟计划转化为示范；Prioritized Interactive Experience Replay (PIER) 按不确定性、菜鸟成功率与示范年龄进行优先回放。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>3</b><small>核心组件：SAG / FIER / PIER</small></div>
+      <div><b>C1–C4</b><small>论文验证的四条核心主张</small></div>
+      <div><b>4 tasks</b><small>CLIPort 基准任务（仿真）</small></div>
+      <div><b>2 robots</b><small>真实机器人验证（Franka + Spot）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法（Method）</h2>
+    <p class="lead">ASkDAgger 在每个时间步让菜鸟以一定概率向教师提交计划动作，教师给出反馈后，框架通过三个组件分别利用该反馈：自适应调节查询门控（SAG）、将计划复用为示范（FIER）、按优先级回放（PIER）。</p>
+
+    <figure>
+      <img src="img/sag_results.webp" alt="SAG 验证结果">
+      <figcaption>
+        <strong>图 2（论文 Fig.3）：S-Aware Gating (SAG) 在 MNIST 上的验证结果。</strong>
+        三列分别对应以 sensitivity（灵敏度）、specificity（特异度）、system success rate（系统成功率）为目标指标的门控模式。上行：实际指标值随训练步数的变化，与设定目标（虚线）高度吻合；下行：对应的查询率（Query Rate）。SAG 能在整个训练过程中自动追踪并维持用户指定的目标指标。
+      </figcaption>
+    </figure>
+
+    <div class="component-grid">
+      <div class="comp-card">
+        <div class="comp-title">S-Aware Gating (SAG)</div>
+        <p>动态调节查询阈值 γ，以追踪用户指定的度量：sensitivity（真阳性率）、specificity（真阴性率）或最低系统成功率。通过对最近 N<sub>min</sub> 次查询的结果进行 logistic 回归，估计当前阈值下的期望指标值，并与目标 σ<sub>des</sub> 比较后更新阈值。</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-title">Foresight Interactive Experience Replay (FIER)</div>
+        <p>教师对菜鸟计划进行验证或重标注后，将其纳入示范数据集：<br>
+        · <strong>验证（validate）</strong>：菜鸟动作本身即为正确示范；<br>
+        · <strong>重标注（relabel）</strong>：菜鸟对某目标的失败动作可被标注为另一目标的成功示范（类似 HER）；<br>
+        · <strong>拒绝（reject）</strong>：菜鸟动作既不合法也无法重标注，需教师另行提供示范。</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-title">Prioritized Interactive Experience Replay (PIER)</div>
+        <p>在回放示范时，依据三个因素赋予优先级：①菜鸟不确定性（uncertainty）越高优先级越高；②菜鸟在该情境下失败（novice failure）的示范优先于成功情境；③越近期收集的示范优先级越高（age）。优先级采样概率公式：P(i, t) ∝ p<sub>α</sub><sub>i,t</sub>，其中 p<sub>i,t</sub> 综合了不确定性、成功率与年龄三项因素。</p>
+      </div>
+    </div>
+
+    <h3>问题设定</h3>
+    <p>形式上，ASkDAgger 处理交互式模仿学习（IIL）问题：机器人菜鸟与人类教师交替交互，菜鸟学习从观测 o 到技能参数 a 的映射（即目标条件化的可供性 goal-conditioned affordance）。每个时间步 t，菜鸟输出动作 a<sub>t</sub> 及对应的不确定性 u<sub>t</sub>。若不确定性超过自适应阈值 γ，则以概率 p<sub>query</sub> 向教师发出查询，请教师评价菜鸟的计划动作。教师反馈 r<sub>t</sub> 指示该动作是否适用于当前目标 g（成功/失败），用于更新 SAG 阈值与 PIER 优先级。</p>
+
+    <h3>与基线方法的关键区别</h3>
+    <p>SafeDAgger（Zhang &amp; Cho, 2017）使用固定启发式阈值；ThriftyDAgger（Hoque et al., 2022）使用固定查询率；现有主动 DAgger 变体在查询时均<strong>放弃菜鸟动作</strong>。ASkDAgger 则首次系统性地利用了查询时菜鸟动作所携带的信息，在三个层面（门控、数据集构建、回放）同时获益。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验（Experiments）</h2>
+    <p class="lead">论文在三类实验平台上验证了四条核心主张（C1–C4）：MNIST 数字分类（验证 SAG）、CLIPort 语言条件化桌面操作仿真（验证 C1–C3）、以及真实世界机器人装配与分拣任务（验证 C1–C4 的实际适用性）。</p>
+
+    <h3>CLIPort 仿真基准对比（Claims C1–C3）</h3>
+    <p>在 CLIPort（Shridhar et al., 2021）框架下，训练 10 个智能体，采集 300 条交互式示范，在 4 个任务上与以下基线对比：active DAgger（无 FIER 和 PIER）、SafeDAgger、ThriftyDAgger，以及 ASkDAgger w/o FIER、ASkDAgger w/o PIER 消融组。超参数：mode = sensitivity，σ<sub>des</sub> = 0.9，N<sub>min</sub> = 15，p<sub>rand</sub> = 0.2；PIER：α = 1.5，b = 10，β = 1，λ = 0.5。</p>
+
+    <table>
+      <tr>
+        <th>主张</th>
+        <th>实验证据</th>
+        <th>结论</th>
+      </tr>
+      <tr>
+        <td>C1：SAG 追踪指定度量</td>
+        <td>MNIST 9 种目标值 × 10 次重复</td>
+        <td class="good">实测指标与 σ<sub>des</sub> 高度吻合</td>
+      </tr>
+      <tr>
+        <td>C2：FIER 减少标注量</td>
+        <td>CLIPort 4 任务，ASkDAgger vs. active DAgger</td>
+        <td class="good">ASkDAgger 标注示范量显著更低</td>
+      </tr>
+      <tr>
+        <td>C3：FIER 提升泛化</td>
+        <td>CLIPort unseen 任务集（颜色/形状/物体未见）</td>
+        <td class="good">relabeling 带来对 unseen 目标的更优表现</td>
+      </tr>
+      <tr>
+        <td>C4：PIER 加速域迁移</td>
+        <td>三阶段域迁移（seen-shapes → unseen-shapes → seen-google-objects）</td>
+        <td class="good">ASkDAgger 成功率更高，标注更少</td>
+      </tr>
+    </table>
+
+    <p>结果摘要（来自论文 Fig. 5–6）：在所有任务上，ASkDAgger 的累积奖励表现等于或优于所有基线，同时所需教师标注示范（annotation tuples）数量显著更少——因为 ASkDAgger 将大量菜鸟验证动作（validation）和重标注动作（relabeling）直接用作示范，不需要额外的教师标注。</p>
+
+    <figure>
+      <img src="img/results_cliport.webp" alt="CLIPort 仿真基准结果">
+      <figcaption>
+        <strong>图 3（论文 Fig.5–6 所在页）：CLIPort 仿真基准任务结果。</strong>
+        上半部分展示 seen（已见）和 unseen（未见）任务集上的累积奖励（Reward）随示范数量的变化曲线；下半部分对比各方法所需的教师标注示范（annotation tuples）数量。ASkDAgger 在所有任务上均表现最优或持平，且所需标注量显著低于 active DAgger 基线和 SafeDAgger/ThriftyDAgger。
+      </figcaption>
+    </figure>
+
+    <h3>域迁移实验（Claim C4）</h3>
+    <p>在三阶段域迁移设置下（每阶段 150 条示范），ASkDAgger（含 PIER）相比 ASkDAgger w/o PIER：在 packing-seen-shapes、packing-unseen-shapes、packing-seen-google-objects-seq 三个连续任务上均实现更高的系统成功率，并在后期阶段收集更少的 annotation tuples（更多来自验证示范）。SAG 在整个训练过程中维持了设定的 sensitivity 水平。</p>
+
+    <h3>真实世界实验</h3>
+    <p>在 Franka Panda 机器人上进行引擎装配任务（4 种颜色螺栓 × 7 个安装位置，150 条示范）：系统成功率维持在较高水平，同时随训练进行，验证示范（validation）比例逐渐增大，标注示范（annotation）比例降低——表明菜鸟策略在实际场景中逐渐无需人工干预即可独立完成任务。此外，在 Boston Dynamics Spot 机器人上的分拣任务也展示了 ASkDAgger 与内置原始技能（primitive skills）集成的能力。</p>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实世界实验">
+      <figcaption>
+        <strong>图 4（论文 Fig.9–10）：真实世界引擎装配实验。</strong>
+        (A) 实验装置：Franka Panda 机器人 + RealSense D405 RGB-D 相机 + 3D 打印零件。
+        (B) Gradio 人机交互界面，支持语音或文本指令输入。
+        (C) 查询时，操作员可对机器人计划动作进行验证、重标注或拒绝。
+        (D) 操作员为错误动作提供重标注。
+        (E) 操作员提供标注示范。
+        (F) 机器人执行示范动作。
+        右侧图表：系统成功率（System Success Rate）与菜鸟成功率（Novice Success Rate）随示范数量的变化，以及示范数据集构成（标注 Ann. / 重标注 Rel. / 验证 Val.）的演变。SAG 成功将 sensitivity 维持在目标水平（约 0.9）。
+      </figcaption>
+    </figure>
+
+    <h3>消融分析</h3>
+    <p>消融实验（Fig. 8）表明：去除 FIER（ASkDAgger w/o FIER）后，unseen 任务集上的性能明显下降，因为失去了通过 relabeling 获取 unseen 场景示范的途径；去除 PIER（ASkDAgger w/o PIER）后，域迁移阶段的自适应速度变慢，所需标注量更多。两个组件缺一不可。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性（Limitations）</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性均来自论文第 6 节"Discussion and Limitations"（作者明确陈述，非推断）。
+    </div>
+
+    <details class="lim" open>
+      <summary>仅适用于中/高层稀疏奖励控制，不适用于高频低层控制</summary>
+      <p>
+        "ASkDAgger is designed for tasks with sparse rewards and learning mid- to high-level control. While this covers many problems, it does not extend to applications requiring high-rate feedback from the teacher." 因此，ASkDAgger 最适合机器人已有预定义原始技能（primitive skills），需要学习技能选择与参数化的场景，而对于需要连续高频反馈的低层控制任务，其适用性受限。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>FIER 依赖"失败动作可被重标注为其他目标的成功示范"这一前提</summary>
+      <p>
+        "FIER significantly improves performance, it relies on recasting failures as successes, which can be challenging in some applications." 若任务结构不允许同一动作对应多个目标（如动作空间缺乏重叠），FIER 的优势会大打折扣。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>要求教师在执行前预先验证或重标注菜鸟计划</summary>
+      <p>
+        "ASkDAgger assumes the teacher can validate or relabel actions before execution. This may not always be feasible." 在实时性要求极高或教师不方便在线干预的场景下，执行前反馈可能无法实现。作者指出，在此情况下，验证和重标注可在执行后进行（post-execution），但会影响交互流程。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>真实世界中超参数调优仍有挑战</summary>
+      <p>
+        "Tuning hyperparameters in real-world settings is challenging. However, our experiments show that a single set of hyperparameters, without extensive tuning, generalizes effectively across different tasks, suggesting that hyperparameter sensitivity is not strongly dependent on task descriptions." 作者指出问题的存在，但也提供了缓解证据。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>实验主要基于 CLIPort 架构，策略架构的泛用性待进一步验证</summary>
+      <p>
+        "Our evaluations primarily used policies with a CLIPort architecture, but ASkDAgger is not limited to this choice. It can be applied to any policy architecture where a teacher can determine the success of actions and provide demonstrations." ASkDAgger 原则上架构无关，但在其他策略架构（如扩散策略、Transformer 等）上的实证验证尚不充分。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    从论文原文与图表中整理编译 · ASkDAgger · 仅供学习参考<br>
+    Luijkx, Ajanović, Ferranti, Kober — TMLR 2025 · <a href="https://askdagger.github.io">https://askdagger.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

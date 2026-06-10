@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<!--
+  Contact-Grounded Policy poster — Chinese version
+  Based on paper: arXiv:2603.05687
+  Figures sourced from https://arxiv.org/html/2603.05687v3/
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact-Grounded Policy：具有生成式接触锚定的灵巧视触觉策略</title>
+<meta name="keywords" content="dexterous manipulation, visuotactile policy, contact grounding, diffusion policy, tactile sensing, 灵巧操作, 接触感知, 柔顺控制, 多指手, 模仿学习">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.3px}
+  .sub{color:var(--muted);font-size:17px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .badge{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:13px;color:var(--acc2);margin:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">cs.RO · 机器人操作 · 触觉感知</span>
+    <h1>Contact-Grounded Policy：具有生成式接触锚定的灵巧视触觉策略</h1>
+    <div class="sub">Dexterous Visuotactile Policy with Generative Contact Grounding</div>
+    <div class="authors">
+      Zhengtong Xu, Yeping Wang, Ben Abbatematteo, Jom Preechayasomboon, Sonny Chan, Nick Colonnese, Amirhossein H. Memar<br>
+      <span style="font-size:13px;opacity:.7">Purdue University · Meta Reality Labs Research · University of Wisconsin–Madison</span>
+    </div>
+    <p class="lead">
+      本文提出 <strong>Contact-Grounded Policy（CGP）</strong>——一种面向灵巧接触丰富操作任务的视触觉策略学习框架。
+      CGP 通过联合预测机器人实际状态与触觉反馈的耦合轨迹，并利用学习到的 <em>contact-consistency mapping</em> 将预测结果转化为兼容柔顺控制器的可执行目标状态，
+      从而实现对演化中多点接触的显式"锚定"，而非仅将触觉信号用作辅助观测。
+    </p>
+    <div class="meta">
+      <span>arXiv 2603.05687</span>
+      <span>仿真：UR5 + DG-5F 五指手（20-DoF）</span>
+      <span>实体：Franka Panda + Allegro V5（16-DoF）</span>
+      <span><a href="https://arxiv.org/abs/2603.05687">论文链接 →</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">dexterous manipulation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">visuotactile policy</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">contact grounding</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">diffusion policy</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">tactile sensing</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">灵巧操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">接触感知</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">柔顺控制</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">多指手</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">模仿学习</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      灵巧操作需要对高维、动态变化的多点接触进行持续调控。现有方法在处理接触丰富任务时均存在明显短板：
+      以抓取为中心的流水线在完成抓取后限制了手指运动；强化学习面临繁琐的奖励工程与 sim-to-real 迁移难题；
+      模仿学习虽可扩展，但在接触丰富任务上表现不佳。
+    </p>
+    <blockquote>
+      "Policies must go beyond using tactile signals as additional observations and instead model contact state and how action outputs interact with low-level controller dynamics."
+      <br><span style="font-size:13px;color:var(--muted)">—— 论文第 I 节，Introduction</span>
+    </blockquote>
+
+    <figure>
+      <img src="img/fig2.webp" alt="CGP 整体框架">
+      <figcaption>
+        <strong>图 2：CGP 整体流程。</strong>
+        CGP 通过预测机器人实际状态与触觉反馈的耦合轨迹来锚定多点接触，
+        并使用学习到的 contact-consistency mapping 将预测结果转化为柔顺控制器可执行的目标机器人状态。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>80.0%</b><small>真实机器人 In-Hand Box Flipping 成功率（CGP）</small></div>
+      <div><b>93.3%</b><small>真实机器人 Jar Opening 成功率（CGP）</small></div>
+      <div><b>+13.3~26.7%</b><small>真实任务相对 Visuotactile DP 的提升幅度</small></div>
+      <div><b>5 Hz</b><small>策略推理频率（8步 DDIM 降噪）</small></div>
+    </div>
+
+    <h3>三种现有范式的对比</h3>
+    <table>
+      <tr><th>策略范式</th><th>可执行接触建模</th><th>多指手支持</th><th>分布式接触可扩展性</th></tr>
+      <tr><td>Adaptive Compliance Policies</td><td class="good">✓</td><td style="color:var(--warn)">受限（单末端执行器）</td><td style="color:var(--warn)">✗</td></tr>
+      <tr><td>Sparse Fingertip Force Policies</td><td style="color:var(--warn)">✗</td><td class="good">✓</td><td style="color:var(--warn)">有限</td></tr>
+      <tr><td><strong>Contact-Grounded Policy (CGP)</strong></td><td class="good">✓</td><td class="good">✓</td><td class="good">✓</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      CGP 将灵巧操作建模为一个接触锚定问题。核心思路是：在特定触觉传感器与柔顺控制器配置下，
+      接触状态可由三元组 <em>(实际机器人状态 <strong>x</strong>，触觉反馈 <strong>u</strong>，控制器参考目标 <strong>a</strong>)</em> 隐式表达，
+      无需显式建模接触位置或接触模式。
+      策略由两个耦合模块组成：contact-consistency mapping 与条件轨迹生成器（diffusion-based）。
+    </p>
+
+    <figure>
+      <img src="img/fig3.webp" alt="遥操作数据采集流程">
+      <figcaption>
+        <strong>图 3：遥操作数据采集流程。</strong>
+        仿真环境使用 Meta Quest 3 头显进行基于 VR 的手部追踪；真实机器人使用 OptiTrack 动捕系统与仪器化手套。
+        两个场景共享相同的 retargeting 与控制栈架构。
+      </figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Contact-Consistency Mapping <em>M<sub>φ</sub></em></h3>
+        <p>
+          该映射将（实际机器人状态 <strong>x</strong><sub>t</sub>，触觉反馈 <strong>u</strong><sub>t</sub>）映射为柔顺控制器可执行的目标状态 <strong>a</strong><sub>t</sub>：
+        </p>
+        <blockquote style="font-size:15px"><strong>a</strong><sub>t</sub> = M<sub>φ</sub>(<strong>x</strong><sub>t</sub>, <strong>u</strong><sub>t</sub>)</blockquote>
+        <p>
+          采用<strong>残差映射</strong>（输出当前实际状态的偏移量而非绝对目标）以改善条件化效果与鲁棒性。
+          触觉编码器使用 ResNet 风格架构（优于 MLP 和 Transformer 变体）。
+          该映射以纯数据驱动方式学习，灵活适配分布式演化多点接触。
+        </p>
+      </div>
+      <div class="card">
+        <h3>潜在触觉生成（Latent Tactile Generation）</h3>
+        <p>
+          使用带 KL 正则化的变分自编码器（VAE）将原始触觉观测压缩为紧凑的潜在表示：
+          仿真中触觉阵列压缩至 32 维，真实硬件的 Digit360 传感器压缩至 80 维（每传感器 20 维）。
+        </p>
+        <p>
+          <strong>耦合扩散模型（Coupled Diffusion）</strong>在潜在空间中联合预测未来的机器人状态轨迹与触觉潜在状态轨迹，
+          采用 DDPM/DDIM 训练与采样。预测视野 T=16 步，执行视野 T<sub>a</sub>=8 步，以滚动时域方式执行。
+        </p>
+        <p>
+          KL 正则化虽略微提升重建误差，但能产生更紧凑、更结构化的潜在空间，
+          显著改善基于扩散的预测稳定性和下游策略性能。
+        </p>
+      </div>
+    </div>
+
+    <h3>系统配置</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="color:var(--acc)">仿真平台</h3>
+        <ul>
+          <li>机械臂：UR5 + Tesollo DG-5F 五指手（20-DoF）</li>
+          <li>触觉：748 个感知点的密集力阵列（含 3D 力向量）</li>
+          <li>视觉：2 路 RGB 摄像头（agent 视角 + 手腕视角）</li>
+          <li>物理引擎：实时有限元求解器集成于 Unreal Engine</li>
+          <li>数据采集：Meta Quest 3 VR 遥操作</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--acc2)">真实机器人平台</h3>
+        <ul>
+          <li>机械臂：Franka Panda + Allegro V5 四指手（16-DoF）</li>
+          <li>触觉：4 个 Digit360 指尖传感器（RGB 图像）</li>
+          <li>视觉：2 路 RGB 视角（agent + 手腕）</li>
+          <li>数据采集：OptiTrack 动捕 + 仪器化手套</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验涵盖 5 个接触丰富的灵巧操作任务（3 个仿真 + 2 个真实），并与两条基线进行对比：
+      <strong>Visuotactile DP</strong>（视触觉 diffusion policy）和 <strong>Visuomotor DP</strong>（纯视觉 diffusion policy）。
+      仿真任务在最后 5 个 checkpoint 上各评估 250 条轨迹（取均值），真实任务各评估 15 条连续轨迹。
+    </p>
+
+    <h3>主要结果（Table II）——成功率</h3>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th>Visuomotor DP</th>
+        <th>Visuotactile DP</th>
+        <th>CGP（本文）</th>
+      </tr>
+      <tr>
+        <td>In-Hand Box Flipping（仿真）</td>
+        <td>53.2%</td>
+        <td>58.0%</td>
+        <td class="good">66.0%</td>
+      </tr>
+      <tr>
+        <td>Fragile Egg Grasping（仿真）</td>
+        <td>53.2%</td>
+        <td>70.0%</td>
+        <td class="good">74.8%</td>
+      </tr>
+      <tr>
+        <td>Dish Wiping（仿真）</td>
+        <td>42.4%</td>
+        <td>43.6%</td>
+        <td class="good">58.4%</td>
+      </tr>
+      <tr>
+        <td>Jar Opening（真实）</td>
+        <td>73.3%</td>
+        <td>66.7%</td>
+        <td class="good">93.3%</td>
+      </tr>
+      <tr>
+        <td>In-Hand Box Flipping（真实）</td>
+        <td>60.0%</td>
+        <td>60.0%</td>
+        <td class="good">80.0%</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">DP = diffusion policy。仿真任务报告最后 5 个 checkpoint 在 250 条轨迹上的平均成功率；真实任务报告 15 条连续轨迹的成功率。</p>
+
+    <figure>
+      <img src="img/fig4.webp" alt="CGP 推理快照与触觉预测对比">
+      <figcaption>
+        <strong>图 4：CGP 在三个仿真任务上的推理快照，展示时间对齐的预测触觉与观测触觉。</strong>
+        在每个推理步，扩散模型预测未来 16 步的触觉反馈与实际状态，映射为目标状态后执行 8 步，
+        再进入下一轮推理。预测触觉与后续实际执行结果高度吻合，说明 CGP 确实执行了接触锚定的目标，
+        实现了预测中的接触演化。
+      </figcaption>
+    </figure>
+
+    <h3>接触一致性映射验证（Hand Configuration Prediction）</h3>
+    <p>
+      使用 150 条遥操作抓取演示（4,114 帧，11 个物体）在仿真中进行独立测试，
+      数据以 1:1 的激进划分策略在 episode 层面切分以避免数据泄漏。
+      结果显示：同时输入机器人实际状态与触觉反馈的预测精度远优于任一单模态输入，
+      验证了接触锚定假设。ResNet 风格触觉编码器优于 MLP 和 Transformer 变体；残差映射优于绝对位置预测。
+    </p>
+
+    <figure>
+      <img src="img/fig5.webp" alt="Contact-consistency mapping 对未见过抓取构型的预测">
+      <figcaption>
+        <strong>图 5：Contact-consistency mapping 对未见过抓取构型的手部配置预测。</strong>
+        该可视化提供了高层次证据：接触可以通过该映射以在多样化接触配置间泛化的方式被一致地表达。
+      </figcaption>
+    </figure>
+
+    <h3>触觉压缩与消融分析</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="KL 正则化消融实验结果">
+      <figcaption>
+        <strong>图 6：KL 正则化对触觉压缩的消融结果。</strong>
+        移除 KL 正则化虽略微降低重建误差，但使潜在空间失去结构性（KL 散度大幅增加），
+        并在后续策略推理中一致地降低滚出成功率。MAE = mean absolute error；Recon. = reconstruction。
+      </figcaption>
+    </figure>
+
+    <h3>推理效率</h3>
+    <p>
+      图 7 报告了在 NVIDIA A100 80GB GPU 上，50 次推理运行的平均时延。
+      尽管 CGP 需要额外建模未来触觉反馈和接触一致目标，
+      其推理延迟与 visuomotor 和 visuotactile diffusion-policy 基线相当，
+      满足 5 Hz 实时推理要求（8步 DDIM 降噪）。
+    </p>
+    <figure>
+      <img src="img/inference.webp" alt="推理时延对比">
+      <figcaption>
+        <strong>图 7：推理时延对比。</strong>
+        三种方法（visuomotor DP 基线、visuotactile DP 基线、CGP）的平均推理时间对比。
+        所有共享网络模块使用相同的架构与参数量以保证公平性。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性均来自论文第 VI 节（Limitations and Future Work）中作者的明确陈述（stated），并非推断。
+    </div>
+
+    <details class="lim" open>
+      <summary>传感器与控制器的特异性（Sensor &amp; Controller Specificity）</summary>
+      <p>
+        "The contact-consistency mapping relies on tactile observations and is learned under a particular compliance controller,
+        so it does not readily transfer across sensor types or controller configurations."
+        具体而言，CGP 为每种传感器从头训练，更换传感器类型需要重新训练或适配，
+        跨传感器和跨控制器的接触锚定仍具挑战性。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>有限的 Sim-to-Real 迁移（Limited Sim-to-Real Transfer）</summary>
+      <p>
+        当前评估通过独立的仿真实验和真实部署分别进行，而非直接的 sim-to-real 迁移。
+        真实触觉传感器（Digit360 视觉触觉传感器）与仿真中的力阵列在传感原理上存在根本差异，
+        使得直接迁移困难。论文将仿真与真实训练分离，未验证仿真预训练是否能有效迁移至真实。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>单任务训练（Single-Task Training）</summary>
+      <p>
+        当前方法验证了接触锚定在单个任务上的有效性，
+        但未探索跨具有不同目标和接触模式的任务之间的迁移能力。
+        论文建议未来方向之一是通过跨任务联合训练扩展到更广泛的任务分布。
+      </p>
+    </details>
+
+    <h3>未来方向（Future Work）</h3>
+    <ul>
+      <li>通过控制器参数条件化实现跨传感器与跨控制器的联合训练</li>
+      <li>结合领域随机化的仿真+真实联合训练（sim-and-real co-training）</li>
+      <li>通过跨任务联合训练扩展到更广泛的任务分布</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    内容整理自论文原文与图表 · Contact-Grounded Policy (arXiv 2603.05687) · 仅供学习参考<br>
+    <a href="https://arxiv.org/abs/2603.05687">https://arxiv.org/abs/2603.05687</a>
+  </div>
+</footer>
+
+</body>
+</html>

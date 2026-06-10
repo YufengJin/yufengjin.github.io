@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenVLA: An Open-Source Vision-Language-Action Model</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 机器人操作, open-source, LoRA fine-tuning, DINOv2, SigLIP, Llama 2, Open X-Embodiment, parameter-efficient adaptation">
+<meta name="description" content="OpenVLA 是首个开源的 70 亿参数视觉-语言-动作模型，在真实机器人评测中以更少参数超越闭源 RT-2-X 16.5%，并支持消费级 GPU 上的参数高效微调。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · CORL 2024</span>
+    <h1>OpenVLA</h1>
+    <div class="sub">An Open-Source Vision-Language-Action Model</div>
+    <div class="authors">Moo Jin Kim · Karl Pertsch · Siddharth Karamcheti · Ted Xiao · Ashwin Balakrishna · Suraj Nair · Rafael Rafailov · Chelsea Finn · Sergey Levine · Percy Liang 等 18 人（Stanford / Google DeepMind / MIT / TRI）</div>
+    <p class="lead">OpenVLA 是一个 70 亿参数的开源视觉-语言-动作模型，在 970k 真实机器人演示上训练。它在 BridgeData V2 基准上以 71.3% 的任务成功率超越闭源 RT-2-X（55B 参数）16.5%，同时支持在消费级 GPU 上通过 LoRA 进行参数高效微调，将显存需求从 163 GB 降至 60 GB。</p>
+    <div class="meta">
+      <span>arXiv 2406.09246 · 2024-06</span>
+      <span>7B 参数 · Llama 2 + DINOv2 + SigLIP</span>
+      <span>21,500 A100-hours 训练</span>
+      <span><a href="https://arxiv.org/abs/2406.09246">📄 arXiv:2406.09246</a></span>
+      <span><a href="https://openvla.github.io">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>机器人操作</span>
+      <span>open-source</span>
+      <span>LoRA fine-tuning</span>
+      <span>DINOv2 + SigLIP</span>
+      <span>Open X-Embodiment</span>
+      <span>parameter-efficient adaptation</span>
+      <span>量化推理</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前最强的视觉-语言-动作（VLA）模型（如 RT-2-X）均为闭源，架构、训练数据、部署方法均不公开；而开源社区的替代方案又缺乏在消费级硬件上高效适配新机器人和任务的实用手段。OpenVLA 旨在填补这一空白。</p>
+    <blockquote>"We present OpenVLA, a 7B-parameter open-source VLA trained on 970k real-world robot demonstrations from the Open X-Embodiment dataset, and show that it outperforms RT-2-X (55B parameters) by 16.5% on manipulation tasks while requiring 7× fewer parameters."</blockquote>
+
+    <figure>
+      <img src="img/x1.webp" alt="OpenVLA 架构概览与评估结果">
+      <figcaption>左：OpenVLA 总览图，展示输入（图像 + 语言指令）→ 双视觉编码器（DINOv2 ∥ SigLIP）→ MLP 投影→ Llama 2 → 动作 token 输出的完整流程。右：在 BridgeData V2 和 Google Robot 平台上的成功率对比。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>970k</b><small>Open X-Embodiment 真实演示轨迹</small></div>
+      <div><b>+16.5%</b><small>超越 RT-2-X（BridgeData V2 成功率）</small></div>
+      <div><b>7B</b><small>参数量（RT-2-X 参数的 1/7）</small></div>
+      <div><b>1.4%</b><small>LoRA 仅需微调该比例参数即可达全量效果</small></div>
+    </div>
+
+    <h3>现有方法的两大痛点</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>封闭生态</h3>
+        <p>RT-2-X 等顶尖 VLA 不公开权重与训练代码，研究者无法复现、改进或深入理解其决策机制。学术界和工业界被迫从头开发，资源浪费严重。</p>
+      </div>
+      <div class="card">
+        <h3>部署门槛高</h3>
+        <p>现有 VLA 论文几乎没有讨论如何高效地将模型适配到新机器人、新场景、新任务。全量微调需要多台 A100，普通实验室无法承受。量化和 LoRA 等方法在 VLA 场景下的效果尚未系统研究。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">OpenVLA 将机器人控制重新表述为视觉-语言任务：给定图像观测和语言指令，模型以自回归 token 序列方式预测连续动作。核心创新在于双视觉编码器融合、动作 token 化方案，以及基于 Open X-Embodiment 的大规模多机器人训练。</p>
+
+    <figure>
+      <img src="img/x1.webp" alt="模型架构">
+      <figcaption><b>OpenVLA 三段式架构：</b>① 视觉编码器（DINOv2 + SigLIP 特征拼接）捕获空间细节与语义理解；② 2 层 MLP 投影器将视觉特征映射至语言空间；③ Llama 2 7B 语言主干自回归生成动作 token。</figcaption>
+    </figure>
+
+    <h3>双视觉编码器融合</h3>
+    <p>OpenVLA 将 <strong>DINOv2</strong>（擅长空间推理与细粒度定位）和 <strong>SigLIP</strong>（擅长语义理解与语言对齐）的特征在 token 维度直接拼接，输入 224×224 像素图像。实验证明：<em>更高分辨率（如 384×384）在机器人操作任务上没有带来性能提升，却使训练时间增加了 3 倍</em>。</p>
+
+    <h3>动作离散化与 Token 化</h3>
+    <p>对每个动作维度，使用训练数据的 1st–99th 百分位范围均匀离散化为 <strong>256 个 bin</strong>。为最小化对语言知识的干扰，将 Llama 2 词表中使用频率最低的 256 个 token <em>直接覆写</em>为动作 token，并在交叉熵损失中只计算动作 token 的梯度。</p>
+
+    <h3>训练数据与课程</h3>
+    <ul>
+      <li>数据源：<strong>Open X-Embodiment</strong> 数据集，经严格过滤后保留 970k 条轨迹</li>
+      <li>过滤准则：第三视角相机、单臂操作、非全零动作序列</li>
+      <li>混合权重沿用 Octo 的 embodiment/task/scene 均衡策略；DROID 数据集因动作 token 准确率过低在训练后期移除</li>
+      <li>训练基础：Prismatic VLM（预训练于视觉-语言理解任务）</li>
+      <li>超参数：固定学习率 2e-5（无 warmup），batch size 2048，共 27 个 epoch；64 块 A100 训练 14 天（21,500 A100-hours）</li>
+    </ul>
+
+    <h3>参数高效微调（LoRA）</h3>
+    <p>针对将 OpenVLA 适配至新机器人设置（如 Franka Emika Panda），作者系统评估了 LoRA、Sandwich adapter 及全量微调方案。<strong>LoRA r=32</strong> 仅需训练 97.6M 参数（全量的 1.4%），在单块 A100 上完成微调（10–15 小时），显存需求从 163.3 GB 降至 59.7 GB，且性能与全量微调持平。</p>
+
+    <h3>量化推理</h3>
+    <p>使用 bitsandbytes 库的 int4 量化，在保持 <strong>71.9%</strong> 成功率（与 bfloat16 的 71.3% 相当）的同时，将推理显存从 16.8 GB 压缩至 <strong>7.0 GB</strong>，使 OpenVLA 可在单张消费级 GPU 上运行。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在三个真实机器人平台（WidowX、Google Robot、Franka）上评估，对比基线包括 RT-2-X、RT-1-X、Octo 和 Diffusion Policy。评测维度涵盖视觉泛化（新背景、干扰物）、运动泛化（新位置）、物理泛化（新大小/形状）和语义泛化（新物体、新指令）。</p>
+
+    <h3>零样本评测：超越 RT-2-X</h3>
+    <figure>
+      <img src="img/x2.webp" alt="BridgeData V2 评估结果">
+      <figcaption>BridgeData V2（WidowX 机器人）上 29 个任务的成功率对比。OpenVLA 在视觉、运动、物理、语义四类泛化场景下均优于 RT-2-X（55B），且仅使用 7B 参数。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>模型</th><th>BridgeData V2 成功率</th><th>Google Robot 成功率</th><th>参数量</th></tr>
+      <tr><td>RT-2-X（闭源）</td><td>54.8%</td><td>~75%</td><td>55B</td></tr>
+      <tr><td>RT-1-X</td><td>—</td><td>&lt;75%</td><td>35M</td></tr>
+      <tr><td>Octo</td><td>&lt;54.8%</td><td>&lt;75%</td><td>93M</td></tr>
+      <tr><td><b>OpenVLA（本文）</b></td><td class="good">71.3% ±4.8%</td><td class="good">75.0%</td><td class="good">7B</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/x3.webp" alt="Google Robot 评估结果">
+      <figcaption>Google Robot 平台评估结果，OpenVLA 在多个任务类别下与 RT-2-X 表现相当，并在语言泛化任务中展现出更强的指令跟随能力。</figcaption>
+    </figure>
+
+    <h3>数据高效微调：适配新机器人设置</h3>
+    <figure>
+      <img src="img/x4.webp" alt="Franka 机器人微调结果对比">
+      <figcaption>在 Franka Emika Panda 机器人 7 个任务（10–150 条演示）上的微调对比。OpenVLA 微调后在所有任务上均达到 ≥50% 成功率，而竞争基线方法在部分任务上接近 0%。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>方法</th><th>综合成功率</th><th>最低单任务成功率</th></tr>
+      <tr><td>Diffusion Policy</td><td>47.4% ±5.4%</td><td>—</td></tr>
+      <tr><td>Octo 微调</td><td>47.0% ±5.5%</td><td>~0%（部分任务）</td></tr>
+      <tr><td>OpenVLA 从头训练</td><td>42.2% ±5.9%</td><td>—</td></tr>
+      <tr><td><b>OpenVLA 微调</b></td><td class="good">56.6% ±5.8%</td><td class="good">≥50%（全部任务）</td></tr>
+    </table>
+
+    <h3>参数高效微调对比（Franka-Tabletop，33 次 rollout）</h3>
+    <table>
+      <tr><th>微调策略</th><th>成功率</th><th>可训练参数（M）</th><th>显存（batch 16）</th></tr>
+      <tr><td>Full FT（全量微调）</td><td>69.7 ±7.2%</td><td>7,188.1</td><td>163.3 GB*</td></tr>
+      <tr><td>LoRA r=32</td><td class="good">68.2 ±7.5%</td><td class="good">97.6</td><td class="good">59.7 GB</td></tr>
+      <tr><td>LoRA r=64</td><td>68.2 ±7.8%</td><td>195.2</td><td>60.5 GB</td></tr>
+      <tr><td>Sandwich Adapter</td><td>62.1 ±7.9%</td><td>914.2</td><td>64.0 GB</td></tr>
+    </table>
+
+    <h3>量化精度对比（BridgeData V2，80 次 rollout）</h3>
+    <table>
+      <tr><th>精度</th><th>成功率</th><th>推理显存</th></tr>
+      <tr><td>bfloat16</td><td>71.3 ±4.8%</td><td>16.8 GB</td></tr>
+      <tr><td>int8</td><td>58.1 ±5.1%</td><td>10.2 GB</td></tr>
+      <tr><td>int4</td><td class="good">71.9 ±4.7%</td><td class="good">7.0 GB</td></tr>
+    </table>
+
+    <h3>Ablation 分析要点</h3>
+    <ul>
+      <li><strong>视觉编码器必须微调：</strong>冻结视觉编码器使性能显著下降，因为预训练 VLM 的特征缺乏机器人控制所需的细粒度空间信息。</li>
+      <li><strong>Prismatic 优于 LLaVA ~10%：</strong>在多物体语言定位任务上，基于 Prismatic 的 VLM 主干优于 LLaVA-1.5 约 10%。</li>
+      <li><strong>数据量是关键：</strong>OpenVLA 的 970k 演示（含精心过滤）远超 RT-2-X 的 350k，这是性能领先的重要因素之一。</li>
+      <li><strong>推理吞吐：</strong>bfloat16 精度下在 RTX 4090 上约 6 Hz；int4 量化在 Ada Lovelace 架构 GPU 上因 kernel 优化实现更高吞吐。</li>
+    </ul>
+
+    <figure>
+      <img src="img/x5.webp" alt="推理速度对比">
+      <figcaption>不同 GPU 和量化精度下 OpenVLA 的推理吞吐（Hz）对比。int4 量化在支持的 GPU 上可显著提升推理速度。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性均由作者在论文中明确指出（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>单帧图像输入，缺乏时序历史</summary>
+      <p>OpenVLA 当前仅支持单张图像作为观测输入，不支持观测历史序列，也不支持 proprioceptive（本体感知）信息（如关节角度）。这使其无法处理需要时序推理的任务（如 ALOHA 双臂操作），也与 Octo 等支持多模态输入的策略存在差距。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理吞吐不足，约 6 Hz（RTX 4090）</summary>
+      <p>受 Llama 2 自回归解码的限制，OpenVLA 的推理速度约为 6 Hz，远低于 ALOHA 等高频控制系统所需的 50 Hz。这限制了其在需要快速响应的灵巧操作任务中的应用。</p>
+    </details>
+
+    <details class="lim">
+      <summary>任务成功率通常低于 90%</summary>
+      <p>尽管在多个基准上超越现有方法，OpenVLA 在大多数任务上的成功率仍低于 90%，离真实部署所需的鲁棒性存在差距。</p>
+    </details>
+
+    <details class="lim">
+      <summary>多项设计问题尚待探索</summary>
+      <p>作者指出以下问题未被充分研究：① 基础 VLM 规模（7B 是否最优）；② 与 Internet 数据联合训练的效果；③ 视觉特征选择的最优方案（DINOv2 + SigLIP 组合是否是最优选择）。这些问题留待未来工作解答。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · OpenVLA: An Open-Source Vision-Language-Action Model · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2406.09246">https://arxiv.org/abs/2406.09246</a>
+    &nbsp;|&nbsp; Project: <a href="https://openvla.github.io">openvla.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

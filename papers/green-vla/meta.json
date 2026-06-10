@@ -1,0 +1,22 @@
+{
+  "slug": "green-vla",
+  "title": "Green-VLA：面向通用机器人的分阶段视觉-语言-动作模型",
+  "arxiv_id": "2602.00919",
+  "url": "https://arxiv.org/abs/2602.00919",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "Vision-Language-Action",
+    "VLA",
+    "课程式训练",
+    "统一动作空间",
+    "强化学习对齐",
+    "behavior cloning",
+    "机器人泛化",
+    "flow matching",
+    "数据质量过滤",
+    "跨本体迁移"
+  ],
+  "summary_zh": "Green-VLA 提出五阶段课程式训练框架，结合统一动作空间、DataQA 数据质量管线和强化学习对齐，将大规模视觉-语言模型转化为可跨异构机器人本体泛化的操控策略，在多项真实机器人任务中达到领先水平。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

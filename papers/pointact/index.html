@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — Chinese version
+  PointACT: Vision-Language-Action Models with Multi-Scale Point-Action Interaction
+  arXiv: 2605.21414
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PointACT：多尺度点云-动作交互的视觉-语言-动作模型</title>
+<meta name="keywords" content="Vision-Language-Action model, point cloud, robot manipulation, multi-scale interaction, Bottleneck Window Self-Attention, 点云-动作交互, dual-system architecture, 3D geometry, action expert, RLBench">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.3px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .eq{font-family:"Courier New",monospace;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:14px;color:#cdd9e5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">cs.RO · 机器人学习 · 2026</span>
+    <h1>PointACT：多尺度点云-动作交互的视觉-语言-动作模型</h1>
+    <div class="sub">PointACT: Vision-Language-Action Models with Multi-Scale Point-Action Interaction</div>
+    <div class="authors">Shizhe Chen, Paul Pacaud, Cordelia Schmid · Inria, École normale supérieure, CNRS, PSL Research University</div>
+    <p class="lead">PointACT 将点云（point cloud）三维几何表示深度融合进视觉-语言-动作模型（VLA）的动作解码阶段，通过分层 bottleneck 窗口自注意力机制实现多尺度的"点云特征 ↔ 动作 token"细粒度交互，在 RLBench 和 LIBERO 基准上超越了当前最优的 2D 与 3D 方法，并在真实机器人上验证了其有效性。</p>
+    <div class="meta">
+      <span>arXiv 2605.21414</span>
+      <span>RLBench 82.3% 成功率</span>
+      <span>LIBERO 96.0% 均值</span>
+      <span><a href="https://arxiv.org/abs/2605.21414">论文原文 →</a></span>
+      <span><a href="https://cshizhe.github.io/projects/pointact.html">项目主页 →</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">Vision-Language-Action model</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">point cloud</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">robot manipulation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">multi-scale interaction</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">Bottleneck Window Self-Attention</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">点云-动作交互</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">dual-system architecture</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">3D geometry</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">action expert</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">RLBench</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前最先进的 VLA 模型几乎全部依赖二维视觉表示，这严重限制了其对精细几何与空间关系的推理能力。</p>
+
+    <blockquote>"the physical world is inherently three-dimensional, while most state-of-the-art VLAs rely on 2D image representations."</blockquote>
+
+    <p>现有的将三维信息引入 VLA 的尝试存在两类明显不足：</p>
+    <ul>
+      <li><strong>Monolithic 融合</strong>：将点云 embedding 直接注入预训练 VLM，会破坏 VLM 在大规模数据上习得的表示，导致性能严重下滑（实验中 RLBench 仅 18.6%）。</li>
+      <li><strong>粗粒度全局特征</strong>：已有的点云增强 VLA 方法"primarily rely on coarse-grained global geometry features"，无法利用点云编码器的预训练优势，忽略了多尺度局部几何线索。</li>
+    </ul>
+
+    <figure>
+      <img src="img/x1.webp" alt="三种 3D 集成策略对比">
+      <figcaption>图 1：三种将 3D 点云整合进 VLA 的策略对比：(a) Monolithic 融合将点云 token 直接注入 VLM 上下文；(b) Dual-system 仅使用 PTv3 最终层粗粒度特征；(c) PointACT 通过 Bottleneck Window Self-Attention 在解码各层与点云特征进行多尺度细粒度交互。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>82.3%</b><small>RLBench 10 任务平均成功率</small></div>
+      <div><b>96.0%</b><small>LIBERO 4 套件平均成功率</small></div>
+      <div><b>+10%</b><small>相比最优基线在 RLBench 上的提升</small></div>
+      <div><b>300M</b><small>PointACT 可训练参数量</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">PointACT 采用双系统架构（dual-system）：冻结的 VLM（Qwen2.5-VL）负责高层语义理解，可训练的 PointACT 动作专家（action expert）通过多尺度 Bottleneck 窗口自注意力机制将 Point Transformer v3（PTv3）各层的分层几何特征与动作 token 进行深度交互，最终预测机器人动作。</p>
+
+    <figure>
+      <img src="img/x4.webp" alt="PointACT 架构与 Bottleneck 窗口自注意力">
+      <figcaption>图 2：PointACT 整体架构（左）与 Bottleneck 窗口自注意力机制（右）。点云按空间分成 K 个窗口，动作 token 广播至各窗口内的点 token，进行自注意力计算后跨窗口平均聚合，再通过交叉注意力融合 VLM 特征。该过程在 PTv3 各分层阶段重复执行，实现多尺度交互。</figcaption>
+    </figure>
+
+    <h3>问题形式化</h3>
+    <p>策略在多模态观测下预测未来 H 步动作：</p>
+    <p><span class="eq">A_t = π_θ(I_t, P_t, s_t, L)</span></p>
+    <p>其中 <span class="eq">I_t</span> 为多视角 RGB 图像，<span class="eq">P_t ∈ ℝ^(N_P×6)</span> 为三维点云（XYZ + RGB），<span class="eq">s_t</span> 为本体感受状态，<span class="eq">L</span> 为自然语言指令。</p>
+
+    <h3>核心机制：Bottleneck 窗口自注意力（Bottleneck Window Self-Attention）</h3>
+    <p>将点云划分为 K 个空间窗口。对每个窗口 k，动作 token 广播拼接至该窗口内点 token，进行联合自注意力：</p>
+    <p><span class="eq">X_k^l = [Z_p^{l,W_k}; Z_a^l]</span>，<span class="eq">X̂_k^l = Self-Attn(X_k^l)</span></p>
+    <p>动作 token 跨窗口平均聚合局部上下文：</p>
+    <p><span class="eq">Ẑ_a^l = (1/K) Σ_k X̂_{k,a}^l</span></p>
+    <p>再通过交叉注意力融合 VLM 嵌入：</p>
+    <p><span class="eq">Z̄_a^l = Cross-Attn(Ẑ_a^l, Z_vlm)</span></p>
+    <p>该流程在 PTv3 各分层阶段重复，从粗到细提取多尺度几何线索。关键设计：动作 token 充当"bottleneck"，既能感知局部几何细节，又保持全局语义一致，避免了将大量点云 token 直接暴露给 VLM 带来的干扰。</p>
+
+    <h3>动作预测头</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>回归头（Regression Head）</h3>
+        <p>用于 LIBERO 等连续控制任务，动作 chunk 大小 H=16，使用 L₂ 损失：</p>
+        <p><span class="eq">L_reg = (1/H) Σ ‖a_i − a_i*‖₂²</span></p>
+      </div>
+      <div class="card">
+        <h3>分类头（Classification Head）</h3>
+        <p>用于 RLBench 关键帧预测，工作空间离散化为空间 bin，使用交叉熵损失：</p>
+        <p><span class="eq">L_cls = −Σ_k Σ_b y_{k,b} log(ŷ_{k,b})</span></p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/x3.webp" alt="PointACT VLA 完整架构">
+      <figcaption>图 3：PointACT VLA 完整架构图。冻结的 Qwen2.5-VL 处理图像与语言，输出 VLM 特征；Point Transformer v3-Large（PTv3）对点云提取分层特征；PointACT 模块在解码各阶段通过窗口注意力将两路特征与动作 token 深度融合，最终由动作头输出机器人控制指令。</figcaption>
+    </figure>
+
+    <h3>实现细节</h3>
+    <ul>
+      <li><strong>VLM Backbone：</strong>Qwen2.5-VL（冻结）</li>
+      <li><strong>点云编码器：</strong>Point Transformer v3-Large（PTv3-Large），在建筑级场景数据上预训练</li>
+      <li><strong>可训练参数：</strong>约 300M（PointACT 模块）</li>
+      <li><strong>训练配置：</strong>2 × NVIDIA H100，batch size 128，训练 20K–50K 步，学习率 5×10⁻⁵</li>
+      <li><strong>点云预处理：</strong>工作空间 bounding box 裁剪，1cm 体素化，最多 4096 个点</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 RLBench（10 任务）、LIBERO（4 套件）仿真基准及真实机器人平台（SO-100 和 UR5）上与当前最优方法（包括 π₀、GR00T-N1.5、EO1、ACT3D、3DLotus 等）进行全面对比。</p>
+
+    <figure>
+      <img src="img/x5.webp" alt="RLBench 与 LIBERO 任务示意">
+      <figcaption>图 4：RLBench 10 个操作任务与 LIBERO 4 个任务套件示意图。RLBench 使用关键帧预测 + RRT 运动规划；LIBERO 使用 delta 末端执行器控制，动作 chunk 大小 H=16。</figcaption>
+    </figure>
+
+    <h3>仿真基准结果</h3>
+
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>LIBERO-Spatial</th>
+        <th>LIBERO-Object</th>
+        <th>LIBERO-Goal</th>
+        <th>LIBERO-Long</th>
+        <th>LIBERO 均值</th>
+        <th>RLBench 均值</th>
+      </tr>
+      <tr>
+        <td>OpenVLA</td>
+        <td>84.7</td>
+        <td>88.4</td>
+        <td>79.2</td>
+        <td>53.7</td>
+        <td>—</td>
+        <td>41.0</td>
+      </tr>
+      <tr>
+        <td>π₀</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>55.0</td>
+      </tr>
+      <tr>
+        <td>ACT3D</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>64.5</td>
+      </tr>
+      <tr>
+        <td>GR00T(arch) + Point</td>
+        <td>92.0</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>69.7</td>
+      </tr>
+      <tr>
+        <td>EO1（复现）</td>
+        <td>91.8</td>
+        <td>—</td>
+        <td>—</td>
+        <td>85.6</td>
+        <td>93.1</td>
+        <td>73.2</td>
+      </tr>
+      <tr>
+        <td><strong>PointACT（本文）</strong></td>
+        <td class="good">97.4</td>
+        <td class="good">—</td>
+        <td class="good">—</td>
+        <td class="good">90.6</td>
+        <td class="good">96.0</td>
+        <td class="good">82.3</td>
+      </tr>
+    </table>
+
+    <h3>RLBench 各任务成功率（部分）</h3>
+    <table>
+      <tr><th>任务</th><th>EO1</th><th>PointACT</th></tr>
+      <tr><td>Phone on base</td><td>—</td><td class="good">99</td></tr>
+      <tr><td>Umbrella out</td><td>—</td><td class="good">99</td></tr>
+      <tr><td>Wine at rack</td><td>—</td><td class="good">90</td></tr>
+      <tr><td>Sweep to dustpan</td><td>—</td><td>59</td></tr>
+      <tr><td>Water plants</td><td>—</td><td>40</td></tr>
+      <tr><td><strong>均值</strong></td><td>73.2</td><td class="good">82.3</td></tr>
+    </table>
+
+    <h3>消融实验</h3>
+
+    <figure>
+      <img src="img/x8.webp" alt="模型规模与 PTv3 预训练消融">
+      <figcaption>图 5：PointACT 不同规模变体（Small: 59M, Base: 167M, Large: 314M）的性能曲线，以及是否使用 PTv3 预训练权重的对比。更大的模型从预训练中获益更多，表明优化难度随容量增加。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>消融配置</th><th>LIBERO-Spatial (%)</th><th>RLBench (%)</th></tr>
+      <tr><td>EO1 baseline</td><td>91.8</td><td>73.2</td></tr>
+      <tr><td>EO1 + Point（Monolithic）</td><td>94.0</td><td>18.6</td></tr>
+      <tr><td>GR00T(arch) baseline</td><td>87.0</td><td>50.8</td></tr>
+      <tr><td>GR00T(arch) + Point（Dual-system 粗粒度）</td><td>92.0</td><td>69.7</td></tr>
+      <tr><td>多尺度直接拼接（K=64, 128 tokens）</td><td>—</td><td>65.2–65.6</td></tr>
+      <tr><td>无图像条件（仅点云）</td><td>94.2</td><td>79.8</td></tr>
+      <tr><td><strong>PointACT（完整）</strong></td><td class="good">97.4</td><td class="good">82.3</td></tr>
+    </table>
+
+    <p>消融关键结论：
+    <ul>
+      <li>Monolithic 融合在 RLBench 上成功率暴跌至 18.6%，表明将点云直接注入预训练 VLM 会严重干扰其已学到的表示。</li>
+      <li>多尺度直接拼接（不使用窗口注意力）仅达 65.2–65.6%，证明"细粒度交互"是提升的关键，而非单纯引入多尺度特征。</li>
+      <li>即使移除图像条件，PointACT 也能达 79.8%（RLBench），但加入 2D 图像后进一步提升至 82.3%，说明 2D 语义特征与 3D 几何特征互补。</li>
+    </ul>
+    </p>
+
+    <h3>真实机器人实验</h3>
+
+    <figure>
+      <img src="img/x6.webp" alt="真实机器人平台">
+      <figcaption>图 6：真实机器人平台设置。左：SO-100（6-DoF 3D 打印机械臂，Intel RealSense D435）；右：UR5（6-DoF UR5 + RG6 夹爪，Orbbec Femto Mega RGB-D 相机）。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>任务</th><th>π₀</th><th>GR00T-N1.5</th><th>PointACT</th></tr>
+      <tr><td colspan="4" style="color:var(--muted);font-style:italic">SO-100 机械臂（每任务 10 次试验）</td></tr>
+      <tr><td>Put Banana In Plate</td><td>10/10</td><td>8/10</td><td class="good">10/10</td></tr>
+      <tr><td>Put Sock In Drawer</td><td>2/10</td><td>5/10</td><td class="good">9/10</td></tr>
+      <tr><td>Open Microwave</td><td>7/10</td><td>5/10</td><td class="good">8/10</td></tr>
+    </table>
+
+    <table>
+      <tr><th>任务</th><th>π₀</th><th>GR00T-N1.5</th><th>3DLotus</th><th>PointACT</th></tr>
+      <tr><td colspan="5" style="color:var(--muted);font-style:italic">UR5 机械臂（每任务 10 次试验）</td></tr>
+      <tr><td>Stack Yellow Cup</td><td>0/10</td><td>0/10</td><td>7/10</td><td class="good">7/10</td></tr>
+      <tr><td>Close Drawer</td><td>9/10</td><td>9/10</td><td>2/10</td><td class="good">7/10</td></tr>
+      <tr><td>Put Fruit in Plates</td><td>0/10</td><td>0/10</td><td>0/10</td><td class="good">4/10</td></tr>
+    </table>
+
+    <p>PointACT 在"Put Sock In Drawer"任务上将成功率从 π₀ 的 2/10 提升至 9/10，充分体现了精细三维感知对复杂操作任务的价值。在 UR5 实验中，PointACT 在杯子堆叠上与 3DLotus（纯几何方法）持平，但在关抽屉任务上大幅优于 3DLotus（7/10 vs 2/10），体现了 2D 语义与 3D 几何混合的鲁棒性。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+
+    <div class="note"><b>说明：</b>论文在失败案例分析（Failure Analysis）和结论部分明确指出了以下局限性，已标注为作者陈述（stated）；设计层面的推断局限另行注明（推断/inferred）。</div>
+
+    <details class="lim" open>
+      <summary>感知遮挡导致的空间推理失败（stated）</summary>
+      <p>部分视角的局限性限制了对空间关系的完整理解，尤其在物体被遮挡时模型难以准确估计目标位置。作者指出此类失败需要多视角图像集成（multi-view integration）来解决。对应案例：Water plants（40% 成功率）任务中浇水壶与植物的位置关系判断困难。</p>
+    </details>
+
+    <details class="lim">
+      <summary>缺乏失败恢复能力（stated）</summary>
+      <p>"Models lack reactive recovery from execution errors or perturbations."——模型无法从执行错误或外界扰动中主动恢复，一旦中间动作出现偏差，后续动作难以纠正。作者将改进失败恢复能力列为未来工作方向。</p>
+    </details>
+
+    <details class="lim">
+      <summary>工具媒介操作能力不足（stated）</summary>
+      <p>当操作需要通过工具间接施力时（如扫把→簸箕的接触几何），模型难以建模精确的接触力学，对应 Sweep to dustpan（59% 成功率）任务表现偏弱。</p>
+    </details>
+
+    <details class="lim">
+      <summary>点云噪声鲁棒性（推断/inferred）</summary>
+      <p>作者在结论中提到"improving robustness under noisy point observations"为未来工作方向，暗示当前模型对传感器噪声（如透明/反光物体的深度缺失）较为敏感。UR5 实验中关闭透明抽屉的案例（Close Drawer）也间接体现了这一挑战，但通过 2D 视觉特征部分弥补了点云缺陷。</p>
+    </details>
+
+    <details class="lim">
+      <summary>点云预训练数据与机器人场景不匹配（stated + inferred）</summary>
+      <p>当前使用的 PTv3 预训练权重来自建筑级场景数据，与桌面操作任务存在显著域差异（domain gap）。作者明确将"scaling point-based pretraining on robot datasets"列为重要的未来工作，以提升特征迁移效果，尤其对大容量模型优化帮助更大。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    内容来源于论文原文及其图表 · PointACT: Vision-Language-Action Models with Multi-Scale Point-Action Interaction · 仅供学习参考<br>
+    <a href="https://arxiv.org/abs/2605.21414">https://arxiv.org/abs/2605.21414</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "slug": "neurok",
+  "title": "NeuROK: 生成式 4D 神经物体运动学",
+  "arxiv_id": "2605.30347",
+  "url": "https://arxiv.org/abs/2605.30347",
+  "category": "三维 / 四维重建 · 几何 · 分割",
+  "keywords": [
+    "4D generation",
+    "neural kinematics",
+    "Lagrangian dynamics",
+    "数据驱动运动学",
+    "变分自编码器",
+    "mesh deformation",
+    "dual quaternions",
+    "广义坐标",
+    "物理仿真",
+    "铰接体动力学"
+  ],
+  "summary_zh": "NeuROK 提出基于数据驱动的神经运动学状态参数化方法，通过学习低维潜空间并结合 Lagrangian 力学方程，无需类别特定物理标注即可从静态 3D mesh 生成弹性体、布料、铰接体等多类动态物体的逼真 4D 时序变形序列。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

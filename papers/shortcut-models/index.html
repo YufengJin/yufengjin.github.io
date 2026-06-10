@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!--
+  中文海报：One Step Diffusion via Shortcut Models (arXiv 2410.12557)
+  内容来源：arXiv HTML版本 https://arxiv.org/html/2410.12557
+  图像来源：arXiv HTML提取的真实论文图片
+-->
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一步扩散生成：Shortcut Models（捷径模型）</title>
+<meta name="keywords" content="one-step diffusion, flow matching, shortcut models, 一步生成, 自一致性蒸馏, 扩散策略, consistency distillation, 快速采样, 图像生成, diffusion policy">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700} .best{color:var(--warn);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .highlight{color:var(--acc2);font-weight:700}
+  .en{color:var(--muted);font-style:italic;font-size:0.92em}
+  .method-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:18px 0}
+  .method-box h3{margin-top:0;color:var(--acc)}
+  .formula{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px 18px;margin:12px 0;font-family:monospace;font-size:15px;color:#cdd9e5;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">arXiv 2410.12557 &nbsp;·&nbsp; cs.LG / cs.CV &nbsp;·&nbsp; 2024</span>
+    <h1>一步扩散生成：Shortcut Models（捷径模型）</h1>
+    <div class="sub">One Step Diffusion via Shortcut Models</div>
+    <div class="authors">Kevin Frans &nbsp;·&nbsp; Danijar Hafner &nbsp;·&nbsp; Sergey Levine &nbsp;·&nbsp; Pieter Abbeel</div>
+    <p class="lead">
+      扩散模型需要数十至数百次神经网络前向传播才能生成样本，推理缓慢且计算代价高昂。
+      Shortcut Models 通过让网络同时感知噪声水平和<em>目标步长</em>，实现了在单个或少数步骤内生成高质量样本，
+      且无需单独的蒸馏阶段，仅需约 16% 的额外训练计算开销。
+    </p>
+    <div class="meta">
+      <span>图像生成 · CelebA-HQ · ImageNet-256</span>
+      <span>机器人控制 · Push-T · Transport</span>
+      <span>训练额外开销仅 +16% 计算量</span>
+      <span><a href="https://arxiv.org/abs/2410.12557">📄 arXiv:2410.12557</a></span>
+      <span><a href="https://arxiv.org/pdf/2410.12557">PDF 全文</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">one-step diffusion</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">flow matching</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">shortcut models</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">一步生成</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">自一致性蒸馏</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">扩散策略</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">consistency distillation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">快速采样</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">图像生成</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">diffusion policy</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      扩散模型和流匹配模型在图像生成中取得了显著成果，但其迭代去噪过程需要数十到数百次神经网络前向传播，
+      导致推理极为缓慢。现有的加速方案（如蒸馏、一致性模型）往往需要复杂的两阶段训练流程，或在少步生成时质量大幅下降。
+    </p>
+    <blockquote>
+      "Sampling from these models involves iterative denoising over many neural network passes, making generation slow and expensive."
+      ——论文引言
+    </blockquote>
+
+    <figure>
+      <img src="img/fig1.webp" alt="Shortcut Models 与 Flow Matching 在不同推理步数下的生成对比">
+      <figcaption>
+        <strong>图1：</strong>在不同推理步数预算下，Flow Matching（上）与 Shortcut Models（下）的生成质量对比。
+        每列使用相同的初始噪声。数据集：CelebA-HQ（左）和 ImageNet-256（右）。
+        可以看出，Flow Matching 在 4 步或 1 步时质量急剧下降，而 Shortcut Models 在所有步数预算下都保持了较高质量。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>1步</b><small>仅需单次前向传播即可生成高质量样本</small></div>
+      <div><b>FID 20.5</b><small>CelebA-HQ 1步生成（vs. Flow Matching 280.5）</small></div>
+      <div><b>FID 3.8</b><small>DiT-XL 128步最优结果</small></div>
+      <div><b>+16%</b><small>相比基础扩散模型的额外训练计算开销</small></div>
+    </div>
+
+    <figure>
+      <img src="img/fig2.webp" alt="朴素扩散模型在少步生成时失败的原因">
+      <figcaption>
+        <strong>图2：</strong>朴素扩散/流匹配模型在少步生成时失败的根本原因——训练路径在中间时间步交叉重叠，
+        导致模型输出趋向数据集均值（"模糊"效应）。Shortcut Models 通过学习能"跳跃"到未来状态的方向向量来解决这一问题。
+      </figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>现有方法的痛点</h3>
+        <ul>
+          <li><strong>流匹配 / 扩散：</strong>在 4 步或 1 步推理时，FID 急剧退化（CelebA-HQ 1步：FID 280.5）</li>
+          <li><strong>一致性蒸馏 (Consistency Distillation)：</strong>需要两阶段训练，先训基础模型再做蒸馏</li>
+          <li><strong>Reflow：</strong>需要构建（噪声, 数据）配对数据集，额外 pipeline 复杂</li>
+          <li><strong>渐进式蒸馏 (Progressive Distillation)：</strong>多轮迭代蒸馏，工程复杂度高</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Shortcut Models 的核心主张</h3>
+        <ul>
+          <li>单一网络、单阶段训练，无需蒸馏</li>
+          <li>网络在任意步数预算下均可高质量采样</li>
+          <li>"自蒸馏"：训练时自动从自身较优的中间结果中学习</li>
+          <li>无需特殊训练时间表或预热策略（warmup）</li>
+          <li>支持多步 FID 持续优化，可随模型规模扩展</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Shortcut Models 在标准流匹配框架基础上，对网络输入增加了"目标步长" <em>d</em>。
+      网络不仅预测当前时刻的去噪方向（速度场），还学习如何"跨越"多个小步，
+      直接预测从当前状态跳跃到 <em>t − d</em> 位置所需的归一化方向。
+      训练结合两个目标：流匹配损失（精细步骤监督）和自一致性目标（粗粒度步骤监督）。
+    </p>
+
+    <figure>
+      <img src="img/fig3.webp" alt="Shortcut Models 训练流程总览">
+      <figcaption>
+        <strong>图3：训练流程总览。</strong>
+        左侧：标准流匹配，以小步长 d≈0 作为监督信号（绿色箭头）；
+        右侧：自一致性目标，将一个大步长 d 的预测与两个连续的 d/2 步（通过停止梯度的"教师"网络计算）对齐（蓝色箭头）。
+        两路损失在同一网络、同一训练阶段中联合优化。
+      </figcaption>
+    </figure>
+
+    <div class="method-box">
+      <h3>核心思想：Shortcut 函数</h3>
+      <p>
+        定义 <em>shortcut 函数</em> <strong>v(x, t, d)</strong>：给定当前状态 <em>x</em>、噪声时间步 <em>t</em> 和目标步长 <em>d</em>，
+        输出一个方向向量，使得沿该方向走一步即可到达 <em>t − d</em> 时刻对应的状态。
+      </p>
+      <div class="formula">x_{t-d} = x_t + d · v(x_t, t, d)</div>
+      <p>
+        当 d → 0 时，v 退化为标准流匹配的速度场；当 d 较大时，v 学习如何跳过中间曲折路径，
+        预测考虑了"未来曲率"的综合方向。
+      </p>
+    </div>
+
+    <div class="method-box">
+      <h3>自一致性训练目标 (Self-Consistency Target)</h3>
+      <p>
+        训练的核心约束来自<strong>自一致性</strong>：一个步长为 <em>d</em> 的大步等价于两个连续的步长 <em>d/2</em> 的小步。
+        即：
+      </p>
+      <div class="formula">v(x_t, t, d) ≈ 平均[v(x_t, t, d/2) 和 v(x_{t−d/2}, t−d/2, d/2)]</div>
+      <p>
+        训练时，用当前网络的停止梯度（stop-gradient）版本计算两个 d/2 步的目标，
+        作为对大步长预测的监督信号。这使得模型能够从自身的中间预测中"自举"（bootstrapping），
+        无需外部教师网络，实现了训练时的自蒸馏。
+      </p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>推理策略</h3>
+        <p>推理时，步数 <em>N</em> 可以任意选择：</p>
+        <ul>
+          <li>1步：d=1，单次前向传播直接生成</li>
+          <li>4步：d=0.25，四次前向传播</li>
+          <li>128步：d≈0，接近标准流匹配质量</li>
+        </ul>
+        <p>同一个训练好的模型可以以任意步数运行，无需针对特定步数重新训练。</p>
+      </div>
+      <div class="card">
+        <h3>实现细节</h3>
+        <ul>
+          <li>基础架构：DiT-B（图像）/ MLP（机器人控制）</li>
+          <li>大模型实验：DiT-XL on ImageNet-256</li>
+          <li>Classifier-Free Guidance (CFG)：在 d=0 时使用；大步长时不使用（线性近似不适用）</li>
+          <li>训练额外开销约 16%（自一致性目标的额外前向传播）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在两类任务上验证：（1）图像生成——CelebA-HQ-256（无条件）和 ImageNet-256（类别条件），
+      使用 FID-50k 指标（越低越好）；（2）机器人控制——Push-T 和 Transport 任务，使用成功率评估。
+      基线包括：Progressive Distillation、Consistency Distillation、Reflow、Consistency Training、Live Reflow、标准 Flow Matching 等。
+    </p>
+
+    <h3>主要结果：图像生成 FID（FID-50k，越低越好）</h3>
+    <p><em>括号内为降质严重、质量不具竞争力的结果。Shortcut Models 各列均标注。</em></p>
+
+    <table>
+      <tr>
+        <th>方法</th>
+        <th colspan="3">CelebA-HQ-256（无条件）</th>
+        <th colspan="3">ImageNet-256（类别条件）</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>128步</th><th>4步</th><th>1步</th>
+        <th>128步</th><th>4步</th><th>1步</th>
+      </tr>
+      <tr><td>Progressive Distillation</td><td>(302.9)</td><td>(251.3)</td><td>14.8</td><td>(201.9)</td><td>(142.5)</td><td>35.6</td></tr>
+      <tr><td>Consistency Distillation</td><td>59.5</td><td>39.6</td><td>38.2</td><td>132.8</td><td>98.01</td><td>136.5</td></tr>
+      <tr><td>Reflow</td><td>16.1</td><td>18.4</td><td>23.2</td><td>16.9</td><td>32.8</td><td>44.8</td></tr>
+      <tr><td>Flow Matching (DiT-B)</td><td>7.3</td><td>(63.3)</td><td>(280.5)</td><td>17.3</td><td>(108.2)</td><td>(324.8)</td></tr>
+      <tr><td>Consistency Training</td><td>53.7</td><td>19.0</td><td>33.2</td><td>42.8</td><td>43.0</td><td>69.7</td></tr>
+      <tr><td>Live Reflow</td><td>6.3</td><td>27.2</td><td>43.3</td><td>46.3</td><td>95.8</td><td>58.1</td></tr>
+      <tr style="background:rgba(110,168,254,.08)">
+        <td><strong>Shortcut Models (本文)</strong></td>
+        <td class="good">6.9</td><td class="good">13.8</td><td class="good">20.5</td>
+        <td class="good">15.5</td><td class="good">28.3</td><td class="good">40.3</td>
+      </tr>
+    </table>
+
+    <p>Shortcut Models 在 4 步和 1 步设置下<strong>优于所有单阶段端到端方法</strong>（Consistency Training、Live Reflow 等），
+    且在多步设置下与两阶段蒸馏方法相当甚至更优。</p>
+
+    <h3>大模型扩展：DiT-XL on ImageNet-256</h3>
+    <table>
+      <tr><th>模型</th><th>128步 FID</th><th>4步 FID</th><th>1步 FID</th></tr>
+      <tr><td>Shortcut Models (DiT-XL)</td><td class="best">3.8</td><td class="good">7.8</td><td class="good">10.6</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/fig-steps.webp" alt="不同步数下的 FID 对比">
+      <figcaption>
+        <strong>图4：</strong>不同推理步数下各方法的 FID 对比。Flow Matching 在步数减少时性能急剧退化，
+        而 Shortcut Models 在少步至多步全范围内均保持稳定的生成质量分布。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/fig-size.webp" alt="模型规模与生成质量的扩展关系">
+      <figcaption>
+        <strong>图5：</strong>随着模型参数量增加，Shortcut Models 的 1 步生成质量持续提升，
+        表明该方法具备良好的模型规模可扩展性（scaling）。这与部分基于 bootstrapping 的强化学习方法不同。
+      </figcaption>
+    </figure>
+
+    <h3>生成样本质量展示</h3>
+    <div class="grid2">
+      <figure>
+        <img src="img/celeba_samples.webp" alt="CelebA-HQ 无条件生成样本">
+        <figcaption>
+          <strong>图8：</strong>CelebA-HQ 256×256 无条件生成样本，从上至下分别为 128 步、4 步、1 步。
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="img/imagenet_samples.webp" alt="ImageNet-256 类别条件生成样本">
+        <figcaption>
+          <strong>图9：</strong>ImageNet-256 类别条件生成样本，从上至下分别为 128 步、4 步、1 步。
+        </figcaption>
+      </figure>
+    </div>
+
+    <h3>机器人控制任务</h3>
+    <p>
+      将 Shortcut Models 应用于扩散策略（Diffusion Policy）的机器人控制任务，
+      在 Push-T 和 Transport 两个连续控制基准上与标准 100 步扩散策略对比：
+    </p>
+    <table>
+      <tr><th>方法</th><th>步数</th><th>Push-T 成功率</th><th>Transport 成功率</th></tr>
+      <tr><td>Diffusion Policy（基线）</td><td>100步</td><td>~0.85</td><td>~0.80</td></tr>
+      <tr><td>Diffusion Policy（基线）</td><td>1步</td><td>0.12</td><td>0.00</td></tr>
+      <tr style="background:rgba(110,168,254,.08)">
+        <td><strong>Shortcut Models（本文）</strong></td><td>1步</td>
+        <td class="good">0.87</td><td class="good">0.80</td>
+      </tr>
+    </table>
+    <p>
+      Shortcut 策略在仅用 1 步推理时，达到与 100 步基线相当的成功率，
+      而标准扩散策略在 1 步时几乎完全失效（Transport 成功率为 0.00）。
+    </p>
+
+    <figure>
+      <img src="img/fig-tasks.webp" alt="机器人控制任务结果">
+      <figcaption>
+        <strong>图7：</strong>Push-T 和 Transport 机器人任务的成功率曲线。Shortcut 策略（橙色）在所有步数下均优于或持平于 Diffusion Policy（蓝色），
+        在 1 步时差距最为显著。
+      </figcaption>
+    </figure>
+
+    <h3>潜空间插值</h3>
+    <figure>
+      <img src="img/fig-interpolate.webp" alt="噪声空间插值">
+      <figcaption>
+        <strong>图6：</strong>在两个采样噪声点之间进行插值，生成的图像呈现出"qualitatively smooth transitions"（论文原文），
+        语义平滑过渡。这表明 Shortcut Models 学到了结构化的生成式潜空间。
+      </figcaption>
+    </figure>
+
+    <h3>消融分析</h3>
+    <p>
+      论文通过消融实验验证了自一致性训练目标的必要性：去掉自一致性损失后，模型仅能在多步模式下正常工作，
+      在 1 步时质量退化到 Flow Matching 同等水平。
+      此外，实验表明不需要特别设计的训练时间表（schedule）或预热（warmup），训练过程稳定。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性中，前两条为论文第 6 节（讨论）中作者明确陈述的；第三条及后续为根据论文设计推断（<em>推断 / inferred</em>）。
+    </div>
+
+    <details class="lim" open>
+      <summary>噪声-数据映射依赖于数据集期望（作者明确陈述）</summary>
+      <p>
+        "The mapping between noise and data is entirely dependent on an expectation over the dataset."（论文原文）
+        与 GAN 或 VAE 不同，Shortcut Models 无法对噪声到数据的映射做独立的干预或调整，
+        生成的多样性上限受限于训练数据的分布。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>多步与单步生成质量仍存在差距（作者明确陈述）</summary>
+      <p>
+        "In our shortcut model implementation there remains a gap between many-step generation quality and one-step generation quality."（论文原文）
+        尽管 Shortcut Models 的差距远小于标准扩散模型，但 1 步的 FID 仍明显高于 128 步，
+        完全消除该差距仍是开放问题。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>Classifier-Free Guidance (CFG) 仅适用于小步长（作者明确陈述）</summary>
+      <p>
+        论文指出，CFG 在大步长时不能直接使用，因为"linear approximation is not appropriate"（论文原文）。
+        实现中只在 d=0（极小步长）时使用 CFG，大步长时必须放弃 CFG 加成，
+        这在一定程度上限制了 1 步生成的可控性。
+        此外，CFG 的比例（scale）需要在训练前指定，不能在推理时灵活调整。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>自一致性 bootstrapping 存在累积误差（推断 / inferred）</summary>
+      <p>
+        训练中的自一致性目标使用当前网络的停止梯度版本作为"教师"。若当前网络在某些状态下预测质量差，
+        则自举目标本身也可能含有噪声，形成累积误差——这是所有 bootstrapping 方法共有的理论风险，
+        论文中对此未作详细分析。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>仅在较小规模数据集上充分验证（推断 / inferred）</summary>
+      <p>
+        主要实验集中在 CelebA-HQ-256 和 ImageNet-256 两个数据集。
+        在更大规模（如 LAION-级别）或更复杂的条件生成（如文本到图像）场景下的性能表现，
+        论文未作系统性验证。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本海报内容整理自论文原文及图表，仅供学术参考 &nbsp;·&nbsp; One Step Diffusion via Shortcut Models<br>
+    原文链接 / Paper: <a href="https://arxiv.org/abs/2410.12557">https://arxiv.org/abs/2410.12557</a><br>
+    <span style="color:var(--chip);font-size:12px;margin-top:8px;display:block">
+      作者：Kevin Frans, Danijar Hafner, Sergey Levine, Pieter Abbeel &nbsp;·&nbsp; arXiv:2410.12557 &nbsp;·&nbsp; 2024
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>

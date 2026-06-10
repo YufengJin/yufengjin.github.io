@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!--
+  论文海报 — SceneComplete: Open-World 3D Scene Completion in Cluttered Real World Environments for Robot Manipulation
+  arXiv: 2410.23643
+  中文版本
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SceneComplete: 机器人操作中的开放世界3D场景补全</title>
+<meta name="keywords" content="3D scene completion, robot manipulation, open-world reconstruction, Image-to-3D, image inpainting, 6D pose estimation, 场景补全, 遮挡恢复, RGB-D重建, 模块化感知流水线">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">机器人操作 · 3D场景理解 · arXiv 2410.23643</span>
+    <h1>SceneComplete: 面向机器人操作的开放世界杂乱场景3D补全</h1>
+    <div class="sub">从单张RGB-D图像重建完整、分割的三维场景模型</div>
+    <div class="authors">Aditya Agarwal, Gaurav Singh, Bipasha Sen, Tomás Lozano-Pérez, Leslie Pack Kaelbling &nbsp;·&nbsp; MIT CSAIL &amp; Brown University</div>
+    <p class="lead">SceneComplete 是一个将多个通用预训练感知模块（VLM、分割、图像修复、Image-to-3D、视觉描述符、位姿估计）串联组合的流水线系统，能够从<strong>单张RGB-D图像</strong>生成场景中所有可见物体的完整3D网格，包括被大量遮挡的新颖物体，从而为机器人抓取和放置提供精确的三维依据。</p>
+    <div class="meta">
+      <span>IEEE RA-L 2025</span>
+      <span>MIT CSAIL · Brown University</span>
+      <span>代码开源</span>
+      <span><a href="https://arxiv.org/abs/2410.23643">arXiv 2410.23643 ↗</a></span>
+      <span><a href="https://scenecomplete.github.io">项目主页 ↗</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">3D scene completion</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">robot manipulation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">open-world reconstruction</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">Image-to-3D</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">image inpainting</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">6D pose estimation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">场景补全</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">遮挡恢复</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">RGB-D重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">模块化感知流水线</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人在日常杂乱环境中操作，需要对三维场景进行精确理解，才能稳定可靠地抓取和放置物体，并避免碰撞。然而现实中往往只能获得单张RGB-D图像，场景中物体相互遮挡，且多为训练数据之外的新颖物体——这是当前三维场景重建方法面临的核心挑战。</p>
+
+    <blockquote>"Careful robot manipulation in every-day cluttered environments requires an accurate understanding of the 3D scene, in order to grasp and place objects stably and reliably and to avoid colliding with other objects. In general, we must construct such a 3D interpretation of a complex scene based on limited input, such as a single RGB-D image."</blockquote>
+
+    <figure>
+      <img src="img/x1.webp" alt="SceneComplete Teaser">
+      <figcaption><strong>图1：SceneComplete 系统概览。</strong> (a) 输入单张RGB-D图像（以点云形式可视化）；(b) 输出高质量、完整分割的物体网格，能处理大量遮挡和新颖物体；(c) 使下游精细化操作成为可能，包括需要完整形状信息的灵巧手抓取。</figcaption>
+    </figure>
+
+    <h3>先前方法的不足</h3>
+    <p>现有方法（如 PartialDecomp、OctMAE、ZeroGrasp）在开放世界场景下存在明显局限：要么仅能预测场景级占据值而无法给出精确物体网格，要么依赖有限的物体类别，难以泛化到真实杂乱环境中的新颖物体。SceneComplete 的核心思路是<strong>组合（composing）</strong>已有的大型预训练视觉模型，而非端到端训练一个新模型，从而天然具备开放词汇泛化能力，并能随基础模型的改进而不断提升。</p>
+
+    <div class="kpi">
+      <div><b>0.478</b><small>MIoU↑ (GraspNet-1B)<br>高于所有基线</small></div>
+      <div><b>77%</b><small>总体抓取成功率<br>(YCB-V, vs. 32% 基线)</small></div>
+      <div><b>73.3%</b><small>真实机器人<br>抓取放置成功率</small></div>
+      <div><b>1.54</b><small>CD↓ (Chamfer Distance)<br>最低几何误差</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SceneComplete 流水线由六个顺序模块组成，每个模块均调用独立的预训练大型视觉模型。从单张RGB-D输入出发，逐步完成：物体识别 → 分割 → 图像修复 → Image-to-3D → 尺度估计 → 6D位姿配准，最终输出完整场景的物体网格集合。</p>
+
+    <figure>
+      <img src="img/x2.webp" alt="SceneComplete Pipeline">
+      <figcaption><strong>图2：SceneComplete 流水线总览。</strong> 从单张RGB-D输入，经过六个核心阶段生成与输入3D扫描对齐的物体网格集合：(1) VLM枚举并描述物体；(2) GroundedSAM2生成分割掩码；(3) BrushNet（LoRA适配）图像修复；(4) InstantMesh生成3D网格；(5) 基于视觉Transformer的密集对应估计尺度；(6) FoundationPose 6D位姿估计。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>① VLM 提示 + Grounded 分割</h3>
+        <p>输入RGB图像送入 <strong>ChatGPT-4o</strong>，生成场景中物体的文字描述列表；描述和图像再送入 <strong>GroundedSAM2</strong> 生成每个物体的分割掩码。采用多策略提示（全局描述 + 部分扩展）并通过 IoU 去重，应对 VLM 漏检和过度分割的情况。</p>
+      </div>
+      <div class="card">
+        <h3>② 图像修复（Image Inpainting）</h3>
+        <p>对每个分割出的（可能被遮挡的）物体，用 <strong>BrushNet</strong>（含 LoRA 适配）进行图像修复，将其转化为白色背景上的单个完整可见物体图像。通过边界框扩展保留上下文信息，适配训练使输出符合后续 Image-to-3D 模型的输入要求。</p>
+      </div>
+      <div class="card">
+        <h3>③ Image-to-3D 重建</h3>
+        <p>将修复后的2D图像送入 <strong>InstantMesh</strong>，生成带纹理的3D网格。修复步骤对该模块至关重要：未经修复时，Image-to-3D 模型会生成不完整的网格；修复后则能产生准确的3D重建结果（见图4）。</p>
+      </div>
+      <div class="card">
+        <h3>④ 尺度估计 + 6D位姿配准</h3>
+        <p>利用视觉 Transformer 的<strong>密集对应匹配</strong>，将预测网格与观测点云对齐，估计各向同性尺度因子。最后用 <strong>FoundationPose</strong> 进行6自由度位姿估计，将每个网格配准到原始扫描的3D坐标系中，完成场景拼装。</p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/x4.webp" alt="Inpainting Effect">
+      <figcaption><strong>图4：修复对 Image-to-3D 的影响。</strong> (a) 无修复（上）时 Image-to-3D 生成不完整网格；修复（下）后遮挡部分被填充，产生准确的3D重建。(b) 未适配的 BrushNet（中）会引入伪影，适配后版本（右）能正确修复遮挡区域，生成完整可见物体。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 GraspNet-1B 大型基准数据集上进行定量评估（场景重建质量 + 抓取指标），并在 YCB-V 数据集和真实机器人平台上验证抓取成功率。基线包括 PartialDecomp、OctMAE 和 ZeroGrasp。</p>
+
+    <h3>表I：GraspNet-1B 场景重建与抓取质量对比</h3>
+    <table>
+      <tr><th>方法</th><th>MIoU ↑</th><th>CD ↓</th><th>MMD-EMD ↓</th><th>GC ↓</th></tr>
+      <tr><td>PartialDecomp</td><td>0.166</td><td>3.16</td><td>3.32</td><td>53.5</td></tr>
+      <tr><td>OctMAE</td><td>0.445</td><td>1.73</td><td>3.11</td><td>20.3</td></tr>
+      <tr><td>ZeroGrasp</td><td>0.440</td><td>1.86</td><td>3.07</td><td>18.9</td></tr>
+      <tr><td class="good">SceneComplete（本文）</td><td class="good">0.478</td><td class="good">1.54</td><td class="good">3.06</td><td class="good">16.4</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;">MIoU: Mean Intersection over Union；CD: Chamfer Distance；MMD-EMD: Modified Maximum Distance using Earth Mover's Distance；GC: Grasp Collision率。SceneComplete 在所有四项指标上均优于所有基线。</p>
+
+    <h3>表II：YCB-V 数据集抓取成功率（Grasp Success Rate）</h3>
+    <table>
+      <tr><th>方法</th><th>Contact-GraspNet GSR</th><th>Antipodal GSR</th><th>总体 GSR ↑</th></tr>
+      <tr><td>PartialDecomp</td><td>0.46 ± 0.34</td><td>0.17 ± 0.13</td><td>0.32</td></tr>
+      <tr><td class="good">SceneComplete（本文）</td><td class="good">0.81 ± 0.2</td><td class="good">0.73 ± 0.18</td><td class="good">0.77</td></tr>
+    </table>
+
+    <h3>表III：真实机器人抓取放置成功率</h3>
+    <table>
+      <tr><th>方法</th><th>成功率 ↑</th></tr>
+      <tr><td>Partial Point Cloud（仅部分点云）</td><td>36.7 ± 9.9%</td></tr>
+      <tr><td>OctMAE</td><td>59.6 ± 15.3%</td></tr>
+      <tr><td class="good">SceneComplete（本文）</td><td class="good">73.3 ± 15.2%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/x5.webp" alt="Qualitative Results GraspNet-1B">
+      <figcaption><strong>图5：GraspNet-1B 数据集场景重建定性对比。</strong> 每组展示：输入RGB-D图像、OctMAE重建（法线图）、ZeroGrasp重建（法线图）、SceneComplete重建（逐物体网格，颜色与真值匹配）、真值网格。高亮区域标记缺失区域（黑色）或错误连接相邻物体的伪影（红色）。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/x8.webp" alt="Real Robot Results">
+      <figcaption><strong>图8：实验室真实场景重建定性对比。</strong> 每组展示：输入RGB-D图像、OctMAE重建、SceneComplete重建、基于部分点云的抓取方案、基于OctMAE重建的抓取方案、基于SceneComplete重建的抓取方案（前后两视角）。SceneComplete 的完整重建显著改善了抓取方案的质量。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>图4 展示了修复（inpainting）模块的关键作用：去掉修复步骤后，Image-to-3D 模型只能生成残缺网格；未适配的 BrushNet 会引入伪影，而经过 LoRA 适配的版本能正确恢复遮挡区域，生成完整可见物体图像。消融验证了流水线中每个模块（尤其是修复和尺度估计）对最终重建质量的不可替代性。</p>
+
+    <figure>
+      <img src="img/x7.webp" alt="Dexterous Grasping">
+      <figcaption><strong>图7：基于SceneComplete的灵巧手抓取演示。</strong> 使用 Shadow Hand 和 Allegro Hand 对 GraspNet-1B 数据集中的物体进行抓取，展示了完整3D重建对复杂操作任务的提升效果。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均由作者在论文中明确陈述（stated），对应流水线中各模块可能的失效模式。</div>
+
+    <details class="lim" open>
+      <summary>VLM 提示阶段：偶发漏检</summary>
+      <p>视觉语言模型（VLM）偶尔会遗漏场景中的物体，尤其是外观不典型或被高度遮挡的物体。论文采用多策略提示（multi-strategy prompting）加以缓解，但无法完全消除。</p>
+    </details>
+
+    <details class="lim">
+      <summary>分割阶段：过度分割同一物体</summary>
+      <p>GroundedSAM 有时会将单个物体的不同部分分开分割。论文通过基于 IoU 的去重（deduplication）部分解决，但仍可能导致下游网格重复或残缺。</p>
+    </details>
+
+    <details class="lim">
+      <summary>图像修复阶段：上下文信息丢失</summary>
+      <p>当前修复方法会移除物体周围的场景上下文信息。通过边界框扩展和模型适配（LoRA）可部分缓解，但对极端遮挡情况效果有限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Image-to-3D 阶段：极端视角下重建失败</summary>
+      <p>Image-to-3D 模型在处理"highly unusual viewpoints"（极端非常规视角）时会产生失真或不完整的网格，这是当前生成式3D模型的固有局限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>尺度估计：各向同性假设过于简化</summary>
+      <p>当前方法假设各向同性（isotropic）缩放，对非均匀形状的物体可能不准确。此外，6D位姿配准在"uniformly-textured objects"（纹理均匀的物体）上会失败，因为缺乏可用的区分性特征点。</p>
+    </details>
+
+    <details class="lim">
+      <summary>随机种子敏感性：输出不稳定</summary>
+      <p>Image-to-3D 和修复模型的输出对随机种子（seed）敏感，相同输入可能产生质量差异较大的结果，影响系统的可重复性。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    内容整理自论文原文及图表 · SceneComplete (arXiv 2410.23643) · 仅供学习参考<br>
+    <a href="https://arxiv.org/abs/2410.23643">https://arxiv.org/abs/2410.23643</a> &nbsp;|&nbsp;
+    <a href="https://scenecomplete.github.io">scenecomplete.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

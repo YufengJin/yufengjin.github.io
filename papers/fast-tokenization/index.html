@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — FAST: Efficient Action Tokenization for Vision-Language-Action Models
+  Chinese language version · arXiv:2501.09747
+  Source: arxiv-html
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAST：面向视觉-语言-动作模型的高效动作分词</title>
+<meta name="keywords" content="action tokenization, VLA模型, 离散余弦变换, 字节对编码, 机器人操作, 自回归策略, 灵巧操作, 动作压缩, 高频控制, 零样本泛化">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .algo{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 26px;margin:20px 0;font-family:"Courier New",monospace;font-size:14.5px;color:#cdd9e5;line-height:1.8}
+  .algo .comment{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">机器人学习 · 视觉-语言-动作模型</span>
+    <h1>FAST：面向视觉-语言-动作模型的高效动作分词</h1>
+    <div class="sub">Efficient Action Tokenization for Vision-Language-Action Models</div>
+    <div class="authors">Karl Pertsch, Kyle Stachowicz, Brian Ichter, Danny Driess, Suraj Nair, Quan Vuong, Oier Mees, Chelsea Finn, Sergey Levine &nbsp;·&nbsp; Physical Intelligence · UC Berkeley · Stanford</div>
+    <p class="lead">本文提出 <strong>FAST</strong>（Frequency-space Action Sequence Tokenization），一种基于离散余弦变换（DCT）与字节对编码（BPE）的机器人动作压缩分词方案。FAST 解决了当前视觉-语言-动作（VLA）模型在高频、高灵巧度任务上的根本瓶颈——朴素的 binning 分词产生高度相关的动作 token，严重削弱自回归预测的有效学习信号。配合 π₀ 模型，FAST 在性能匹配扩散基线的同时，将训练所需 GPU 时时间压缩至 <strong>1/5</strong>。</p>
+    <div class="meta">
+      <span>arXiv 2025</span>
+      <span>Physical Intelligence (π) 出品</span>
+      <span>FAST+ 在百万真实轨迹上预训练</span>
+      <!-- REQUIRED: link back to source paper -->
+      <span><a href="https://arxiv.org/abs/2501.09747">📄 arXiv:2501.09747</a></span>
+      <span><a href="https://pi.website/research/fast">🌐 项目主页 / Project Page</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">action tokenization</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">VLA模型</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">离散余弦变换</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">字节对编码</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">机器人操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">自回归策略</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">灵巧操作</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">动作压缩</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">高频控制</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">零样本泛化</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有 VLA 模型（如 OpenVLA）使用朴素的 <em>per-dimension per-timestep binning</em> 对连续动作离散化。当机器人控制频率升高（例如折叠衣物需要 50 Hz）或任务需要精细灵巧操作时，这种方案产生数百个高度相关 token，使得自回归 next-token prediction 形同虚设——模型退化为简单地复制最近一个动作 token。</p>
+
+    <blockquote>
+      "Highly correlated action tokens <em>diminish</em> the effectiveness of the next token prediction objective used in autoregressive VLAs."
+    </blockquote>
+
+    <figure>
+      <img src="img/fig1_teaser.webp" alt="FAST 对比朴素 binning 的效果对比">
+      <figcaption><strong>Figure 2（原文）</strong>：FAST 分词（右）与朴素 binning 分词（左）的对比。在高频灵巧任务上，binning 方案完全失效，而 FAST 能持续取得良好成果。FAST "outperforms popular binning tokenization schemes"。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>13.2×</b><small>Shirt Fold (50 Hz) 上的 token 压缩率</small></div>
+      <div><b>5×</b><small>相对扩散基线训练提速倍数</small></div>
+      <div><b>1M</b><small>FAST+ 预训练所用真实机器人轨迹数</small></div>
+      <div><b>5 Hz→50 Hz</b><small>FAST 适用的控制频率范围</small></div>
+    </div>
+
+    <h3>案例研究：采样率对 binning 的致命影响</h3>
+    <figure>
+      <img src="img/fig5_convergence.webp" alt="采样率与分词策略的关系">
+      <figcaption><strong>Figure 1（原文）</strong>：训练收敛曲线对比。FAST 使基于自回归 Transformer 的灵巧机器人控制成为可能——"FAST enables training of autoregressive Transformers for dexterous robot control via simple next token prediction"，且训练速度比扩散 VLA 快 5 倍。</figcaption>
+    </figure>
+    <p>研究者在一个简单的 table-top manipulation 任务上系统研究了采样率对不同分词策略的影响。随着控制频率升高，使用 binning 分词训练的策略"produce increasingly poor predictions as we increase the sampling frequency"，而基于 DCT 的 FAST 在各频率下均保持稳定表现。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">FAST 的核心思想是将动作序列视为<strong>信号</strong>而非独立离散点——先用 DCT 转换到频域分离低频与高频信息，再用 BPE 压缩稀疏系数，得到少量、低相关性、语义丰富的 token。整个流程完全不需要神经网络，可离线预处理，也可通用化迁移到新机器人。</p>
+
+    <figure>
+      <img src="img/fig2_pipeline.webp" alt="FAST 分词流水线">
+      <figcaption><strong>Figure 4（原文）</strong>：FAST 分词流水线全览。输入动作序列经过三步处理：(1) 基于分位数的归一化至 [−1, 1]；(2) 对每个动作维度独立施加 DCT，转换到频域；(3) 对 DCT 系数量化并按频率优先顺序排列后，用 BPE 进行无损压缩。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>步骤 1：归一化</h3>
+        <p>使用 1st 和 99th 百分位数对动作进行分位数归一化，映射到 [−1, 1]，有效处理大规模数据集中的异常值，保证 DCT 系数的数值稳定性。</p>
+      </div>
+      <div class="card">
+        <h3>步骤 2：离散余弦变换（DCT）</h3>
+        <p>对每个动作维度独立做 DCT，将时域动作序列转换到频域。低频系数捕捉运动的整体形状，高频系数捕捉细节变化。自回归解码时先预测低频成分，"leads to more stable policy rollouts"。</p>
+      </div>
+      <div class="card">
+        <h3>步骤 3：量化与 BPE 压缩</h3>
+        <p>用比例参数 γ 对 DCT 系数取整，再按"频率优先"顺序展开成一维序列。高频系数通常接近零，展开后形成大量重复的零值串，BPE 算法可以高效压缩这些稀疏模式，大幅减少 token 数量。</p>
+      </div>
+      <div class="card">
+        <h3>FAST+ 通用分词器</h3>
+        <p>在约 <strong>100 万</strong>条来自多种机器人（单臂、双臂、移动操作臂）的真实 1 秒动作序列上离线训练 BPE 词表，得到通用分词器 FAST+。在未见机器人形态和控制频率上可实现 "2× reduction across all datasets"。</p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/fig6_environments.webp" alt="评测环境">
+      <figcaption><strong>Figure 5（原文）</strong>：七个评测环境，涵盖桌面收拾（Table Bussing, 20 Hz）、T 恤折叠（Shirt Folding, 50 Hz）、洗衣折叠（Laundry Folding）、杂货装袋（Grocery Bagging）、烤面包（Toast）等多样化真实机器人任务。</figcaption>
+    </figure>
+
+    <h3>与 π₀ 的集成：π₀-FAST</h3>
+    <p>将 FAST 分词器接入物理智能公司的 π₀ VLA 模型（基于预训练视觉-语言模型的自回归策略），替换原有 binning 分词，无需改变模型架构。π₀-FAST 在大规模数据集上训练时收敛显著更快，且能处理此前扩散版本才能胜任的高频灵巧任务。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验涵盖：(1) token 压缩率对比；(2) 在多个真实机器人任务上与朴素 binning 和扩散基线的性能对比；(3) FAST+ 通用分词器验证；(4) 大规模泛化策略训练；(5) OpenVLA 主干上的消融实验。评测在 Physical Intelligence 实验室真实机器人硬件上进行。</p>
+
+    <h3>Token 压缩率（Table I 原文数据）</h3>
+    <table>
+      <tr><th>数据集</th><th>控制频率</th><th>朴素 token 数</th><th>FAST token 数</th><th>压缩比</th></tr>
+      <tr><td>BridgeV2</td><td>5 Hz</td><td>35</td><td>20</td><td class="good">1.75×</td></tr>
+      <tr><td>DROID</td><td>15 Hz</td><td>105</td><td>29</td><td class="good">3.6×</td></tr>
+      <tr><td>Table Bussing</td><td>20 Hz</td><td>140</td><td>28</td><td class="good">5.0×</td></tr>
+      <tr><td>Shirt Folding</td><td>50 Hz</td><td>700</td><td>53</td><td class="good">13.2×</td></tr>
+    </table>
+
+    <h3>策略性能对比</h3>
+    <figure>
+      <img src="img/fig3_performance.webp" alt="不同分词方案下的策略性能">
+      <figcaption><strong>Figure 6（原文）</strong>：在全部评测任务上比较三种方案——朴素 binning、FSQ（学习型向量量化基线）和 FAST。朴素 binning 在 Table Bussing（20 Hz）和 T-Shirt Folding（50 Hz）上<strong>完全失效</strong>；FAST 在所有任务上均取得最强表现，且特别在灵巧真实机器人任务上超越 FSQ。FAST+ 与数据集专用 FAST 性能相当，验证了通用性。</figcaption>
+    </figure>
+
+    <h3>与扩散 π₀ 对比（训练效率）</h3>
+    <figure>
+      <img src="img/fig7_comparison.webp" alt="FAST vs 扩散 π₀ 对比">
+      <figcaption><strong>Figure 9（原文）</strong>：在小数据集上，FAST 与扩散 π₀ 性能相当；在大数据集（Table Bussing）上，"FAST converges faster"，约快 3 倍训练步数。两种方案最终性能持平，但 FAST 所需 GPU 计算量大幅更少。</figcaption>
+    </figure>
+
+    <h3>DROID 零样本泛化</h3>
+    <figure>
+      <img src="img/fig4_droid.webp" alt="DROID 策略跨环境泛化">
+      <figcaption><strong>Figure 7（原文）</strong>：首次成功在 DROID 数据集上训练可在完全未见环境中<strong>零样本</strong>执行的 VLA 策略。实验跨三所大学校园进行桌面操作测试，证明 FAST 使语言条件泛化策略在此前以 binning 为分词时无法实现的高频任务上成为可能。</figcaption>
+    </figure>
+
+    <h3>大规模泛化策略（π₀-FAST）</h3>
+    <p>在 <strong>10,000 小时</strong>多样化机器人数据上训练的 π₀-FAST 与扩散版 π₀ 在洗衣折叠、T 恤折叠、杂货装袋、烤面包任务上性能相当，即"matches the performance of diffusion π₀"，同时<strong>训练 GPU 时间仅为扩散基线的 1/5</strong>（"5x fewer GPU hours for training than the π₀ model"）。</p>
+
+    <h3>消融实验</h3>
+    <ul>
+      <li><strong>主干无关性：</strong>在 OpenVLA 上替换分词器后，FAST 同样显著提升高频任务性能，证明方法不依赖特定 VLA 架构。</li>
+      <li><strong>BPE 压缩的必要性：</strong>仅用 DCT 而不加 BPE 时，性能大幅下降——原因在于 DCT 产生的大量零值 token 未经压缩会导致解码步数爆炸，推理 token 数增加数量级。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>第一条限制由论文作者在 Section VI-E 明确陈述；其余各点为根据设计与实验范围的推断（inferred）。</div>
+
+    <details class="lim" open>
+      <summary>推断 (inferred) 推理速度慢——自回归解码延迟</summary>
+      <p>论文 Section VI-E 明确指出："<em>One current limitation of the autoregressive VLA is its inference speed...the π₀ model with FAST tokenization needs approximately 750ms of inference time per chunk, since it must perform more autoregressive decoding steps (typically 30-60 action tokens...vs. 10 diffusion steps).</em>"（750 ms vs. 扩散版的 100 ms on NVIDIA 4090 GPU，约慢 7.5 倍）。这使得实时、高速机器人控制场景目前难以满足要求，实验中也不得不降低评测吞吐量。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推断 (inferred) 有损压缩权衡——精度与压缩率的 trade-off</summary>
+      <p>DCT 量化步骤受比例参数 γ 控制，量化并非完全无损——较高的压缩率会牺牲动作精度。具体在精密操作任务中此权衡的影响程度，论文未做系统分析。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推断 (inferred) 评测任务范围受限——以静态桌面操作为主</summary>
+      <p>所有在线真实机器人评测均集中于固定基座的桌面操作任务；移动机器人、灵巧手、类人机器人等形态仅做了离线数据分析，未在实机上验证策略部署效果。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推断 (inferred) VLA 架构选择尚不明朗</summary>
+      <p>论文自述"<em>the jury on the best VLA architecture is still out</em>"——自回归 vs. 扩散架构各有优劣，FAST 主要解决了分词瓶颈，但更深层的架构设计问题（如何最优融合视觉、语言、动作模态）仍属开放问题。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本页根据论文原文图文资料整理，仅供学习参考 · FAST: Efficient Action Tokenization for Vision-Language-Action Models<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2501.09747">https://arxiv.org/abs/2501.09747</a> &nbsp;·&nbsp;
+    项目主页: <a href="https://pi.website/research/fast">https://pi.website/research/fast</a>
+  </div>
+</footer>
+
+</body>
+</html>

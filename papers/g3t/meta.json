@@ -1,0 +1,22 @@
+{
+  "slug": "g3t",
+  "title": "G3T Up! 重力对齐坐标系简化点图处理",
+  "arxiv_id": "2605.27372",
+  "url": "https://arxiv.org/abs/2605.27372",
+  "category": "三维 / 四维重建 · 几何 · 分割",
+  "keywords": [
+    "gravity-aligned coordinate frame",
+    "pointmap prediction",
+    "前馈式三维重建",
+    "VGGT fine-tuning",
+    "GA-Procrustes alignment",
+    "incremental reconstruction",
+    "重力先验",
+    "camera pose estimation",
+    "点图处理",
+    "自由度简化"
+  ],
+  "summary_zh": "G3T 提出在重力对齐坐标系中预测点图，将跨视角旋转自由度从 3 DoF 降至 1 DoF（仅 yaw），并通过 GA-Procrustes 子图拼接实现增量式三维重建，在室内场景中显著减少垂直漂移并提升姿态估计精度。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

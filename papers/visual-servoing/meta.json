@@ -1,0 +1,22 @@
+{
+  "slug": "visual-servoing",
+  "title": "基于关键点 EKF 的无纹理物体感知-控制耦合视觉伺服",
+  "arxiv_id": "2602.06834",
+  "url": "https://arxiv.org/abs/2602.06834",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "visual servoing",
+    "无纹理物体",
+    "扩展卡尔曼滤波",
+    "6D位姿估计",
+    "keypoint detection",
+    "probabilistic control",
+    "感知-控制耦合",
+    "PBVS",
+    "robot manipulation",
+    "不确定度估计"
+  ],
+  "summary_zh": "本文提出将基于关键点EKF的位姿估计与概率控制律紧密耦合的闭环视觉伺服框架，专门解决工业无纹理物体在遮挡和光照变化等不利条件下的鲁棒控制问题，在真实7-DOF机械臂上验证了显著优于传统IBVS/PBVS基准方法的性能。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--
+  SAM 3D Body: Robust Full-Body Human Mesh Recovery
+  中文海报 · arXiv:2602.15989
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM 3D Body：全身人体网格重建 | 中文海报</title>
+<meta name="keywords" content="human mesh recovery, 3D human pose estimation, 全身人体重建, parametric body model, encoder-decoder, 可提示推理, MHR参数化表示, 单图像三维重建, hand pose estimation, 数据引擎">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">arXiv 2602.15989 · Meta Superintelligence Labs</span>
+    <h1>SAM 3D Body：稳健的全身人体网格重建</h1>
+    <div class="sub">单张图像全身三维人体网格估计 · 可提示式推理 · 开源</div>
+    <div class="authors">Xitong Yang*, Devansh Kukreja*, Don Pinkus*, Anushka Sagar, Taosha Fan, Jinhyung Park°, Soyong Shin°, Jinkun Cao, Jiawei Liu, Nicolas Ugrinovic, Matt Feiszli†, Jitendra Malik†, Piotr Dollar†, Kris Kitani†（* 核心贡献者，° 实习生，† 项目负责人）</div>
+    <p class="lead">SAM 3D Body（3DB）是一个可提示的单图像全身三维人体网格恢复模型，首次使用 Momentum Human Rig（MHR）参数化表示，将骨骼结构与体表形状解耦。结合大规模高质量数据引擎与编码器-解码器架构，在复杂姿态、多样视角下实现业界最优的稳健性能。</p>
+    <div class="meta">
+      <span>2025 · arXiv 预印本</span>
+      <span>Meta Superintelligence Labs</span>
+      <span>开源模型 &amp; MHR 表示</span>
+      <span><a href="https://arxiv.org/abs/2602.15989">论文原文 arXiv:2602.15989</a></span>
+      <span><a href="https://github.com/facebookresearch/sam-3d-body">GitHub 代码库</a></span>
+      <span><a href="https://ai.meta.com/sam3d">项目主页</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">human mesh recovery</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">3D human pose estimation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">全身人体重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">parametric body model</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">encoder-decoder</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">可提示推理</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">MHR参数化表示</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">单图像三维重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">hand pose estimation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">数据引擎</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">从单张图像估计三维人体姿态与形状，对机器人、生物力学等真实世界应用至关重要。然而，现有方法在复杂姿态、严重遮挡或非常规视角下表现不稳定，且难以在统一框架中精确估计身体、手部和脚部。</p>
+    <blockquote>
+      "existing approaches still exhibit unsatisfactory robustness when applied to in-the-wild images, which limits their applicability to real-world scenarios such as robotics and biomechanics. In particular, current models often fail on individuals presenting challenging poses, severe occlusion, or captured from uncommon viewpoints. They also struggle to reliably estimate both the overall body pose and the fine details of the hands and feet in a unified full-body framework."
+    </blockquote>
+
+    <figure>
+      <img src="img/page1.webp" alt="SAM 3D Body 示例结果">
+      <figcaption>图 1：SAM 3D Body（3DB）的人体网格恢复结果。模型对复杂姿态、多种视角的估计体现出出色的鲁棒性，并在统一框架中实现精准的全身（含手部）姿态估计。</figcaption>
+    </figure>
+
+    <h3>核心挑战</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>数据层面</h3>
+        <ul>
+          <li>大规模多样人体姿态数据集的采集天然困难且计算代价高昂</li>
+          <li>现有数据集要么多样性不足（实验室采集），要么网格质量低（伪标注）</li>
+          <li>现有野外数据集在规模和多样性上仍显不足</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>模型层面</h3>
+        <ul>
+          <li>现有架构未充分考虑身体与手部姿态估计在优化机制上的本质差异</li>
+          <li>缺乏有效的训练策略来处理单目图像中的不确定性和模糊性</li>
+          <li>SMPL 等传统表示将骨骼结构与体表形状混杂，可解释性受限</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div><b>7M</b><small>高质量标注训练图像</small></div>
+      <div><b>5:1</b><small>用户偏好研究胜率（vs. 最强基线 NLF 胜率 83.8%）</small></div>
+      <div><b>7,800</b><small>人类偏好研究参与人数</small></div>
+      <div><b>SoTA</b><small>五大标准基准 + 五个新数据集全面领先</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">3DB 采用可提示的编码器-解码器架构：共享图像编码器负责提取特征，独立的身体解码器与手部解码器分别估计姿态参数，并基于全新的 Momentum Human Rig（MHR）参数化表示输出高保真全身网格。</p>
+
+    <figure>
+      <img src="img/page3.webp" alt="SAM 3D Body 模型架构">
+      <figcaption>图 2：SAM 3D Body 模型架构。共享图像编码器配合独立的 Body Decoder 和 Hand Decoder，支持 2D 关键点、掩码等多种可选提示输入（图中 * 标注为可选 token）。MHR 参数化表示解耦骨骼结构（Skeleton）与体表形状（Shape）。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>MHR 参数化表示</h3>
+        <p>Momentum Human Rig（MHR）是 ATLAS 的增强版，<strong>显式解耦骨骼结构与体表形状</strong>，提供更丰富的可控性和可解释性。相比 SMPL 系列将两者混杂于形状空间，MHR 能更直观地映射至骨骼长度等物理参数。</p>
+      </div>
+      <div class="card">
+        <h3>可提示式推理</h3>
+        <p>受 SAM 家族启发，3DB 支持多种可选提示：<strong>2D 关键点提示</strong>通过位置编码叠加至学习 embedding 后作为额外 token 输入姿态解码器；<strong>掩码提示</strong>经卷积编码后与图像 embedding 逐元素相加。提示机制在训练阶段作为交互式引导，天然助力模糊场景下的姿态估计。</p>
+      </div>
+    </div>
+
+    <h3>双解码器设计</h3>
+    <p>3DB 的核心创新之一是<strong>两路解码器（Two-way Decoder）</strong>设计。Body Decoder 负责全身姿态，Hand Decoder 专注手部局部细节（输入可包含手部裁剪图），有效缓解了身体与手部在输入分辨率、相机估计和监督目标上的冲突优化问题。</p>
+
+    <h3>数据引擎与标注流程</h3>
+    <figure>
+      <img src="img/page7.webp" alt="数据引擎与标注流程">
+      <figcaption>图：数据引擎及标注流水线示意。包括基于 VLM 的困难样本挖掘、多阶段标注（人工 2D 关键点 → 稠密关键点检测 → 单视图/多视图网格拟合），涵盖 7M 张图像，覆盖稀有姿态、困难视角与多样外观。</figcaption>
+    </figure>
+
+    <ul>
+      <li><strong>数据质量（Quality）</strong>：标注流程结合几何约束、参数先验与稠密关键点回归，自动生成高质量 3D 人体网格标注。</li>
+      <li><strong>数据规模（Quantity）</strong>：从大型授权图库、多视图采集数据集及合成数据中整合，共创建 7 百万张高质量标注图像。</li>
+      <li><strong>数据多样性（Diversity）</strong>：基于 VLM 的数据引擎主动挖掘野外困难图像并路由至标注，确保覆盖稀有姿态、困难视角和多样外观。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在五大标准基准（3DPW, EMDB, RICH, COCO, LSPET）以及五个全新数据集上与业界最优方法（HMR2.0b, CameraHMR, PromptHMR, SMPLer-X, NLF, SMPLest-X 等）进行全面对比，报告 MPJPE、PA-MPJPE、PVE 及 PCK 等标准指标。</p>
+
+    <h3>标准基准对比（Table 2 节选，3DPW &amp; EMDB）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>3DPW PA-MPJPE↓</th>
+        <th>3DPW MPJPE↓</th>
+        <th>EMDB PA-MPJPE↓</th>
+        <th>EMDB MPJPE↓</th>
+      </tr>
+      <tr><td>HMR2.0b</td><td>54.3</td><td>81.3</td><td>79.2</td><td>118.5</td></tr>
+      <tr><td>CameraHMR</td><td>35.1</td><td>56.0</td><td>43.3</td><td>70.3</td></tr>
+      <tr><td>PromptHMR</td><td>36.1</td><td>58.7</td><td>41.0</td><td>71.7</td></tr>
+      <tr><td>NLF-L+fit*</td><td>33.6</td><td>54.9</td><td>40.9</td><td>68.4</td></tr>
+      <tr><td class="good">3DB-H（Ours）</td><td class="good">33.2</td><td class="good">54.8</td><td class="good">38.5</td><td class="good">62.9</td></tr>
+      <tr><td class="good">3DB-DINOv3（Ours）</td><td class="good">33.8</td><td class="good">54.8</td><td class="good">38.2</td><td class="good">61.7</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px">* NLF 使用 RICH 数据训练；3DB 未使用 RICH。粗体为最优，下划线为次优。</p>
+
+    <h3>五个新数据集泛化对比（Table 3 节选，Leave-one-out）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>EE4D-Phy PVE↓</th>
+        <th>Harmony4D PVE↓</th>
+        <th>Goliath PVE↓</th>
+        <th>SA1B-Hard PVE↓</th>
+      </tr>
+      <tr><td>CameraHMR</td><td>71.1</td><td>84.6</td><td>66.7</td><td>102.8</td></tr>
+      <tr><td>PromptHMR</td><td>74.6</td><td>91.9</td><td>67.2</td><td>92.7</td></tr>
+      <tr><td>NLF</td><td>75.9</td><td>97.3</td><td>66.5</td><td>97.6</td></tr>
+      <tr><td class="good">3DB-H Leave-one-out（Ours）</td><td class="good">49.7</td><td class="good">63.5</td><td class="good">54.2</td><td class="good">85.6</td></tr>
+      <tr><td class="good">3DB-H Full dataset（Ours）</td><td class="good">37.0</td><td class="good">41.0</td><td class="good">34.5</td><td class="good">55.2</td></tr>
+    </table>
+
+    <h3>手部姿态估计（FreiHand，Table 4）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>PA-MPVPE↓</th>
+        <th>PA-MPJPE↓</th>
+        <th>F@5↑</th>
+        <th>F@15↑</th>
+      </tr>
+      <tr><td>WiLoR†（手部专用）</td><td>5.1</td><td>5.5</td><td>0.825</td><td>0.993</td></tr>
+      <tr><td class="good">3DB-H（Ours，全身模型）</td><td class="good">6.3</td><td class="good">5.5</td><td class="good">0.735</td><td class="good">0.988</td></tr>
+      <tr><td class="good">3DB-DINOv3（Ours）</td><td class="good">6.2</td><td class="good">5.5</td><td class="good">0.737</td><td class="good">0.988</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px">† 使用 FreiHand 数据集训练的手部专用方法。3DB 作为全身模型与手部专用模型性能相当。</p>
+
+    <h3>人类偏好研究（Human Preference Study）</h3>
+    <figure>
+      <img src="img/page12.webp" alt="用户偏好研究结果">
+      <figcaption>图 8：3DB 与六种基线方法的用户偏好研究 Win Rate 对比。共 7,800 名参与者，每组 1,300 人。3DB 对最强基线 NLF 的胜率为 83.8%（67/80），对 SMPLest-X 达到 100%（80/80）。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>83.8%</b><small>vs NLF 胜率（最强基线）</small></div>
+      <div><b>100%</b><small>vs SMPLest-X 胜率</small></div>
+      <div><b>20,000+</b><small>总用户评价次数</small></div>
+      <div><b>6</b><small>pairwise 对比方法数量</small></div>
+    </div>
+
+    <h3>分类别分析</h3>
+    <figure>
+      <img src="img/page9.webp" alt="分类别定量分析">
+      <figcaption>表 5：SA-1B Hard 数据集上 2D 分类别性能分析。3DB 在遮挡（Occlusion）、截断（Truncation）、复杂姿态（Contortion, Splits, Inverted body）、俯视角等多个困难类别上均显著优于 CameraHMR 和 PromptHMR。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>论文通过多视图网格拟合与单视图拟合的对比、有无提示输入的对比、以及 Leave-one-out 与全数据集训练的对比，验证了数据引擎、MHR 表示、双解码器设计与可提示架构各自对最终性能的贡献。3DB 在"非常困难"（very hard）姿态类别、severe truncation 及 top-down viewpoint 等挑战性场景下的优势尤为明显。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>本文正文无单独的"Limitations"章节。以下局限性部分来自论文结论及讨论中明确提及的问题（标注为<em>论文表述</em>），部分为从方法设计中合理推断（标注为<em>推断 inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>RICH 数据集上性能差距（论文表述）</summary>
+      <p>3DB 在 RICH 数据集上的表现略逊于 NLF（NLF 在 RICH 上的 PA-MPJPE 为 28.7，3DB-H 为 31.9），原因是 NLF 将 RICH 纳入训练数据，而 3DB 未使用该数据集。这体现了训练数据覆盖范围对域内评估指标的直接影响。</p>
+    </details>
+
+    <details class="lim">
+      <summary>FreiHand 手部精度与手部专用模型有差距（论文表述）</summary>
+      <p>在 FreiHand 手部估计基准上，3DB 的 PA-MPVPE 为 6.3（DINOv3 版为 6.2），而手部专用模型 WiLoR 为 5.1。论文明确指出 3DB 是全身模型，在手部精度上与顶级手部专用方法仍有差距，但已达到"与手部专用方法相当（comparable）"的水平。</p>
+    </details>
+
+    <details class="lim">
+      <summary>高质量 3D 标注依赖多视图/合成数据（推断 inferred）</summary>
+      <p>数据引擎的高质量标注依赖多视图采集系统（100+ 摄像头）和合成数据，这些资源在部署时难以大规模扩展至任意野外场景。单视图网格拟合"由于深度歧义和自然遮挡，标注质量往往较低"（论文原文），限制了纯依赖野外图像的标注质量上限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>面部估计未包含（推断 inferred）</summary>
+      <p>3DB 估计身体、脚部和手部，但不包含面部（FLAME）表情估计。相比 SMPL-X 系列的完整面部参数化，面部表情的整合留待未来工作。</p>
+    </details>
+
+    <details class="lim">
+      <summary>单图像输入、无时序建模（推断 inferred）</summary>
+      <p>3DB 为单帧模型，不利用视频时序信息。视频方法（WHAM、TRAM、GENMO）在部分指标上具有优势（如 GENMO 在 EMDB 上的 PA-MPJPE 为 39.1，3DB-H 为 31.9，3DB 已优于视频方法；但视频方法在时序平滑性上有天然优势）。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    海报内容整理自论文原文图表，仅供学习参考 · SAM 3D Body: Robust Full-Body Human Mesh Recovery<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.15989">https://arxiv.org/abs/2602.15989</a> &nbsp;·&nbsp;
+    代码: <a href="https://github.com/facebookresearch/sam-3d-body">github.com/facebookresearch/sam-3d-body</a> &nbsp;·&nbsp;
+    项目主页: <a href="https://ai.meta.com/sam3d">ai.meta.com/sam3d</a>
+  </div>
+</footer>
+
+</body>
+</html>

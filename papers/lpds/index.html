@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!--
+  中文海报 · Lagrangian Perturbation Diffusion Steering (LP-DS)
+  arXiv: 2606.01151
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LP-DS: 拉格朗日扰动扩散引导 — 生成策略的潜在空间强化学习</title>
+<meta name="keywords" content="扩散策略, 强化学习微调, latent space perturbation, Lagrangian trust-region, behavior cloning, flow matching, 机器人操控, 生成策略, 噪声空间引导, 模式坍塌">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:36px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:26px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  code{background:var(--chip);color:var(--acc);padding:2px 6px;border-radius:4px;font-size:14px}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">强化学习 · 扩散策略 · 机器人操控</span>
+    <h1>LP-DS: 拉格朗日扰动扩散引导</h1>
+    <div class="sub">Lagrangian Perturbation Diffusion Steering: Latent Reinforcement Learning for Generative Policies</div>
+    <div class="authors">Hikmet Simsir &amp; Ozgur S. Oguz &nbsp;·&nbsp; arXiv 2606.01151 (2026)</div>
+    <p class="lead">
+      LP-DS 提出了一种轻量级在线适应方法，通过在<strong>冻结生成策略</strong>的潜在噪声空间中学习一个状态条件残差扰动来提升性能。
+      该方法使用<strong>拉格朗日信任域约束</strong>（Lagrangian trust-region）防止潜在查询偏离解码器训练分布，
+      在保持行为多样性的同时实现有效的策略改进，无需修改底层扩散或流匹配（flow-matching）解码器参数。
+    </p>
+    <div class="meta">
+      <span>RoboMimic · OpenAI Gym · Adroit · LIBERO</span>
+      <span>Franka 真实机器人验证</span>
+      <span>兼容 Diffusion &amp; Flow-Matching</span>
+      <span><a href="https://arxiv.org/abs/2606.01151">arXiv 论文</a></span>
+      <span><a href="https://sites.google.com/view/lp-ds/home">项目主页</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">扩散策略</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">强化学习微调</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">latent space perturbation</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">Lagrangian trust-region</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">behavior cloning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">flow matching</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">机器人操控</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">生成策略</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">噪声空间引导</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">模式坍塌</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      基于行为克隆（Behavior Cloning）的高容量生成策略在模仿学习中表现优异，但受限于演示数据覆盖范围不足以及分布偏移问题。
+      直接用强化学习（RL）微调大型生成解码器往往不稳定且样本效率低下。
+      已有的噪声空间引导方法 DSRL 虽能绕开解码器修改，却存在<strong>潜在查询漂移</strong>和<strong>行为模式坍塌</strong>两大缺陷。
+    </p>
+
+    <blockquote>
+      "LP-DS shifts Gaussian noise inputs via <code>w = ε + Δ<sub>θ</sub>(s)</code> and optimizes Δ<sub>θ</sub> with a Lagrangian trust-region objective that improves downstream value while limiting deviation from the latent prior."
+    </blockquote>
+
+    <figure>
+      <img src="img/multi_run_comparison.webp" alt="玩具多目标导航实验">
+      <figcaption>
+        <strong>图1：玩具多目标导航（toy multi-goal navigation）。</strong>
+        四个对称高斯奖励峰定义四个等价目标模式（红点）。
+        冻结骨干策略可覆盖所有模式；DSRL 立即收缩到单一模式（模式坍塌）；
+        LP-DS 通过不同信任域大小 δ ∈ {0.01, 0.05, 0.1} 提供<strong>可控的多样性-性能权衡</strong>，
+        δ=0.05 时既保持多模态覆盖又获得高质量轨迹，而 δ=0.1 时则发生模式坍塌。
+      </figcaption>
+    </figure>
+
+    <h3>核心挑战：DSRL 的两大失败模式</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>① 潜在查询偏离流形</h3>
+        <p>
+          DSRL 用无约束潜在策略<em>替代</em>预训练先验（prior），导致生成的噪声向量偏离解码器训练时所用的标准高斯分布支撑集，
+          引发不规则动作输出和性能退化。图2 清晰展示了这一现象：DSRL 预测出高幅值潜在查询，
+          与解码器不稳定行为高度相关。
+        </p>
+      </div>
+      <div class="card">
+        <h3>② 行为多样性坍塌</h3>
+        <p>
+          无约束的潜在空间优化会将概率质量集中到少数高奖励区域，
+          骨干策略的多模态结构（multimodal structure）随之消失。
+          LP-DS 通过拉格朗日信任域机制显式约束扰动幅度，防止过度激进的模式集中。
+        </p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/lpds_vs_dsrl.webp" alt="LP-DS vs DSRL 对比">
+      <figcaption>
+        <strong>图2：弱约束噪声空间引导的失败模式（HalfCheetah-v2，3 seeds）。</strong>
+        DSRL 预测出高幅值潜在查询（右图），与离流形解码行为及性能退化相关；
+        LP-DS 通过自适应信任域约束保持更小的扰动幅度，始终贴近骨干支撑集。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>25%</b><small>Walker2D 回报提升（对比最强 baseline）</small></div>
+      <div><b>33/40</b><small>Franka 真实机器人拾放成功率（冻结 baseline 为 18/40）</small></div>
+      <div><b>17/20</b><small>Franka 挂杯成功率（冻结 baseline 为 11/20）</small></div>
+      <div><b>δ=0.35</b><small>多数实验中默认信任域目标值，对超参不敏感</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      LP-DS 将冻结生成解码器 Φ: S × W → A 视为黑盒，仅学习一个轻量级状态条件残差网络
+      Δ<sub>θ</sub>: S → W，在采样噪声上添加偏移 <code>w = ε + Δ<sub>θ</sub>(s)</code>，
+      然后通过拉格朗日松弛（Lagrangian relaxation）进行约束优化，
+      使得扰动在提升下游值函数的同时，保持对原始先验分布的接近。
+    </p>
+
+    <h3>4.1 残差扰动引导（Steering via Residual Perturbation）</h3>
+    <p>
+      设 Φ 为冻结的确定性生成解码器（扩散或流匹配模型），正常情况下从 ε ~ N(0, I) 采样噪声。
+      LP-DS 引入可学习扰动网络 Δ<sub>θ</sub>，并按如下方式生成潜在查询：
+    </p>
+    <blockquote>
+      <code>w = ε + Δ<sub>θ</sub>(s)</code>，其中 ε ~ N(0, I)
+    </blockquote>
+    <p>
+      当 Δ<sub>θ</sub>(s) = 0 时，策略精确恢复到原始行为克隆分布。
+      扰动网络是整个系统中<strong>唯一需要优化的组件</strong>，极大降低了计算成本。
+    </p>
+
+    <h3>4.2 拉格朗日信任域约束优化（Constrained Optimization via Lagrangian Relaxation）</h3>
+    <p>
+      无约束的潜在空间优化会导致 Δ<sub>θ</sub>(s) 幅值无限增大，使 w 偏离标准高斯流形。
+      LP-DS 将学习问题表述为一个约束优化：在最大化期望 Q 值的同时，
+      将期望扰动幅值的平方控制在阈值 δ 以内（该约束来自 KL 散度的二阶近似）：
+    </p>
+    <blockquote>
+      max<sub>θ</sub> E[Q<sup>W</sup>(s, ε + Δ<sub>θ</sub>(s))] &nbsp; s.t. &nbsp; E[‖Δ<sub>θ</sub>(s)‖²] ≤ δ
+    </blockquote>
+    <p>
+      通过引入拉格朗日乘子 α ≥ 0，形成如下拉格朗日函数，并交替更新 θ（梯度上升）和 α（投影对偶梯度上升）：
+    </p>
+    <blockquote>
+      L(θ, α) = E[Q<sup>W</sup>(s, w) − α(‖Δ<sub>θ</sub>(s)‖² − δ)]
+    </blockquote>
+    <p>
+      当扰动超出信任域时 α 自动增大，强迫 actor 优先满足先验约束；当扰动较小时 α 下降，允许更激进的引导。
+      这一<strong>自适应正则化机制</strong>是 LP-DS 区别于 DSRL 的核心所在。
+    </p>
+
+    <h3>4.3 双重 Critic 架构</h3>
+    <p>
+      LP-DS 维护两个 critic：动作空间 critic Q<sup>A</sup>（通过 TD 误差更新）和
+      潜在噪声空间 critic Q<sup>W</sup>（通过蒸馏 Q<sup>A</sup> 更新）。
+      actor 的梯度直接作用在潜在空间 critic 上，避免了对高容量解码器进行反向传播的计算开销。
+      整个在线训练流程见 Algorithm 1。
+    </p>
+
+    <figure>
+      <img src="img/baseline_comparison.webp" alt="各基准域综合对比结果">
+      <figcaption>
+        <strong>图3：各域基准对比结果（6 random seeds，均值 ± 1 标准差）。</strong>
+        上行：RoboMimic 操控成功率；第二行：OpenAI Gym 运动回报；
+        第三行：Adroit 灵巧手操控成功率；第四行：Adroit 回报。
+        LP-DS 在大多数环境中优于 DSRL、DPPO、IDQL 和 DQL 等 baseline。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 RoboMimic 操控、OpenAI Gym 运动控制、Adroit 灵巧手操控三大基准上，
+      以及 LIBERO（使用大型视觉-语言-动作模型 π₀ 骨干）和 Franka 真实机器人部署中，
+      LP-DS 全面评估了方法的有效性、泛化性和行为多样性保持能力。
+    </p>
+
+    <h3>5.1 主要基准结果</h3>
+    <table>
+      <tr><th>环境/基准</th><th>最强 Baseline</th><th>LP-DS</th><th>提升</th></tr>
+      <tr>
+        <td>Walker2D-v2（回报）</td>
+        <td>~4000</td>
+        <td class="good">~5000</td>
+        <td>~25%</td>
+      </tr>
+      <tr>
+        <td>RoboMimic Square（成功率）</td>
+        <td>DSRL/DPPO</td>
+        <td class="good">最高（快速收敛）</td>
+        <td>精度敏感任务优势显著</td>
+      </tr>
+      <tr>
+        <td>Adroit 灵巧操控</td>
+        <td>各 baseline</td>
+        <td class="good">整体最强</td>
+        <td>成功率与回报均领先</td>
+      </tr>
+      <tr>
+        <td>LIBERO-90（VLA backbone π₀）</td>
+        <td>冻结 π₀</td>
+        <td class="good">显著提升</td>
+        <td>大型 Transformer 骨干可扩展</td>
+      </tr>
+      <tr>
+        <td>Franka 拾放（物理机器人）</td>
+        <td>18/40（冻结骨干）</td>
+        <td class="good">33/40</td>
+        <td>+83% 成功次数</td>
+      </tr>
+      <tr>
+        <td>Franka 挂杯（物理机器人）</td>
+        <td>11/20（冻结骨干）</td>
+        <td class="good">17/20</td>
+        <td>+55% 成功次数</td>
+      </tr>
+    </table>
+
+    <figure>
+      <img src="img/real_world_tasks.webp" alt="Franka 真实机器人任务">
+      <figcaption>
+        <strong>图9：Franka 真实机器人任务。</strong>
+        左：空间拾放任务，在 2×4 网格（40 个位置）上评估；
+        右：挂杯任务，机器人需抓住杯子并将杯柄对准木架插入。
+        LP-DS 在仿真中进行潜在空间 RL 适应，并将所得的引导策略直接迁移至物理机器人执行。
+      </figcaption>
+    </figure>
+
+    <h3>5.2 行为多样性分析</h3>
+    <p>
+      通过 Kozachenko–Leonenko k-NN 动作熵估计器，LP-DS 在在线适应过程中始终保持比 DSRL 更高的动作空间熵，
+      同时成功率也更高。噪声空间引导方法（LP-DS 和 DSRL）相对冻结骨干均会降低熵，
+      这是将概率质量集中于高价值噪声区域的固有代价；但 LP-DS 的信任域约束有效减缓了这一过程。
+      DPPO 直接在动作空间微调，因此熵变化幅度最小，但整体性能通常不及 LP-DS。
+    </p>
+
+    <figure>
+      <img src="img/entropy_comparison.webp" alt="动作熵对比">
+      <figcaption>
+        <strong>图5：在线适应期间的动作熵估计（Adroit Pen，3 seeds）。</strong>
+        LP-DS 在整个训练过程中保持比 DSRL 更高的动作熵，印证了拉格朗日信任域机制能有效缓解过早的模式坍塌。
+        DPPO 熵最高但成功率通常低于 LP-DS。
+      </figcaption>
+    </figure>
+
+    <h3>5.3 消融实验与超参灵敏度</h3>
+    <p>
+      在 Adroit Pen 的消融实验中：
+    </p>
+    <ul>
+      <li><strong>移除拉格朗日惩罚</strong>：训练不稳定，最终成功率下降，动作熵持续衰减（向单一模式收缩）。</li>
+      <li><strong>移除拉格朗日惩罚 + 噪声边界</strong>：行为极度不稳定，频繁探索高斯先验下几乎不可能出现的极端噪声区域，成功率极低。</li>
+      <li><strong>完整 LP-DS</strong>：最高成功率 + 最高动作熵，证明拉格朗日信任域是防止分布外引导的核心机制。</li>
+    </ul>
+    <p>
+      对信任域目标 δ 的扫描实验（Hopper、Walker2d、RoboMimic Square、Adroit Relocate）表明：
+      δ > 0.1 均能取得强劲性能；0.35、0.5、0.66 等邻近值表现相近。
+      δ 主要充当<strong>粗粒度行为旋钮</strong>而非需要精细调节的脆弱超参数。
+    </p>
+
+    <figure>
+      <img src="img/goal_success_rates.webp" alt="Avoiding 环境成功率与目标覆盖">
+      <figcaption>
+        <strong>图：Avoiding 环境中的多路径多样性。</strong>
+        LP-DS 在不同信任域大小 δ 下展现出可控的多样性—专业化权衡。
+        小信任域（δ=0.01）保留更广的障碍物绕行路径集合；较大信任域（δ=0.3）使策略集中于较窄的成功路线。
+        DSRL 则坍塌到单一主导路径。
+      </figcaption>
+    </figure>
+
+    <h3>5.4 跨架构鲁棒性</h3>
+    <p>
+      在 Hopper-v2 上进行的扩散 vs. 流匹配骨干对比实验表明，LP-DS 在两种骨干架构下取得相当的最终性能，
+      证明残差扰动和信任域框架并不依赖于特定的去噪扩散链，可泛化到连续时间流模型。
+      在 LIBERO-90 基准上使用大型 π₀ VLA 骨干同样获得显著性能提升，
+      验证了 LP-DS 可扩展至大型 Transformer 基础模型。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>本文未设置独立的"局限性"章节，但在结论（Section 6）和 Impact Statement 中有明确论述。
+      以下条目标注来源：<strong>明确陈述（stated）</strong>或 <strong>推断（inferred）</strong>。
+    </div>
+
+    <details class="lim" open>
+      <summary>信任域目标 δ 仍需人工选择 <span style="font-size:13px;color:var(--muted)">（stated + inferred）</span></summary>
+      <p>
+        论文指出 δ > 0.1 时方法较为鲁棒，且 0.35、0.5、0.66 等值效果相近，
+        但对于不同任务和骨干架构，最优 δ 仍需在一定范围内选取。
+        结论中将"自适应信任域目标"（adaptive trust-region targets）列为未来工作方向。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>噪声空间引导固有地降低行为熵 <span style="font-size:13px;color:var(--muted)">（stated）</span></summary>
+      <p>
+        论文明确指出："Noise-space steering methods (LP-DS, DSRL) exhibit an inherent reduction in entropy relative to the backbone."
+        虽然 LP-DS 比 DSRL 保留了更多多样性，但相比直接在动作空间微调（DPPO），
+        其动作空间熵仍会随训练进行而下降，这是潜在空间模式选择的内在代价。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖仿真适应再迁移的 sim-to-real 流程 <span style="font-size:13px;color:var(--muted)">（inferred）</span></summary>
+      <p>
+        真实机器人实验（Section 5.7）采用"仿真中进行潜在空间 RL 适应，再迁移到物理机器人"的流程。
+        这意味着方法在一定程度上依赖高质量的任务匹配仿真器；
+        在仿真-真实差距（sim-to-real gap）较大的场景中，其性能有多大程度可维持尚不清楚。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>部分可观测与大规模 VLA 场景的验证有限 <span style="font-size:13px;color:var(--muted)">（stated）</span></summary>
+      <p>
+        论文结论明确将"部分可观测环境"（partially observable）和"大规模视觉-语言-动作设置"（large-scale VLA settings）
+        列为未来工作方向，暗示当前验证覆盖范围有限，尤其是在需要长时间记忆或复杂感知的场景中。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>双 Critic 引入额外计算开销 <span style="font-size:13px;color:var(--muted)">（inferred）</span></summary>
+      <p>
+        LP-DS 维护动作空间 critic Q<sup>A</sup> 和潜在空间 critic Q<sup>W</sup> 共两个独立 critic，
+        以及独立的 actor 和拉格朗日乘子 α 的更新。相比仅有单个 critic 的 DSRL，
+        每步的计算和存储成本更高，在大规模 VLA 骨干上的实际开销尚未量化报告。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    根据论文原始文本和图表整理 · 仅供学习参考<br>
+    Hikmet Simsir, Ozgur S. Oguz · <em>Lagrangian Perturbation Diffusion Steering</em> · arXiv:2606.01151 (2026)<br>
+    <a href="https://arxiv.org/abs/2606.01151">https://arxiv.org/abs/2606.01151</a>
+    &nbsp;·&nbsp;
+    <a href="https://sites.google.com/view/lp-ds/home">项目主页</a>
+  </div>
+</footer>
+
+</body>
+</html>

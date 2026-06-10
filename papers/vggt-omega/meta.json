@@ -1,0 +1,22 @@
+{
+  "slug": "vggt-omega",
+  "title": "VGGT-Ω — 将前馈三维重建扩展到前所未有的规模",
+  "arxiv_id": "2605.15195",
+  "url": "https://arxiv.org/abs/2605.15195",
+  "category": "三维 / 四维重建 · 几何 · 分割",
+  "keywords": [
+    "feed-forward 3D reconstruction",
+    "前馈重建",
+    "相机位姿估计",
+    "深度估计",
+    "动态场景重建",
+    "register attention",
+    "scaling law",
+    "自监督学习",
+    "多视图几何",
+    "基础模型"
+  ],
+  "summary_zh": "VGGT-Ω 是一个可扩展的前馈 Transformer 重建基础模型，通过寄存器注意力、轻量级解码头和大规模动态视频标注管线将训练显存降至 VGGT 的 30%，同时以 15 倍数据量在静态与动态场景的相机位姿估计和深度估计上全面超越前代，并验证了幂律式的 scaling 规律。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

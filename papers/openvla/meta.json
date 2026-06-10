@@ -1,0 +1,11 @@
+{
+  "slug": "openvla",
+  "title": "OpenVLA: An Open-Source Vision-Language-Action Model",
+  "arxiv_id": "2406.09246",
+  "url": "https://arxiv.org/abs/2406.09246",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": ["VLA", "Vision-Language-Action", "机器人操作", "open-source", "LoRA fine-tuning", "DINOv2", "SigLIP", "Open X-Embodiment", "parameter-efficient adaptation", "量化推理"],
+  "summary_zh": "OpenVLA 是首个开源的 70 亿参数视觉-语言-动作模型，在 970k 真实机器人演示上训练，以更少参数超越闭源 RT-2-X 16.5%，并支持消费级 GPU 上的 LoRA 参数高效微调与 int4 量化推理。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

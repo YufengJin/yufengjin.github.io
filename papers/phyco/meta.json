@@ -1,0 +1,22 @@
+{
+  "slug": "phyco",
+  "title": "PhyCo：面向生成式运动的可控物理先验学习",
+  "arxiv_id": "2604.28169",
+  "url": "https://arxiv.org/abs/2604.28169",
+  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "keywords": [
+    "物理先验",
+    "视频生成",
+    "ControlNet",
+    "VLM奖励优化",
+    "物理仿真数据集",
+    "可控生成",
+    "扩散模型",
+    "Physics-IQ",
+    "摩擦弹性形变控制",
+    "video diffusion"
+  ],
+  "summary_zh": "PhyCo 通过构建大规模物理仿真数据集、ControlNet 像素对齐属性条件调节与 VLM 奖励优化三者结合，实现了对摩擦、弹性、形变及外力等物理属性的连续可控视频生成，在 Physics-IQ 基准上达到新 SOTA。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

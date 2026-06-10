@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--
+  SyncHuman 论文海报 — 中文版
+  原文: https://arxiv.org/abs/2510.07723
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SyncHuman: 同步 2D 与 3D 生成模型的单视图人体重建</title>
+<meta name="keywords" content="单视图人体重建, 3D human reconstruction, 2D-3D联合生成, 扩散模型同步, 多视图一致性, Flow Matching, FlexiCubes, DINOv2特征, 着装人体, cross-space synchronization attention">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .highlight{color:var(--acc2);font-weight:600}
+  .badge{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:13px;color:var(--acc);margin:0 2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">NeurIPS 2025 · 人体重建</span>
+    <h1>SyncHuman: 同步 2D 与 3D 生成模型的单视图人体重建</h1>
+    <div class="sub">Synchronizing 2D and 3D Generative Models for Single-view Human Reconstruction</div>
+    <div class="authors">Wenyue Chen · Peng Li · Wangguandong Zheng · Chengfeng Zhao · Mengfei Li · Yaolong Zhu · Zhiyang Dou · Ronggang Wang · Yuan Liu</div>
+    <p class="lead">SyncHuman 将多视图 2D 生成模型与 3D 原生生成模型联合训练，通过像素对齐的双向同步注意力机制，使二者在扩散过程中互相校正，从单张图像重建出几何精确、纹理丰富的着装人体三维模型。</p>
+    <div class="meta">
+      <span>NeurIPS 2025</span>
+      <span>单视图人体重建</span>
+      <span>2D-3D 联合生成</span>
+      <span><a href="https://arxiv.org/abs/2510.07723">📄 arXiv: 2510.07723</a></span>
+      <span><a href="https://arxiv.org/pdf/2510.07723">PDF 全文</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">单视图人体重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">3D human reconstruction</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">2D-3D联合生成</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">扩散模型同步</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">多视图一致性</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">Flow Matching</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">FlexiCubes</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">DINOv2特征</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">着装人体</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">cross-space synchronization attention</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">从单张图像重建穿衣人体的三维模型，是计算机视觉中的核心难题。现有方法面临两难困境：多视图 2D 生成模型（如 PSHuman）能捕捉精细纹理细节，但生成的多视图图像与三维结构缺乏一致性；而 3D 原生生成模型（如 Trellis）能生成连贯的几何形状，却缺乏精细细节，且严重依赖不准确的 SMPL 姿态估计。</p>
+    <blockquote>"我们提出了一种新型框架，联合利用多视图和 3D 原生生成模型的优势，同时克服各自的局限性。"</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="SyncHuman Teaser — 与基线方法几何质量对比">
+      <figcaption>
+        <strong>图 1：SyncHuman 与基线方法的几何质量对比。</strong>左起依次为 SMPL 拟合结果、PSHuman（多视图 2D 方法）、Trellis（3D 原生方法）以及本文方法 SyncHuman。可见 SyncHuman 在几何精度和纹理细节上均显著优于两类基线，且不依赖 SMPL 姿态先验。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>0.8353</b><small>Chamfer Distance ↓<br>（X-Humans，越低越好）</small></div>
+      <div><b>21.84</b><small>PSNR ↑<br>（X-Humans，越高越好）</small></div>
+      <div><b>0.8741</b><small>SSIM ↑<br>（X-Humans）</small></div>
+      <div><b>0.0786</b><small>LPIPS ↓<br>（X-Humans，越低越好）</small></div>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>多视图 2D 方法的问题</h3>
+        <ul>
+          <li>多视图图像间<strong>三维结构不一致</strong></li>
+          <li>从不一致视图重建导致几何误差累积</li>
+          <li>依赖扩散模型的随机性，无法保证跨视图一致性</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>3D 原生方法的问题</h3>
+        <ul>
+          <li>严重依赖 <span class="badge">SMPL</span> 姿态估计，误差传播明显</li>
+          <li>生成形状<strong>细节粗糙</strong>，纹理质量差</li>
+          <li>复杂服装结构难以保真重建</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SyncHuman 由两个核心模块构成：<strong>2D-3D 跨空间生成模型</strong>（通过双向同步注意力联合微调多视图与 3D 生成器）和<strong>多视图引导解码器（MVGD）</strong>（将 DINOv2 特征从生成的多视图图像注入 3D 解码过程），二者共同实现从单张图像到高保真三维人体的重建。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="SyncHuman 整体框架">
+      <figcaption>
+        <strong>图 2：SyncHuman 整体框架。</strong>输入单张图像，首先通过 2D-3D 跨空间生成模型联合生成多视图图像和 3D 表示；随后，多视图引导解码器（MVGD）提取 DINOv2 视觉特征，通过特征注入机制增强三维几何细节与纹理质量，最终输出高保真着装人体网格。
+      </figcaption>
+    </figure>
+
+    <h3>核心组件一：2D-3D 跨空间同步注意力</h3>
+    <p>在扩散去噪过程中，本文设计了双向的像素对齐同步注意力，使 2D 多视图分支与 3D 体素分支在每个时间步互相感知：</p>
+    <ul>
+      <li><strong>2D→3D 方向：</strong>每个 3D 体素向量在四个正交视图的对应 2D 特征图上查询像素对齐特征，获取外观细节指导。</li>
+      <li><strong>3D→2D 方向：</strong>每个 2D 像素沿投影光线查询对应的 3D 体素列特征，获取几何结构约束。</li>
+    </ul>
+    <p>训练采用结合 2D 和 3D 分支的 <span class="badge">Flow Matching</span> 损失。整体框架无需 SMPL 作为条件，仅以输入图像的 DINOv2 特征为条件进行生成。</p>
+
+    <figure>
+      <img src="img/sync_attn.webp" alt="双向同步注意力机制示意图">
+      <figcaption>
+        <strong>图 3：像素对齐双向同步注意力机制。</strong>左：2D→3D 注意力，3D 体素查询对应视图的 2D 特征；右：3D→2D 注意力，2D 像素查询沿投影光线的 3D 体素特征。双向交互使两个分支在扩散过程中实时对齐，确保多视图图像与三维形状的一致性。
+      </figcaption>
+    </figure>
+
+    <h3>核心组件二：多视图引导解码器（MVGD）</h3>
+    <p>在生成阶段结束后，MVGD 从生成的多视图彩色图和法线图中提取 DINOv2 特征，通过拼接（concatenation）和 MLP 层注入 FlexiCubes 解码器，将精细的视觉细节从 2D 图像域提升到三维几何域，显著提升表面法线一致性和纹理保真度。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>训练设置</h3>
+        <ul>
+          <li>训练数据集：THuman2.1、CustomHumans、THuman3.0、2K2K（约 5,000 人体扫描）</li>
+          <li>2D-3D 模型：<span class="badge">8× H800 GPU</span>，batch=32，共 50,000 次迭代</li>
+          <li>解码器：<span class="badge">1× H800 GPU</span>，batch=4，共 14,000 次迭代</li>
+          <li>多视图分支：微调自 SD 2.1，batch=32，共 30,000 次迭代</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>推理速度</h3>
+        <ul>
+          <li><strong>SyncHuman：38.57 秒</strong></li>
+          <li>PSHuman：52.98 秒</li>
+          <li>Trellis：15.68 秒</li>
+          <li>在单张 H800 GPU 上测量；SyncHuman 比 PSHuman 快约 27%，但比 Trellis 慢约 2.5×。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 CAPE-NFP、CAPE-FP 和 X-Humans 三个测试集上（共 250 个扫描样本）评估几何精度（Chamfer Distance、P2S、Normal Consistency）和渲染质量（PSNR、SSIM、LPIPS）指标，与 ICON、ECON、GTA、SIFU、SiTH、Human3Diff、PSHuman、Trellis 等基线比较。</p>
+
+    <h3>Table 1：定量对比结果（X-Humans 测试集）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>Cham. Dist ↓</th>
+        <th>P2S ↓</th>
+        <th>NC ↑</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+      </tr>
+      <tr><td>ICON</td><td>1.4971</td><td>1.3920</td><td>0.8133</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>ECON</td><td>1.6425</td><td>1.4398</td><td>0.8054</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>GTA</td><td>1.5050</td><td>1.4662</td><td>0.8044</td><td>20.0084</td><td>0.8502</td><td>0.1129</td></tr>
+      <tr><td>SIFU</td><td>1.5391</td><td>1.4331</td><td>0.8093</td><td>20.6747</td><td>0.8455</td><td>0.1104</td></tr>
+      <tr><td>SiTH</td><td>1.5104</td><td>1.4345</td><td>0.7972</td><td>19.8245</td><td>0.8204</td><td>0.1182</td></tr>
+      <tr><td>Human3Diff</td><td>1.5034</td><td>1.4219</td><td>0.7468</td><td>19.7181</td><td>0.8065</td><td>0.1334</td></tr>
+      <tr><td>PSHuman</td><td>1.4377</td><td>1.1385</td><td>0.8393</td><td>20.8405</td><td>0.8523</td><td>0.0980</td></tr>
+      <tr><td>Trellis</td><td>2.0043</td><td>1.5053</td><td>0.7718</td><td>17.0786</td><td>0.7238</td><td>0.1529</td></tr>
+      <tr style="background:rgba(110,168,254,.07)">
+        <td><strong>SyncHuman（Ours）</strong></td>
+        <td class="good">0.8353</td>
+        <td class="good">0.7593</td>
+        <td class="good">0.8872</td>
+        <td class="good">21.8385</td>
+        <td class="good">0.8741</td>
+        <td class="good">0.0786</td>
+      </tr>
+    </table>
+
+    <figure>
+      <img src="img/geometry_cmp.webp" alt="几何质量定性对比">
+      <figcaption>
+        <strong>图 4：几何质量定性对比。</strong>SyncHuman 重建的人体网格在服装细节（褶皱、领口、袖口）和整体形状准确性上均优于 PSHuman 和 Trellis，特别是在复杂姿态下表现尤为突出。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/appearance_cmp.webp" alt="外观质量定性对比">
+      <figcaption>
+        <strong>图 5：外观（纹理）质量定性对比。</strong>SyncHuman 生成的渲染图像在色彩保真度、纹理清晰度方面均超越基线方法，LPIPS 指标提升最为明显（0.0786 vs PSHuman 0.0980）。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>Table 2 验证了 2D-3D 跨空间同步模型的有效性：单独使用 Trellis（PSNR 17.079）或 PSHuman（PSNR 20.840），加入双向同步注意力后提升至 PSNR 21.838，Chamfer Distance 从 1.438 降至 0.835。Table 3 验证 MVGD 的贡献：相比原始解码器（微调后 PSNR 21.362），MVGD 将 PSNR 进一步提升至 21.838，并将 Chamfer Distance 从 0.887 降至 0.835。</p>
+
+    <table>
+      <tr><th>消融配置</th><th>PSNR ↑</th><th>SSIM ↑</th><th>LPIPS ↓</th><th>Cham. ↓</th><th>P2S ↓</th></tr>
+      <tr><td>Trellis（原始）</td><td>17.079</td><td>0.724</td><td>0.153</td><td>2.004</td><td>1.505</td></tr>
+      <tr><td>Trellis（微调）</td><td>20.344</td><td>0.844</td><td>0.101</td><td>1.135</td><td>1.041</td></tr>
+      <tr><td>PSHuman</td><td>20.840</td><td>0.852</td><td>0.098</td><td>1.438</td><td>1.138</td></tr>
+      <tr><td>原始解码器（微调）</td><td>21.362</td><td>0.866</td><td>0.090</td><td>0.887</td><td>0.810</td></tr>
+      <tr style="background:rgba(110,168,254,.07)">
+        <td><strong>完整 SyncHuman</strong></td>
+        <td class="good">21.838</td>
+        <td class="good">0.874</td>
+        <td class="good">0.079</td>
+        <td class="good">0.835</td>
+        <td class="good">0.759</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>前两条局限性为论文 Limitations 章节的<strong>明确陈述（stated）</strong>；后两条为根据方法设计<strong>推断（inferred）</strong>。</div>
+
+    <figure>
+      <img src="img/limitation.webp" alt="极端光照条件下的伪影">
+      <figcaption>
+        <strong>图 6（局限性示例）：</strong>训练数据使用均匀光照渲染，导致在极端光照条件下重建纹理出现伪影。
+      </figcaption>
+    </figure>
+
+    <details class="lim" open>
+      <summary>光照偏差（stated）：训练数据均匀光照导致极端光照下出现伪影</summary>
+      <p>论文明确指出："由于训练数据集使用均匀光照渲染，重建纹理在极端光照条件下可能出现伪影。"该问题源于训练集（THuman2.1 等）的渲染设置，导致模型对非均匀光照场景泛化能力有限。</p>
+    </details>
+
+    <details class="lim" open>
+      <summary>训练数据规模有限（stated）：约 5,000 人体扫描，限制生成质量</summary>
+      <p>论文明确指出："多视图生成模型仅从约 5,000 个人体扫描中微调自 SD 2.1，因此生成质量仍受到限制。"与通用扩散模型的数十亿图像训练相比，人体领域特定数据的稀缺制约了模型的泛化上限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>网格表面孔洞（inferred）：FlexiCubes 无水密约束导致网格不完整</summary>
+      <p>方法使用 FlexiCubes 进行网格提取，该方法不强制水密（watertight）约束，可能导致生成网格出现表面孔洞，影响下游应用（如物理模拟、3D 打印）的适用性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理速度劣于纯 3D 方法（inferred）：38.57 秒 vs Trellis 15.68 秒</summary>
+      <p>由于需要同时运行 2D 多视图分支和 3D 体素分支，并加入双向注意力交互，SyncHuman 的推理时间（38.57 秒/张）约为 Trellis（15.68 秒/张）的 2.5 倍，在实时或高吞吐量场景下存在明显瓶颈。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本页面根据论文内容整理，仅供学术参考 · SyncHuman: Synchronizing 2D and 3D Generative Models for Single-view Human Reconstruction<br>
+    原文链接 / Paper: <a href="https://arxiv.org/abs/2510.07723">https://arxiv.org/abs/2510.07723</a>
+  </div>
+</footer>
+
+</body>
+</html>

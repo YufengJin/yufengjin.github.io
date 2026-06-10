@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VGGT-Ω — 将前馈三维重建扩展到前所未有的规模</title>
+<meta name="keywords" content="feed-forward 3D reconstruction, 前馈重建, 相机位姿估计, 深度估计, 动态场景重建, register attention, scaling law, 自监督学习, 多视图几何, 基础模型">
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.75;font-size:17px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:58px 0 40px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;
+    padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);
+    border:1px solid var(--line);padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:40px;line-height:1.2;margin:0 0 8px;font-weight:800;letter-spacing:.5px}
+  h1 .om{color:var(--acc)}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:22px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);
+    border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;
+    padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  p{margin:12px 0}
+  .lead{font-size:18.5px;color:#d6dee6}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}h1{font-size:32px}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  .pill{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:7px;
+    padding:2px 9px;font-size:13.5px;color:var(--acc2);margin:2px 3px}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+    border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center}
+  .good{color:var(--acc2);font-weight:700}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);
+    border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);
+    border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px}
+  .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">前馈三维 / 四维重建 · 基础模型</span>
+    <h1>VGGT-<span class="om">Ω</span></h1>
+    <div class="sub">将前馈三维重建扩展到比以往工作显著更大的数据、以及（可选地）更大的模型规模。</div>
+    <p class="lead">一个前馈 Transformer：将 N 张输入图像映射为每帧的<b>相机参数</b>与<b>深度图</b>，同时支持<b>静态与动态场景</b>。它在精度、效率与能力上全面超越 VGGT，训练显存仅为前代的约 30%——从而得以用 15× 的监督数据 + 海量无标注视频进行训练。</p>
+    <div class="meta">
+      <span>输出目标：相机 + 深度（点图、匹配仅作监督）</span>
+      <span>静态 &amp; 动态场景</span>
+      <span>0.2B → 10B 参数</span>
+      <span>~4M 序列（&gt;15× VGGT）</span>
+      <span><a href="https://arxiv.org/abs/2605.15195">📄 arXiv:2605.15195</a></span>
+      <span><a href="http://vggt-omega.github.io/">vggt-omega.github.io</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">feed-forward 3D reconstruction</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">前馈重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">相机位姿估计</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">深度估计</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">动态场景重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">register attention</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">scaling law</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">自监督学习</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">多视图几何</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">基础模型</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">① 动机</a>
+  <a href="#method">② 方法</a>
+  <a href="#data">③ 数据</a>
+  <a href="#exp">④ 实验</a>
+  <a href="#apps">⑤ Register 的应用</a>
+  <a href="#limit">⑥ 局限性</a>
+</div></nav>
+
+<!-- ============ MOTIVATION ============ -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 研究动机</h2>
+    <p class="lead">近年来的工作表明，前馈式重建模型在许多情况下能够匹敌、甚至超过传统的运动恢复结构（SfM）管线。更进一步，这类模型学到的 token 已被用作有效的「几何感知表征」服务于很多其它任务。这说明<b>重建本身可以作为学习空间理解表征的代理任务，具有基础模型的价值</b>。</p>
+
+    <p>然而，相比在 2D 视觉与 NLP 中「规模（scale）的作用已被充分理解」，这一点在 3D 计算机视觉中几乎没被探究过。因此本文要回答：</p>
+    <blockquote>前馈重建模型能否被扩展到更大规模？这种扩展会带来什么收益？</blockquote>
+
+    <p>为回答这个问题，本文同时解决三个障碍：</p>
+    <div class="grid2">
+      <div class="card"><h3>训练显存太贵</h3><p>全局注意力与高分辨率卷积解码头主导了 GPU 显存。→ <b>提升训练效率的架构改造</b></p></div>
+      <div class="card"><h3>高质量标注数据稀缺</h3><p>带准确标注的数据有限，且大多为静态。→ <b>支持动态场景的高质量数据标注管线</b></p></div>
+      <div class="card"><h3>无标注视频未被利用</h3><p>绝大多数真实视频都含运动、且没有几何标注。→ <b>自监督学习协议</b></p></div>
+    </div>
+
+    <figure>
+      <img src="img/scale_v5_vector.webp" alt="scaling curves">
+      <figcaption><b>可预测的 Scaling。</b>「当我们把模型容量从 0.2B 提升到 10B、把训练数据从几千扩展到两百万个不同序列时，重建精度（以 point error 衡量）呈现出一致的、类似幂律（power-law）的提升。」按 10× 步长增加训练序列，point error 从 0.275 单调下降到 0.073。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>+77%</b><small>Sintel 相机 AUC@3°（40.0 vs 22.5）</small></div>
+      <div><b>50×</b><small>比 MegaSaM 更快</small></div>
+      <div><b>~30%</b><small>仅为 VGGT 训练显存</small></div>
+      <div><b>15×</b><small>监督数据量相对 VGGT</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">VGGT-Ω 是一个前馈 Transformer <i>f</i>，将 N 张图像映射为相机 <span class="pill">旋转四元数 q</span><span class="pill">平移 t</span><span class="pill">视场角 f</span> 与深度图 D。与 VGGT 不同，模型<b>不直接预测点图或 tracking 特征</b>（但仍以损失监督它们）。</p>
+
+    <figure>
+      <img src="img/architecture_v8.webp" alt="architecture">
+      <figcaption><b>架构。</b>每张图用 DINOv3 初始化的 ViT 编码，并附加每帧 1 个<b>相机 token</b> 与 16 个<b>寄存器（场景 token）</b>。通过「逐帧 ↔ 全局」交替注意力跨视角聚合特征，再用轻量级 head 解码出深度与相机。</figcaption>
+    </figure>
+
+    <h3>改进一 · Register Attention（寄存器注意力）</h3>
+    <p>VGGT 交替使用逐帧自注意力与全局自注意力。「全局注意力是 VGGT 的主要计算瓶颈，但其注意力图非常稀疏」——这暗示少量 token 就足以交换相应信息。</p>
+    <p>因此 VGGT-Ω <b>把 25% 的全局注意力层替换为 register attention</b>，在这些层里「帧间的信息交换被限制在寄存器之间」。更新后的寄存器随后在逐帧注意力块中与各帧图像 token 交互，「从而形成一个聚合并重新分发多帧信息的瓶颈」。本文也把这些寄存器称为<b>「场景（scene）token」</b>。</p>
+    <div class="grid2">
+      <figure style="margin:0"><img src="img/vgg_visualization.webp" alt="attention sparsity"><figcaption>全局注意力图通常高度稀疏，支撑「少量 token 即可交换信息」的设计直觉。</figcaption></figure>
+      <div class="card">
+        <h3>两大收益</h3>
+        <ul>
+          <li><b>寄存器携带有用的全局信息。</b>不同于「把寄存器当作辅助、推理时丢弃」的架构，这里它们「无需显式监督，就能为 VLA 模型和语言对齐提供有用特征」。</li>
+          <li><b>效率。</b>「替换 25% 全局注意力层为 register attention，没有可测量的性能下降，同时在训练中节省约 23% FLOPs 和 16% 显存。」<br><small>（若替换<i>全部</i>全局层，FLOPs 降至原来的 6%，但性能显著下降。）</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>改进二 · 轻量级密集头（去掉昂贵的高分辨率卷积）</h3>
+    <p>「密集预测头（如 DPT）中的高分辨率卷积层，尽管只占模型很小一部分参数，却为存储前向激活消耗了不成比例的 GPU 显存。」1/4 分辨率以上的卷积块被替换为「单个 MLP + pixel-shuffle 的轻量上采样头，显存极省且性能不降」。<br><small>纯卷积-free 解码器在 benchmark 上表现很好，但在室外场景产生方块伪影，因此保留了计算开销极小的早期低分辨率 DPT 卷积。</small></p>
+
+    <h3>改进三 · 单一密集头 + 多任务损失</h3>
+    <p>「我们仍使用多任务损失，但只保留一个深度密集头和一个稀疏相机头。」模型虽不直接输出点图和 tracks，但仍以损失监督它们。训练损失包含：</p>
+    <ul>
+      <li><b>相机损失</b> —— ℓ1（「比 VGGT 使用的 Huber 损失更稳定」）。</li>
+      <li><b>深度损失</b> —— aleatoric 不确定性 + 梯度一致性项 + 相对尺度。</li>
+      <li><b>点图损失</b> —— 与深度损失同形，残差来自预测深度+相机的反投影。</li>
+      <li><b>匹配损失</b> —— 拉近正样本 token 对（同一 3D 位置）的特征、推开负样本。</li>
+    </ul>
+    <p><b>「这三项改造合计节省 70% 训练显存，并略微提升推理速度。」</b></p>
+
+    <h3>动态场景重建</h3>
+    <p>处理动态内容「解锁了数量级更多的互联网式视频用于训练」。模型「只预测深度图与相机参数，避免运动掩码等显式动态输出」。ray map 被否决，因为它「增加昂贵的稠密输出，并会把相机信息与逐像素外观变化纠缠在一起」——例如固定相机拍摄一名舞者，画面运动很大但相机参数不变。期望数据驱动的模型自己学到比手工低秩/局部刚性约束更好的运动先验。</p>
+
+    <h3>自监督训练（Teacher–Student）</h3>
+    <p>借鉴 DINO 风格的动量教师-学生方法。两个网络都从监督训练好的 VGGT-Ω checkpoint 初始化，对同一组帧施加独立增强（颜色抖动、模糊、随机 90° 旋转、patch 遮挡、帧序打乱）。对齐到统一帧序后，student 通过跨层 ℓ2 特征匹配损失 + 相机/深度回归损失匹配 teacher；teacher 用 EMA 更新，且「相机与深度头在自监督期间冻结」以防坍塌。以此在 <b>1800 万段无标注视频</b>上训练。</p>
+  </div>
+</section>
+
+<!-- ============ DATA ============ -->
+<section id="data">
+  <div class="wrap">
+    <h2><span class="n">03</span> 训练数据</h2>
+    <p class="lead">「VGGT-Ω 的一个重要方面是扩展训练数据」——将大量公开数据集与一条专为处理现成视频中动态内容而构建的新标注管线结合。</p>
+
+    <h3>数据来源</h3>
+    <p>30+ 公开数据集（Aria、Co3Dv2、DL3DV、Dynamic Replica、Hypersim、ScanNet、Waymo……）+ 内部数据，共「约 3M 序列，每个含 10 到 20,000 张图像」。剔除了 Kubric 与 PointOdyssey，「因为它们的背景几何是假的、深度无效」。</p>
+
+    <h3>数据标注管线</h3>
+    <p>从「约 4000 万条互联网式视频」出发、宁缺毋滥，「我们得到约 20 万动态场景和 60 万静态场景，带高质量相机与深度标注」。</p>
+    <table>
+      <tr><th>阶段</th><th>做法</th></tr>
+      <tr><td>VLM 预筛</td><td>VLM 判定 50% 的片段太难、40% 可重建但精度低，仅剩 10% 进入下一阶段；同时抽取「是否动态」等元数据。</td></tr>
+      <tr><td>动态掩码</td><td>用 Grounding DINO 检测人、车等可动类别；这些区域从匹配、跟踪、验证中排除。</td></tr>
+      <tr><td>特征匹配与跟踪</td><td>SIFT、SuperPoint &amp; SuperGlue、ALIKED &amp; LightGlue、VGGSfM Tracker 集成。</td></tr>
+      <tr><td>重建与过滤</td><td>RANSAC 内点过少时用 VGGT 初始化相机，再用 COLMAP 光束法平差；按注册率、视场角、畸变率启发式过滤；patch-based MVS 估计稠密深度。</td></tr>
+      <tr><td>多视一致性</td><td>深度反投影、再投影到其它视图比较；有效深度像素 &lt;5% 的序列丢弃。</td></tr>
+      <tr><td>监督几何过滤</td><td>用 camera-up 一致性、视差角、轨迹平滑度等手工特征，喂给在 500 静态 + 500 动态人工标注序列上训练的 XGBoost + 随机森林 + CatBoost 集成。</td></tr>
+    </table>
+
+    <h3>数据质量 —— 噪声会被「记住」</h3>
+    <p>「拥有大量数据是不够的；数据的质量同样有强烈影响。」本文观察到「模型虽然学到了 3D 重建的一般原理，但也会死记硬背特异的噪声」。这些失败模式「不影响标准 benchmark 中的大多数图像，因此在定量结果里可能检测不到」。</p>
+    <figure>
+      <img src="img/data_v3.webp" alt="data quality failure modes">
+      <figcaption><b>典型的标注噪声失败模式。</b>传感器（前景-背景泄漏，如 ScanNet++ 中椅背取了背景墙的深度）；细结构（栏杆被抹平/赋给后面的墙）；假背景（Kubric、PointOdyssey、BEDLAM 的代理穹顶/地面几何）；穹顶效应（光束法平差把几何弯成曲面）；「墙里的人」（行人被吸收进静态建筑，源于 MegaDepth 边界错标）；以及跨数据集标注歧义（窗外景物深度有时标到窗面、有时标到真实物体）。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ EXPERIMENTS ============ -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">04</span> 实验</h2>
+    <p class="lead">四个模型规模——<b>200M / 500M / 1B / 10B</b>——在 128 块 96GB H100 上（bfloat16、梯度检查点、FSDP）训练 240K 步（160K 监督 + 50K 自监督 + 30K 监督）。在三个静态 + 三个动态 benchmark 上评测。</p>
+
+    <h3>基准测试</h3>
+    <ul>
+      <li><b>相机位姿（AUC）。</b>在静态（7-Scenes、NRGBD、ETH3D）与动态（DyCheck、Sintel、TUM-Dynamic）上，「我们的模型在静态与动态数据集、严格与宽松阈值下都一致超越所有基线」。优化式 MegaSaM 在动态 Sintel 有竞争力，「但在宽基线或弱纹理场景退化」。</li>
+      <li><b>深度（AbsRel↓ / δ₁.₂₅↑）。</b>在静态上超越基线，「在动态场景中更甚」（Sintel：δ₁.₂₅ 86.1→93.5，AbsRel 0.118→0.081）。</li>
+      <li><b>规模效应。</b>「更大的 10B 变体一致地优于 1B 模型，说明扩大重建模型直接提升相机与深度精度。」</li>
+    </ul>
+
+    <table>
+      <tr><th>Sintel（动态）</th><th>之前最佳</th><th>VGGT-Ω</th><th>提升</th></tr>
+      <tr><td>相机 AUC@3°</td><td>22.5</td><td class="good">40.0</td><td>+77%</td></tr>
+      <tr><td>相机 AUC@30°</td><td>58.3</td><td class="good">79.1</td><td>+35%</td></tr>
+      <tr><td>深度 δ₁.₂₅</td><td>74.1</td><td class="good">93.5</td><td>+26%</td></tr>
+    </table>
+
+    <div class="grid2">
+      <figure style="margin:0"><img src="img/qual_v6.webp" alt="qualitative"><figcaption>静态与动态场景结果——交通、人体运动、自然风光、水下环境。</figcaption></figure>
+      <figure style="margin:0"><img src="img/qual_comp_to_da3.webp" alt="vs DA3 MegaSaM"><figcaption>对比 Depth Anything 3 与 MegaSaM。DA3「在重复纹理上挣扎……在强相机 roll 下会多次重建塔」；MegaSaM「在稀疏室内场景或无纹理墙面会崩坏」。相比之下，VGGT-Ω 的重建全局一致。</figcaption></figure>
+    </div>
+
+    <figure>
+      <img src="img/mem_speed_v2_vector.webp" alt="memory and speed">
+      <figcaption><b>推理显存与速度。</b>VGGT-Ω 与（修正后的）VGGT 都能在单张 A100 上处理 1000+ 帧，而 DA3 约 750 帧就 OOM。VGGT-Ω 更快——主要得益于 DINOv3（patch 16，token 少约 25%）与 register attention（再提速 20–25%）。激进变体（全部全局层→register attention）把 1000 帧运行时间从 240.2s 降到 11.7s，但牺牲精度。<br><small>「推理时去掉全局注意力主要省的是速度而非显存」——FlashAttention v2 从不物化完整注意力矩阵，峰值显存由随帧数线性增长的帧注意力激活主导。</small></figcaption>
+    </figure>
+
+    <h3>消融（1B 模型，2M 序列）</h3>
+    <table>
+      <tr><th>设置</th><th>Point error ↓</th><th>结论</th></tr>
+      <tr><td>数据每步 10× 递增</td><td>0.275 → 0.073</td><td>单调下降，类幂律</td></tr>
+      <tr><td>仅全局注意力</td><td>0.071</td><td>基准</td></tr>
+      <tr><td>+ 25% register attention</td><td>0.073</td><td>「与原版几乎相同」</td></tr>
+      <tr><td>去掉点 + 匹配损失</td><td>0.078（变差）</td><td>多任务损失有用</td></tr>
+      <tr><td>VGGT 多头多任务设置</td><td>0.070</td><td>略好但难规模化</td></tr>
+      <tr><td>+ 10% 自监督步</td><td>0.073 → 0.070</td><td>略升；OOD 泛化更好</td></tr>
+    </table>
+    <p><b>标注质量。</b>在 Sintel 上，本管线伪标签达到 96.4% AUC@30°（MegaSaM 62.1%）、深度 δ₁.₂₅ 99.3%（MegaSaM 77.2%）。「我们生成伪标签的目标不是最大化产量，而是只保留极有可能正确的序列与像素」——管线刻意保守。</p>
+  </div>
+</section>
+
+<!-- ============ APPLICATIONS ============ -->
+<section id="apps">
+  <div class="wrap">
+    <h2><span class="n">05</span> Register 的应用</h2>
+    <p class="lead">一个关键发现：「学到的寄存器可以在重建之外被复用」——它们「携带高层、很可能相当语义化的信息，可与语言空间对齐」。</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>机器人（VLA）</h3>
+        <p>从冻结的 VGGT-Ω 抽取寄存器（场景 token），拼接到 OpenVLA-OFT 输入 token。「几何感知的寄存器在所有 LIBERO 任务上一致提升性能。」</p>
+      </div>
+      <div class="card">
+        <h3>语言对齐</h3>
+        <p>用 CLIP 风格对比学习把寄存器派生嵌入与 VLM 文本嵌入对齐。该 language token「从不直接观察图像 patch token，只能读取寄存器」，因此对齐成功证明寄存器本身携带场景级信息。视频检索 top-1 76.8% / top-3 97.0%；零样本迁移到纯文本 LLM 嵌入仍有 47.5% / 77.8%。</p>
+      </div>
+    </div>
+    <figure><img src="img/text_alignment.webp" alt="language alignment"><figcaption>语言对齐流程。结果与「柏拉图表征假说」一致——「强几何模型学到的表征可以自然地与其它模态（如语言）的表征对齐」。</figcaption></figure>
+    <figure><img src="img/motion.webp" alt="motion awareness"><figcaption><b>运动感知自发涌现。</b>对中间层 token 归一化、PCA 降维、k-means 聚类（无标签、无光流、无学习探针），「一个 PCA 聚类在所有帧中持续跟踪运动的舞者，而静态人群和背景留在其它聚类」。早期层（layer 4）运动分割最干净，深层「越来越全局、越来越语义」。模型从未被给予帧的时间顺序。</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============ LIMITATIONS ============ -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">06</span> 局限性与坦诚观察</h2>
+    <p class="lead">在「Further Insights / Discussion」中，作者分享了「尚未严格证实、但我们认为对分享仍有用」的经验性观察。其中不少正是当前方法的局限与权衡。</p>
+
+    <details class="lim" open><summary>纯 MLP 解码头产生方块伪影</summary>
+      <p>「纯 MLP 头会在预测深度图上产生可见的 patch/block 伪影，尽管它们在定量指标上常优于卷积方案、更快、更省显存。」该问题「在室外场景比室内更普遍，尤其当场景含远景物体时」（无界深度）。mipmap 风格监督、概率建模等补救「都没能可靠去除伪影」，因此折中保留少量浅层卷积。作者仍认为「纯 MLP 密集解码头是一个有前景、重要的方向」。</p>
+    </details>
+
+    <details class="lim"><summary>自监督训练收益有限、且很难做好</summary>
+      <p>「迄今我们发现它有助于改善模型泛化，尤其是 OOD 数据，但对大多数 benchmark 影响很小。要做得更好并非易事。」作者尝试了新视图合成、RayZer/E-RayZer 变体、token 生成、NeRF/高斯泼溅目标、token 掩码、时序等——「在我们的实现里只有 teacher-student 奏效」，且仍需预训练模型。「自监督重建对社区而言仍是开放问题。」</p>
+    </details>
+
+    <details class="lim"><summary>无界几何（如天空深度）难以处理</summary>
+      <p>曾尝试一个预测无效区域的额外分支，希望模型忽略天空。「尽管模型准确预测了无效掩码，天空像素仍出现在深度估计的前景中，很可能是这些区域缺乏监督信号所致。」该预测头最终从模型中移除。</p>
+    </details>
+
+    <details class="lim"><summary>预测归一化以稳定性换外观</summary>
+      <p>「一旦模型收敛，我们观察到训练时加不加预测归一化在定量性能上没有差别。归一化的主要好处是定性的……缺点是优化变得不稳定，学习曲线更陡，需要更细致的调参以避免梯度爆炸。」</p>
+    </details>
+
+    <details class="lim"><summary>为简单性主动牺牲了部分精度</summary>
+      <p>使用 VGGT 的相机迭代细化、向密集头注入原始 RGB 等技巧，「在多个数据集上 AUC@3° 进一步提升 4%–6%、δ₁.₂₅ 约 2%」，但「我们刻意优先保持模型整体的简单性」，以便为社区提供更干净的基座。</p>
+    </details>
+
+    <details class="lim"><summary>辅助输入在预训练阶段反而有害</summary>
+      <p>「在预训练阶段引入这些先验，即使随机或跨迭代掩码施加，往往是有害的。」只在微调阶段提供条件辅助输入（时序、相机、深度、尺度）「非常有效」。</p>
+    </details>
+
+    <details class="lim"><summary>对训练数据噪声敏感，会记住特异噪声</summary>
+      <p>如「数据质量」一节，模型会「死记硬背特异噪声」（如把人当作地面的一部分），失败在标准 benchmark 上不可见——只能靠激进的数据过滤缓解，即强烈依赖数据清洗管线。</p>
+    </details>
+
+    <div class="note">
+      <b>一句话总结：</b>VGGT-Ω 在「简单性 vs 精度」「自监督理想 vs 实际收益」「无界几何」「数据噪声敏感」等方面做了务实的权衡。它被定位为一个干净、可扩展的<b>基座模型</b>，而非把每项指标都压榨到极致的系统。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    由论文 LaTeX 源码与图表整理生成 · VGGT-Ω: Scaling Feed-Forward 3D Reconstruction · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2605.15195">arxiv.org/abs/2605.15195</a> · 项目主页：<a href="http://vggt-omega.github.io/">vggt-omega.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "slug": "diffusion-self-distill",
+  "title": "扩散作为自蒸馏：单模型端到端潜变量扩散",
+  "arxiv_id": "2511.14716",
+  "url": "https://arxiv.org/abs/2511.14716",
+  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "keywords": [
+    "latent diffusion model",
+    "end-to-end training",
+    "self-distillation",
+    "潜空间坍塌",
+    "VAE联合训练",
+    "rank differentiation",
+    "Vision Transformer",
+    "图像生成",
+    "EMA momentum encoder",
+    "FID ImageNet"
+  ],
+  "summary_zh": "本文提出 Diffusion as Self-Distillation（DSD）框架，通过 Stop-Gradient 解耦、损失变换和 EMA 目标编码器三项设计，将 VAE 编解码器与扩散网络统一为单一可训练模型，解决联合训练中的潜空间坍塌问题，DSD-B（205M 参数）仅需 50 个训练 epoch 即在 ImageNet 256×256 上取得 FID=4.25。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

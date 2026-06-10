@@ -1,0 +1,22 @@
+{
+  "slug": "uncertainty-hil",
+  "title": "不确定性免费获得：基于扩散模型的人机协作策略",
+  "arxiv_id": "2503.01876",
+  "url": "https://arxiv.org/abs/2503.01876",
+  "category": "机器人操作 · VLA · 策略学习",
+  "keywords": [
+    "Human-in-the-Loop",
+    "diffusion policy",
+    "不确定性估计",
+    "机器人操控",
+    "去噪不确定性",
+    "半自主策略",
+    "策略微调",
+    "分布偏移",
+    "denoising uncertainty",
+    "intervention request"
+  ],
+  "summary_zh": "本文提出利用扩散策略去噪过程中固有的不确定性信号，无需额外训练或人工标注，即可识别机器人何时需要请求人工干预，构建高效半自主Human-in-the-Loop系统，并将干预数据用于策略微调以持续提升自主性能。",
+  "date": "2026-06-10",
+  "source": "backfill"
+}

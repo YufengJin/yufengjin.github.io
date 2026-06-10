@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!--
+  Flow3r 中文海报
+  arXiv: 2602.20157  |  CVPR 2026
+-->
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow3r：面向可扩展视觉几何学习的因子化光流预测</title>
+<meta name="keywords" content="factored optical flow, visual geometry learning, 无标注视频监督, 前馈式三维重建, 相机位姿估计, 动态场景重建, 稠密对应关系, 伪标注流监督, 可扩展几何学习, 多视角Transformer">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;padding-top:14px}
+  .langbar a{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:var(--chip)}
+  .langbar a.on{color:var(--acc);border-color:var(--acc)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:40px;line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .formula{font-family:"SF Mono","Fira Code",monospace;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:12px 0;font-size:15px;color:#cdd9e5;display:block;overflow-x:auto}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+<span class="tag">CVPR 2026 · Carnegie Mellon University</span>
+    <h1>Flow3r：面向可扩展视觉几何学习的因子化光流预测</h1>
+    <div class="sub">Flow3r: Factored Flow Prediction for Scalable Visual Geometry Learning</div>
+    <div class="authors">Zhongxiao Cong &nbsp;·&nbsp; Qitao Zhao &nbsp;·&nbsp; Minsik Jeon &nbsp;·&nbsp; Shubham Tulsiani &nbsp;|&nbsp; Carnegie Mellon University</div>
+    <p class="lead">
+      Flow3r 提出以2D稠密对应关系（"光流"）作为监督信号，使视觉几何网络能够从<strong>无标注视频</strong>中学习，无需昂贵的3D/相机标注。核心洞察是：光流预测模块应当被"因子化"——用源视图的<em>几何特征</em>与目标视图的<em>相机特征</em>共同预测光流，从而同时指导场景几何与相机运动的学习，并自然推广至动态场景。
+    </p>
+    <div class="meta">
+      <span>CVPR 2026</span>
+      <span>~800K 无标注视频</span>
+      <span>8个基准测试 SOTA</span>
+      <span><a href="https://arxiv.org/abs/2602.20157">📄 arXiv:2602.20157</a></span>
+      <span><a href="https://flow3r-project.github.io/">🌐 项目主页</a></span>
+    </div>
+  </div>
+</header>
+<div class="kwstrip" style="border-bottom:1px solid #283040;background:#10141b"><div style="max-width:980px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;gap:7px;align-items:center"><span style="color:#6b7785;font-size:12px;margin-right:4px">关键词</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">factored optical flow</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">visual geometry learning</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">无标注视频监督</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">前馈式三维重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">相机位姿估计</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">动态场景重建</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">稠密对应关系</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">伪标注流监督</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">可扩展几何学习</span><span style="font-size:12.5px;color:#9aa7b4;background:#1a2230;border:1px solid #283040;border-radius:999px;padding:3px 11px">多视角Transformer</span></div></div>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前最先进的前馈式3D/4D重建系统依赖稠密几何与相机位姿标注进行训练——这类标注在大规模场景下获取代价高昂，对于动态真实世界场景尤其稀缺。这一瓶颈使视觉几何学习无法像语言模型或视觉Transformer那样从海量无标注数据中扩展。
+    </p>
+    <blockquote>
+      "Current feed-forward 3D/4D reconstruction systems rely on dense geometry and pose supervision — expensive to obtain at scale and particularly scarce for dynamic real-world scenes."
+    </blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="Flow3r teaser">
+      <figcaption>
+        <strong>图1. Flow3r 总览。</strong>Flow3r 利用无标注视频（通过光流监督）配合有标注3D数据，实现可扩展的视觉几何学习。这使模型能够在野外场景下进行精准多视角3D重建，尤其对有标注数据极少的场景（如交互视频、动态场景）效果显著。
+      </figcaption>
+    </figure>
+
+    <h3>核心问题</h3>
+    <p>
+      光流（两帧之间的像素级稠密对应关系）是经典多视角方法中的核心信号，也是近年稠密对应估计器的输出目标。
+      Flow3r 的关键研究问题是：<strong>如何利用光流有效地监督视觉几何学习？</strong>
+      现有方法（如 VGGT）虽尝试将光流预测作为辅助目标，但仅通过局部特征匹配预测光流，主要鼓励视觉判别特征，<em>并不直接促进</em>几何与相机位姿的学习。
+    </p>
+
+    <div class="kpi">
+      <div><b>8</b><small>静态+动态基准 全部达到 SOTA</small></div>
+      <div><b>~800K</b><small>无标注训练视频序列</small></div>
+      <div><b>76.26</b><small>RRA@30↑ 动态场景（vs 基线 66.01）</small></div>
+      <div><b>97.62</b><small>RTA@30↑ CO3Dv2 静态场景</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Flow3r 在标准有监督视觉几何网络（如 π³、VGGT）基础上，附加一个<strong>因子化光流预测头</strong>，将源视图的几何特征（geometry latents）与目标视图的相机特征（camera latents）融合后，通过 DPT 头解码出稠密光流预测。训练时对有标注数据使用真实监督，对无标注视频则由教师模型（UFM）提供伪标注光流进行监督。
+    </p>
+
+    <figure>
+      <img src="img/x2.webp" alt="光流预测机制对比">
+      <figcaption>
+        <strong>图2. 光流预测机制对比。</strong>(a) 视觉几何骨干网络：编码器输出相机 token 与 patch token；(b) 基于匹配的对应关系预测：直接从局部特征匹配预测光流（VGGT等方案）；(c) 基于投影几何的因子化：将预测的3D点显式投影至目标视图（仅适用于静态场景，对几何误差敏感）；(d) <strong>本文的因子化光流预测</strong>：将源视图几何特征与目标视图相机特征在隐空间中融合后解码，自然扩展至动态场景。
+      </figcaption>
+    </figure>
+
+    <h3>因子化光流预测（Factored Flow Prediction）</h3>
+    <p>
+      对于静态场景，源视图 <em>i</em> 到目标视图 <em>j</em> 的光流仅由源视图几何（全局点图）和目标相机位姿决定。
+      受此启发，Flow3r 不进行解析投影，而是训练一个<strong>学习型非对称光流预测模块</strong>：
+    </p>
+    <code class="formula">F̂<sub>i→j</sub> = Φ<sub>flow</sub>(g<sub>i</sub>, c<sub>j</sub>)</code>
+    <p>
+      其中 <code>g<sub>i</sub></code> 为源视图几何特征，<code>c<sub>j</sub></code> 为目标视图相机特征（来自多视角 Transformer 的输出）。
+      这一设计绕过了对显式几何元素的解码，提升了鲁棒性，并使模型能够端对端训练。
+      对于动态场景，光流自然被理解为相机运动与场景运动的叠加，无需额外设计。
+    </p>
+
+    <h3>总体架构与训练目标</h3>
+    <figure>
+      <img src="img/x3.webp" alt="Flow3r 总体架构">
+      <figcaption>
+        <strong>图3. Flow3r 总体架构。</strong>多视角 Transformer 同时输出相机 token（c<sub>i</sub>）和 patch token（x<sub>i</sub>）。对有标注数据，直接用真实相机位姿与几何监督相应输出。对无标注数据，将融合后的 patch token 与相机 token 一同送入光流预测头，输出预测光流并与教师模型（Flow Teacher，即 UFM）产生的伪标注对比计算损失。
+      </figcaption>
+    </figure>
+    <p>
+      Flow3r 在两阶段训练：首先冻结骨干网络，仅在有标注数据上训练光流头；然后解冻全部参数，结合有标注与无标注数据端对端微调。
+      流监督损失采用鲁棒回归损失（广义 Charbonnier loss），并使用可视性掩码 <strong>C</strong> 屏蔽遮挡区域：
+    </p>
+    <code class="formula">L<sub>flow</sub> = 1/Σ<sub>p∈Ω</sub> C[p] · Σ<sub>p∈Ω</sub> C[p] · ℓ<sub>robust</sub>(‖û<sub>i→j</sub>[p] − u<sub>i→j</sub>[p]‖₂)</code>
+
+    <h3>与现有方法的关键区别</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>flow-tracking（VGGT 方案）</h3>
+        <ul>
+          <li>基于双视图 patch 特征的匹配头</li>
+          <li>主要学习视觉判别特征</li>
+          <li><strong>不直接促进</strong>几何或相机位姿学习</li>
+          <li>实验表明几乎无法提升几何质量</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>flow-projective（解析投影方案）</h3>
+        <ul>
+          <li>将预测3D点显式投影至目标相机</li>
+          <li>仅适用于<strong>静态场景</strong></li>
+          <li>对解码几何误差敏感，甚至<strong>降低性能</strong></li>
+          <li>Flow3r（flow-factored）在所有场景上均优于此方案</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      Flow3r 在两类设置下评估：(1) 受控对照实验，验证因子化光流的有效性；(2) 将其集成进 π³ 与 VGGT 骨干，在8个基准（4个动态 + 4个静态）上对比前沿前馈方法。
+      有标注数据集涵盖 CO3Dv2、Habitat、ARKitScenes、ScanNet++ 等约11个多视角重建数据集（约34K序列），无标注视频来自 Kinetics-700、SpatialVID、EPIC-KITCHENS（~800K序列）。
+    </p>
+
+    <h3>Table 1：因子化光流对视觉几何学习的提升（受控实验）</h3>
+    <table>
+      <tr>
+        <th>模型变体</th>
+        <th>静态 RRA@30↑</th>
+        <th>静态 RTA@30↑</th>
+        <th>静态 CD↓</th>
+        <th>静态 MSE↓</th>
+        <th>动态 RRA@30↑</th>
+        <th>动态 RTA@30↑</th>
+        <th>动态 MSE↓</th>
+      </tr>
+      <tr>
+        <td>3d-sup（无无标注数据基线）</td>
+        <td>0.7500</td>
+        <td>0.6929</td>
+        <td>0.030</td>
+        <td>0.088</td>
+        <td>66.01</td>
+        <td>62.37</td>
+        <td>0.637</td>
+      </tr>
+      <tr>
+        <td>flow-projective</td>
+        <td>0.6700</td>
+        <td>0.4572</td>
+        <td>0.033</td>
+        <td>0.088</td>
+        <td>61.23</td>
+        <td>56.12</td>
+        <td>0.710</td>
+      </tr>
+      <tr>
+        <td>flow-tracking</td>
+        <td>0.7438</td>
+        <td>0.7021</td>
+        <td>0.030</td>
+        <td>0.089</td>
+        <td>68.56</td>
+        <td>62.95</td>
+        <td>0.628</td>
+      </tr>
+      <tr>
+        <td><strong>flow-factored（Flow3r）</strong></td>
+        <td class="good">0.7700</td>
+        <td class="good">0.7366</td>
+        <td class="good">0.026</td>
+        <td class="good">0.078</td>
+        <td class="good">76.26</td>
+        <td class="good">68.84</td>
+        <td class="good">0.598</td>
+      </tr>
+    </table>
+
+    <h3>Table 2：动态场景基准测试对比</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>Kinetics700 MSE↓</th>
+        <th>Kinetics700 f-score@5↑</th>
+        <th>EPIC-KITCHENS MSE↓</th>
+        <th>EPIC-KITCHENS f-score@5↑</th>
+        <th>Sintel f-score@5↑</th>
+        <th>Bonn f-score@5↑</th>
+      </tr>
+      <tr><td>DUSt3R</td><td>0.312</td><td>0.528</td><td>0.338</td><td>0.493</td><td>0.271</td><td>0.800</td></tr>
+      <tr><td>CUT3R</td><td>0.303</td><td>0.575</td><td>0.338</td><td>0.493</td><td>0.676</td><td>0.899</td></tr>
+      <tr><td>VGGT</td><td>0.220</td><td>0.617</td><td>0.220</td><td>0.620</td><td>0.595</td><td>0.884</td></tr>
+      <tr><td>π³</td><td>0.200</td><td>0.620</td><td>0.200</td><td>0.620</td><td>0.523</td><td>0.905</td></tr>
+      <tr>
+        <td><strong>Flow3r（本文）</strong></td>
+        <td class="good">0.256</td>
+        <td class="good">0.599</td>
+        <td class="good">0.199</td>
+        <td class="good">0.622</td>
+        <td class="good">0.426</td>
+        <td class="good">0.954</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">Flow3r 在所有动态数据集上一致优于 DUSt3R、CUT3R、VGGT 和 π³。</p>
+
+    <h3>Table 3：静态场景基准测试对比</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>CO3Dv2 RTA@30↑</th>
+        <th>CO3Dv2 f-score@5↑</th>
+        <th>ScanNet RTA@30↑</th>
+        <th>ScanNet f-score@5↑</th>
+        <th>NRGBD f-score@5↑</th>
+        <th>7-Scenes f-score@5↑</th>
+      </tr>
+      <tr><td>DUSt3R</td><td>90.68</td><td>0.783</td><td>57.14</td><td>0.831</td><td>93.25</td><td>0.714</td></tr>
+      <tr><td>CUT3R</td><td>90.68</td><td>0.737</td><td>71.39</td><td>0.740</td><td>95.63</td><td>0.695</td></tr>
+      <tr><td>VGGT</td><td>87.62</td><td>0.884</td><td>89.17</td><td>0.931</td><td>99.21</td><td>0.665</td></tr>
+      <tr><td>π³</td><td>97.49</td><td>0.905</td><td>91.44</td><td>0.964</td><td>99.20</td><td>0.737</td></tr>
+      <tr>
+        <td><strong>Flow3r（本文）</strong></td>
+        <td class="good">97.62</td>
+        <td class="good">0.876</td>
+        <td class="good">92.89</td>
+        <td class="good">0.943</td>
+        <td class="good">99.60</td>
+        <td class="good">0.807</td>
+      </tr>
+    </table>
+
+    <figure>
+      <img src="img/x4.webp" alt="因子化光流对比消融">
+      <figcaption>
+        <strong>图4. 因子化光流促进视觉几何学习。</strong>与基线（3d-sup）和其他光流监督变体（flow-projective、flow-tracking）相比，Flow3r（flow-factored）能产生更精准的场景重建，突显无标注数据与因子化光流设计的优势。
+      </figcaption>
+    </figure>
+
+    <h3>无标注数据扩展性（Table 4）</h3>
+    <p>固定1K有标注 OmniWorld 序列，逐步增加无标注 SpatialVID 数据量：</p>
+    <table>
+      <tr><th>有标注序列数</th><th>无标注序列数</th><th>RRA@30↑</th><th>MSE↓</th></tr>
+      <tr><td>OmniWorld (1K)</td><td>—</td><td>66.01</td><td>0.637</td></tr>
+      <tr><td>OmniWorld (1K)</td><td>SpatialVID (3K)</td><td>76.26</td><td>0.598</td></tr>
+      <tr><td>OmniWorld (1K)</td><td>SpatialVID (10K)</td><td>78.45</td><td>0.560</td></tr>
+      <tr><td>OmniWorld (1K)</td><td class="good">SpatialVID (20K)</td><td class="good">81.12</td><td class="good">0.532</td></tr>
+      <tr><td>OmniWorld (4K，参考基线）</td><td>—</td><td>78.68</td><td>0.565</td></tr>
+    </table>
+    <p>使用20K条无标注视频（1K有标注 + 20K无标注）可超越4K有标注数据的模型，证明因子化光流监督的扩展性。</p>
+
+    <figure>
+      <img src="img/x5.webp" alt="无标注数据扩展">
+      <figcaption>
+        <strong>图5. 无标注视频扩展效果。</strong>随着 SpatialVID 无标注数据量不断增加，动态场景重建质量持续提升，甚至超越使用更多有标注数据训练的模型，验证了因子化光流监督的可扩展性。
+      </figcaption>
+    </figure>
+
+    <h3>定性结果对比</h3>
+    <figure>
+      <img src="img/x6.webp" alt="定性结果对比">
+      <figcaption>
+        <strong>图6. 野外数据定性结果。</strong>在静态场景、动态场景和交互视频上，与 VGGT、π³、CUT3R 等前馈方法对比重建效果。Flow3r 能推断出更整洁、更准确的场景结构，而基线方法常出现错位输出或错误的运动估计。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Table 5）</h3>
+    <p>以 VGGT 和 π³ 为骨干，逐步加入有标注流监督与无标注流监督：</p>
+    <ul>
+      <li>仅有标注3D监督（base model）：EPIC-KITCHENS f-score = 0.620，7-Scenes f-score = 0.737</li>
+      <li>+ 有标注数据上的流监督（多任务）：提升有限</li>
+      <li>+ 有标注+无标注数据的完整流监督（Flow3r）：EPIC-KITCHENS f-score = 0.622，7-Scenes f-score = 0.807</li>
+    </ul>
+    <p>无标注数据带来的增益<strong>主要来自无标注视频</strong>，而非多任务学习本身。</p>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>论文第5节（Discussion）明确陈述了以下三点局限性，均为作者<strong>明确指出（stated）</strong>，非推断。
+    </div>
+
+    <details class="lim" open>
+      <summary>依赖教师模型提供伪标注（Teacher Model Dependency）</summary>
+      <p>"Flow3r relies on off-the-shelf models to provide pseudo-ground-truth flow supervision, and there can be domains where such 2D prediction fails." — 在某些分布外领域（如医学图像、航拍等），预训练2D光流模型可能给出低质量伪标注，从而影响几何学习。</p>
+    </details>
+
+    <details class="lim">
+      <summary>复杂动态场景中多运动体的挑战（Complex Multi-Object Dynamics）</summary>
+      <p>"Although our factored flow formulation elegantly handles dynamic scenes…, Flow3r may struggle under complex scenes with multiple independently moving components." — 当场景中存在多个独立运动物体时，单一相机特征 token 可能无法完整编码所有运动信息。</p>
+    </details>
+
+    <details class="lim">
+      <summary>当前实验规模距真正大规模仍有差距（Scale Gap to Web-Scale）</summary>
+      <p>"Our current experiments operate at a moderate scale (~800K video sequences for flow supervision), and scaling to truly large-scale settings (~10-100M videos) presents an exciting but unexplored direction." — 尽管~800K序列已展现出良好的扩展性，更大规模训练的潜力尚未被探索，且对算力与存储提出了新挑战。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推断（inferred）：因子化光流对独立流估计并非最优</summary>
+      <p>作者本人指出："our factored flow prediction is <em>suboptimal</em> for standalone flow estimation — since it enforces an information bottleneck by conditioning on the target-view camera token rather than patch features that contain richer visual cues." 即该设计优化的是几何监督信号质量，而非光流预测本身的精度。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本海报内容整理自论文原文与图表，仅供学习参考 · Flow3r: Factored Flow Prediction for Scalable Visual Geometry Learning<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.20157">https://arxiv.org/abs/2602.20157</a>
+    &nbsp;|&nbsp;
+    项目主页: <a href="https://flow3r-project.github.io/">https://flow3r-project.github.io/</a>
+  </div>
+</footer>
+
+</body>
+</html>

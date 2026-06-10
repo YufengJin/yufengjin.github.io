@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative Uncertainty in Diffusion Models</title>
+<meta name="keywords" content="Diffusion Models, Generative Uncertainty, Bayesian Inference, Laplace Approximation, 不确定性估计, Sample Quality, Flow Matching, CLIP">
+<meta name="description" content="提出用贝叶斯框架估计扩散模型生成样本的"生成不确定性"，无需人工标注即可自动识别低质量生成图像。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">生成模型 · Generative Models</span>
+    <h1>Generative Uncertainty in Diffusion Models</h1>
+    <div class="sub">用贝叶斯框架自动识别扩散模型的低质量生成样本</div>
+    <div class="authors">Metod Jazbec, Eliot Wong-Toi, Guoxuan Xia, Dan Zhang, Eric Nalisnick, Stephan Mandt · arXiv 2025</div>
+    <p class="lead">扩散模型整体生成质量很高，但单次生成仍可能出现伪影或与条件不符的情况。本文提出"生成不确定性"（generative uncertainty）概念，借助 Laplace 近似将贝叶斯推断扩展到数十亿参数的大型扩散模型，通过语义似然度在潜空间中量化每张图像的不可靠程度，无需人工标注即可自动过滤低质量样本，从而显著提升生成集合的整体质量。</p>
+    <div class="meta">
+      <span>arXiv 2025-02-28</span>
+      <span>cs.LG · cs.AI</span>
+      <span>ImageNet 256×256</span>
+      <span><a href="https://arxiv.org/abs/2502.20946">📄 arXiv:2502.20946</a></span>
+      <span><a href="https://arxiv.org/pdf/2502.20946">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>Diffusion Models</span>
+      <span>Generative Uncertainty</span>
+      <span>Bayesian Inference</span>
+      <span>Laplace Approximation</span>
+      <span>不确定性估计</span>
+      <span>Sample Quality</span>
+      <span>Flow Matching</span>
+      <span>CLIP</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">扩散模型平均生成质量虽高，但单次采样仍会产生含有伪影的低质量图像，现有方法只能依赖人工审核来筛选——这既费时又难以规模化。</p>
+    <blockquote>"How can Bayesian principles help us detect poor generations?" 如何用贝叶斯原则自动检测低质量生成样本？</blockquote>
+
+    <figure>
+      <img src="img/fig1-method.webp" alt="方法概览图">
+      <figcaption>图1：方法总览。对于给定噪声输入 z，从 Laplace 后验中采样 M 组模型参数，分别生成 M 张图像，将其映射到语义嵌入空间，再计算该分布的熵作为"生成不确定性"。高不确定性图像被自动标记为低质量候选并过滤。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>7.89</b><small>UViT 过滤后 FID (n=10K)</small></div>
+      <div><b>9.45</b><small>随机基线 FID</small></div>
+      <div><b>25</b><small>最少额外 NFE（优化版）</small></div>
+      <div><b>–0.27</b><small>不确定性与 Realism 相关性（互补信号）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">核心思路：把分类任务中"预测不确定性"（predictive uncertainty）的概念迁移到生成模型——用后验预测分布的方差来衡量每个样本的可靠程度，并借助 last-layer Laplace approximation 和语义似然使之在大型模型上高效可行。</p>
+
+    <figure>
+      <img src="img/fig2-toy.webp" alt="玩具示例">
+      <figcaption>图2：二维高斯玩具示例。训练 ensemble (M=5) 后，过滤掉 50% 高不确定性样本，有效去除了两个模式之间的"幻觉"样本，分布质量大幅提升。</figcaption>
+    </figure>
+
+    <h3>生成不确定性定义</h3>
+    <p>对于给定的隐变量 z，生成不确定性定义为后验预测分布的变分度（variability）：<br>
+    <code>u(z) := V(p(x | z, D))</code><br>
+    其中 V(·) 为熵（entropy），p(x | z, D) 通过对参数后验积分得到。高 u(z) 意味着不同参数设置会产生差异显著的输出，即该样本是不可靠的。</p>
+
+    <h3>Last-Layer Laplace Approximation（可扩展贝叶斯推断）</h3>
+    <p>对超过 1 亿参数的扩散模型直接做完整贝叶斯推断计算上不可行。本文只在模型最后一层施加 Laplace 近似，将参数后验近似为高斯分布：<br>
+    <code>q(θ | D) = N(θ | θ̂, Σ)</code>，其中 Σ = (∇²_θ L(θ; D)|_θ̂)⁻¹<br>
+    这样仅需在训练后一次性计算 Hessian 逆，无需重新训练，天然兼容任意预训练扩散或 Flow Matching 模型（post-hoc 方法）。</p>
+
+    <h3>语义似然（Semantic Likelihood）</h3>
+    <p>像素空间的似然在高维情况下失效（维度诅咒）。本文引入基于预训练编码器（如 CLIP）的语义似然：<br>
+    <code>p(x | g_θ(z); φ) = N(e(x) | c_φ(g_θ(z)), σ²I)</code><br>
+    将生成图像和目标图像都投影到语义特征空间，再计算 Gaussian 似然。这使不确定性估计关注视觉语义质量而非像素级细节，大幅提升了对低质量样本的识别能力。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 ImageNet 256×256 上分别使用 UViT 和 ADM 两个扩散模型进行评估，与随机基线、BayesDiff 以及 aleatoric uncertainty (AU) 方法对比，指标为 FID、Precision、Recall。</p>
+
+    <table>
+      <tr><th>模型 / 方法</th><th>n=10K FID ↓</th><th>Precision ↑</th><th>备注</th></tr>
+      <tr><td><b>Ours (UViT)</b></td><td class="good">7.89</td><td class="good">~0.73</td><td>M=5, T=50</td></tr>
+      <tr><td>BayesDiff (UViT)</td><td>9.16</td><td>~0.67</td><td>—</td></tr>
+      <tr><td>AU / Aleatoric Unc.</td><td>9.20</td><td>—</td><td>—</td></tr>
+      <tr><td>随机基线</td><td>9.45</td><td>—</td><td>—</td></tr>
+      <tr><td><b>Ours (ADM)</b></td><td class="good">10.36</td><td>—</td><td>M=1, T=25（轻量版）</td></tr>
+      <tr><td>BayesDiff (ADM)</td><td>11.20</td><td>—</td><td>—</td></tr>
+      <tr><td>随机基线 (ADM)</td><td>11.31</td><td>—</td><td>—</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/fig3-uvit-filtering.webp" alt="UViT 过滤结果">
+      <figcaption>图3：在 UViT 模型上，随过滤比例（filtering ratio）增大，本文方法的 FID 持续下降，始终优于 BayesDiff 和随机基线，Precision 也同步提升。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/fig4-efficiency.webp" alt="计算效率 Pareto 图">
+      <figcaption>图4：计算效率 Pareto 图。横轴为额外 NFE（network function evaluations），纵轴为 FID。本文方法在不同计算预算下均优于 BayesDiff；优化配置 M=1, T=25 仅需 25 额外 NFE，即可超越所有基线。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/fig5-best-samples.webp" alt="最优低不确定性样本示例">
+      <figcaption>图5：低不确定性样本示例（即模型最"有把握"的生成图像），视觉质量高、类别特征清晰，是各类别的"典范"图像。</figcaption>
+    </figure>
+
+    <h3>Ablations 与补充分析</h3>
+    <ul>
+      <li><b>互补性：</b>生成不确定性与 realism score 相关性仅为 -0.27，与 rarity score 相关性为 0.38，说明提供了独立的质量信号。联合过滤可进一步将 FID 降至 <b>7.60</b>（vs. 单独 realism+rarity 的 8.26）。</li>
+      <li><b>轻量化：</b>将 M 从 5 减至 1、T 从 50 减至 25，额外 NFE 从 250 降至 25（降低 10×），性能仅略有损失，仍大幅超越随机基线。</li>
+      <li><b>Flow Matching：</b>方法无缝适配 Flow Matching 模型，验证了 post-hoc 框架的通用性。</li>
+      <li><b>类别分布偏移：</b>过滤高不确定性样本后，不同类别被过滤比例不同，导致类别分布轻微偏移。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性部分由作者在论文中明确指出，部分为方法设计的自然结论。</div>
+
+    <details class="lim" open><summary>对预训练编码器的强依赖性</summary>
+    <p>语义似然依赖 CLIP 等预训练图像编码器，导致方法仅适用于自然图像领域。对于分子结构、文本、音频等其他扩散模型擅长的模态，目前暂无合适的编码器，方法无法直接迁移。</p></details>
+
+    <details class="lim"><summary>Laplace 近似的理论正当性不完备</summary>
+    <p>作者明确指出："Applying the Laplace approximation directly, without such reweighting, is not fully theoretically justified"——扩散模型的训练损失包含时间步加权，不严格符合 Laplace 理论要求的 likelihood + prior 形式，因此后验近似的理论保证存在缺口。</p></details>
+
+    <details class="lim"><summary>对角近似可能低估后验复杂度</summary>
+    <p>为保持计算可行性，采用对角（diagonal）last-layer Laplace 近似，忽略参数间协方差。这可能无法完整捕捉真实后验的复杂结构，使不确定性估计的精度受限。论文作者也指出需要更系统地比较不同推断方法。</p></details>
+
+    <details class="lim"><summary>精度–多样性权衡（Precision-Recall Trade-off）</summary>
+    <p>过滤高不确定性样本会降低 recall（即样本多样性），这与其他基于 guidance 的过滤方法面临的问题一致。用户在追求质量提升的同时需接受一定程度的多样性损失。</p></details>
+
+    <details class="lim"><summary>类别分布偏移</summary>
+    <p>在 ImageNet 1000 类的条件生成中，不同类别的高不确定性比例不同，过滤后类别分布发生偏移，可能影响某些需要均匀类别覆盖的下游应用。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Generative Uncertainty in Diffusion Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2502.20946">https://arxiv.org/abs/2502.20946</a>
+  </div>
+</footer>
+
+</body>
+</html>

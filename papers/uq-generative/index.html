@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / metrics / model names kept in English.
+  arXiv: 2511.10710
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Towards Uncertainty Quantification in Generative Model Learning</title>
+<meta name="keywords" content="不确定性量化, Generative Models, Precision-Recall Curves, DDPM, Epistemic Uncertainty, Ensemble Methods, Distribution Evaluation, 生成模型评估">
+<meta name="description" content="首次形式化生成模型评估中不确定性的度量问题，提出基于集成 Precision-Recall 曲线的方法来量化模型近似目标分布的置信度。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">EurIPS 2025 Workshop · Epistemic Intelligence in ML</span>
+    <h1>Towards Uncertainty Quantification in Generative Model Learning</h1>
+    <div class="sub">首次形式化生成模型学习中的不确定性量化问题</div>
+    <div class="authors">Giorgio Morales · Frederic Jurie · Jalal Fadili &nbsp;|&nbsp; arXiv 2511.10710 · 2025</div>
+    <p class="lead">
+      现有生成模型评估方法只关注学习分布与目标分布之间的"距离"，却从未量化该测量本身的置信度。
+      本文形式化了"生成模型学习中的不确定性量化"问题，并提出以集成 Precision-Recall 曲线为核心工具，
+      通过多次独立训练的模型来捕获模型近似目标分布时的不确定性区间。
+    </p>
+    <div class="meta">
+      <span>EurIPS 2025 Workshop</span>
+      <span>cs.LG · cs.AI</span>
+      <span>2025-11-13</span>
+      <span><a href="https://arxiv.org/abs/2511.10710">📄 arXiv:2511.10710</a></span>
+      <span><a href="https://arxiv.org/pdf/2511.10710">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>不确定性量化</span>
+      <span>Generative Models</span>
+      <span>Precision-Recall Curves</span>
+      <span>Epistemic Uncertainty</span>
+      <span>Ensemble Methods</span>
+      <span>DDPM</span>
+      <span>Distribution Evaluation</span>
+      <span>生成模型评估</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机（Motivation）</h2>
+    <p class="lead">
+      生成模型（Generative Models）已广泛应用于粒子物理、天气预报、医疗等高风险领域。
+      然而，现有所有评估指标——FID、IS、Precision-Recall 等——仅测量学习分布与目标分布的"距离"，
+      却完全忽视了这种测量本身蕴含的不确定性。一旦分布对齐偏差微小，就可能导致错误的科学结论或不可靠的预测。
+    </p>
+    <blockquote>
+      "No work quantifies the confidence in the measured closeness between the learned and target distributions."
+      —— 论文原文
+    </blockquote>
+    <figure>
+      <img src="img/PRcomparison.webp" alt="不同复杂度模型的 PR 曲线集成">
+      <figcaption>
+        图 1：不同复杂度（C=1, 2, 4, 8 个残差块）的 DDPM 模型在截断高斯环形分布上训练所得到的集成 Precision-Recall 曲线。
+        阴影区域为 10th–90th 百分位区间，代表模型近似不确定性（model-induced uncertainty）。
+        C=2 与 C=4 的置信区间最窄，显示最低的模型不确定性。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4</b><small>模型复杂度配置 (C=1,2,4,8)</small></div>
+      <div><b>M=30</b><small>每组独立训练的模型数量</small></div>
+      <div><b>20k</b><small>合成训练样本数</small></div>
+      <div><b>44.2%</b><small>C=4 显著优于 C=2 的 PR 曲线占比</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法（Method）</h2>
+    <p class="lead">
+      本文并非提出一个完整算法，而是建立形式化框架并推荐集成 Precision-Recall 曲线作为量化工具：
+      对同一训练集用不同随机初始化独立训练 M 个模型，为每个模型绘制 PR 曲线，
+      然后在统一的 recall 网格上插值并统计百分位区间，以直观展示评估置信度。
+    </p>
+
+    <h3>形式化框架：不确定性分解</h3>
+    <p>
+      作者将<strong>模型诱导不确定性（model-induced uncertainty）</strong>定义为不同初始化下分布度量指标的方差：
+    </p>
+    <blockquote>
+      𝒰_model = 𝔼[𝔻(P_r, P_g^(θ))²] − 𝔼[𝔻(P_r, P_g^(θ))]²
+    </blockquote>
+    <p>
+      进一步，<strong>总评估不确定性（total evaluation uncertainty）</strong>同时纳入模型初始化的随机性与有限采样引入的噪声，
+      是生成模型可靠性评估的完整度量目标。
+    </p>
+
+    <h3>集成 Precision-Recall 曲线</h3>
+    <p>
+      具体做法：训练 M 个独立的生成模型 → 生成各自的 PR 曲线 → 在公共 recall 网格上插值 →
+      计算每个 recall 点的 <strong>10th–90th 百分位置信带</strong>。
+      采用百分位区间而非标准差区间，是为了更好地处理小 ensemble 下的偏斜分布与离群值问题。
+    </p>
+
+    <figure>
+      <img src="img/C42.webp" alt="真实样本与 C=4 生成样本对比">
+      <figcaption>
+        图 2：截断高斯环形分布的真实样本（左）与 C=4 的 DDPM 生成样本（右）。
+        两者在视觉上高度相似，但仅靠目测无法量化学习差异；PR 曲线集成正是用于精确化这种差距。
+      </figcaption>
+    </figure>
+
+    <h3>统计假设检验</h3>
+    <p>
+      在模型比较场景下，作者引入配对 t 检验（paired t-test），
+      对两组 M 个模型的 PR 曲线在每个 recall 值处进行统计比较，
+      以检验两种配置是否存在显著性差异，为工程决策提供统计依据。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验（Experiments）</h2>
+    <p class="lead">
+      实验在合成截断高斯环形分布（20,000 个样本）上训练 DDPM，
+      通过控制残差块数量 C ∈ {1, 2, 4, 8} 模拟欠拟合至过拟合的连续谱，
+      并通过改变数据集大小（5,000 / 20,000）验证数据量对评估不确定性的影响。
+    </p>
+
+    <figure>
+      <img src="img/significance.webp" alt="C=2 与 C=4 模型的 PR 曲线显著性对比">
+      <figcaption>
+        图 3：C=2 与 C=4 模型的集成 PR 曲线对比，以及配对 t 检验的显著性区域。
+        绿色高亮区域表示 C=4 在 0.05 显著性水平下显著优于 C=2 的 recall 区间（占曲线长度 44.2%）。
+      </figcaption>
+    </figure>
+
+    <h3>模型复杂度分析</h3>
+    <table>
+      <tr><th>模型配置</th><th>置信区间宽度</th><th>结论</th></tr>
+      <tr><td>C=1（单残差块）</td><td>最宽</td><td>欠拟合，高 model uncertainty</td></tr>
+      <tr><td>C=2</td><td class="good">最窄之一</td><td>最优复杂度候选</td></tr>
+      <tr><td>C=4</td><td class="good">最窄之一</td><td>最优复杂度候选，统计上优于 C=2</td></tr>
+      <tr><td>C=8</td><td>较宽</td><td>过拟合迹象，不确定性上升</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/datasetsizes.webp" alt="不同数据集大小的 PR 曲线">
+      <figcaption>
+        图 4：训练集大小从 20,000 缩减至 5,000 时的集成 PR 曲线变化。
+        小数据集导致更宽的置信区间（更高的 epistemic uncertainty），
+        且 "smaller datasets also led to worse performance metrics, as the area under the PR curves decreases consistently"。
+      </figcaption>
+    </figure>
+
+    <h3>关键结论</h3>
+    <ul>
+      <li>C=2 与 C=4 均产生最窄置信区间，代表最低模型近似不确定性；C=1 欠拟合、C=8 过拟合均导致不确定性上升。</li>
+      <li>配对 t 检验显示：在显著性水平 0.05 下，C=4 在 <strong>44.2%</strong> 的 PR 曲线区间上显著优于 C=2。</li>
+      <li>数据集越小，PR 曲线置信区间越宽，AUC 越低，验证了数据量对 epistemic uncertainty 的直接影响。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性（Limitations）</h2>
+    <div class="note">
+      <b>Note：</b>以下局限性均为论文作者在 Discussion 部分明确指出的。
+    </div>
+    <details class="lim" open>
+      <summary>计算开销大（Computational Overhead）</summary>
+      <p>
+        生成集成 PR 曲线需要训练 M 个独立模型，对于复杂生成任务而言"computationally prohibitive"。
+        尽管作者认为在可靠性关键应用中此开销是合理的，但大规模实际部署仍面临挑战。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>特征空间依赖性（Feature Space Dependency）</summary>
+      <p>
+        方法依赖基于 kNN 的估计器在某特征空间中计算距离。
+        论文指出 "the diagnostic depends on the feature space used to compute distances for the kNN-based estimator"，
+        在高维数据（如图像）中需要预训练特征提取器，选择不同特征空间会影响结论。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>统计严谨性不足（Statistical Rigor）</summary>
+      <p>
+        百分位带可视化虽然实用，但缺乏形式化保证。
+        配对 t 检验假设成对差值近似正态，且在不同 recall 值上的多重检验需要校正或采用非参数置换检验替代。
+        M=30 的 ensemble 大小对假设检验是标准选择，但"bootstrap or permutation methods are safer for small ensemble sizes"。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>扩展性存疑（Scalability to Complex Domains）</summary>
+      <p>
+        本文实验仅限于简单合成分布（二维高斯环）。
+        作者承认将方法迁移到高维图像数据，以及 GAN、VAE、Flow-based 等不同模型族时，
+        "the nature and magnitude of evaluation uncertainty might differ significantly"，尚待验证。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Towards Uncertainty Quantification in Generative Model Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.10710">https://arxiv.org/abs/2511.10710</a>
+  </div>
+</footer>
+
+</body>
+</html>

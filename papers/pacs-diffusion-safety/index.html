@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报。
+  Paper: "From Demonstrations to Safe Deployment: Path-Consistent Safety Filtering for Diffusion Policies"
+  arXiv: 2511.06385
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PACS：扩散策略的路径一致性安全过滤</title>
+<meta name="keywords" content="Diffusion Policy, 安全过滤, Reachability Analysis, 机器人操作, Human-Robot Interaction, Control Barrier Function, 安全约束, 任务成功率">
+<meta name="description" content="PACS 通过路径一致性刹车轨迹为扩散策略提供形式化安全保证，同时保持高任务成功率。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">IEEE ICRA 2026 · 机器人 · Robotics</span>
+    <h1>PACS：扩散策略的路径一致性安全过滤</h1>
+    <div class="sub">From Demonstrations to Safe Deployment: Path-Consistent Safety Filtering for Diffusion Policies</div>
+    <div class="authors">Ralf Römer, Julian Balletshofer, Jakob Thumm, Marco Pavone, Angela P. Schoellig, Matthias Althoff &nbsp;·&nbsp; TU Munich / Stanford / University of Toronto</div>
+    <p class="lead">Diffusion Policy 凭借大规模演示数据学习复杂操作行为，但本身缺乏安全保证。PACS（Path-Consistent Safety Filtering）通过在动作序列生成的轨迹上执行"路径一致性刹车"，在保持训练分布一致性的同时，借助集合可达性分析为动态环境提供形式化安全保证，无需修改策略网络本身。</p>
+    <div class="meta">
+      <span>IEEE ICRA 2026</span>
+      <span>arXiv: Nov 2025</span>
+      <span>Franka FR3 · RoboMimic</span>
+      <span><a href="https://arxiv.org/abs/2511.06385">📄 arXiv:2511.06385</a></span>
+      <span><a href="https://tum-lsy.github.io/pacs/">🔗 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>Diffusion Policy</span>
+      <span>安全过滤</span>
+      <span>Reachability Analysis</span>
+      <span>机器人操作</span>
+      <span>Human-Robot Interaction</span>
+      <span>Control Barrier Function</span>
+      <span>安全约束</span>
+      <span>任务成功率</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机（Motivation）</h2>
+    <p class="lead">Diffusion Policy 在复杂操作任务上表现出色，但由于其随机采样特性，<strong>无法保证安全行为</strong>，必须依赖外部安全机制。现有反应式安全过滤器（如 Control Barrier Functions，CBF）在阻止危险动作的同时，会将机器人推入训练分布之外的状态，导致后续行为不可预测、任务失败。</p>
+    <blockquote>"Diffusion policies cannot guarantee safe behavior, requiring external safety mechanisms."</blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="PACS 问题示意图">
+      <figcaption>图1：动态环境部署场景可视化。当人类进入机器人工作空间时，扩散策略生成的动作可能导致碰撞。PACS 在检测到安全威胁时执行路径一致性刹车，维持训练分布一致性，而反应式方法（CBF）则会突然改变运动方向，导致分布外状态。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>69%</b><small>仿真平均任务成功率（PACS PFL）</small></div>
+      <div><b>4%</b><small>CBF 仿真平均成功率（对比）</small></div>
+      <div><b>80%</b><small>真实硬件平均安全任务成功率</small></div>
+      <div><b>0%</b><small>安全违规率（PACS 启用时）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法（Method）</h2>
+    <p class="lead">PACS 的核心思想是：不直接修改单步动作，而是将扩散策略生成的整个 action chunk 转化为平滑的预期轨迹，并始终将其与刹车停止轨迹拼接，通过集合可达性分析实时验证整段轨迹的安全性。若通过验证则执行预期运动，否则切换到刹车停止——整个过程保持轨迹与训练分布的一致性。</p>
+    <figure>
+      <img src="img/x2.webp" alt="PACS 系统架构图">
+      <figcaption>图2：PACS 系统架构概览。① 扩散策略生成 action chunk；② 预期轨迹规划器将 action chunk 转换为满足运动学约束的平滑轨迹；③ 集合可达性分析器以 1 kHz 频率实时验证安全约束；④ 监控轨迹由预期段与刹车段拼接而成，并根据验证结果选择执行哪一段。</figcaption>
+    </figure>
+
+    <h3>预期轨迹规划（Intended Trajectory Planning）</h3>
+    <p>将 action chunk 中的路径点序列转化为时间最优、满足运动学与动力学约束的平滑轨迹。关键设计在于轨迹始终经过所有 action 路径点，确保机器人沿扩散策略"意图"的路径运动，而非被外力偏转至未见状态。这种设计使得在遇到障碍物时可以通过降速（而非改变方向）来保证安全，从而避免分布漂移。</p>
+
+    <h3>集合可达性分析（Set-Based Reachability Analysis）</h3>
+    <p>在运行时以 1 kHz 的频率，对机器人末端执行器的可达集合进行计算，同时考虑测量误差与动态障碍物（如运动中的人手）的不确定运动范围。若预期轨迹的可达集合与障碍物占位集合存在交集，则系统立即切换到预先计算好的刹车轨迹，保证碰撞前机器人可以完全停止。</p>
+
+    <h3>监控轨迹合成（Monitored Trajectory Composition）</h3>
+    <p>预期轨迹与刹车轨迹始终拼接为完整的"监控轨迹"：正常执行时跟随预期段；一旦可达性检验失败，无缝切换到刹车段。等待障碍物离开后，系统可以从当前状态重新请求扩散策略生成新的 action chunk，继续任务，整个过程对策略网络完全透明。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Action Chunk 优势</h3>
+        <p>相比逐步执行单个 action 的方法，利用完整 action chunk 规划轨迹可提升 <strong>28%</strong> 的任务成功率。多步动作序列提供了更多的时间裕量来执行路径一致性刹车。</p>
+      </div>
+      <div class="card">
+        <h3>与 CBF 的本质区别</h3>
+        <p>CBF 等反应式方法通过修改<em>每个时刻的动作</em>来规避障碍，导致机器人进入训练时从未出现的状态。PACS 从不修改方向，只在原有路径上减速或停止，保持训练分布内。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验（Experiments）</h2>
+    <p class="lead">实验在两个层次展开：① 仿真环境使用 RoboMimic 基准（Lift、Can、Square 三个任务），每种配置 100 次 rollout，引入随机进入工作空间的动态障碍物球体；② 真实硬件使用 Franka FR3 机械臂，在三个人机交互任务（分类、交接、喂食）上各执行 30 次 rollout。</p>
+
+    <h3>仿真结果（RoboMimic，Table I）</h3>
+    <table>
+      <tr><th>方法</th><th>Lift</th><th>Can</th><th>Square</th><th>平均</th></tr>
+      <tr><td>Operational Space Control（上界）</td><td>1.00</td><td>0.99</td><td>0.74</td><td>0.91</td></tr>
+      <tr><td>Safety Filter OFF</td><td>0.92</td><td>0.83</td><td>0.34</td><td>0.70</td></tr>
+      <tr><td>Control Barrier Functions</td><td>0.11</td><td>0.00</td><td>0.00</td><td>0.04</td></tr>
+      <tr><td>PACS (SSM)</td><td>0.97</td><td>0.80</td><td>0.30</td><td>0.69</td></tr>
+      <tr><td class="good">PACS (PFL)</td><td class="good">0.93</td><td class="good">0.85</td><td class="good">0.38</td><td class="good">0.72</td></tr>
+    </table>
+
+    <h3>真实硬件结果（Franka FR3，Table IV）</h3>
+    <table>
+      <tr><th>任务</th><th>PACS 任务成功率</th><th>PACS 安全成功率</th><th>PACS 安全违规</th><th>Filter OFF 安全违规</th></tr>
+      <tr><td>Sorting（分类）</td><td>80%</td><td class="good">80%</td><td class="good">0%</td><td>67%</td></tr>
+      <tr><td>Handover（交接）</td><td>97%</td><td class="good">97%</td><td class="good">0%</td><td>32%</td></tr>
+      <tr><td>Feeding（喂食）</td><td>63%</td><td class="good">63%</td><td class="good">0%</td><td>85%</td></tr>
+      <tr><td><strong>平均</strong></td><td><strong>80%</strong></td><td class="good"><strong>80%</strong></td><td class="good"><strong>0%</strong></td><td><strong>56%</strong></td></tr>
+    </table>
+
+    <h3>与 CBF 的真实硬件对比（Sorting 任务，Table V）</h3>
+    <table>
+      <tr><th>方法</th><th>任务成功率</th><th>平均执行时长</th></tr>
+      <tr><td class="good">PACS</td><td class="good">80%</td><td>32.6 ± 11.1 s</td></tr>
+      <tr><td>Control Barrier Functions</td><td>43%</td><td>35.8 ± 18.8 s</td></tr>
+    </table>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/x3.webp" alt="Sorting 任务">
+        <figcaption>真实硬件 Sorting（分类）任务：机器人需在人手进入工作空间时安全停止，并在人手离开后继续完成物品分类。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/x4.webp" alt="Handover 任务">
+        <figcaption>真实硬件 Handover（交接）任务：机器人将物品递给人类，需实时感知人手位置并保证交互安全。</figcaption>
+      </figure>
+    </div>
+
+    <figure>
+      <img src="img/x5.webp" alt="Feeding 任务">
+      <figcaption>真实硬件 Feeding（喂食）任务：机器人将食物送至人嘴边，此场景中安全违规率在 Filter OFF 时高达 85%，PACS 将其降至 0%。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablation Study）</h3>
+    <p>对比 action chunk（多步）与 single-action（单步）版本的 PACS：使用单步动作时，SSM 变体平均成功率为 0.41，PFL 变体为 0.44；使用完整 action chunk 后，成功率分别提升至 0.69 和 0.72，<strong>提升幅度达 28%</strong>。这证实了将完整动作序列转化为时间轨迹是保持任务成功率的关键设计决策。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性（Limitations）</h2>
+    <div class="note"><b>注：</b>以下局限性部分由作者在论文结论中明确指出，部分由方法设计推断得出。</div>
+
+    <details class="lim" open>
+      <summary>仅支持动态障碍物，暂不支持半静态障碍物的在线重规划</summary>
+      <p>论文明确指出："Handling (semi-)static obstacles via constraint-aware online replanning is an interesting avenue for future work."当前 PACS 设计主要针对动态进入工作空间的物体（如人手），对于已在场景中静止存在的障碍物，需要在线轨迹重规划能力，这留待未来工作解决。</p>
+    </details>
+
+    <details class="lim">
+      <summary>路径一致性假设依赖观测中不含显式速度信息</summary>
+      <p>PACS 的安全降速策略（在原有路径上减速而非改变方向）成立的前提是：扩散策略的观测输入中不包含末端执行器的显式速度。若策略被训练成依赖速度观测，则降速可能仍导致分布偏移，需要额外处理。</p>
+    </details>
+
+    <details class="lim">
+      <summary>安全保证依赖障碍物运动模型的准确性</summary>
+      <p>集合可达性分析对动态障碍物（如人手）的运动采用保守的包络假设。若实际运动超出预设的不确定性范围，安全保证可能失效。此外，感知系统的延迟和误差也会影响实时安全验证的可靠性。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · PACS: Path-Consistent Safety Filtering for Diffusion Policies · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.06385">https://arxiv.org/abs/2511.06385</a>
+  </div>
+</footer>
+
+</body>
+</html>

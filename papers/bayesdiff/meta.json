@@ -1,0 +1,20 @@
+{
+  "slug": "bayesdiff",
+  "title": "BayesDiff: Estimating Pixel-wise Uncertainty in Diffusion via Bayesian Inference",
+  "arxiv_id": "2310.11142",
+  "url": "https://arxiv.org/abs/2310.11142",
+  "category": "生成模型 · Generative Models",
+  "keywords": [
+    "Diffusion Models",
+    "Uncertainty Quantification",
+    "Bayesian Inference",
+    "Laplace Approximation",
+    "Image Generation Quality",
+    "Text-to-Image",
+    "Pixel-wise Uncertainty",
+    "Quality Filtering"
+  ],
+  "summary_zh": "BayesDiff 通过 Last-Layer Laplace Approximation 与 Uncertainty Iteration Principle，在扩散模型反向生成链中估计逐像素不确定性，实现低质量图像过滤、多样性增强与 artifact 纠正。",
+  "date": "2026-06-10",
+  "source": "arxiv"
+}

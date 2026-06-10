@@ -1,0 +1,20 @@
+{
+  "slug": "flare-diffusion-uncertainty",
+  "title": "Quantifying Epistemic Uncertainty in Diffusion Models",
+  "arxiv_id": "2602.09170",
+  "url": "https://arxiv.org/abs/2602.09170",
+  "category": "生成模型 · Generative Models",
+  "keywords": [
+    "扩散模型",
+    "Epistemic Uncertainty",
+    "Laplace Approximation",
+    "Fisher Information",
+    "FLARE",
+    "不确定性量化",
+    "贝叶斯深度学习",
+    "时间序列生成"
+  ],
+  "summary_zh": "FLARE 方法通过 Fisher 信息将认知不确定性从扩散模型的随机采样噪声中显式分离，在三个合成时间序列基准上以最高 93.08% Gap-Closure 大幅优于 BayesDiff 和 LLLA 等现有方法。",
+  "date": "2026-06-10",
+  "source": "arxiv"
+}

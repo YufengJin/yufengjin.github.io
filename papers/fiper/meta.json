@@ -1,0 +1,21 @@
+{
+  "slug": "fiper",
+  "title": "FIPER: Failure Prediction at Runtime for Generative Robot Policies",
+  "arxiv_id": "2510.09459",
+  "url": "https://arxiv.org/abs/2510.09459",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "失效预测",
+    "生成式策略",
+    "Diffusion Policy",
+    "OOD Detection",
+    "Random Network Distillation",
+    "Action Entropy",
+    "Conformal Prediction",
+    "模仿学习",
+    "机器人安全"
+  ],
+  "summary_zh": "FIPER 提出一种无需失效数据的运行时失效预测框架，通过融合观测域 OOD 检测（RND-OE）与动作块熵评分（ACE），并用 conformal prediction 标定阈值，在五个多样化机器人任务上以平均 TWA 0.65、Accuracy 0.78 超越所有基线方法。",
+  "date": "2026-06-10",
+  "source": "arxiv"
+}

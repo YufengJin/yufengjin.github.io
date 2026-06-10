@@ -1,0 +1,20 @@
+{
+  "slug": "pacs-diffusion-safety",
+  "title": "From Demonstrations to Safe Deployment: Path-Consistent Safety Filtering for Diffusion Policies",
+  "arxiv_id": "2511.06385",
+  "url": "https://arxiv.org/abs/2511.06385",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "Diffusion Policy",
+    "安全过滤",
+    "Reachability Analysis",
+    "机器人操作",
+    "Human-Robot Interaction",
+    "Control Barrier Function",
+    "安全约束",
+    "任务成功率"
+  ],
+  "summary_zh": "PACS 通过将扩散策略的 action chunk 转化为路径一致性刹车轨迹，借助集合可达性分析提供形式化安全保证，在真实人机交互任务中实现 0% 安全违规率同时保持 80% 任务成功率。",
+  "date": "2026-06-10",
+  "source": "arxiv"
+}

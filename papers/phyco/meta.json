@@ -3,7 +3,7 @@
   "title": "PhyCo：面向生成式运动的可控物理先验学习",
   "arxiv_id": "2604.28169",
   "url": "https://arxiv.org/abs/2604.28169",
-  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "category": "生成模型 · Generative Models",
   "keywords": [
     "物理先验",
     "视频生成",

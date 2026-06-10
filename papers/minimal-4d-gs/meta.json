@@ -3,7 +3,7 @@
   "title": "OMG4：优化的最小化 4D Gaussian Splatting",
   "arxiv_id": "2510.03857",
   "url": "https://arxiv.org/abs/2510.03857",
-  "category": "三维 / 四维重建 · 几何 · 分割",
+  "category": "计算机视觉 · Computer Vision",
   "keywords": [
     "4D Gaussian Splatting",
     "动态场景重建",

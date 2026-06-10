@@ -3,7 +3,7 @@
   "title": "SyncHuman: 同步 2D 与 3D 生成模型的单视图人体重建",
   "arxiv_id": "2510.07723",
   "url": "https://arxiv.org/abs/2510.07723",
-  "category": "三维 / 四维重建 · 几何 · 分割",
+  "category": "计算机视觉 · Computer Vision",
   "keywords": [
     "单视图人体重建",
     "3D human reconstruction",

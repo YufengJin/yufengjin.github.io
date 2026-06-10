@@ -3,7 +3,7 @@
   "title": "FAST：面向视觉-语言-动作模型的高效动作分词",
   "arxiv_id": "2501.09747",
   "url": "https://arxiv.org/abs/2501.09747",
-  "category": "机器人操作 · VLA · 策略学习",
+  "category": "机器人 · Robotics",
   "keywords": [
     "action tokenization",
     "VLA模型",

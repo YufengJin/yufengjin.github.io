@@ -3,7 +3,7 @@
   "title": "G2VLM：几何感知视觉语言模型，统一 3D 重建与空间推理",
   "arxiv_id": "2511.21688",
   "url": "https://arxiv.org/abs/2511.21688",
-  "category": "三维 / 四维重建 · 几何 · 分割",
+  "category": "计算机视觉 · Computer Vision",
   "keywords": [
     "视觉语言模型",
     "3D重建",

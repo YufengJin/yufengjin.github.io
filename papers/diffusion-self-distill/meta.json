@@ -3,7 +3,7 @@
   "title": "扩散作为自蒸馏：单模型端到端潜变量扩散",
   "arxiv_id": "2511.14716",
   "url": "https://arxiv.org/abs/2511.14716",
-  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "category": "生成模型 · Generative Models",
   "keywords": [
     "latent diffusion model",
     "end-to-end training",

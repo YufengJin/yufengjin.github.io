@@ -3,7 +3,7 @@
   "title": "Flow3r：面向可扩展视觉几何学习的因子化光流预测",
   "arxiv_id": "2602.20157",
   "url": "https://arxiv.org/abs/2602.20157",
-  "category": "三维 / 四维重建 · 几何 · 分割",
+  "category": "计算机视觉 · Computer Vision",
   "keywords": [
     "factored optical flow",
     "visual geometry learning",

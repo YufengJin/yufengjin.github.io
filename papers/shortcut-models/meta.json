@@ -3,7 +3,7 @@
   "title": "一步扩散生成：Shortcut Models（捷径模型）",
   "arxiv_id": "2410.12557",
   "url": "https://arxiv.org/abs/2410.12557",
-  "category": "生成模型 · 扩散 / 流 · 物理先验",
+  "category": "生成模型 · Generative Models",
   "keywords": [
     "one-step diffusion",
     "flow matching",

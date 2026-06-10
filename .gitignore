@@ -1,3 +1,5 @@
-.claude/
 .DS_Store
 **/.DS_Store
+
+# local-only: paper-poster skill + heavy/private tooling (see CLAUDE.md)
+.claude/

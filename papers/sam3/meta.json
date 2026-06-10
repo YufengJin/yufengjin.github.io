@@ -3,7 +3,7 @@
   "title": "SAM 3: Segment Anything with Concepts",
   "arxiv_id": "2511.16719",
   "url": "https://arxiv.org/abs/2511.16719",
-  "category": "三维 / 四维重建 · 几何 · 分割",
+  "category": "计算机视觉 · Computer Vision",
   "keywords": [
     "Promptable Concept Segmentation",
     "open-vocabulary instance segmentation",

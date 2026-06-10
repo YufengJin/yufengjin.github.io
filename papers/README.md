@@ -4,29 +4,30 @@
 `index.html`（中文正文 + WebP 图）+ `img/*.webp` + `meta.json`。落地页 `papers/index.html`
 是**生成的**，不要手改。
 
-> **流水线脚本在本仓库** `papers/pipeline/`（唯一权威，详见 `pipeline/README.md`）。
-> **工作目录也在项目内** `papers/_src/`（收件箱 + 原始图源），但**整目录 git-ignored、永不入库**——
+> **进料是模型驱动的**（`paper-notes` skill），不是按文件类型写死的脚本。
+> **工作目录在项目内** `papers/_src/`（收件箱 + 原始图源），但**整目录 git-ignored、永不入库**——
 > 仓库只提交最终产物（`papers/<slug>/` 的 WebP 海报）。可用 `$POSTERS_SRC` 改到别处。零外部依赖。
+> `papers/pipeline/` 只剩**发布 + 重建索引**两个机械脚本（详见 `pipeline/README.md`）。
 
-## 每日更新一篇（end to end）
+## 更新流程（end to end）
 
 ```bash
-# 1) 把论文加入收件箱（三选一），收件箱就在项目内 papers/_src/_inbox/
-echo "<arxiv-id|url|title>" >> papers/_src/_inbox/queue.txt   # 写队列，一行一个
-#   或：cp some_paper.pdf papers/_src/_inbox/                  # 直接拖 PDF 进收件箱
+# 1) 把任意来源丢进收件箱 papers/_src/_inbox/（不分类型：PDF / 截图 / .bib / .txt / queue.txt）
+cp some_paper.pdf papers/_src/_inbox/
+echo "<arxiv-id|url|title>" >> papers/_src/_inbox/queue.txt
 
-# 2) 生成海报（Sonnet via `claude -p`，按 paper-poster skill 产出到 papers/_src/<slug>/）
-papers/pipeline/run_inbox.sh
+# 2) 在 Claude 会话里触发 `paper-notes` skill（“处理 paper inbox / 生成 paper notes”）
+#    → 它自己读取各模态、提取论文列表、对每篇派一个 Sonnet 子代理（按 paper-poster skill）生成到
+#      papers/_src/<slug>/，去重后自动跑 publish_to_site.sh 重建 papers/index.html
 
-# 3) 发布到本仓库：图转 WebP、改写 <img src>、拷贝 <slug>/，再重建 papers/index.html
-papers/pipeline/publish_to_site.sh
-
-# 4) 提交并推送，GitHub Pages 自动重新部署
+# 3) 提交并推送，GitHub Pages 自动重新部署
 git add papers && git commit -m "papers: add <slug>" && git push
 ```
 
-- `queue.txt`：以 `#` 开头的行被忽略；已处理过的行记入 `_processed/processed.tsv`，**不会重复处理**。
-- 处理完的 PDF 会移到 `_processed/`。
+- 收件箱接受任意模态；模型自行识别每个文件指向哪篇论文，无需按类型摆放。
+- **按 arXiv id 去重**：`paper-notes` 生成前会 `grep` 合集里的 `meta.json`，已存在的跳过。
+- 处理完的输入会移到 `papers/_src/_processed/`，不会重复处理。
+- 只想生成单篇（不走收件箱）：直接用 `paper-poster` skill。
 
 ## 注意事项
 
@@ -47,8 +48,8 @@ git add papers && git commit -m "papers: add <slug>" && git push
   **不要把原始大图 / PDF 提交进来**——源文件在 `papers/_src/`（git-ignored），永不入库。
 - **链接保持相对路径**，让站点与域名无关。
 - **发布脚本可重复跑**（idempotent）：图片已是最新就跳过；`meta.json` 一并拷贝。
-- **可选定时**：流水线默认手动触发。想每天自动跑，用 launchd 指向 `run_inbox.sh`
-  （`StartCalendarInterval`，如每天 9:00），同一套脚本无需改动。
+- **单次只做被指派的那篇**：每个 Sonnet 子代理只处理分给它的一篇论文，不读收件箱、不顺手生成别篇
+  （防止越权批量生成）。批量由 `paper-notes` 编排层统一派发。
 
 ## 容量
 

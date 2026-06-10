@@ -3,7 +3,8 @@
 # lists (arXiv ids extracted), and queue.txt lines — then rebuild the source index.
 # These scripts are version-controlled here in the repo; the working dir (inbox + raw figure
 # sources) is in-repo but git-ignored at $POSTERS_SRC (default papers/_src). No external deps.
-# Idempotent: a dedup ledger (_processed/processed.tsv) skips already-done inputs.
+# Dedup: a ledger (_processed/processed.tsv) skips already-seen inputs, AND any input that
+# resolves to an arXiv id already in the collection is skipped (no duplicate poster).
 # Manual trigger:  papers/pipeline/run_inbox.sh
 set -uo pipefail
 
@@ -23,12 +24,37 @@ log(){ echo "[$(date +%H:%M:%S)] $*" | tee -a "$LOG"; }
 seen(){ cut -f2 "$LEDGER" | grep -Fxq "$1"; }              # key already processed?
 record(){ printf '%s\t%s\t%s\t%s\n' "$(date +%F)" "$1" "$2" "$3" >>"$LEDGER"; }
 
+# arXiv id IF the input itself is an id or arxiv URL (not a file path/title — those resolve
+# to an id only after add_paper reads them, where a second dedup check runs).
+arxiv_id_from(){
+  local s="$1"
+  [ -f "$s" ] && return    # a PDF/image path — id unknown until the agent reads it
+  case "$s" in
+    *arxiv.org/*) printf '%s' "$s" | grep -oE '[0-9]{4}\.[0-9]{4,5}' | head -1; return;;
+  esac
+  printf '%s' "$s" | grep -qE '^[0-9]{4}\.[0-9]{4,5}(v[0-9]+)?$' \
+    && printf '%s' "$s" | grep -oE '[0-9]{4}\.[0-9]{4,5}' | head -1
+}
+# slug of an existing poster already carrying this arXiv id, else empty
+meta_with_arxiv(){
+  local id="$1" idre m; idre="${id//./\\.}"
+  for m in "$POSTERS"/*/meta.json; do
+    [ -f "$m" ] || continue
+    grep -qE "\"arxiv_id\"[: ]+\"${idre}(v[0-9]+)?\"" "$m" && { basename "$(dirname "$m")"; return; }
+  done
+}
+
 log "=== run_inbox start (src=$POSTERS) ==="
 done_n=0; skip_n=0; fail_n=0
 
 process(){            # $1=dedup-key  $2=input-arg  $3=on-success-cleanup(optional cmd)
   local key="$1" input="$2" cleanup="${3:-}"
   if seen "$key"; then log "skip (done): $key"; skip_n=$((skip_n+1)); return; fi
+  # paper-level dedup: if the input is an arXiv id/url already in the collection, don't regenerate
+  local aid exist; aid="$(arxiv_id_from "$input")"
+  if [ -n "$aid" ] && exist="$(meta_with_arxiv "$aid")" && [ -n "$exist" ]; then
+    log "skip (dup paper arXiv:$aid -> $exist): $key"; record "$key" "$exist" dup; skip_n=$((skip_n+1)); return
+  fi
   log "process: $key"
   if slug="$("$HERE/add_paper.sh" "$input" 2>>"$LOG" | tail -1)" && [ -n "$slug" ] \
      && [ -f "$POSTERS/$slug/meta.json" ]; then

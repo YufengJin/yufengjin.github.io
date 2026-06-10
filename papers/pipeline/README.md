@@ -28,6 +28,10 @@ git add papers && git commit -m "papers: add <slug>" && git push
 工作目录换位置时设 `POSTERS_SRC`，例如：`POSTERS_SRC=/path/to/src papers/pipeline/run_inbox.sh`。
 处理过的 PDF 移到 `papers/_src/_processed/`，队列行记入 `_processed/processed.tsv` 不会重复处理。
 
+**按 arXiv id 去重**：生成前会查重——若输入本身是 arXiv id/url，`run_inbox` 直接 `grep` 合集里所有
+`meta.json` 的 `arxiv_id`，已存在就跳过；PDF/截图/标题这类要等 `add_paper` 解析出 id 后再查重并停止。
+所以同一篇无论以哪种来源、哪种写法进来，都只生成一次。
+
 ## 组成
 
 | 文件 | 作用 |

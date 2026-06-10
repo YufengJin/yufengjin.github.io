@@ -30,6 +30,9 @@ INPUT (a PDF path, an image/screenshot of a paper, an arXiv id, a URL, or a titl
 
 Do all of this:
 1. Identify the paper. If it is an arXiv id/url, verify it (fetch arxiv.org/abs/<id>, confirm title). If a PDF OR an image/screenshot path, Read it — for an image, lift the paper title (and authors) off the screenshot — then WebSearch that title to find the arXiv id. If a title/url, WebSearch to find the arXiv id. Once you have the id, prefer the arXiv HTML render for clean figures (per the skill); fall back to the local PDF/image only if no arXiv source exists.
+1b. DEDUP CHECK (do this BEFORE generating anything). Once you have the arXiv id, check whether the collection already has this paper:
+   grep -lE '"arxiv_id"[: ]+"<id>"' $POSTERS/*/meta.json
+   If it matches an existing poster, that paper is already done — print that existing slug and STOP immediately. Do NOT regenerate or overwrite it.
 2. Choose a short, url-safe lowercase slug (e.g. "g3t", "pi0", "shortcut-models").
 3. Generate the 中文 poster to $POSTERS/<slug>/index.html with figures in $POSTERS/<slug>/img/ — cover 动机/方法/实验/局限性, 6-10 keyword chips + <meta name=keywords>, and the original-paper link in header AND footer. Body in 中文, keep academic terms/metrics/quotes in English. All numbers verbatim from the paper.
 4. ALSO write $POSTERS/<slug>/meta.json with EXACTLY these fields:
@@ -62,6 +65,12 @@ newslug="$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | grep -vE 
 # Verify a complete poster exists (new dir, or any dir touched in this run).
 verify() { [ -f "$POSTERS/$1/index.html" ] && [ -f "$POSTERS/$1/meta.json" ]; }
 if [ -n "$newslug" ] && verify "$newslug"; then
+  # Deterministic backstop: warn (don't auto-delete) if this poster's arXiv id collides with another
+  newid="$(grep -oE '"arxiv_id"[: ]+"[^"]+"' "$POSTERS/$newslug/meta.json" | grep -oE '[0-9]{4}\.[0-9]{4,5}' | head -1)"
+  if [ -n "$newid" ]; then
+    dupd="$(grep -lE "\"arxiv_id\"[: ]+\"${newid//./\\.}(v[0-9]+)?\"" "$POSTERS"/*/meta.json 2>/dev/null | grep -v "/$newslug/meta.json" | head -1)"
+    [ -n "$dupd" ] && echo "[add_paper] WARN: arXiv:$newid already exists as $(basename "$(dirname "$dupd")") — duplicate of $newslug" >&2
+  fi
   echo "[add_paper] OK → $newslug"; echo "$newslug"; exit 0
 fi
 # Fallback: newest meta.json written today

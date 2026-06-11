@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaP-X: A Framework for Benchmarking and Improving Coding Agents for Robot Manipulation</title>
+<meta name="keywords" content="Code-as-Policy, robot manipulation, benchmark, embodied AI, 强化学习, CaP-Agent0, CaP-RL, VLA, 机器人编程, agentic framework">
+<meta name="description" content="CaP-X 系统性地评测并提升「代码即策略」机器人操控智能体，在7项操控任务上综合了CaP-Gym环境、CaP-Bench基准、无训练的CaP-Agent0和基于RL的CaP-RL方案。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>CaP-X: A Framework for Benchmarking and Improving Coding Agents for Robot Manipulation</h1>
+    <div class="sub">系统性评测「代码即策略」机器人操控智能体，并提出训练无关与强化学习两种提升路径</div>
+    <div class="authors">Max Fu, Justin Yu, Karim El-Refai, Ethan Kou, Haoru Xue, Huang Huang, Wenli Xiao, Guanzhi Wang, Fei-Fei Li, Guanya Shi, Jiajun Wu, Shankar Sastry, Yuke Zhu, Ken Goldberg, Linxi "Jim" Fan</div>
+    <p class="lead">CaP-X 针对「代码即策略」（Code-as-Policy）在机器人操控中的系统化研究空白，提出了CaP-Gym交互环境、CaP-Bench多层次基准、训练无关的CaP-Agent0智能体框架，以及基于强化学习的CaP-RL方法。12个前沿语言/视觉语言模型在7个操控任务上与人类专家存在显著差距，但通过智能体框架与RL微调可大幅缩小这一差距。</p>
+    <div class="meta">
+      <span>arXiv 2603.22435</span>
+      <span>7 tasks · 12 models</span>
+      <span>RoboSuite + LIBERO-PRO + BEHAVIOR</span>
+      <span><a href="https://arxiv.org/abs/2603.22435">📄 arXiv:2603.22435</a></span>
+    </div>
+    <div class="kw">
+      <span>Code-as-Policy</span>
+      <span>robot manipulation</span>
+      <span>benchmark</span>
+      <span>embodied AI</span>
+      <span>CaP-Agent0</span>
+      <span>CaP-RL</span>
+      <span>强化学习</span>
+      <span>VLA</span>
+      <span>agentic framework</span>
+      <span>机器人编程</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">「代码即策略」（Code-as-Policy）被视为数据密集型 VLA 方法的有力补充，但其作为自主控制器在 embodied manipulation 场景中的有效性仍<strong>严重缺乏系统性研究</strong>。现有工作大多依赖高层原语（如 <code>stack_objs_in_order()</code>），使得模型性能究竟来自智能体本身还是原语封装的任务先验难以区分，且未回答：当抽象层级降低时性能如何变化？增加测试时计算量是否能弥补低层接口带来的挑战？</p>
+    <blockquote>"Code-as-Policy considers how executable code can complement data-intensive Vision-Language-Action (VLA) methods, yet their effectiveness as autonomous controllers for embodied manipulation remains underexplored."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="CaP-X teaser figure">
+      <figcaption>（上）CaP-Bench 任务成功率随模型发布时间的变化：12个模型在7项任务上与人类专家的对比。前沿语言/视觉语言模型在编程机器人操控代码方面仍显著落后于人类。（下）CaP-Gym集成了RoboSuite、LIBERO-PRO和BEHAVIOR三个模拟器/基准，并展示了CaP-Agent0在多项任务上接近人类水平的表现。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>12</b><small>前沿模型（开源+闭源）</small></div>
+      <div><b>7</b><small>操控任务（单臂+双臂+移动）</small></div>
+      <div><b>8</b><small>评测层级（S1-S4, M1-M4）</small></div>
+      <div><b>4/7</b><small>CaP-Agent0 达到或超越人类水平的任务数</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">CaP-X 由三个核心模块构成：<strong>CaP-Gym</strong>（交互环境）、<strong>CaP-Bench</strong>（多层次基准）、以及两种提升智能体性能的方法——训练无关的 <strong>CaP-Agent0</strong> 与基于 RL 微调的 <strong>CaP-RL</strong>。</p>
+
+    <h3>CaP-Gym：分层控制环境</h3>
+    <p>CaP-Gym 是一个建立在标准 Gymnasium 接口之上的分层控制框架，将低层物理仿真（或真实机器人）与有状态的代码执行器循环相绑定。<strong>感知原语</strong>包括语言条件分割（SAM3）、开放词汇定点（Molmo 2）以及OpenCV/Open3D等视觉库。<strong>控制原语</strong>调用运动规划器或逆运动学求解器（PyRoki），而非直接输出关节空间动作命令。任务涵盖7项核心操控：Cube Lift、Cube Stack、Spill Wipe、Peg Insertion、Cube Re-stack、Two-Arm Lift 和 Two-Arm Handover。</p>
+
+    <h3>CaP-Bench：8层次评测体系</h3>
+    <p>CaP-Bench 系统地在<strong>抽象层级</strong>与<strong>观测模态</strong>两个维度评测模型：</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>单轮评测（S1–S4）</h3>
+        <ul>
+          <li><strong>S1（Privileged）</strong>：使用真实仿真状态（掩码+物体位姿）</li>
+          <li><strong>S2（Non-Privileged）</strong>：依赖真实感知模块处理原始RGB-D输入</li>
+          <li><strong>S3（Low-Level）</strong>：低层原语，含使用示例</li>
+          <li><strong>S4（Low-Level）</strong>：低层原语，无使用示例</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>多轮评测（M1–M4）</h3>
+        <ul>
+          <li><strong>M1（Text-Only）</strong>：标准输出(stdout)和错误跟踪(stderr)</li>
+          <li><strong>M2（Multimodal）</strong>：当前RGB观测图像直接输入上下文</li>
+          <li><strong>M3（VDM）</strong>：视觉差分模块将视觉观测转为结构化自然语言</li>
+          <li><strong>M4（Low-Level+VDM）</strong>：结合低层原语与视觉差分</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/code_example.webp" alt="code example high-level vs low-level primitives">
+      <figcaption>（左）Gemini-3-Pro 使用高层原语完成"lift the red cube"任务生成的代码示例；（右）同一模型使用低层原语实现等价功能所需的代码——需要更多关节控制与感知推理，难度显著增加。</figcaption>
+    </figure>
+
+    <h3>CaP-Agent0：训练无关的智能体框架</h3>
+    <figure>
+      <img src="img/cap_agent0_arch.webp" alt="CaP-Agent0 architecture">
+      <figcaption>CaP-Agent0 架构：整合了自动合成的技能库（auto-synthesized skill library）、视觉差分模型（VDM）提供场景变化的文本描述，以及并行推理系统（多个编程智能体并发生成候选代码后由集成智能体合成最终方案）。该框架可在仿真和真实机器人环境中部署。</figcaption>
+    </figure>
+    <p>CaP-Agent0 包含三个关键设计：</p>
+    <ul>
+      <li><strong>多轮视觉差分（VDM）</strong>：将视觉差分模块集成为每轮的观测信息，使模型能够以文本形式感知场景变化，而非直接处理多模态图像（M2 反而会降低性能）。</li>
+      <li><strong>自动合成技能库（Skill Library）</strong>：通过自动化合成流水线构建与任务无关的技能库，从S3层级的成功rollout中提取函数定义，跨试次持久化使用。</li>
+      <li><strong>并行推理（Parallel Reasoning）</strong>：在每轮并发采样候选方案：单模型配置（9次Gemini-3-Pro查询）或多模型配置（GPT-5.2、Claude Opus 4.5、Gemini-3-Pro各3次），再由集成模型合成最终代码。</li>
+    </ul>
+
+    <h3>CaP-RL：基于可验证奖励的强化学习</h3>
+    <p>CaP-Gym 支持在策略编程智能体上直接进行在线强化学习（RLVR，使用可验证环境奖励）。具体采用 Group Relative Policy Optimization（GRPO）对 Qwen2.5-Coder-7B-Instruct 进行后训练，训练信号直接来自机器人操控环境的任务完成奖励，无需人工标注。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在RoboSuite仿真、LIBERO-PRO 和 BEHAVIOR（移动操控）三个平台上评测，对比 12 个模型与人类专家，并在真实 Franka Emika 机械臂上验证 CaP-RL。</p>
+
+    <h3>CaP-Bench：抽象层级对性能的影响</h3>
+    <figure>
+      <img src="img/benchmark_abstraction.webp" alt="task success rate vs primitive abstraction">
+      <figcaption>开源与闭源模型的平均任务成功率随原语抽象层级提升（S4→S1）的变化。成功率呈单调递增，说明高层原语对性能有显著加持；S3-S4 的性能下降不仅来自代码正确率，还来自感知与控制难度的增加。</figcaption>
+    </figure>
+
+    <h3>多轮评测：视觉差分的关键作用</h3>
+    <figure>
+      <img src="img/multiturn_comparison.webp" alt="multi-turn benchmark comparison">
+      <figcaption>单轮（S2）与多轮层级（M1-M3）跨模型对比：多轮文本反馈（M1）在大多数模型上提升了任务成功率；直接多模态视觉（M2）反而降低了成功率；视觉差分转文本（M3/VDM）在开源与闭源模型上均一致地提升了任务成功率。</figcaption>
+    </figure>
+
+    <h3>CaP-Agent0 消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="CaP-Agent0 ablation study">
+      <figcaption>（左）逐步叠加VDM、技能库（+SL）、单模型并行（+1M: Gemini-3-Pro）和多模型并行（+3M: Gemini-3-Pro + GPT-5.2 + Claude Opus）的消融结果，相对单轮低层API基准显著提升。（右）CaP-Agent0 在7项任务中的4项上达到或超越人类专家代码的成功率。</figcaption>
+    </figure>
+
+    <h3>LIBERO-PRO 与 VLA 方法对比</h3>
+    <table>
+      <tr><th>基准 / 方法</th><th>OpenVLA</th><th>π₀</th><th>π₀.₅</th><th class="good">CaP-Agent0</th></tr>
+      <tr>
+        <td>libero-object (Pos / Task)</td>
+        <td>0.00 / 0.00</td>
+        <td>0.00 / 0.00</td>
+        <td>0.17 / 0.01</td>
+        <td class="good">0.22 / 0.18</td>
+      </tr>
+      <tr>
+        <td>libero-goal (Pos / Task)</td>
+        <td>0.00 / 0.00</td>
+        <td>0.00 / 0.00</td>
+        <td>0.38 / 0.00</td>
+        <td class="good">0.26 / 0.17</td>
+      </tr>
+      <tr>
+        <td>libero-spatial (Pos / Task)</td>
+        <td>0.00 / 0.00</td>
+        <td>0.00 / 0.00</td>
+        <td>0.20 / 0.01</td>
+        <td class="good">0.12 / 0.14</td>
+      </tr>
+    </table>
+    <p>在 LIBERO-PRO 上，CaP-Agent0 在 Task Success 指标上全面超越 VLA 基线（包括 π₀.₅），无需任何任务专属训练数据。注意 Pos（Position Success）和 Task（Task Success）是不同评测指标，CaP-Agent0 在 Task 层面优势更为明显。</p>
+
+    <h3>CaP-RL 仿真与真实结果</h3>
+    <figure>
+      <img src="img/cap_rl_results.webp" alt="CaP-RL pre and post RL real-world evaluation">
+      <figcaption>CaP-RL 在仿真（N=100）和真实 Franka Emika 机械臂（N=25）上的评测结果，对比 Human Expert 与 RL 微调前后的 Qwen2.5-Coder-7B。</figcaption>
+    </figure>
+    <table>
+      <tr><th>任务</th><th>Human Expert</th><th>Qwen 2.5 Coder 7B（未微调）</th><th class="good">Qwen w/ CaP-RL（仿真）</th><th class="good">Qwen w/ CaP-RL（真实）</th></tr>
+      <tr>
+        <td>Cube Lift</td>
+        <td>93% / 92%</td>
+        <td>25% / 24%</td>
+        <td class="good">80%</td>
+        <td class="good">84%</td>
+      </tr>
+      <tr>
+        <td>Cube Stack</td>
+        <td>73% / 84%</td>
+        <td>4% / 12%</td>
+        <td class="good">44%</td>
+        <td class="good">76%</td>
+      </tr>
+      <tr>
+        <td>Spill Wipe</td>
+        <td>100% / —</td>
+        <td>30% / —</td>
+        <td class="good">93%</td>
+        <td>—</td>
+      </tr>
+    </table>
+    <p>CaP-RL 将 Qwen2.5-Coder-7B 在 Cube Lift 上的仿真成功率从 25% 提升至 80%，在真实机器人上从 24% 提升至 84%；Cube Stack 从 4% 提升至 44%（仿真）和 76%（真实），展现出强泛化能力。</p>
+
+    <h3>BEHAVIOR 移动操控（真实世界）</h3>
+    <table>
+      <tr><th>任务（N=25）</th><th>指标</th><th>Human Expert</th><th>S3（单轮低层）</th><th class="good">CaP-Agent0</th></tr>
+      <tr>
+        <td>Pick up Radio</td>
+        <td>Navigation Success</td>
+        <td>88%</td>
+        <td>72%</td>
+        <td class="good">80%</td>
+      </tr>
+      <tr>
+        <td>Pick up Radio</td>
+        <td>Task Success</td>
+        <td>36%</td>
+        <td>24%</td>
+        <td class="good">56%</td>
+      </tr>
+      <tr>
+        <td>Pick up Soda Can</td>
+        <td>Navigation Success</td>
+        <td>80%</td>
+        <td>52%</td>
+        <td class="good">84%</td>
+      </tr>
+      <tr>
+        <td>Pick up Soda Can</td>
+        <td>Task Success</td>
+        <td>72%</td>
+        <td>32%</td>
+        <td class="good">72%</td>
+      </tr>
+    </table>
+
+    <h3>消融结论</h3>
+    <p>消融实验表明每个组件均有贡献：视觉差分（VDM）→ 技能库（+SL）→ 并行推理（+1M → +3M）逐步提升了任务成功率，其中多模型并行推理的增益最为显著。直接多模态输入（M2）会降低性能，说明视觉信息需经结构化转换（VDM）才能被模型有效利用。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>注：</b>本文没有独立的 Limitations 节；以下内容综合自第7节（Future Works and Conclusion）的作者陈述，并标注推断项。</div>
+
+    <details class="lim" open>
+      <summary>接触丰富任务（contact-rich tasks）仍然困难【作者陈述】</summary>
+      <p>作者明确指出："Programmatic control performs well on long-horizon, reasoning-heavy tasks, but remains brittle for contact-rich behaviors that require tight visual servoing and continuous feedback (e.g., insertion or pouring)."——需要精细力控和连续视觉反馈的任务（如插孔、倒水）代码控制仍易失败。</p>
+    </details>
+
+    <details class="lim">
+      <summary>感知基础（perceptual grounding）的瓶颈【作者陈述】</summary>
+      <p>作者将"more effective grounding of task-relevant visual information into code generation"列为重要改进方向，说明当前视觉感知原语与代码生成之间的衔接仍是性能瓶颈，尤其在低层（S3/S4）和多模态（M2）层级表现明显。</p>
+    </details>
+
+    <details class="lim">
+      <summary>测试时计算开销高【推断】</summary>
+      <p>CaP-Agent0 的并行推理（最多3个前沿模型、每模型3次查询）虽然无需训练，但在每次执行时需调用多次昂贵的大模型API，测试时计算成本较高，可能限制其在资源受限场景中的实际部署。</p>
+    </details>
+
+    <details class="lim">
+      <summary>CaP-RL 训练的泛化边界【推断】</summary>
+      <p>CaP-RL 目前仅在有限任务（Cube Lift、Cube Stack、Spill Wipe）上验证，且基座模型为 Qwen2.5-Coder-7B-Instruct（7B参数）。对更复杂任务或更大规模基座的扩展性尚未充分探索。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CaP-X · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2603.22435">https://arxiv.org/abs/2603.22435</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "slug": "droid",
+  "title": "DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset",
+  "arxiv_id": "2403.12945",
+  "url": "https://arxiv.org/abs/2403.12945",
+  "category": "机器人 · Robotics",
+  "keywords": ["robot manipulation dataset", "in-the-wild 采集", "imitation learning", "diffusion policy", "scene diversity", "teleoperation", "co-training", "泛化能力"],
+  "summary_zh": "DROID 是一个包含 76,000 条演示轨迹（350 小时）、跨 564 个真实场景的大规模机器人操作数据集，由 50 名采集者在三大洲 18 个机构采集，联合训练后分布内/外成功率分别提升 22%/17%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

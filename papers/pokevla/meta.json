@@ -1,0 +1,11 @@
+{
+  "slug": "pokevla",
+  "title": "PokeVLA: Empowering Pocket-Sized Vision-Language-Action Model with Comprehensive World Knowledge Guidance",
+  "arxiv_id": "2604.20834",
+  "url": "https://arxiv.org/abs/2604.20834",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "robot manipulation", "embodied AI", "goal-aware segmentation", "geometry alignment", "embodied pre-training", "机器人操作", "具身智能", "LIBERO", "轻量化模型"],
+  "summary_zh": "PokeVLA 是一个仅 1.22B 参数的轻量级 VLA 模型，通过两阶段训练——含 2.4M 条样本的具身多模态预训练与目标感知语义分割、几何对齐的后训练——在 LIBERO-Plus 鲁棒性基准和真实机器人操作中取得最先进性能。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

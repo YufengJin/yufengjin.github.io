@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpatialVLA: Exploring Spatial Representations for Visual-Language-Action Model</title>
+<meta name="keywords" content="VLA, 机器人操作, spatial representation, Ego3D Position Encoding, Adaptive Action Grids, robot manipulation, 空间理解, generalist policy">
+<meta name="description" content="SpatialVLA 通过 Ego3D 位置编码与自适应动作网格，赋予视觉-语言-动作模型显式的三维空间理解能力，在 1.1M 真实机器人数据上预训练后实现强大的零样本迁移与高效微调。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2025 · 机器人操作 · VLA</span>
+    <h1>SpatialVLA</h1>
+    <div class="sub">Exploring Spatial Representations for Visual-Language-Action Model</div>
+    <div class="authors">Delin Qu, Haoming Song, Qizhi Chen, Yuanqi Yao, Xinyi Ye, Yan Ding, Zhigang Wang, JiaYuan Gu, Bin Zhao, Dong Wang, Xuelong Li</div>
+    <p class="lead">现有 VLA 模型缺乏显式的三维空间理解，导致在精细操作任务上泛化能力不足。SpatialVLA 提出 <strong>Ego3D Position Encoding</strong> 将深度信息融入视觉 token，并用 <strong>Adaptive Action Grids</strong> 将连续动作离散化为跨机器人可迁移的空间 token；在 1.1M 真实机器人数据上预训练后，实现强零样本迁移与高效微调。</p>
+    <div class="meta">
+      <span>Robotics: Science and Systems 2025</span>
+      <span>预训练数据 1.1M episodes</span>
+      <span>骨干：SigLIP + Qwen2</span>
+      <span><a href="https://arxiv.org/abs/2501.15830">📄 arXiv:2501.15830</a></span>
+      <span><a href="https://arxiv.org/pdf/2501.15830">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>Ego3D Position Encoding</span>
+      <span>Adaptive Action Grids</span>
+      <span>空间理解</span>
+      <span>zero-shot generalization</span>
+      <span>generalist policy</span>
+      <span>action tokenization</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人操作本质上是一个三维空间感知与动作规划问题，然而主流 VLA 模型（OpenVLA、Octo、RT-2-X 等）仅从 2D 图像 token 中学习动作，缺乏对物体位置、深度与空间布局的显式建模，在需要精细空间推理的任务（如堆叠、精确放置）上表现明显弱于专用方法。</p>
+    <blockquote>"Spatial understanding is the key to robot manipulation … we propose SpatialVLA, a spatial visual-language-action model that focuses on exploring spatial representations for robot manipulation."</blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="SpatialVLA overview">
+      <figcaption><strong>图1：SpatialVLA 总览。</strong> 给定图像观测 <em>o<sub>t</sub></em> 与任务指令 <em>L</em>，模型通过 Ego3D Position Encoding 处理图像，自回归预测空间动作 token，再反 tokenize 为连续动作 <em>A<sub>t</sub></em> 执行控制。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>78.1%</b><small>LIBERO 平均成功率（4 子任务，第 1 名）</small></div>
+      <div><b>81.0%</b><small>SimplerEnv Google Robot 零样本 Visual Matching</small></div>
+      <div><b>34.4%</b><small>SimplerEnv WidowX 零样本平均成功率</small></div>
+      <div><b>21 Hz</b><small>推理频率（实时控制）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SpatialVLA 由两个核心模块构成：（1）<strong>Ego3D Position Encoding</strong>——将深度估计得到的三维坐标编码叠加到 SigLIP 视觉 token 上；（2）<strong>Adaptive Action Grids</strong>——根据训练集动作分布自适应离散化连续 7D 动作，并支持跨机器人迁移。</p>
+
+    <h3>Ego3D Position Encoding</h3>
+    <p>给定 RGB 图像，首先用 <strong>ZoeDepth</strong> 估计深度图，再通过相机内参将每个像素反投影为三维坐标 <strong>P</strong>（相机自身坐标系，无需外参标定）。三维位置用正弦函数 γ(·) 编码后经 MLP 映射，与 SigLIP 提取的 2D 语义特征 <strong>X</strong> 相加融合：</p>
+    <blockquote>O<sub>3d</sub> = X + MLP(γ(P))</blockquote>
+    <p>该设计以 plug-and-play 方式为视觉 token 注入空间感知，无需额外相机标定，适用于任意机器人平台。</p>
+
+    <figure>
+      <img src="img/x2.webp" alt="Adaptive Action Grids">
+      <figcaption><strong>图2：Adaptive Action Grids 示意。</strong> (a) 预训练数据集上平移与旋转动作的统计分布；(b) 根据拟合 Gaussian 的概率密度函数将动作空间划分为等概率区间；(c) 最终获得的自适应动作网格（平移 + 旋转空间各维度）。</figcaption>
+    </figure>
+
+    <h3>Adaptive Action Grids</h3>
+    <p>将连续 7D 动作（平移 x,y,z；旋转 roll,pitch,yaw；夹爪）离散化为可学习 token。关键创新在于<strong>自适应分箱</strong>：先将平移转为极坐标 (φ, θ, r) 解耦方向与距离，再对各维度拟合 Gaussian 分布，按等概率划分 <em>M</em> 个区间，使每个 bin 覆盖相同比例的训练动作，避免传统线性分箱在长尾分布上的浪费。</p>
+    <p><strong>跨机器人迁移：</strong>微调至新机器人时，对目标数据集重新拟合 Gaussian，通过<em>三线性插值</em>将预训练 token embedding 对齐到新网格，保留空间先验同时快速适应新动作分布（即 Spatial Embedding Adaptation）。</p>
+
+    <figure>
+      <img src="img/x7.webp" alt="Spatial embedding adaptation visualization">
+      <figcaption><strong>图7：空间网格截面特征可视化。</strong> Spatial Embedding Adaptation 将预训练空间网格特征与微调后模型特征对齐，改善初始化并加速收敛。左：无自适应；右：使用自适应后特征分布更一致。</figcaption>
+    </figure>
+
+    <h3>预训练设置</h3>
+    <p>以 <strong>Qwen2</strong> 为语言骨干，<strong>SigLIP</strong> 为视觉编码器。预训练数据为 Open X-Embodiment (OXE) 中 1.1M 真实机器人 episodes 的混合（Google Fractal、BridgeV2 等多机器人数据集）。Action grid 分辨率默认 8194 token，覆盖平移 + 旋转 + 夹爪各维度。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">评估涵盖三大维度：<strong>零样本控制</strong>（SimplerEnv）、<strong>适应新机器人</strong>（Franka + WidowX 微调）、<strong>空间理解能力</strong>（空间布局任务）。仿真基准 SimplerEnv 含 Google Robot 和 WidowX 两个平台，LIBERO 提供 4 个子任务集；真实机器人实验覆盖 7 类任务套件、16 个任务。</p>
+
+    <figure>
+      <img src="img/x3.webp" alt="Experiment setup">
+      <figcaption><strong>图3：实验配置。</strong> 跨 7 类机器人学习场景、16 个真实机器人任务、48 个仿真配置评估，聚焦零样本控制、新配置适应性与空间理解三个核心问题。</figcaption>
+    </figure>
+
+    <h3>SimplerEnv — Google Robot（表 I）</h3>
+    <table>
+      <tr><th>方法</th><th>Visual Matching</th><th>Variant Aggregation</th></tr>
+      <tr><td>RT-2-X</td><td>60.7%</td><td>—</td></tr>
+      <tr><td>OpenVLA</td><td>16.3%</td><td>46.2%</td></tr>
+      <tr><td>Octo-Base</td><td>17.0%</td><td>4.2%</td></tr>
+      <tr><td>RoboVLM (zero-shot)</td><td>72.7%</td><td>66.3%</td></tr>
+      <tr><td>π₀* (BF16 uniform)</td><td>88.0%</td><td>80.3%</td></tr>
+      <tr><td class="good"><strong>SpatialVLA (zero-shot)</strong></td><td class="good"><strong>81.0%</strong></td><td class="good"><strong>69.6%</strong></td></tr>
+      <tr><td class="good"><strong>SpatialVLA (fine-tuning)</strong></td><td class="good"><strong>86.0%</strong></td><td class="good"><strong>77.9%</strong></td></tr>
+    </table>
+
+    <h3>SimplerEnv — WidowX（表 II）</h3>
+    <table>
+      <tr><th>方法</th><th>平均成功率</th></tr>
+      <tr><td>RT-1-X</td><td>1.1%</td></tr>
+      <tr><td>Octo-Small</td><td>30.0%</td></tr>
+      <tr><td>OpenVLA</td><td>1.0%</td></tr>
+      <tr><td>RoboVLM (zero-shot)</td><td>13.5%</td></tr>
+      <tr><td>RoboVLM (fine-tuning)</td><td>31.3%</td></tr>
+      <tr><td class="good"><strong>SpatialVLA (zero-shot)</strong></td><td class="good"><strong>34.4%</strong></td></tr>
+      <tr><td class="good"><strong>SpatialVLA (fine-tuning)</strong></td><td class="good"><strong>42.7%</strong></td></tr>
+    </table>
+
+    <h3>LIBERO 仿真基准（表 III）</h3>
+    <table>
+      <tr><th>方法</th><th>LIBERO-Spatial</th><th>LIBERO-Object</th><th>LIBERO-Goal</th><th>LIBERO-Long</th><th>平均</th></tr>
+      <tr><td>Diffusion Policy</td><td>78.3±1.1%</td><td>92.5±0.7%</td><td>68.3±1.2%</td><td>50.5±1.3%</td><td>72.4±0.7%</td></tr>
+      <tr><td>Octo fine-tuned</td><td>78.9±1.0%</td><td>85.7±0.9%</td><td>84.6±0.9%</td><td>51.1±1.3%</td><td>75.1±0.6%</td></tr>
+      <tr><td>OpenVLA fine-tuned</td><td>84.7±0.9%</td><td>88.4±0.8%</td><td>79.2±1.0%</td><td>53.7±1.3%</td><td>76.5±0.6%</td></tr>
+      <tr><td>TraceVLA fine-tuned</td><td>84.6±0.2%</td><td>85.2±0.4%</td><td>75.1±0.3%</td><td>54.1±1.0%</td><td>74.8±0.5%</td></tr>
+      <tr><td class="good"><strong>SpatialVLA fine-tuned</strong></td><td class="good"><strong>88.2±0.5%</strong></td><td class="good"><strong>89.9±0.7%</strong></td><td class="good"><strong>78.6±0.6%</strong></td><td class="good"><strong>55.5±1.0%</strong></td><td class="good"><strong>78.1±0.7%</strong></td></tr>
+    </table>
+
+    <figure>
+      <img src="img/x4.webp" alt="Zero-shot WidowX evaluation">
+      <figcaption><strong>图4：WidowX 机器人零样本控制评估。</strong> 跨 7 类任务套件，探测语言 grounding、语义理解与运动感知能力，背景、物体姿态与运动干扰物均有变化。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/x6.webp" alt="Spatial understanding capability">
+      <figcaption><strong>图6：空间理解能力评估。</strong> 得益于 Ego3D Position Encoding，SpatialVLA 在需要理解空间提示词（如"左侧""前方"）及复杂空间布局的任务中表现显著优于基线。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>预训练消融（表 IV）显示：将 Adaptive Grids 替换为线性 256-bin 分箱后，Variant Aggregation 指标下降约 <strong>36.5%</strong>；去除 Ego3D 编码后，Google Robot 零样本性能下降 <strong>12.7%–15.2%</strong>。Action grid 分辨率从 1026 提升至 8194 持续带来收益。</p>
+    <p>微调消融（表 V）显示：对小规模 LIBERO 数据，<strong>LoRA + Spatial Embedding Adaptation</strong> 优于全参数微调；Spatial Embedding Adaptation 单独贡献 LIBERO-Spatial <strong>+4.6%</strong>（83.6% → 88.2%）。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文 Discussion &amp; Limitations 节中明确陈述。</div>
+
+    <details class="lim" open>
+      <summary>Gaussian 分布建模不够最优</summary>
+      <p>"Is modeling data distributions as Gaussian optimal? We argue that Gaussian modeling is suboptimal, as it can lead to grid clustering on specific coordinate axes in extreme robot operation scenarios, such as single-axis motion, resulting in lost motion capabilities on other axes."（单轴运动等极端场景下，Gaussian 拟合可能导致某些轴的网格过度聚集，使其他轴的运动能力退化。）</p>
+    </details>
+
+    <details class="lim">
+      <summary>仅依赖当前帧，长时序任务表现受限</summary>
+      <p>"As the model relies solely on current frame observations and history tokens for action prediction, it faces challenges in long-horizon tasks." 作者指出未来需要设计高效的历史信息感知机制以增强长序列建模能力。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理速度慢于 diffusion 方法</summary>
+      <p>"SpatialVLA achieves 21Hz inference speed, it is slower than diffusion decoding." 自回归 token 预测的推理开销高于基于扩散的策略网络，在对实时性要求极高的场景下存在瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>预训练数据质量参差</summary>
+      <p>"The variable quality of OXE data can hinder training. Therefore, future work exploring optimal data composition and distilling high-quality subsets from the heterogeneous robot data collections is vital for boosting model efficiency and generalizability."</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · SpatialVLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2501.15830">https://arxiv.org/abs/2501.15830</a>
+  </div>
+</footer>
+
+</body>
+</html>

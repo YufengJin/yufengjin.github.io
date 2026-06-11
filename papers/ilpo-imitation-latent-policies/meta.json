@@ -1,0 +1,22 @@
+{
+  "slug": "ilpo-imitation-latent-policies",
+  "title": "Imitating Latent Policies from Observation",
+  "arxiv_id": "1805.07914",
+  "url": "https://arxiv.org/abs/1805.07914",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "imitation learning",
+    "imitation from observation",
+    "latent policy",
+    "forward dynamics model",
+    "action remapping",
+    "behavioral cloning",
+    "模仿学习",
+    "潜在策略",
+    "CoinRun",
+    "reinforcement learning"
+  ],
+  "summary_zh": "ILPO 提出两阶段模仿学习框架：先从专家状态观测离线学习隐空间策略和前向动力学模型，再通过少量真实环境交互对齐 latent action 与真实动作，无需任何专家动作标注即可完成行为模仿，在 Cartpole、Acrobot、Mountain car 和 CoinRun 上均优于 BCO。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

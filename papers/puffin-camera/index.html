@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puffin: Thinking with Camera — 统一相机感知与生成的多模态模型</title>
+<meta name="keywords" content="camera calibration, 相机理解与生成, 多模态模型, thinking with camera, diffusion model, novel view synthesis, spatial intelligence, Puffin-4M">
+<meta name="description" content="Puffin 将相机参数视为语言模态，通过"Thinking with Camera"机制，统一实现相机几何理解与可控图像生成，在多个基准上超越专用模型。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2026 · 计算机视觉</span>
+    <h1>Puffin: Thinking with Camera</h1>
+    <div class="sub">统一相机感知与生成的多模态模型</div>
+    <div class="authors">Kang Liao, Size Wu, Zhonghua Wu, Linyi Jin, Chao Wang, Yikai Wang, Fei Wang, Wei Li, Chen Change Loy &nbsp;·&nbsp; S-Lab NTU · SenseTime Research · University of Michigan · Max-Planck Institute</div>
+    <p class="lead">Puffin 将相机参数视为语言模态，通过"Thinking with Camera"机制，在同一框架内统一实现相机几何理解（calibration）与可控图像生成（novel view synthesis），在 MegaDepth、TartanAir 等多个基准上超越专用方法。</p>
+    <div class="meta">
+      <span>ICLR 2026</span>
+      <span>4M 训练样本</span>
+      <span>64 A100 GPUs · 4 天</span>
+      <span><a href="https://arxiv.org/abs/2510.08673">📄 arXiv:2510.08673</a></span>
+      <span><a href="https://arxiv.org/pdf/2510.08673">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>camera calibration</span>
+      <span>相机理解与生成</span>
+      <span>多模态模型</span>
+      <span>thinking with camera</span>
+      <span>diffusion model</span>
+      <span>novel view synthesis</span>
+      <span>spatial intelligence</span>
+      <span>Puffin-4M</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      相机几何理解（从图像估计 roll/pitch/FoV 等参数）与可控图像生成（按指定视角合成场景）是空间智能的两大基石，但长期以来被作为独立任务研究。现有方法将相机参数当作辅助数字标签，忽视了其本身作为模态的语义价值，导致模型在追求语义对齐时忽略精确的空间约束，性能次优。
+    </p>
+    <blockquote>
+      "Camera-centric understanding and generation are two cornerstones of spatial intelligence, yet they are typically studied in isolation."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="Puffin 能力总览">
+      <figcaption>
+        <strong>图 1：Puffin 的多样化能力。</strong>（a）可控图像生成：根据相机参数合成任意视角图像；（b）相机几何理解：从单张图像回归 roll/pitch/FoV；（c）Thinking with Camera 模式：通过自然语言空间推理辅助几何估计；（d）下游 3D 应用：虚拟物体插入、世界探索等。
+      </figcaption>
+    </figure>
+    <p>
+      核心挑战在于<strong>模态鸿沟</strong>：相机参数是抽象的数值（如 FoV=72°），缺乏视觉语义，而大型多模态模型（LMM）的训练目标是语义对齐。现有做法要么独立训练专用的几何估计器，要么将参数硬编码为辅助标签，均未能充分利用 LMM 的视觉-语言推理能力。Puffin 提出将相机参数视为一种<em>语言</em>，用摄影专业术语（如 "tilt-up"、"Dutch angle"、"close-up"）作为中间表示，弥合数值几何与高层语义之间的差距。
+    </p>
+    <div class="kpi">
+      <div><b>0.32°</b><small>Roll 误差 (MegaDepth)<br>vs. GeoCalib 0.36°</small></div>
+      <div><b>1.08°</b><small>Pitch 误差 (MegaDepth)<br>vs. GeoCalib 1.94°</small></div>
+      <div><b>2.42°</b><small>FoV 误差 (MegaDepth)<br>vs. GeoCalib 4.46°</small></div>
+      <div><b>11.94°</b><small>Up Vector 误差（生成评估）<br>vs. PreciseCam 18.66°</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Puffin 以自回归语言回归（camera understanding）和扩散模型生成（camera-controllable generation）为双主干，通过共享的"Thinking with Camera"链式推理将二者统一。整个系统基于四阶段渐进式训练策略，在 Puffin-4M 数据集上训练，共耗时约 4 天（64 A100 GPU）。
+    </p>
+
+    <figure>
+      <img src="img/overview.webp" alt="Puffin 总体框架">
+      <figcaption>
+        <strong>图 2：统一框架概览。</strong>Puffin 以单张图像为输入，通过语言分支回归相机参数（理解任务），同时以文本描述和相机参数为条件通过扩散分支生成图像（生成任务）。两个分支共享视觉编码器，通过"Thinking with Camera"机制实现联动。
+      </figcaption>
+    </figure>
+
+    <h3>Thinking with Camera 机制</h3>
+    <p>
+      该机制的核心思想是将三类空间先验编码进 chain-of-thought 推理链：
+    </p>
+    <ul>
+      <li><strong>Spatially Grounded Visual Cues（空间视觉线索）：</strong>天空、天花板、地面等无纹理区域虽缺乏局部特征，却蕴含垂直方向的强先验，对 pitch 估计尤为关键。Puffin 将这类隐含先验显式化，嵌入"thinking caption"。</li>
+      <li><strong>Professional Photographic Terms（摄影专业术语）：</strong>用 "close-up"、"tilt-up"、"Dutch angle" 等摄影师常用词汇替代裸数值，与 LMM 训练语料中的知识高度对齐，充当几何与语义之间的桥梁。</li>
+      <li><strong>Geometric Context（几何上下文）：</strong>将 roll/pitch/FoV 三个维度解耦，每个参数锚定到语义描述符上，最终以连续 latent 形式送入扩散模型，提供细粒度空间先验。</li>
+    </ul>
+
+    <figure>
+      <img src="img/thinking_paradigm.webp" alt="Thinking with Camera 对比传统方法">
+      <figcaption>
+        <strong>图 3：范式对比。</strong>传统方法（左）将相机参数视为纯数值标签；Puffin（右）引入摄影术语作为中间推理步骤，形成"空间线索 → 语言推理 → 精确估计"的完整链路。
+      </figcaption>
+    </figure>
+
+    <h3>模型架构</h3>
+    <p>
+      Puffin 由四个核心模块构成：
+    </p>
+    <ul>
+      <li><strong>Geometry-aligned Vision Encoder：</strong>采用 C-RADIOv3-H，专为几何特征保真设计，避免标准视觉编码器压缩几何信息导致的性能下降。直接 fine-tune InternVL3 或 Qwen2.5-VL 等通用 VLM 的实验表明，其 "underperforms specialized vision-only baselines due to compressed features lacking geometric fidelity"。</li>
+      <li><strong>LLM Backbone：</strong>Qwen2.5-1.5B，负责语言推理与参数回归；通过 64 个可学习 query 的 connector 与视觉编码器对接。</li>
+      <li><strong>Diffusion Backbone：</strong>SD3-Medium，负责相机可控图像生成；接受文本条件与 pixel-wise camera map（perspective field）作为空间先验。</li>
+      <li><strong>四阶段训练：</strong>Stage I（Alignment，冻结基础模型，训练 connector）→ Stage II（SFT，解冻全部模块）→ Stage III（Thinking SFT，引入空间推理 caption）→ Stage IV（Instruction Tuning，跨视角任务）。</li>
+    </ul>
+
+    <figure>
+      <img src="img/architecture.webp" alt="Puffin 模型架构图">
+      <figcaption>
+        <strong>图 4：Puffin 架构细节。</strong>视觉编码器（C-RADIOv3-H）提取几何对齐特征，经 connector 送入 LLM（Qwen2.5-1.5B）进行参数回归和语言推理；pixel-wise camera map 以 latent 形式注入 SD3-Medium 扩散模型，实现相机可控生成。
+      </figcaption>
+    </figure>
+
+    <h3>Puffin-4M 数据集</h3>
+    <p>
+      从约 20 万张全景图（panoramic images）出发，通过透视投影裁切构造 <strong>400 万个</strong> vision-language-camera 三元组，覆盖室内/室外多样场景，参数范围为 roll/pitch ∈ [−45°, 45°]、FoV ∈ [20°, 105°]、yaw ∈ [0°, 360°]。每个样本包含：精确相机参数、场景文字描述、pixel-wise perspective field map、以及空间推理 caption（用于 Thinking SFT）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      评估分两大任务：（1）<strong>相机几何理解</strong>，在 MegaDepth、TartanAir、LaMAR 三个公开数据集及自建 Puffin-Und 基准上评估 roll/pitch/FoV 误差；（2）<strong>相机可控图像生成</strong>，在自建 Puffin-Gen 基准（650 个 caption-camera 对）上评估空间精度（Up Vector/Latitude/Gravity 误差）与视觉质量（FID）。
+    </p>
+
+    <h3>相机理解：与专用方法对比（Table 3）</h3>
+    <table>
+      <tr><th>数据集</th><th>指标</th><th>GeoCalib</th><th>Perspective Fields</th><th><strong>Puffin (Ours)</strong></th></tr>
+      <tr><td>MegaDepth</td><td>Roll↓</td><td>0.36°</td><td>0.49°</td><td class="good">0.32°</td></tr>
+      <tr><td>MegaDepth</td><td>Pitch↓</td><td>1.94°</td><td>2.09°</td><td class="good">1.08°</td></tr>
+      <tr><td>MegaDepth</td><td>FoV↓</td><td>4.46°</td><td>—</td><td class="good">2.42°</td></tr>
+      <tr><td>TartanAir</td><td>Roll↓</td><td>0.73°</td><td>0.49°</td><td class="good">0.40°</td></tr>
+      <tr><td>TartanAir</td><td>Pitch↓</td><td>1.89°</td><td>1.36°</td><td class="good">0.95°</td></tr>
+      <tr><td>LaMAR</td><td>Roll↓</td><td>0.43°</td><td>0.62°</td><td class="good">0.38°</td></tr>
+      <tr><td>LaMAR</td><td>Pitch↓</td><td>1.08°</td><td>1.75°</td><td class="good">0.71°</td></tr>
+    </table>
+
+    <h3>相机可控生成：与生成方法对比（Table 4）</h3>
+    <table>
+      <tr><th>方法</th><th>Up Vector↓</th><th>Latitude↓</th><th>Gravity↓</th><th>FID↓</th></tr>
+      <tr><td>GPT-4o</td><td>34.55°</td><td>21.25°</td><td>33.48°</td><td>95.92</td></tr>
+      <tr><td>PreciseCam</td><td>18.66°</td><td>12.49°</td><td>18.39°</td><td>90.91</td></tr>
+      <tr><td><strong>Puffin (Ours)</strong></td><td class="good">11.94°</td><td class="good">6.34°</td><td class="good">6.79°</td><td class="good">69.46</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/generation_results.webp" alt="相机可控生成定性对比">
+      <figcaption>
+        <strong>图 8：相机可控生成定性对比。</strong>给定相同的文本描述和目标相机参数（camera map），Puffin 生成的图像在透视角度、水平线位置等几何属性上明显优于 PreciseCam 等对比方法，同时保持更高的视觉质量（FID 69.46 vs. 90.91）。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/quantitative.webp" alt="生成评估散点图">
+      <figcaption>
+        <strong>图 9：预测相机参数与 ground truth 对比散点图。</strong>Puffin 生成图像的相机参数（通过离线标定反算）与目标参数高度一致，Up Vector 平均误差 11.94°，Latitude 误差 6.34°。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Table 5）</h3>
+    <p>消融实验在自建 Puffin-Und 基准上进行，验证 Thinking with Camera 机制及架构选择的重要性：</p>
+    <table>
+      <tr><th>配置</th><th>Roll↓</th><th>Pitch↓</th><th>FoV↓</th></tr>
+      <tr><td>InternVL3（通用 VLM 直接微调）</td><td>0.91°</td><td>1.72°</td><td>2.96°</td></tr>
+      <tr><td>Qwen2.5-VL（通用 VLM 直接微调）</td><td>0.79°</td><td>1.61°</td><td>2.91°</td></tr>
+      <tr><td>Vision Encoder Only（仅视觉编码器）</td><td>0.55°</td><td>1.00°</td><td>1.87°</td></tr>
+      <tr><td>Puffin（base，无 Thinking）</td><td>0.47°</td><td>0.91°</td><td>1.48°</td></tr>
+      <tr><td><strong>Puffin（+ Thinking with Camera）</strong></td><td class="good">0.41°</td><td class="good">0.74°</td><td class="good">1.21°</td></tr>
+    </table>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验结果">
+      <figcaption>
+        <strong>图 11：Thinking with Camera 消融可视化。</strong>引入摄影术语推理链后，模型对 roll/pitch/FoV 的估计均有一致改善（Roll: 0.47° → 0.41°，Pitch: 0.91° → 0.74°，FoV: 1.48° → 1.21°）。此外，联合训练（理解+生成）相比单任务训练表现出互促效应。
+      </figcaption>
+    </figure>
+
+    <p>消融结论：（1）直接 fine-tune 通用 VLM（InternVL3、Qwen2.5-VL）由于视觉特征经过语义压缩，反而不如专用视觉编码器；（2）Thinking with Camera 机制在所有三个指标上均带来稳定提升；（3）统一训练（理解+生成）相比各自独立训练存在正向互促。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为论文作者明确陈述（stated），见 Limitations 小节。</div>
+
+    <details class="lim" open>
+      <summary>固定分辨率限制生成尺度</summary>
+      <p>"Because our training dataset is constructed at a fixed resolution of 512×512, Puffin's image generation is currently restricted to a single scale."训练数据全部以 512×512 构建，导致生成模块目前只能输出单一分辨率，限制了在需要更高分辨率的场景中的实用性。作者指出可通过构建多尺度训练集解决，"these limitations are orthogonal to our main focus."</p>
+    </details>
+
+    <details class="lim">
+      <summary>中心裁切丢弃有效内容</summary>
+      <p>对非方形输入，Puffin 采用中心裁切后缩放的策略，当实际图像长宽比与方形差异较大时，边缘内容被丢弃，可能导致几何估计性能下降。</p>
+    </details>
+
+    <details class="lim">
+      <summary>生成评估依赖离线标定，存在歧义</summary>
+      <p>"The calibration errors it reports can be ambiguous, especially for generated images exhibiting only subtle spatial differences."相机可控生成的定量评估依赖于对生成图像再做离线相机标定（反算参数），这本身存在估计误差，对空间差异细微的生成图像尤为明显，评估结果可能低估实际控制精度。</p>
+    </details>
+
+    <details class="lim">
+      <summary>暂不支持径向畸变建模</summary>
+      <p>当前版本尚未建模镜头径向畸变（radial distortion），对于广角镜头或鱼眼镜头拍摄的图像，几何估计精度会受影响。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Puffin: Thinking with Camera · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2510.08673">https://arxiv.org/abs/2510.08673</a>
+  </div>
+</footer>
+
+</body>
+</html>

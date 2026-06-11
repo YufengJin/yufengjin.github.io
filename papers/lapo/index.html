@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Paper: LAPO — Learning to Act without Actions (arXiv 2312.10812)
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAPO: Learning to Act without Actions</title>
+<meta name="keywords" content="latent action, 无标注视频学习, inverse dynamics model, vector quantization, 策略预训练, Procgen, world model, reinforcement learning, 无监督动作表征, video pre-training">
+<meta name="description" content="LAPO 从纯视频（无动作标签）中恢复隐变量动作空间，并在少量标注数据微调后即可快速达到专家水平，为大规模视频预训练策略奠定基础。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2024 Spotlight · 策略预训练 · 无动作标签</span>
+    <h1>LAPO: Learning to Act without Actions</h1>
+    <div class="sub">从纯视频中恢复隐变量动作，无需任何动作标签即可预训练策略</div>
+    <div class="authors">Dominik Schmidt &amp; Minqi Jiang · UCL, Meta AI</div>
+    <p class="lead">
+      LAPO（Latent Action Policies）提出了一种仅靠视频观测序列学习行为策略的框架。通过联合训练逆向动态模型（IDM）与前向动态模型（FDM），并以 Vector Quantization（VQ）作为信息瓶颈，LAPO 可以从无标注视频中自动发现结构化的隐动作空间。学到的 latent policy 经过少量标注数据的解码器微调，便可在 Procgen 基准的 16 个游戏上快速达到甚至超越专家水平。
+    </p>
+    <div class="meta">
+      <span>ICLR 2024 Spotlight</span>
+      <span>Procgen · 16 games</span>
+      <span>VQ-VAE · IDM · FDM</span>
+      <span><a href="https://arxiv.org/abs/2312.10812">📄 arXiv:2312.10812</a></span>
+    </div>
+    <div class="kw">
+      <span>latent action</span>
+      <span>无标注视频学习</span>
+      <span>inverse dynamics model</span>
+      <span>vector quantization</span>
+      <span>策略预训练</span>
+      <span>Procgen</span>
+      <span>world model</span>
+      <span>reinforcement learning</span>
+      <span>无监督动作表征</span>
+      <span>video pre-training</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      大语言模型通过在海量网络文本上预训练，获得了强大的通用能力。然而在强化学习领域，互联网上存在大量无标注的行为视频（游戏回放、操作演示等），却因为缺少动作标签而无法直接用于策略学习。如何从纯视频中提取行为信息，是通往具身 AI 大规模预训练的关键障碍。
+    </p>
+    <blockquote>
+      "a first step towards pre-training powerful, generalist policies and world models on the vast amounts of videos readily available on the web"
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="LAPO Teaser: UMAP of learned latent action space for Miner">
+      <figcaption>
+        <strong>图 1：</strong>在 Miner 环境中，LAPO 学到的隐动作空间的 UMAP 投影，以及 FDM 对每簇 latent action 生成的下一帧预测。每个聚类对应玩家真实按下的不同按键方向，表明模型在无任何动作标签的情况下自动发现了与真实动作语义对齐的结构化表征。（图源：原论文 Figure 1）
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>16</b><small>Procgen 游戏数</small></div>
+      <div><b>4M</b><small>帧内达到专家水平</small></div>
+      <div><b>&lt;256</b><small>离线解码所需标注转换数</small></div>
+      <div><b>44%</b><small>同等帧数下 PPO from scratch 仅达专家的</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      LAPO 的核心是两个协同训练的动态模型：逆向动态模型（IDM）根据相邻两帧预测隐动作，前向动态模型（FDM）则仅凭当前帧和隐动作预测下一帧。两者共同以最小化下一状态预测误差为目标，而 Vector Quantization（VQ）瓶颈迫使 IDM 只编码状态差异而非完整的未来信息，从而学到真正具有动作语义的压缩表征。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="LAPO Architecture">
+      <figcaption>
+        <strong>图 2：LAPO 架构。</strong>IDM 同时观测 o<sub>t</sub> 和 o<sub>t+1</sub>，输出经 VQ 量化的 latent action；FDM 仅观测 o<sub>t</sub> 和该 latent action，预测 ô<sub>t+1</sub>。训练信号为 ||ô<sub>t+1</sub> − o<sub>t+1</sub>||²。（图源：原论文 Figure 2）
+      </figcaption>
+    </figure>
+
+    <h3>逆向动态模型（IDM）与信息瓶颈</h3>
+    <p>
+      IDM 以 (o<sub>t</sub>, o<sub>t+1</sub>) 为输入，输出连续的 latent action 向量，再经过 VQ 离散化。VQ 作为信息瓶颈的关键作用在于：若无约束，IDM 可以直接"抄写"未来帧信息绕过真正的动作推断；VQ 压缩迫使模型只保留状态转变中最关键的那部分信息，即
+      <em>"the IDM learns to encode only the difference between o<sub>t+1</sub> and o<sub>t</sub>…rather than full information about o<sub>t+1</sub>."</em>
+      实验表明，去掉 VQ 后（no-VQ ablation）虽然 FDM loss 更低，但下游策略性能显著下降，印证了 VQ 的不可或缺性。
+    </p>
+
+    <h3>前向动态模型（FDM）与 Latent Policy</h3>
+    <p>
+      FDM 仅接收当前观测 o<sub>t</sub> 与 latent action，预测下一帧。训练完成后，IDM 的编码器部分即构成 <strong>latent policy</strong>——给定观测，输出 latent action。该 latent policy 可通过两种途径解码为真实可执行策略：
+    </p>
+    <ul>
+      <li><strong>离线解码（Offline Decoding）：</strong>训练一个小型解码器（decoder），在少量带标注的 (latent action → 真实动作) 对上做监督学习，实现标注效率极高的策略迁移。</li>
+      <li><strong>在线解码（Online Decoding / RL Fine-tuning）：</strong>以 latent policy 初始化 RL 智能体，在环境中直接做 RL 微调（以 latent action 为动作空间），完全不需要任何标注数据。</li>
+    </ul>
+
+    <figure>
+      <img src="img/umap_grid.webp" alt="UMAP of latent action spaces across 16 Procgen games">
+      <figcaption>
+        <strong>图 5：</strong>16 个 Procgen 游戏的 latent action 空间 UMAP 投影。每个点代表 IDM 对一次状态转变输出的连续（VQ 前）latent action。可见大多数游戏中已自然形成与真实离散动作语义对齐的聚类结构。（图源：原论文 Figure 5）
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在 Procgen 基准的全部 16 个游戏上进行。无标注视频数据集包含约 8M 帧，由用 PPO 训练 50M 步后的专家策略采集。核心对比基线为 PPO from scratch 和 ILPO（另一种无动作标签方法）。
+    </p>
+
+    <h3>在线解码（RL Fine-tuning）</h3>
+    <figure>
+      <img src="img/rlft_results.webp" alt="Online decoding RL fine-tuning results on 16 Procgen games">
+      <figcaption>
+        <strong>图 3（左）：</strong>16 个 Procgen 游戏训练过程中的平均回报（3 seeds 平均）。<strong>（右）：</strong>相对专家策略的归一化平均测试回报。LAPO 在 4M 帧内达到专家水平，而 PPO from scratch 在同等帧数下仅达专家水平的 44%。（图源：原论文 Figure 3）
+      </figcaption>
+    </figure>
+
+    <table>
+      <tr><th>设置</th><th>基线</th><th>LAPO</th><th>备注</th></tr>
+      <tr>
+        <td>在线解码 @4M 帧</td>
+        <td>PPO scratch: 44% expert</td>
+        <td class="good">≈100% expert</td>
+        <td>16 games 均值</td>
+      </tr>
+      <tr>
+        <td>超越专家的游戏数</td>
+        <td>—</td>
+        <td class="good">9 / 16</td>
+        <td>在 4M 帧内</td>
+      </tr>
+      <tr>
+        <td>ILPO 对比</td>
+        <td>ILPO 在多关卡任务崩溃</td>
+        <td class="good">LAPO 保持稳定</td>
+        <td>多关卡环境</td>
+      </tr>
+    </table>
+
+    <h3>离线解码（少量标注）</h3>
+    <figure>
+      <img src="img/offline_decoded.webp" alt="Offline decoding performance vs. number of labeled transitions">
+      <figcaption>
+        <strong>图 4：</strong>离线解码性能随标注转换数量的变化曲线（3 seeds 均值 ± 标准差）。用少于 256 条标注转换训练的解码器，其性能已超过 PPO from scratch 训练 4M 步的水平。（图源：原论文 Figure 4）
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>
+      两个关键消融证实了设计选择的重要性：
+    </p>
+    <ul>
+      <li><strong>RL, no-SL：</strong>移除监督学习组件（仅 RL 微调），性能下降，说明离线解码阶段的监督信号有帮助。</li>
+      <li><strong>RL, no-SL, no-VQ：</strong>同时移除 VQ，尽管 FDM loss 更低，下游策略性能显著劣化——直接验证 VQ 信息瓶颈是学习有意义 latent action 的关键组件。</li>
+    </ul>
+    <p>此外，UMAP 可视化显示，有 VQ 时 latent action 聚类更清晰，与真实动作对齐更好；无 VQ 时表征碎片化，难以解码为有效策略。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文中明确陈述（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>动作效果延迟（Delayed Action Effects）</summary>
+      <p>
+        "Actions that have a delayed effect in observations will be predicted to take place with the same delay."——若某个动作在视觉上的效果延后若干帧才出现，IDM 学到的 latent action 会对应延迟后的可见变化，而非动作本身发生的时刻。作者指出可通过多时间步架构（multi-timestep architectures）加以缓解。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>环境随机性（Stochasticity）</summary>
+      <p>
+        "Significant stochasticity can make it difficult for the IDM to compress the useful bits of information among the noise."——高随机性环境中，状态转变中的噪声与真实动作信号混杂，IDM 难以准确分离，导致 latent action 质量下降。更大的数据集可部分缓解此问题。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>大规模训练的扩展挑战（Scaling Challenges）</summary>
+      <p>
+        "Training on much larger datasets…would require scaling up the model architecture, which introduces new challenges in balancing the strength of the FDM and the capacity of latent actions representations."——在互联网规模视频数据上训练需要更大的模型，但 FDM 能力与 latent action 容量之间的平衡尚未得到充分研究，是迈向通用视频预训练策略的开放问题。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖部分可观测性结构（Inferred）</summary>
+      <p>
+        （从设计推断）实验表明，部分可观测性较低的环境中 latent action 聚类更清晰；对于完全可观测或高维观测的场景，IDM 可能更难学到紧凑的动作表征，泛化能力有待验证。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · LAPO: Learning to Act without Actions · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2312.10812">https://arxiv.org/abs/2312.10812</a>
+  </div>
+</footer>
+
+</body>
+</html>

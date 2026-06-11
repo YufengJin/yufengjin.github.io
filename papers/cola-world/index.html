@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / metrics / model names kept in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co-Evolving Latent Action World Models (CoLA-World)</title>
+<meta name="keywords" content="latent action model, world model, video generation, visual planning, codebook collapse, 联合训练, 机器人操作, VP2 benchmark">
+<meta name="description" content="CoLA-World 提出将 latent action model 与 world model 联合训练，打破两阶段流水线的瓶颈，在视频预测与视觉规划任务上全面超越基线。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:40px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">世界模型 · 机器人学习 · ICLR 2025</span>
+    <h1>Co-Evolving Latent Action World Models</h1>
+    <div class="sub">CoLA-World：将 latent action 模型与 world model 协同联合训练</div>
+    <div class="authors">Yucen Wang, Fengming Zhang, De-Chuan Zhan（南京大学）· Li Zhao, Kaixin Wang, Jiang Bian（Microsoft Research Asia）</div>
+    <p class="lead">CoLA-World 首次打破"先训 LAM、再训 world model"的两阶段范式，将二者联合端到端训练——通过一个关键的 warm-up 阶段防止 codebook collapse，最终实现两者相互促进的协同进化，在视频预测质量和视觉规划成功率上全面超越两阶段基线。</p>
+    <div class="meta">
+      <span>arXiv 2025-10</span>
+      <span>视频生成 · 机器人学习</span>
+      <span>OpenSora / Wan2.1 backbone</span>
+      <a href="https://arxiv.org/abs/2510.26433" style="color:inherit"><span>📄 arXiv:2510.26433</span></a>
+    </div>
+    <div class="kw">
+      <span>latent action model</span>
+      <span>world model</span>
+      <span>联合训练</span>
+      <span>codebook collapse</span>
+      <span>video generation</span>
+      <span>visual planning</span>
+      <span>VP2 benchmark</span>
+      <span>机器人操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人和视频生成领域普遍采用"latent action model（LAM）+ world model（WM）"的两阶段流水线：先用 inverse dynamics model（IDM）从无标注视频中学习 latent action codebook，再将 codebook 固定，训练以 latent action 为条件的 world model。这种分离训练方式存在根本性冗余——IDM 内部的 forward dynamics model（FDM）与 WM 本质上做的是同一件事（预测下一帧），却各自为政、无法相互促进。</p>
+    <blockquote>"We argue that there is an inherent redundancy in the design: the FDM and the world model perform almost identical functions, both modeling the transition dynamics of the environment."</blockquote>
+    <figure>
+      <img src="img/main.webp" alt="两阶段 vs 联合训练示意图">
+      <figcaption><strong>Figure 1.</strong> (a) 先前方法：两阶段流水线，先固定训练 LAM，再用其 latent actions 训练 world model。(b) CoLA-World：直接用 world model 替代 IDM 中的 FDM，实现一阶段联合训练——world model 充当"知识丰富的导师"，持续为 LAM 提供梯度，而不断演进的 LAM 又反过来提升 world model 的控制精度。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>2.73×</b><small>视觉规划平均成功率提升（joint vs two-stage，VP2 benchmark）</small></div>
+      <div><b>158.36</b><small>FVD（joint）vs 167.06（two-stage），LIBERO OOD 视频预测</small></div>
+      <div><b>35.33%</b><small>Upright Block 任务成功率（joint），vs two-stage 22.00%</small></div>
+      <div><b>38K步</b><small>联合训练（计算量更少）即可达到或超越 60K 步两阶段基线</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">CoLA-World 将 IDM 中原有的 FDM 替换为预训练 video generation world model，然后对整个系统端到端联合训练。核心挑战是直接联合训练会导致 latent action codebook 的"表征崩塌"（representational collapse），通过引入 warm-up 阶段可以优雅地解决这一问题。</p>
+
+    <h3>关键挑战：Codebook Collapse</h3>
+    <figure>
+      <img src="img/collapse.webp" alt="codebook collapse 分析">
+      <figcaption><strong>Figure 2.</strong> 直接从头联合训练时的 codebook 指标：utilization 降至 0，单个 code 使用率接近 100%，entropy 归零——即所有 latent action 退化为同一个 code，丧失表达能力。使用预训练权重初始化（"pre"曲线）虽可短暂延缓，但最终仍不可避免地崩塌。</figcaption>
+    </figure>
+
+    <h3>解决方案：Warm-Up + 端到端联合训练</h3>
+    <p>CoLA-World 的训练分两阶段：</p>
+    <ul>
+      <li><strong>Warm-Up 阶段：</strong>固定 world model 参数，仅让其提供梯度来更新 LAM（IDM）。此时 world model 充当"冻结的导师"，帮助 LAM 建立稳健的 codebook 表示，防止崩塌。</li>
+      <li><strong>End-to-End 联合训练阶段：</strong>解冻 world model，两者共同更新。LAM 持续产生更高质量的 latent actions，world model 以此为条件提升视频预测精度，形成正向反馈循环——即"co-evolution"（协同进化）。</li>
+    </ul>
+    <figure>
+      <img src="img/warmup.webp" alt="warm-up 阶段分析">
+      <figcaption><strong>Figure 3.</strong> Warm-up 阶段不同步数对应的 codebook 指标变化。warm-up 步数越充分，后续联合训练时 codebook 越稳定，utilization 保持在健康水平（>20%），entropy 不降为零。</figcaption>
+    </figure>
+
+    <h3>Co-Evolution 证据</h3>
+    <figure>
+      <img src="img/coevolution.webp" alt="协同进化证据">
+      <figcaption><strong>Figure 4.</strong> (a) 在联合训练中，LAM 的 linear probing loss（衡量 latent action 质量）下降更快——对比 world model 固定时的情形，说明 world model 的持续进化正在帮助 LAM 学到更有意义的表示。(b) World model 在联合训练下视频预测性能持续提升，而固定 LAM 时出现明显瓶颈。</figcaption>
+    </figure>
+
+    <h3>Real Action 适配：跨域迁移</h3>
+    <p>学习到的 latent action codebook 可通过轻量级 adapter 与真实机器人动作对齐，实现从无标注视频到有标注机器人数据的迁移。实验表明，CoLA-World 的 codebook 在适配过程中保持健康的 utilization（>20%），而两阶段基线的 codebook 在适配阶段发生崩塌（utilization 跌至 ~10%，单个 code 占用率激增至 0.5）。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">评估涵盖四个机器人/视频数据集（OXE、EgoCentric、AgiBot、LIBERO），以及 VP2 benchmark 上的视觉规划任务（RoboDesk）。主要指标：视频预测用 FVD（越低越好），视觉规划用成功率（越高越好）。对比基线为相同计算预算（60K steps）的两阶段方法。</p>
+
+    <h3>Table 1：视频预测性能（FVD，越低越好）</h3>
+    <table>
+      <tr><th>数据集</th><th>两阶段（LAM30K+WM30K）</th><th>CoLA-World（Warm8K+E2E52K）</th></tr>
+      <tr><td>OXE</td><td>281.05</td><td class="good">278.90</td></tr>
+      <tr><td>EgoCentric</td><td>259.33</td><td class="good">252.45</td></tr>
+      <tr><td>AgiBot</td><td>180.45</td><td class="good">174.93</td></tr>
+      <tr><td>LIBERO（OOD）</td><td>167.06</td><td class="good">158.36</td></tr>
+    </table>
+    <p>在所有数据集上，相同计算预算下联合训练均优于两阶段方法，OOD 场景（LIBERO）提升尤为显著。</p>
+
+    <h3>Table 2：Real Action 适配后的视频预测性能（FVD，越低越好）</h3>
+    <table>
+      <tr><th>数据集</th><th>两阶段</th><th>CoLA-World</th></tr>
+      <tr><td>LIBERO（real actions）</td><td>115.45</td><td class="good">93.68</td></tr>
+      <tr><td>RoboDesk（real actions）</td><td>188.82</td><td class="good">169.70</td></tr>
+    </table>
+
+    <h3>Table 3：VP2 Benchmark 视觉规划成功率（%，越高越好，RoboDesk）</h3>
+    <table>
+      <tr><th>任务</th><th>两阶段</th><th>CoLA-World</th></tr>
+      <tr><td>Upright Block</td><td>22.00</td><td class="good">35.33</td></tr>
+      <tr><td>5-task 平均</td><td>7.73</td><td class="good">21.20</td></tr>
+    </table>
+    <p>视觉规划任务上，CoLA-World 的平均成功率为两阶段方法的 <strong>2.73×</strong>，验证联合训练带来的 codebook 质量优势可直接转化为下游控制性能提升。</p>
+
+    <h3>数据效率与 Codebook 健康性</h3>
+    <figure>
+      <img src="img/codebook.webp" alt="codebook 指标在适配阶段的对比">
+      <figcaption><strong>Figure 5.</strong> Real action 适配过程中的 codebook 指标对比。两阶段方法（橙色）的 codebook utilization 跌至 ~10%，最大 code 使用率激增，entropy 崩塌；CoLA-World（蓝色）在整个适配过程中保持 utilization >20% 的健康状态，说明联合训练带来的表示质量优势具备对分布偏移的鲁棒性。</figcaption>
+    </figure>
+
+    <h3>Ablation：数据效率</h3>
+    <p>计算量更少的配置（Warm8K + E2E30K，共 38K 步）已接近甚至超越 60K 步两阶段基线，表明联合训练收敛更快。此外，更大的 world model backbone（更多 DiT blocks）可持续提升 LAM 的 linear probing loss，验证 world model 能力与 LAM 质量之间的正向关联；增大 batch size（64→128）同样改善两者性能。</p>
+
+    <figure>
+      <img src="img/transfer.webp" alt="action transfer 定性结果">
+      <figcaption><strong>Figure 7.</strong> Action transfer 定性结果：source 和 target 视频来自不同数据集。CoLA-World 学到的 latent actions 能够跨数据集迁移并合理重现目标场景中的动作语义。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文未设置单独的 Limitations 章节。以下条目中，标注"（论文明确指出）"者来自原文，其余为根据方法设计推断（inferred）。</div>
+    <details class="lim" open>
+      <summary>依赖大规模预训练 video generation model（论文明确指出）</summary>
+      <p>CoLA-World 需要以预训练的 video generation world model 为起点，方能在 warm-up 阶段为 LAM 提供有意义的梯度。若预训练模型质量不足或领域差异过大，效果将受限。</p>
+    </details>
+    <details class="lim">
+      <summary>计算成本显著高于两阶段方法（论文明确指出）</summary>
+      <p>联合训练（Warm8K + E2E52K）约需 ~100 小时，而两阶段（LAM30K + WM30K）约需 ~75 小时（Table 8）。尽管收敛更快、性能更优，但绝对计算成本仍然较高，对资源受限的场景形成门槛。</p>
+    </details>
+    <details class="lim">
+      <summary>视觉规划绝对成功率仍然偏低（inferred）</summary>
+      <p>VP2 benchmark 上，CoLA-World 的 5-task 平均成功率为 21.20%，虽远优于两阶段的 7.73%，但绝对数值仍然偏低，距离实际机器人部署所需的可靠性尚有差距。</p>
+    </details>
+    <details class="lim">
+      <summary>Warm-up 步数的超参敏感性（inferred）</summary>
+      <p>实验显示 warm-up 步数对 codebook 稳定性有显著影响，需要一定调参成本；在新的数据集或 backbone 上应用时，最优 warm-up 时长可能需要重新搜索。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Co-Evolving Latent Action World Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2510.26433">https://arxiv.org/abs/2510.26433</a>
+  </div>
+</footer>
+
+</body>
+</html>

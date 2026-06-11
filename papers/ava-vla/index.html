@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  AVA-VLA: Improving Vision-Language-Action models with Active Visual Attention
+  arXiv: 2511.18960 | CVPR 2026 Highlight
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVA-VLA: 主动视觉注意力提升视觉-语言-动作模型</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, Active Visual Attention, POMDP, 机器人操作, LIBERO, CALVIN, 部分可观测, 历史上下文, imitation learning">
+<meta name="description" content="AVA-VLA 将 VLA 策略学习重新表述为 POMDP，引入主动视觉注意力模块，根据指令与历史动态重加权视觉 token，在 LIBERO 和 CALVIN 上达到最先进水平。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CVPR 2026 Highlight · 机器人操作</span>
+    <h1>AVA-VLA</h1>
+    <div class="sub">主动视觉注意力提升视觉-语言-动作模型</div>
+    <div class="authors">Lei Xiao, Jifeng Li, Juntao Gao, Feiyang Ye, Yan Jin, Jingjing Qian, Jing Zhang, Yong Wu, Xiaoyuan Yu</div>
+    <p class="lead">
+      AVA-VLA 将 VLA（Vision-Language-Action）策略学习重新表述为 POMDP（Partially Observable Markov Decision Process），
+      通过引入循环历史状态来近似任务信念，并设计主动视觉注意力（Active Visual Attention）模块，
+      根据指令与执行历史动态重加权视觉 token——在 LIBERO 和 CALVIN 等机器人操作基准上达到最先进水平，
+      并成功迁移至真实双臂机械手平台。
+    </p>
+    <div class="meta">
+      <span>arXiv 2025-11</span>
+      <span>CVPR 2026 Highlight</span>
+      <span>机器人操作 · VLA · POMDP</span>
+      <span><a href="https://arxiv.org/abs/2511.18960">📄 arXiv:2511.18960</a></span>
+      <span><a href="https://arxiv.org/pdf/2511.18960">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Active Visual Attention</span>
+      <span>POMDP</span>
+      <span>机器人操作</span>
+      <span>LIBERO</span>
+      <span>CALVIN</span>
+      <span>部分可观测</span>
+      <span>历史上下文</span>
+      <span>imitation learning</span>
+      <span>视觉 token 重加权</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有 VLA 模型在每个时间步独立处理视觉观测，将机械手操作当作 Markov Decision Process（MDP）来求解。
+      然而机器人操作本质上是部分可观测的，依赖历史交互才能完成精确判断。
+      以静态语言指令引导的视觉注意力，被迫在每个决策步从零重新评估视觉信息，
+      无法抑制时序冗余信息，也无法聚焦因过去动作而变得关键的区域。
+    </p>
+    <blockquote>
+      "by processing frames in isolation, the visual attention weights, guided by the static language instruction,
+      are forced to re-evaluate the independent visual information from scratch at each decision step."
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="AVA-VLA 动机对比图">
+      <figcaption>
+        <strong>图 1：动机对比。</strong>
+        任务为"打开灶台并将摩卡壶放上去"，从两个视角观察。
+        基线 VLA（左）无法稳定定位关键目标"灶台开关"；
+        AVA-VLA（右）借助历史上下文，展现出更稳定的注意力聚焦。
+        红色高亮区域表示视觉注意力权重最高的区域。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>98.0%</b><small>LIBERO 多任务平均 SR<br>（4 套件统一策略）</small></div>
+      <div><b>4.65</b><small>CALVIN ABC→D<br>平均链长（连续任务数）</small></div>
+      <div><b>98.2%</b><small>LIBERO 单任务平均 SR<br>（每套件独立策略）</small></div>
+      <div><b>CVPR 2026</b><small>Highlight 论文<br>真实双臂机器人验证</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      AVA-VLA 将 VLA 策略重新表述为 POMDP：动作生成不仅依赖当前观测，
+      还依赖对任务历史信念的循环近似状态。
+      核心模块是 Active Visual Attention（AVA），
+      它将循环状态与语言条件化视觉特征融合，
+      生成 soft importance scores 对骨干 LLM 中所有层的视觉 token 注意力矩阵进行调制。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="AVA-VLA 整体架构">
+      <figcaption>
+        <strong>图 2：AVA-VLA 整体架构。</strong>
+        循环状态 <em>r<sup>t-1</sup></em> 由上一时间步动作相关隐藏状态经 MLP 模块 ℬ 压缩而来。
+        AVA 模块将循环状态与文本条件化视觉特征融合，输出 soft 权重向量 <em>ω<sup>t</sup></em>，
+        对骨干 LLM 所有层的视觉 token 注意力矩阵进行调制。
+        推理时完全循环（fully recurrent），每次前向传播同时预测动作块并提取下一步循环状态。
+      </figcaption>
+    </figure>
+
+    <h3>POMDP 重表述与循环状态</h3>
+    <p>
+      将策略形式化为：<em>Ā<sup>t</sup> ~ P<sub>θ</sub>(A<sup>t</sup> | x<sup>t</sup>, b<sup>t-1</sup>)</em>，
+      其中 <em>b<sup>t-1</sup></em> 捕获"all relevant historical context, including observations and actions"。
+      由于理论信念状态难以精确计算，方法学习一个压缩的循环表示 <em>r<sup>t-1</sup></em>，
+      作为"a neural approximation"，从上一时间步动作相关的 LLM 隐藏状态提取，通过 MLP 模块 ℬ 投影。
+    </p>
+
+    <h3>Active Visual Attention（AVA）模块</h3>
+    <p>AVA 模块依次执行以下操作：</p>
+    <ul>
+      <li><strong>特征编码：</strong>视觉与指令特征各自通过模态专用 MLP 压缩到低维空间 d' &lt; d。</li>
+      <li><strong>FiLM 条件化：</strong>将语言指令通过 Feature-wise Linear Modulation 条件化到视觉特征上。</li>
+      <li><strong>Cross-Attention：</strong>以语言条件化的视觉 token 为 query、循环状态为 key/value，计算跨模态注意力。</li>
+      <li><strong>Self-Attention：</strong>进一步精炼 cross-attention 输出。</li>
+      <li><strong>Importance Scoring：</strong>经 FFN 和带 Softmax 的线性层，预测每个视觉 token 的"logits for enhancing or weakening"。</li>
+      <li><strong>动态注意力调制：</strong>软权重 <em>ω<sup>t</sup></em> 作用于 LLM 所有层，修改注意力矩阵：
+        <em>A'<sup>tm</sup><sub>ij</sub> = exp(C<sup>tm</sup><sub>ij</sub>) · U<sub>ij</sub> / Σ<sub>l</sub> exp(C<sup>tm</sup><sub>il</sub>) · U<sub>il</sub></em>。
+      </li>
+    </ul>
+
+    <h3>训练策略</h3>
+    <p>
+      采用<strong>截断反向传播（truncated BPTT）</strong>，时间窗口 T=4，平衡计算可行性与时序动态学习。
+      同时引入 L2 正则化损失 <em>ℒ<sub>ω</sub><sup>t,n</sup> = ‖μ(ω<sup>t,n</sup>) − c‖</em>，
+      约束注意力权重均值接近目标常数 c，使模型"focus on task-relevant regions while suppressing distracting background responses"。
+      超参数：LIBERO 中 λ=1.0, c=0.6, γ=[1.9, 0.1]；CALVIN 中 c=0.2。
+    </p>
+
+    <figure>
+      <img src="img/attention.webp" alt="AVA-VLA 注意力可视化">
+      <figcaption>
+        <strong>图 3：LIBERO 注意力动态可视化。</strong>
+        任务"put both moka pots on the stove"，两路视角下 soft 权重随时间步的演化。
+        可以看到注意力权重逐步集中到机械臂接触区域和目标物体上，体现了 AVA 模块的主动聚焦能力。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 LIBERO（4 个套件：Spatial / Object / Goal / Long）、CALVIN（ABC→D 零样本泛化）
+      以及真实 Mobile ALOHA 双臂机械手平台上进行全面评估，
+      主要对比基线为 OpenVLA-OFT。评估指标为任务成功率（SR %）和 CALVIN 平均链长（Avg. len）。
+    </p>
+
+    <h3>LIBERO 基准——统一策略（4 套件共用一个 policy）</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial SR (%)</th><th>Object SR (%)</th><th>Goal SR (%)</th><th>Long SR (%)</th><th>Average SR (%)</th></tr>
+      <tr><td>OpenVLA-OFT</td><td>97.7</td><td>98.0</td><td>96.1</td><td>95.3</td><td>96.8</td></tr>
+      <tr><td class="good">AVA-VLA（ours）</td><td>97.4</td><td class="good">99.4</td><td class="good">97.4</td><td class="good">97.6</td><td class="good">98.0</td></tr>
+    </table>
+
+    <h3>LIBERO 基准——每套件独立策略</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial SR (%)</th><th>Object SR (%)</th><th>Goal SR (%)</th><th>Long SR (%)</th><th>Average SR (%)</th></tr>
+      <tr><td>OpenVLA-OFT</td><td>97.6</td><td>98.4</td><td>97.9</td><td>94.5</td><td>97.1</td></tr>
+      <tr><td class="good">AVA-VLA（ours）</td><td class="good">99.2</td><td class="good">99.6</td><td>97.9</td><td class="good">96.2</td><td class="good">98.2</td></tr>
+    </table>
+
+    <h3>CALVIN ABC→D 零样本泛化</h3>
+    <table>
+      <tr><th>方法</th><th>1 Task</th><th>2 Tasks</th><th>3 Tasks</th><th>4 Tasks</th><th>5 Tasks</th><th>Avg. len</th></tr>
+      <tr><td>OpenVLA-OFT</td><td>96.9</td><td>92.0</td><td>85.7</td><td>80.4</td><td>72.9</td><td>4.28</td></tr>
+      <tr><td class="good">AVA-VLA（ours）</td><td class="good">99.6</td><td class="good">97.6</td><td class="good">94.1</td><td class="good">89.9</td><td class="good">84.1</td><td class="good">4.65</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实机器人实验结果">
+      <figcaption>
+        <strong>图 4：Mobile ALOHA 真实双臂机器人实验结果。</strong>
+        在 Pick and Place、Sequenced Instruction Understanding、Flexible Object Folding、Dexterous Action
+        四类任务上与 UniVLA、OpenVLA-OFT 对比，AVA-VLA 在跨任务平均成功率上均优于基线。
+        图中展示了任务中间状态的代表性帧及各方法任务成功率。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>
+      <strong>组件消融（LIBERO 多任务，Table 4）：</strong>
+      仅使用状态初始化（State-based initialization only）得到 97.5% 平均 SR；
+      仅使用 AVA 模块（AVA module only）同样得到 97.5%；
+      两者结合（AVA module + State init）达到最优 <strong>98.0%</strong>，
+      说明循环状态初始化与 AVA 模块相互配合缺一不可。
+    </p>
+    <p>
+      <strong>骨干网络泛化性（Table 3，LIBERO-Long）：</strong>
+      在 OpenVLA-7B（+1.7%）、LLaMA2-7B（+2.6%）、Qwen2.5-0.5B（+1.4%）三种骨干上
+      AVA-VLA 均优于对应的 OpenVLA-OFT 基线，表明方法的骨干无关性。
+    </p>
+    <p>
+      <strong>视觉 token 剪枝（Table 5）：</strong>
+      剪枝比例 ≤70% 时性能保持在 97.3% 以上；剪枝 80% 降至 96.0%；剪枝 90% 降至 93.9%，
+      表明 AVA 学到的权重具有稀疏性，在轻度剪枝下可加速推理而几乎不损性能。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>Note：</b>以下局限性部分为论文附录 E 中明确陈述（<em>stated</em>），部分为从方法设计推断（<em>inferred</em>）。
+    </div>
+    <details class="lim" open>
+      <summary>截断 BPTT 时间窗口有限（stated）</summary>
+      <p>
+        论文采用时间窗口 T=4 的截断反向传播（truncated BPTT），
+        这是"practical trade-off"而非最优的时序建模。
+        对需要超长历史推理的任务，有限时间窗口可能无法捕获足够的历史依赖。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>轨迹展开的内存需求（stated）</summary>
+      <p>
+        训练时对历史轨迹的展开（trajectory unrolling）带来额外的内存开销，
+        在显存受限的平台上增加了部署难度，可能限制批大小或序列长度。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>超参数对任务分布敏感（stated）</summary>
+      <p>
+        方法需要针对不同任务分布手动调整超参数（λ, c, γ），
+        例如 LIBERO 中 c=0.6 而 CALVIN 中 c=0.2。
+        跨域泛化时可能需要重新调参，降低了开箱即用性。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>对循环状态初始化敏感（stated）</summary>
+      <p>
+        论文指出方法对循环状态初始化存在一定敏感性，
+        不良的初始化可能影响早期时间步的动作生成质量，
+        尤其在任务开始阶段历史信息缺乏时。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>仅在双臂操作场景验证（inferred）</summary>
+      <p>
+        真实机器人实验仅在 Mobile ALOHA 双臂机械手平台上展开，
+        对更广泛的机器人形态（如移动机器人、单臂操作、灵巧手）的泛化能力尚未评估。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    论文内容整理自原文图表与文字，仅供学习参考 · AVA-VLA: Improving Vision-Language-Action models with Active Visual Attention<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.18960">https://arxiv.org/abs/2511.18960</a>
+  </div>
+</footer>
+
+</body>
+</html>

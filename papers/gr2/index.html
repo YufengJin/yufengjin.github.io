@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  GR-2: Generative Video-Language-Action Model with Web-Scale Knowledge for Robot Manipulation
+  arXiv: 2410.06158
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GR-2: 面向机器人操作的生成式视频-语言-动作模型</title>
+<meta name="keywords" content="robot manipulation, video-language-action model, video generation pre-training, 机器人操作, 多任务学习, generalist policy, imitation learning, scaling law">
+<meta name="description" content="GR-2 是一个在3800万互联网视频上预训练的生成式视频-语言-动作模型，在超过100项机器人操作任务中实现97.7%的平均成功率。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · arXiv 2024</span>
+    <h1>GR-2: Generative Video-Language-Action Model with Web-Scale Knowledge for Robot Manipulation</h1>
+    <div class="sub">用3800万互联网视频预训练，解锁机器人通用操作能力</div>
+    <div class="authors">Chi-Lam Cheang, Guangzeng Chen, Ya Jing, Tao Kong, Hang Li, Yifeng Li, Yuxiao Liu, Hongtao Wu, Jiafeng Xu, Yichu Yang, Hanbo Zhang, Minzhao Zhu · ByteDance</div>
+    <p class="lead">GR-2 是一个两阶段训练的生成式视频-语言-动作（VLA）模型：首先在海量互联网视频上学习通用的视觉动态知识，再通过机器人轨迹数据进行微调，同时预测未来视频帧和动作序列。该模型在超过100项桌面操作任务上达到97.7%的平均成功率，并展现出对未见场景、物体和技能的强大泛化能力。</p>
+    <div class="meta">
+      <span>arXiv 2024-10</span>
+      <span>GPT-style Transformer · 230M params</span>
+      <span>105 tasks · 3 benchmarks</span>
+      <span><a href="https://arxiv.org/abs/2410.06158">📄 arXiv:2410.06158</a></span>
+      <span><a href="https://arxiv.org/pdf/2410.06158">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>robot manipulation</span>
+      <span>video-language-action model</span>
+      <span>video generation pre-training</span>
+      <span>机器人操作</span>
+      <span>多任务学习</span>
+      <span>generalist policy</span>
+      <span>imitation learning</span>
+      <span>scaling law</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人操作数据的采集代价高昂，限制了策略学习的规模化。互联网上大量的视频数据蕴含丰富的物体交互知识——如何将这些"免费"的视觉先验有效迁移到机器人策略学习？</p>
+    <blockquote>
+      "Pre-training on video generation can effectively transfer knowledge to robot policy learning, enabling a generalist robot agent to perform diverse manipulation tasks and generalize to novel environments."
+    </blockquote>
+
+    <figure>
+      <img src="img/multitask_settings.webp" alt="多任务评测设置">
+      <figcaption>多任务学习的五种评测设置：Simple（标准场景）、Distractor（视觉干扰）、Unseen Backgrounds（未见背景）、Unseen Environments（未见环境）、Unseen Manipulation（未见操作物体）。GR-2 需要在所有五种设定下保持高成功率。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>97.7%</b><small>100+ 任务平均成功率（Simple setting）</small></div>
+      <div><b>79.0%</b><small>Bin Picking 平均成功率（GR-1 仅 33.3%）</small></div>
+      <div><b>4.64</b><small>CALVIN 平均连续完成任务数（avg length）</small></div>
+      <div><b>38M</b><small>预训练视频剪辑数量</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">GR-2 采用两阶段训练策略：大规模视频生成预训练 + 机器人数据微调。骨干网络为 GPT-style Transformer，图像由冻结的 VQGAN 编码为离散 token，文本由冻结的 CLIP 编码；仅 95M 参数参与训练（默认 GR-2-B），其余为冻结参数。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="GR-2 训练流程">
+      <figcaption><strong>GR-2 两阶段训练流程。</strong>左：视频生成预训练阶段——给定文本描述和当前帧，模型通过自回归 next-token prediction 预测后续帧，在 Howto100M、Ego4D、Something-Something V2、EPIC-KITCHENS、Kinetics-700 及 RT-1/Bridge 机器人数据集上进行训练。右：机器人微调阶段——在机器人轨迹数据上同时学习视频预测和动作生成，动作通过 conditional VAE 解码。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>阶段一：视频生成预训练</h3>
+        <p>在 <strong>3800万</strong> 文本-视频对（超过 <strong>500亿 token</strong>）上训练。数据来源覆盖烹饪、运动、日常操作等多样场景，以及真实机器人操作数据集（RT-1、Bridge）。模型学习根据文本指令和起始帧，自回归预测后续帧序列，从而获取物体外观、运动规律和物理交互的通用表征。</p>
+      </div>
+      <div class="card">
+        <h3>阶段二：机器人轨迹微调</h3>
+        <p>在机器人演示数据上进行 <strong>双重预测</strong>（dual prediction）：既生成未来视频帧，又同步预测动作序列。动作由 <strong>conditional VAE</strong> 编码并解码，以机器人关节角度和夹爪状态为输入。此阶段的视频预测目标充当辅助监督，促进视觉表征与动作策略的协同学习。</p>
+      </div>
+    </div>
+
+    <h3>Whole-Body Control（全身控制）算法</h3>
+    <p>在真实机器人部署中，GR-2 输出的末端执行器轨迹通过 <strong>trajectory optimization</strong> 和 <strong>real-time motion tracking</strong> 转换为关节指令，实现灵活稳定的操作控制，无需针对每台机器人单独设计低层控制器。</p>
+
+    <h3>模型规模（Scaling）</h3>
+    <p>论文测试了四种规格：GR-2-S（30M 可训练参数）、GR-2-B（95M）、GR-2-L（312M）、GR-2-XL（719M），验证损失和任务成功率均随规模单调提升，表现出良好的 scaling 特性。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">三大评测基准：(1) 105项桌面多任务学习（40,000条轨迹）；(2) 端到端 Bin Picking（122个物体，94,000条轨迹）；(3) CALVIN 仿真基准（34项任务，1~5步连续序列）。对比基准包括 RT-1、MT-ACT、HULC、RoboFlamingo 和 GR-1。</p>
+
+    <h3>多任务学习（105 tasks）</h3>
+    <table>
+      <tr><th>评测设置</th><th>GR-1</th><th>GR-2</th><th>备注</th></tr>
+      <tr><td>Simple</td><td>—</td><td class="good">97.7%</td><td>标准场景，每任务400条轨迹</td></tr>
+      <tr><td>Unseen Backgrounds</td><td>低于 GR-2</td><td class="good">71.4%</td><td>未见背景泛化</td></tr>
+      <tr><td>Unseen Environments</td><td>低于 GR-2</td><td class="good">71.7%</td><td>未见环境泛化</td></tr>
+      <tr><td>Unseen Environments (w/ DA)</td><td>—</td><td class="good">87.0%</td><td>加入数据增强后</td></tr>
+      <tr><td>Unseen Manipulation</td><td>低于 GR-2</td><td class="good">55.8%</td><td>未见操作物体（最难）</td></tr>
+      <tr><td>Simple（每任务~50条）</td><td>—</td><td class="good">73.9%</td><td>数据高效场景</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/multitask_results.webp" alt="多任务成功率对比">
+      <figcaption>多任务学习成功率对比。GR-2 在所有五种评测设置下均优于 GR-1，尤其在泛化场景（Unseen Backgrounds/Environments/Manipulation）中优势显著。图中同时展示了使用400条和50条轨迹/任务两种数据量下的对比结果。</figcaption>
+    </figure>
+
+    <h3>端到端 Bin Picking</h3>
+    <p>122个物体（含透明、可变形、反光物体），分为 Seen / Unseen / Cluttered Seen / Cluttered Unseen 四种场景。GR-2 平均成功率从 GR-1 的 <strong>33.3%</strong> 大幅提升至 <strong>79.0%</strong>，在杂乱场景（两倍物体密度）和未见物体上均保持稳健性能。</p>
+
+    <figure>
+      <img src="img/bin_picking_results.webp" alt="Bin Picking 成功率对比">
+      <figcaption>Bin Picking 四种场景下 GR-2 vs GR-1 成功率对比。GR-2 在所有场景中均显著领先，尤其在 Unseen 和 Cluttered 设置中提升幅度最大。</figcaption>
+    </figure>
+
+    <h3>CALVIN 仿真基准</h3>
+    <table>
+      <tr><th>连续完成任务数</th><th>GR-1</th><th>GR-2</th><th>最强 baseline（RoboFlamingo）</th></tr>
+      <tr><td>1 task</td><td>94.9%</td><td class="good">98.6%</td><td>96.4%</td></tr>
+      <tr><td>2 tasks</td><td>89.6%</td><td class="good">96.3%</td><td>89.6%</td></tr>
+      <tr><td>3 tasks</td><td>84.0%</td><td class="good">93.2%</td><td>82.4%</td></tr>
+      <tr><td>4 tasks</td><td>79.7%</td><td class="good">90.4%</td><td>74.0%</td></tr>
+      <tr><td>5 tasks</td><td>73.1%</td><td class="good">85.9%</td><td>66.0%</td></tr>
+      <tr><td>Avg length</td><td>4.21</td><td class="good">4.64</td><td>4.09</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/calvin_results.webp" alt="CALVIN 成功率">
+      <figcaption>CALVIN 基准上1~5步连续任务成功率及平均完成长度（avg length）对比。GR-2 在所有连续步数上均超越 GR-1 和其他基准方法，5步成功率达85.9%。</figcaption>
+    </figure>
+
+    <h3>Scaling 分析</h3>
+
+    <figure>
+      <img src="img/scaling.webp" alt="Scaling 分析">
+      <figcaption>模型规模（GR-2-S/B/L/XL）对验证损失和任务成功率的影响。随着可训练参数从30M增至719M，Ego4D、RT-1和机器人数据验证损失单调下降，多任务成功率持续提升，展现出良好的 scaling 特性。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性中，标注"【论文明确指出】"的为作者原文陈述；标注"【设计推断】"的为从系统设计中归纳的潜在限制。</div>
+
+    <details class="lim" open>
+      <summary>未见操作物体的成功率偏低【论文明确指出】</summary>
+      <p>在 Unseen Manipulation 设置下，GR-2 的成功率仅为 55.8%，远低于其他场景。论文指出典型失败案例包括"picking unseen objects of novel shapes"和"mistakenly selecting wrong object"。作者明确表示将"explore techniques to further improve generalization for unseen manipulation tasks, including handling novel objects and executing new skills"。</p>
+    </details>
+
+    <details class="lim">
+      <summary>仍需大量示范数据【设计推断】</summary>
+      <p>尽管视频预训练提升了数据效率，多任务学习仍需约40,000条机器人轨迹（105项任务），Bin Picking 需要94,000条轨迹。相比于零样本或少样本泛化的目标，数据需求仍然显著。</p>
+    </details>
+
+    <details class="lim">
+      <summary>预训练计算资源要求高【设计推断】</summary>
+      <p>在3800万视频、500亿 token 上进行预训练对计算资源要求极高，限制了研究复现性和小机构的可及性。论文未提供完整的预训练成本分析。</p>
+    </details>
+
+    <details class="lim">
+      <summary>动作表示与机器人平台耦合【设计推断】</summary>
+      <p>GR-2 的动作空间基于关节角度和夹爪状态，切换到不同形态（如双臂、足式机器人）需要重新设计状态编码器和 Whole-Body Control 模块，跨平台迁移代价较高。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    整理自论文原文及图表 · GR-2: Generative Video-Language-Action Model · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2410.06158">https://arxiv.org/abs/2410.06158</a>
+  </div>
+</footer>
+
+</body>
+</html>

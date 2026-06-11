@@ -1,0 +1,11 @@
+{
+  "slug": "diamond-wm",
+  "title": "Diffusion for World Modeling: Visual Details Matter in Atari",
+  "arxiv_id": "2405.12399",
+  "url": "https://arxiv.org/abs/2405.12399",
+  "category": "机器人 · Robotics",
+  "keywords": ["diffusion world model", "reinforcement learning", "Atari 100k", "EDM", "visual fidelity", "世界模型", "扩散模型", "在线强化学习"],
+  "summary_zh": "DIAMOND 首次将扩散模型用作在线强化学习的世界模型，在像素连续空间建模环境动态，保留离散压缩方案丢失的视觉细节，在 Atari 100k 基准上以 Mean HNS 1.46 创下世界模型内训练智能体的最优纪录。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

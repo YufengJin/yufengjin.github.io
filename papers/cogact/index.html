@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, robotic manipulation, diffusion transformer, action generation, 机器人操作, 扩散变换器, 策略学习, imitation learning, 具身智能">
+<meta name="description" content="CogACT 提出组件化 VLA 架构，将视觉语言认知与扩散 Transformer 动作模块解耦，在仿真和真实机器人操作上大幅超越 OpenVLA 和 RT-2-X。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">arXiv 2411.19650 · cs.RO · 2024</span>
+    <h1>CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation</h1>
+    <div class="sub">将认知与动作解耦的组件化 VLA 架构，专为机器人操作设计</div>
+    <div class="authors">Qixiu Li, Yaobo Liang, Zeyu Wang, Lin Luo, Xi Chen, Mozheng Liao, Fangyun Wei, Yu Deng, Sicheng Xu, Yizhong Zhang, Xiaofan Wang, Bei Liu, Jianlong Fu, Jianmin Bao, Dong Chen, Yuanchun Shi, Jiaolong Yang, Baining Guo</div>
+    <p class="lead">CogACT 提出一种组件化的 Vision-Language-Action (VLA) 架构，将预训练视觉语言模型的"认知"能力与专门的扩散 Transformer 动作模块解耦。在仿真和真实机器人实验中，CogACT 的成功率比 OpenVLA 高出约 35%（仿真）至 55%（真实场景），并超越参数量更大的 RT-2-X 18%。</p>
+    <div class="meta">
+      <span>5 种机器人平台</span>
+      <span>22.5M 训练帧 · 25 个数据集</span>
+      <span>16 NVIDIA A100 · 训练约 5 天</span>
+      <span><a href="https://arxiv.org/abs/2411.19650">📄 arXiv:2411.19650</a></span>
+      <span><a href="https://arxiv.org/pdf/2411.19650">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>diffusion transformer</span>
+      <span>robotic manipulation</span>
+      <span>机器人操作</span>
+      <span>策略学习</span>
+      <span>imitation learning</span>
+      <span>具身智能</span>
+      <span>action ensemble</span>
+      <span>扩散变换器</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有 VLA 模型将视觉语言模型（VLM）直接用于动作预测，通常通过动作量化或简单回归头来输出控制指令，忽略了机器人动作预测与语言 token 生成之间的本质差异，导致泛化能力和精度受限。</p>
+    <blockquote>"Rather than naively adapting pretrained VLMs for action prediction through simple action quantization or adding regression heads, we propose a componentized VLA architecture with specialized action modules."</blockquote>
+    <p>现有方法存在两大问题：第一，动作空间是连续的高维多模态分布，离散化会丢失精度；第二，视觉语言模型的 next-token 预测范式并不适合时序动作序列建模。CogACT 的核心动机在于"认知"（理解场景与指令）和"行动"（输出精确控制序列）应由专门模块分别承担。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="CogACT 结果对比">
+      <figcaption>图1：CogACT 在多个机器人平台（Google robot、WidowX、Realman、Franka）上的成功率对比，以及 DiT 动作模块规模扩展曲线和真实机器人任务执行示例（顺序叠杯、拾放未见物体）。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>74.8%</b><small>Google Robot 仿真平均成功率<br>（vs OpenVLA 34.3%）</small></div>
+      <div><b>71.2%</b><small>Realman 真实机器人平均成功率<br>（vs OpenVLA 12.1%）</small></div>
+      <div><b>61.4%</b><small>Franka 真实机器人平均成功率<br>（vs OpenVLA 6.8%）</small></div>
+      <div><b>>35%</b><small>仿真中相对 OpenVLA 的成功率提升幅度</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">CogACT 将整体模型分为三个组件：视觉模块（Vision Module）、语言模块（Language Module）和扩散动作模块（Diffusion Action Module）。前两者复用成熟的预训练 VLM，后者为专为机器人控制设计的 Diffusion Transformer。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="CogACT 架构图">
+      <figcaption>图2：CogACT 组件化架构。视觉模块（DINOv2 + SigLIP）将观测图像编码为 256 个 visual token；语言模块（LLaMA-2）融合视觉与语言指令，输出 cognition feature；扩散动作模块以 cognition feature 为条件，通过 DiT 预测多步动作序列。</figcaption>
+    </figure>
+
+    <h3>视觉与语言模块（Cognition）</h3>
+    <p>视觉模块采用 DINOv2 和 SigLIP 双编码器，将当前图像编码为 256 个 visual token，通过可学习的投影层输入至语言模块。语言模块基于 LLaMA-2，接收视觉 token 和自然语言任务指令，输出 <em>cognition feature</em>——一个压缩了场景理解和任务目标的特征向量，作为后续动作生成的条件信号。</p>
+
+    <h3>扩散动作模块（Diffusion Action Module）</h3>
+    <p>动作模块基于 Diffusion Transformer（DiT），以 cognition feature 为条件，在扩散过程中预测 7-DoF 末端执行器动作序列（3D 平移、旋转和夹爪状态），每次预测涵盖 16 个时间步的未来动作。消融实验显示预测步长为 <strong>15</strong> 时综合性能最优（平均 62.5%），过长（31 步）反而下降至 51.2%。DiT 在等参数规模下显著优于 MLP 基线（DiT-Base 89M：62.5% vs MLP 7-Layer 89M：52.5%）。</p>
+
+    <figure>
+      <img src="img/ensemble.webp" alt="自适应动作融合策略">
+      <figcaption>图3：Adaptive Action Ensemble 策略（K=2 示例）。通过计算历史预测与当前预测的 cosine similarity，对历史预测加权融合，避免多模态动作分布下的均值退化问题。相比 Action Chunking（50.7%）和 Temporal Ensemble（58.9%），Adaptive Ensemble 在平均成功率上达到 62.5%。</figcaption>
+    </figure>
+
+    <h3>Adaptive Action Ensemble</h3>
+    <p>执行时，模型维护最近 K 帧的历史动作预测。对于每个新时间步，以当前预测与历史预测的 cosine similarity 为权重，加权融合历史预测与当前输出，作为最终执行动作。这一策略有效解决了多模态动作分布下直接均值会产生非法动作的问题，同时保留了时序一致性带来的平滑性提升。</p>
+
+    <figure>
+      <img src="img/scaling.webp" alt="动作模块规模扩展">
+      <figcaption>图4：动作模块规模与仿真平均成功率的关系。从 DiT-Small（13M, 58.5%）到 DiT-Base（89M, 62.5%）再到 DiT-Large（308M, 64.8%），呈现对数线性扩展规律，表明 CogACT 的动作模块具有良好的 scaling 特性。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 Open X-Embodiment 数据集的 25 个子集（共 22.5M 帧）上训练，使用 SIMPLER 仿真框架评估 Google Robot 和 WidowX，并在 Realman 和 Franka 真实机器人上进行零样本迁移测试，对比基线包括 RT-1、RT-1-X、RT-2-X、Octo 系列和 OpenVLA。</p>
+
+    <h3>仿真评测：Google Robot（SIMPLER）</h3>
+    <table>
+      <tr><th>方法</th><th>Pick Coke Can</th><th>Move Near</th><th>Open/Close Drawer</th><th>Open Top Drawer</th><th>平均 (VM)</th></tr>
+      <tr><td>RT-2-X</td><td>78.7</td><td>77.9</td><td>25.0</td><td>3.7</td><td>46.3</td></tr>
+      <tr><td>OpenVLA</td><td>18.0</td><td>56.3</td><td>63.0</td><td>0.0</td><td>34.3</td></tr>
+      <tr><td><strong>CogACT (Ours)</strong></td><td class="good">91.3</td><td class="good">85.0</td><td class="good">71.8</td><td class="good">50.9</td><td class="good">74.8</td></tr>
+    </table>
+
+    <h3>仿真评测：WidowX Robot（SIMPLER）</h3>
+    <table>
+      <tr><th>方法</th><th>Put Spoon on Towel</th><th>Put Carrot on Plate</th><th>Stack Green Block</th><th>Put Eggplant in Basket</th><th>平均 (VM)</th></tr>
+      <tr><td>Octo-Small</td><td>41.7</td><td>8.2</td><td>0.0</td><td>56.7</td><td>26.7</td></tr>
+      <tr><td>OpenVLA</td><td>4.2</td><td>0.0</td><td>0.0</td><td>12.5</td><td>4.2</td></tr>
+      <tr><td><strong>CogACT (Ours)</strong></td><td class="good">71.7</td><td class="good">50.8</td><td class="good">15.0</td><td class="good">67.5</td><td class="good">51.3</td></tr>
+    </table>
+
+    <h3>真实机器人：Realman Robot</h3>
+    <table>
+      <tr><th>方法</th><th>Pick（均值）</th><th>Stack（均值）</th><th>Place（均值）</th><th>整体平均</th></tr>
+      <tr><td>Octo-Base</td><td>8.3</td><td>0.0</td><td>12.5</td><td>4.9</td></tr>
+      <tr><td>OpenVLA</td><td>8.3</td><td>15.6</td><td>12.5</td><td>12.1</td></tr>
+      <tr><td><strong>CogACT (Ours)</strong></td><td class="good">70.8</td><td class="good">82.3</td><td class="good">60.4</td><td class="good">71.2</td></tr>
+    </table>
+
+    <h3>泛化评测：Realman Robot（未见物体属性）</h3>
+    <table>
+      <tr><th>方法</th><th>Unseen Colors</th><th>Unseen Shapes</th><th>Unseen Categories</th><th>平均</th></tr>
+      <tr><td>OpenVLA</td><td>0.0</td><td>6.3</td><td>12.5</td><td>6.3</td></tr>
+      <tr><td><strong>CogACT (Ours)</strong></td><td class="good">87.5</td><td class="good">81.3</td><td>25.0</td><td class="good">64.6</td></tr>
+    </table>
+
+    <h3>真实机器人：Franka Robot</h3>
+    <table>
+      <tr><th>方法</th><th>Close Oven</th><th>Open Oven</th><th>Pick Bowl</th><th>Pick Brush</th><th>平均</th></tr>
+      <tr><td>OpenVLA</td><td>18.2</td><td>0.0</td><td>9.1</td><td>0.0</td><td>6.8</td></tr>
+      <tr><td><strong>CogACT (Ours)</strong></td><td class="good">63.6</td><td class="good">72.7</td><td class="good">72.7</td><td class="good">36.4</td><td class="good">61.4</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/realrobot.webp" alt="真实机器人实验环境">
+      <figcaption>图：Realman 机器人（左）和 Franka 机器人（右）的真实实验环境。Realman 包含 Pick、Stack、Place 三类任务；Franka 包含 Close Oven、Open Oven、Pick Bowl、Pick Brush 四类任务。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>动作架构对比中，DiT-Small（13M）的平均成功率（58.5%）已超越 MLP 7-Layer（89M，52.5%），体现出 DiT 在动作序列建模上的参数效率优势。多步预测步长消融实验中，预测 15 步（62.5%）优于单步（42.8%）和 3 步（55.5%），说明适当的时序窗口对提升动作连续性至关重要。动作融合策略对比：Adaptive Ensemble（62.5%）> Temporal Ensemble（58.9%）> Action Chunking（50.7%）。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 论文未设立专门的 Limitations 章节。以下局限性部分来自作者在实验描述中的明确说明（标注为"作者说明"），部分由设计决策推断（标注为"推断"）。</div>
+
+    <details class="lim" open><summary>动作空间仅支持 7-DoF 单臂末端执行器控制（作者说明）</summary>
+      <p>当前模型专注于"7 degrees of freedom (DoF) in this work"的夹爪控制，不支持双臂、全身控制等更复杂的机器人形态。训练数据也限定为"single-arm end-effector control and at least one third-person camera perspective"的数据集。</p></details>
+
+    <details class="lim"><summary>排除了部分数据集，限制了训练数据覆盖（作者说明）</summary>
+      <p>作者明确排除了 Language Table 和 Droid 数据集，原因是"their significant distribution disparities with other data"。这意味着模型在类似这些数据集的任务分布上可能表现欠佳。</p></details>
+
+    <details class="lim"><summary>未见类别的泛化能力有限（作者说明）</summary>
+      <p>在 Realman 机器人的未见属性泛化测试中，Unseen Categories 成功率仅 25.0%，远低于 Unseen Colors（87.5%）和 Unseen Shapes（81.3%），说明模型对完全新颖的物体类别泛化能力有待提升。</p></details>
+
+    <details class="lim"><summary>真实部署需要任务相关的微调数据（推断）</summary>
+      <p>各真实机器人平台需要收集 48–400 条任务演示数据进行微调，限制了零样本泛化到全新任务的能力。这是当前数据驱动 VLA 方法的共性瓶颈，并非 CogACT 独有。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2411.19650">https://arxiv.org/abs/2411.19650</a>
+  </div>
+</footer>
+
+</body>
+</html>

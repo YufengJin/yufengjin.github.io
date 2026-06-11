@@ -1,0 +1,11 @@
+{
+  "slug": "humanoid-everyday",
+  "title": "Humanoid Everyday: A Comprehensive Robotic Dataset for Open-World Humanoid Manipulation",
+  "arxiv_id": "2510.08807",
+  "url": "https://arxiv.org/abs/2510.08807",
+  "category": "机器人 · Robotics",
+  "keywords": ["humanoid robot", "manipulation dataset", "teleoperation", "imitation learning", "dexterous manipulation", "机器人数据集", "VLA", "人机交互", "policy evaluation", "云端评测平台"],
+  "summary_zh": "Humanoid Everyday 是一个包含 10.3k 条轨迹、260 个任务、超过 300 万帧的大规模多模态类人机器人操作数据集，采集自真实 Unitree G1/H1 机器人，提供 RGB、深度、LiDAR、触觉等多传感器数据及自然语言标注，并附带云端评测平台，对 7 种主流策略进行系统评测，揭示了高维动作空间下 imitation learning 的挑战与机遇。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CombatVLA: An Efficient Vision-Language-Action Model for Combat Tasks in 3D Action Role-Playing Games</title>
+<meta name="keywords" content="Vision-Language-Action Model, 游戏AI, 3D动作游戏, Action-of-Thought, 实时决策, VLA, combat game, 大语言模型">
+<meta name="description" content="CombatVLA 是一个面向3D动作角色扮演游戏战斗任务的高效VLA模型，以50倍加速实现实时战斗控制，并在战斗理解基准上超越所有现有模型。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICCV 2025 · 游戏AI · VLA</span>
+    <h1>CombatVLA</h1>
+    <div class="sub">An Efficient Vision-Language-Action Model for Combat Tasks in 3D Action Role-Playing Games</div>
+    <div class="authors">Peng Chen, Pi Bu, Yingyao Wang, Xinyi Wang, Ziming Wang, Jie Guo, Yingxiu Zhao, Qi Zhu, Jun Song, Siran Yang, Jiamang Wang, Bo Zheng &nbsp;·&nbsp; Alibaba Group</div>
+    <p class="lead">CombatVLA 是一个专为3D动作角色扮演游戏（ARPG）战斗任务设计的高效 Vision-Language-Action 模型。仅3B参数，通过三阶段渐进式学习和 Action-of-Thought（AoT）推理链，在保持通用视觉理解能力的同时，实现比现有方案快 50 倍的实时战斗响应，并在专属战斗理解基准 CUBench 上超越 GPT-4o、Gemini 等所有现有大模型。</p>
+    <div class="meta">
+      <span>arXiv · 2025-03-12</span>
+      <span>3B 参数</span>
+      <span>Black Myth: Wukong &amp; Sekiro</span>
+      <!-- REQUIRED: link back to the source paper -->
+      <span><a href="https://arxiv.org/abs/2503.09527">📄 arXiv:2503.09527</a></span>
+      <span><a href="https://combatvla.github.io/">🌐 Project Page</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords -->
+    <div class="kw">
+      <span>Vision-Language-Action Model</span>
+      <span>游戏AI</span>
+      <span>3D动作游戏</span>
+      <span>Action-of-Thought</span>
+      <span>实时决策</span>
+      <span>战斗理解</span>
+      <span>VLA</span>
+      <span>推理加速</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有大型视觉语言模型（VLM）无法满足复杂3D游戏战斗场景对"秒级响应、高分辨率感知和动态战术推理"的实时要求，而专用小模型又缺乏足够的通用视觉理解能力。</p>
+    <blockquote>"Real-time decision-making in complex 3D environments … demand second-level responses, high-resolution perception, and tactical reasoning under dynamic conditions."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="CombatVLA teaser: performance comparison">
+      <figcaption>图1：CombatVLA 综合对比。左侧：在 CUBench 战斗理解基准上超越 GPT-4o、Qwen2.5-VL；中间：推理延迟仅 1.85s，比 Cradle（61.68s）快33倍，比 VARP（90.23s）快50倍；右侧：实际战斗任务成功率超越人类基线。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>50×</b><small>比 VARP 快（推理延迟）</small></div>
+      <div><b>63.61%</b><small>CUBench 平均准确率（第一名）</small></div>
+      <div><b>1.85s</b><small>单次推理延迟</small></div>
+      <div><b>3B</b><small>模型参数量</small></div>
+    </div>
+
+    <p>现有方案的核心瓶颈在于：</p>
+    <ul>
+      <li><strong>通用 VLM（GPT-4o, Gemini）</strong>：需要60–90秒推理，完全无法用于实时战斗控制。</li>
+      <li><strong>框架型方案（Cradle, VARP）</strong>：多次模型调用（5–10次）叠加延迟，1次战斗指令需61–90秒；且高度依赖提示工程。</li>
+      <li><strong>专用小型模型</strong>：缺乏对复杂战斗场景的感知和推理能力。</li>
+    </ul>
+    <p>CombatVLA 的目标是在单次1.85秒推理内完成"观察→思考→行动"的完整闭环，同时保持通用视觉能力不大幅退化。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">CombatVLA 以 Qwen2.5-VL-3B 为骨干，冻结视觉编码器，对语言模型全参数 SFT。核心创新是三阶段渐进式训练策略与 Action-of-Thought（AoT）推理链，以及针对动作优先级的自适应加权损失函数。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="CombatVLA system pipeline">
+      <figcaption>图2：CombatVLA 完整系统流程。(a) Action Tracker 以毫秒级精度同步记录键盘/鼠标/截图；(b) 三种 AoT 训练数据类型（视频AoT、帧AoT、截断AoT）；(c) CUBench 基准的三类任务；(d) 模型训练约束；(e) 在实际PC上部署运行。</figcaption>
+    </figure>
+
+    <h3>Action Tracker：高精度数据采集</h3>
+    <p>自研 Python 工具，以毫秒级精度同步记录键盘、鼠标操作与游戏截图，将动作通过时间戳协议对齐到最近的未来帧。共采集 25,000 张游戏截图（分辨率 1008×560），标注 5,000 条高质量 AoT 序列，覆盖10种动作类型（移动 WSAD、闪避 space、治疗 R、定身 1、轻/重攻击、冲刺等）。</p>
+
+    <h3>三阶段渐进式学习（Progressive Learning）</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Stage 1 · Coarse-Grained Video-AoT</h3>
+        <p>输入完整视频（n=20帧，m=10 fps），学习粗粒度战斗理解与完整 AoT 推理链。训练 3 个 epoch。</p>
+      </div>
+      <div class="card">
+        <h3>Stage 2 · Fine-Grained Frames-AoT</h3>
+        <p>输入帧序列（k=4 回溯帧），实现细粒度时序对齐，捕捉战斗动作的帧级依赖。训练 1 个 epoch。</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Stage 3 · Frames-Truncated-AoT</h3>
+      <p>引入特殊 ⟨TRUNC⟩ token，允许模型在完成动作预测后立即截断输出，跳过冗余推理文本。平均 token 数从 116.57 降至 43.10，推理速度提升约2倍。训练 3 个 epoch。</p>
+    </div>
+
+    <figure>
+      <img src="img/aot.webp" alt="Action-of-Thought visualization">
+      <figcaption>图3：Action-of-Thought 推理链可视化。⟨TRUNC⟩ token 使模型在推理完成时提前截断输出，平均减少输出 token 数从 116.57 降至 43.10，实现约2倍推理加速，同时保持完整的战略推理语义。</figcaption>
+    </figure>
+
+    <h3>自适应动作加权损失（Adaptive Action-Weighted Loss）</h3>
+    <p>损失函数结合三项：语言建模损失 ℒ_lang、动作对齐损失 ℒ_align（优先级感知匹配，权重序列 α_i = 2^(k−i−1) 指数衰减并归一化至 [0.1, 1.0]）与模态对比损失 ℒ_con。三项联合优化，保证动作预测精度与视觉-语言模态对齐。</p>
+
+    <h3>CUBench：战斗理解评测基准</h3>
+    <figure>
+      <img src="img/benchmark.webp" alt="CUBench benchmark">
+      <figcaption>图4：CUBench 三类任务示例。Gathering（单图采集）：从单帧判断当前状态；Comprehension（多图理解）：跨帧序列理解战斗事件；Reasoning（多选推理）：面对动态情境进行多步战术推理。共914条标注样本，经10名标注员交叉验证。</figcaption>
+    </figure>
+    <p>CUBench 共 914 条标注样本（39.4% Gathering / 22.3% Comprehension / 38.3% Reasoning），覆盖《黑神话：悟空》（BMW）和《只狼：影逝二度》（Sekiro）两款游戏，评测战斗场景下的感知、理解与战术推理能力。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 CUBench 战斗理解基准和13项实际战斗任务上进行评测，与 GPT-4o、Gemini-2.0-flash、Claude3.5-Sonnet、Qwen2.5-VL 系列及 VARP、Cradle 等基线对比。</p>
+
+    <h3>CUBench 战斗理解基准（Table 2）</h3>
+    <table>
+      <tr><th>模型</th><th>Gathering</th><th>Comprehension</th><th>Reasoning</th><th>Average</th></tr>
+      <tr><td><strong>CombatVLA-3B（本文）</strong></td><td class="good">60.83%</td><td class="good">60.29%</td><td class="good">69.71%</td><td class="good">63.61%</td></tr>
+      <tr><td>Gemini-2.0-flash</td><td>58.61</td><td>64.22</td><td>50.86</td><td>57.90</td></tr>
+      <tr><td>GPT-4o-0513</td><td>58.06</td><td>66.67</td><td>47.14</td><td>57.29</td></tr>
+      <tr><td>Claude3.5-Sonnet</td><td>—</td><td>—</td><td>55.43</td><td>—</td></tr>
+      <tr><td>Qwen2.5-VL-3B（基线）</td><td>53.61</td><td>56.86</td><td>57.14</td><td>55.87</td></tr>
+    </table>
+    <p>CombatVLA 超越第二名 Gemini-2.0-flash 5.71 个百分点；在 Reasoning 子任务上比 Claude3.5-Sonnet 高出 14.28 个百分点。</p>
+
+    <h3>推理延迟对比（Table 3）</h3>
+    <table>
+      <tr><th>方案</th><th>推理延迟</th><th>模型调用次数</th><th>相对 CombatVLA</th></tr>
+      <tr><td><strong>CombatVLA（本文）</strong></td><td class="good">1.85s</td><td class="good">1</td><td class="good">1×</td></tr>
+      <tr><td>Cradle</td><td>61.68s</td><td>5</td><td>33×</td></tr>
+      <tr><td>VARP</td><td>90.23s</td><td>10</td><td>49×</td></tr>
+    </table>
+
+    <h3>通用基准保持能力（Table 2）</h3>
+    <table>
+      <tr><th>基准</th><th>Qwen2.5-VL-3B（基线）</th><th>CombatVLA-3B</th></tr>
+      <tr><td>MME</td><td>2157</td><td>2141</td></tr>
+      <tr><td>VideoMME</td><td>61.5</td><td>58.7</td></tr>
+      <tr><td>OCRBench</td><td>797</td><td>741</td></tr>
+    </table>
+    <p>专项微调后通用能力小幅下降，但仍保持竞争力，表明 AoT 训练策略有效缓解了灾难性遗忘。</p>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="Qualitative results">
+      <figcaption>图5：定性结果示例。展示实际战斗中 AoT 推理过程、Python 动作指令生成和帧序列对应关系——模型能准确识别敌人攻击模式并生成对应的闪避/反击指令。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p><strong>渐进式学习阶段消融（Table 4）：</strong></p>
+    <ul>
+      <li>仅 Stage 1：平均 57.27%，推理延迟 59.5s</li>
+      <li>Stage 1 + Stage 2：平均 61.43%，延迟 3.73s</li>
+      <li>全三阶段（完整模型）：平均 63.61%，延迟 <strong>1.85s</strong>（Stage 3 在 Reasoning 上比 Stage 2 提升 +6.85 个百分点）</li>
+    </ul>
+    <p><strong>损失函数消融（Table 5）：</strong></p>
+    <ul>
+      <li>去除 ℒ_con：61.58%</li>
+      <li>去除 ℒ_align：61.64%</li>
+      <li>完整损失（三项联合）：<strong>63.61%</strong></li>
+    </ul>
+    <p>结果表明三个损失分量各自贡献显著，缺少任一均导致准确率下降约2个百分点。</p>
+
+    <h3>实际战斗任务测试（Task-Level）</h3>
+    <p>在《黑神话：悟空》10项任务和《只狼：影逝二度》3项任务（共13项）上进行实际游戏测试，涵盖简单到极难不同难度级别。Easy 任务达到与人类相当的成功率（70–90%）；Hard/Very Hard 任务上持续超越所有基线和人类水平，成功率稳定在70%以上。此外，模型在未见过任务上表现出较强的零样本泛化能力。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为作者在论文中明确陈述的内容（stated by authors）。</div>
+    <details class="lim" open>
+      <summary>任务定义较为简化</summary>
+      <p>论文原文指出："Task definitions are somewhat simplistic" given evolving VLA capabilities。当前13项战斗任务的划分粒度和复杂度，随着 VLA 能力的进步可能需要重新设计，无法完全覆盖真实游戏中更丰富的战术场景。</p>
+    </details>
+    <details class="lim">
+      <summary>泛化场景受限</summary>
+      <p>论文明确指出："Research tested within BMW and SSDT games and has not extended to other scenarios"。模型目前仅在《黑神话：悟空》和《只狼》两款游戏上验证，跨游戏、跨类型的泛化能力尚未系统评估。</p>
+    </details>
+    <details class="lim">
+      <summary>感知能力仍有提升空间</summary>
+      <p>论文指出现有 VLM 和 VLA 在感知任务上"room for improvement"——当前模型在高速战斗中对细粒度视觉信号（如敌人细微动作、血量变化）的感知精度仍存在不足，通用基准（MME、VideoMME）上的小幅下降也印证了这一点。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CombatVLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2503.09527">https://arxiv.org/abs/2503.09527</a>
+    &nbsp;·&nbsp; <a href="https://combatvla.github.io/">Project Page</a>
+  </div>
+</footer>
+
+</body>
+</html>

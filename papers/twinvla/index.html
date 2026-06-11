@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!--
+  TwinVLA 论文海报 — 自包含，无外部依赖。中文海报，无 EN 版本。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TwinVLA: Data-Efficient Bimanual Manipulation with Twin Single-Arm VLA Models</title>
+<meta name="keywords" content="bimanual manipulation, VLA, vision-language-action, 双臂操作, data efficiency, joint attention, 迁移学习, imitation learning, robot learning, flow matching">
+<meta name="description" content="TwinVLA 用两个预训练单臂 VLA 模型的组合实现高效双臂操作，无需大规模双臂数据预训练。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700} .best{color:var(--warn);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2026 · 机器人 · Robotics</span>
+    <h1>TwinVLA: Data-Efficient Bimanual Manipulation with Twin Single-Arm Vision-Language-Action Models</h1>
+    <div class="sub">用两个预训练单臂 VLA 模型的孪生组合实现高效双臂操作</div>
+    <div class="authors">Hokyun Im · Euijin Jeong · Andrey Kolobov · Jianlong Fu · Youngwoon Lee</div>
+    <p class="lead">TwinVLA 提出了一种模块化框架：将两个预训练单臂 VLA 模型通过轻量级 Joint Attention 机制组合，无需大规模双臂数据预训练即可实现高质量双臂协作操作。相比 RDT-1B（需 1,440 H100 GPU-days）和 π₀（依赖 10,900+ 小时专有数据），TwinVLA 仅需 25 H100 GPU-days 和 ~800h 单臂数据 + 50 条双臂演示，实现了显著的数据与计算效率优势。</p>
+    <div class="meta">
+      <span>arXiv 2025-11</span>
+      <span>ICLR 2026 Poster</span>
+      <span>1.3B 参数</span>
+      <span><a href="https://arxiv.org/abs/2511.05275">📄 arXiv:2511.05275</a></span>
+      <span><a href="https://jellyho.github.io/TwinVLA/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>bimanual manipulation</span>
+      <span>VLA</span>
+      <span>双臂操作</span>
+      <span>joint attention</span>
+      <span>data efficiency</span>
+      <span>imitation learning</span>
+      <span>flow matching</span>
+      <span>迁移学习</span>
+      <span>模块化策略</span>
+      <span>robot learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">双臂操作是机器人研究的重要挑战，但大规模双臂数据集极为稀缺。现有的整体式（monolithic）双臂 VLA 模型需要海量数据与算力预训练，制约了实际应用。</p>
+    <blockquote>"RDT-1B required massive pretraining and fine-tuning (reportedly a month on 48 H100 GPUs)... π₀ relies on a 10,000-hour proprietary dataset."</blockquote>
+
+    <p>论文的核心洞察来自神经科学：<em>"human bimanual manipulation is the coordination of arm-specific motor primitives rather than a single monolithic controller"</em>，人类双臂由专用神经回路协调同步。TwinVLA 基于此，将两个独立的单臂 VLA 模型通过轻量 Joint Attention 连接，利用公开丰富的单臂数据完成迁移，<em>"eliminating the need for large-scale bimanual pretraining"</em>。</p>
+
+    <figure>
+      <img src="img/data_efficiency_compare.webp" alt="数据效率对比">
+      <figcaption>数据效率对比：TwinVLA（~800h 单臂数据 + 50 条双臂演示，25 H100 GPU-days）相比 RDT-1B（~2,400h，1,440 GPU-days）和 π₀（~10,900h，>1,000 GPU-days）具有压倒性的数据与计算效率优势。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>25</b><small>H100 GPU-days（TwinVLA 训练）</small></div>
+      <div><b>50</b><small>条双臂演示即可超越 RDT-1B</small></div>
+      <div><b>1.3B</b><small>参数（与 RDT-1B 1.2B 相当）</small></div>
+      <div><b>+26%</b><small>真实世界相对 RDT-1B 成功率提升</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">TwinVLA 复用两个预训练的 0.8B SingleVLA 的 VLM backbone，共享视觉编码器和 DiT action head，通过三个轻量组件实现跨臂协作：Joint Attention、Mixture-of-Experts（MoE）和 Attention Re-weighting。</p>
+
+    <figure>
+      <img src="img/overview.webp" alt="TwinVLA 整体框架">
+      <figcaption>TwinVLA 架构总览：两个单臂 VLM backbone（左臂 / 右臂）通过 Joint Attention 连接，共享视觉编码器（Vision Encoder）和 DiT Action Head。共享的语言与图像 token 由 MoE 模块处理，降低显存开销。</figcaption>
+    </figure>
+
+    <h3>Joint Attention —— 跨臂信息交互</h3>
+    <p>每个 Transformer 块中，将两个 backbone 的 Q、K、V 拼接后做统一 self-attention，再拆分回各自流：<em>"Concatenate the Q, K, V from both backbones, perform self-attention, and subsequently split the outputs back to their respective streams."</em> 这使得左右臂 token 可直接相互感知，实现双臂协调。消融实验表明，去掉 Joint Attention 后真实环境性能下降 27%。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="Joint Attention 模块细节">
+      <figcaption>TwinVLA Transformer block 细节：共享模态（语言、图像）经 MoE 处理；左右臂专属 token 经 Joint Attention 拼接融合，再分别回流；Attention Re-weighting 保留预训练知识。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Mixture-of-Experts（MoE）</h3>
+        <p>对共享输入（语言、图像），两个 backbone 的 FFN 以可学习权重加权融合：<em>w<sub>left</sub>·FFN<sub>left</sub>(x) + (1−w<sub>left</sub>)·FFN<sub>right</sub>(x)</em>，替代重复计算，VRAM 节省 21%。</p>
+      </div>
+      <div class="card">
+        <h3>Attention Re-weighting</h3>
+        <p>微调时对注意力权重引入正则项，使模型在学习双臂协调的同时保留单臂预训练知识，避免灾难性遗忘。去掉该组件导致真实环境成功率下降 4%。</p>
+      </div>
+    </div>
+
+    <h3>Action Head：Conditional Flow Matching</h3>
+    <p>共享的 DiT Action Head 以 conditional flow matching 为训练目标，从带噪声动作 chunk 预测参考流（reference flow）至目标动作 chunk，生成左右臂的协同动作序列。训练数据仅使用公开单臂数据集（OXE）+ 少量双臂演示。</p>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在真实世界（5 任务，每任务 20 次 rollout）和两个模拟基准（RoboTwin 2.0 共 50 任务、Tabletop-Sim 共 5 任务）上与 RDT-1B、π₀、DP 对比，同时测试数据效率、鲁棒性和语言跟随能力。</p>
+
+    <h3>真实世界任务</h3>
+    <p>使用 Anubis 双臂机器人执行折叠毛巾（fold towel）、提取六角扳手、放胡萝卜入袋等 5 个任务，各任务 20 次 rollout。</p>
+
+    <figure>
+      <img src="img/realworld_results.webp" alt="真实世界实验结果">
+      <figcaption>真实世界各任务成功率对比（Figure 5）。TwinVLA 在大多数任务上超越 RDT-1B 和 DP，整体与 π₀ 相当，而训练仅依赖目标域数据（无专有大规模数据）。</figcaption>
+    </figure>
+
+    <h3>模拟基准</h3>
+    <figure>
+      <img src="img/sim_results.webp" alt="模拟基准平均成功率">
+      <figcaption>RoboTwin 2.0 与 Tabletop-Sim 平均成功率（Figure 6）。TwinVLA 在 Tabletop-Sim Hard 上比 RDT-1B 高 3.3%；在 RoboTwin Easy 上比 RDT-1B 高 7.48%；RoboTwin Hard 上比 RDT-1B 低 3.72%，但比 DP 高 9.38%。</figcaption>
+    </figure>
+
+    <h3>鲁棒性测试（Fold Towel 任务）</h3>
+    <table>
+      <tr><th>条件</th><th>RDT-1B</th><th>π₀</th><th>TwinVLA</th></tr>
+      <tr><td>Low Light（低光照）</td><td>15.0%</td><td>40.0%</td><td class="good">45.0%</td></tr>
+      <tr><td>With Distractors（干扰物）</td><td>15.0%</td><td class="best">60.0%</td><td>25.0%</td></tr>
+    </table>
+    <p>在低光照条件下 TwinVLA（45.0%）超越 π₀（40.0%）；在有干扰物情况下 π₀ 表现最佳（60.0%），TwinVLA 表现（25.0%）优于 RDT-1B（15.0%）。</p>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验">
+      <figcaption>消融结果（Figure 8b）：依次去掉 Attention Re-weighting、MoE 和 Joint Attention，性能递减；从头训练（Scratch）相比完整 TwinVLA 真实环境性能下降 46%，验证了预训练迁移的关键价值。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>变体</th><th>模拟成功率变化</th><th>真实环境成功率变化</th></tr>
+      <tr><td>TwinVLA（完整）</td><td>—</td><td>—</td></tr>
+      <tr><td>去掉 Attention Re-weighting</td><td>−1.1%</td><td>−4.0%</td></tr>
+      <tr><td>再去掉 MoE</td><td>−1.1%</td><td>−5.0%</td></tr>
+      <tr><td>再去掉 Joint Attention</td><td>−4.0%</td><td>−27.0%</td></tr>
+      <tr><td>从头训练（Scratch）</td><td>−4.6%</td><td class="good">−46.0%</td></tr>
+    </table>
+    <p>Joint Attention 对真实环境影响最大（−27%），说明跨臂信息交互是双臂协调的核心；从头训练剧烈下降（−46%）印证了预训练知识迁移的不可或缺性。</p>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性来自论文明确陈述，并结合设计特点补充标注。</div>
+
+    <details class="lim" open>
+      <summary>视觉分布偏移（stated）</summary>
+      <p>论文明确指出："Generalization remains limited due to the visual disparity of two arms, which differs from the single-arm pretraining distribution." 双臂摄像头视角与单臂预训练数据存在视觉域差异，限制了模型在新场景中的泛化能力。</p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖绝对末端执行器位姿（stated）</summary>
+      <p>论文指出未来工作应"explore action representations beyond absolute end-effector poses"，当前动作表示为绝对末端位姿，在不同机器人或任务空间下适应性有限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>有干扰物时性能劣于 π₀（inferred）</summary>
+      <p>在有干扰物的鲁棒性测试中，TwinVLA（25.0%）明显低于 π₀（60.0%），说明视觉分心鲁棒性仍有提升空间，可能与双臂视野的数据稀缺性有关。</p>
+    </details>
+
+    <details class="lim">
+      <summary>双臂数据仍不可或缺（inferred）</summary>
+      <p>虽然 TwinVLA 大幅降低了双臂数据需求（仅需 50 条演示），但仍需目标双臂数据进行 fine-tuning，完全 zero-shot 双臂迁移尚未实现。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · TwinVLA (arXiv 2511.05275) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.05275">https://arxiv.org/abs/2511.05275</a>
+    &nbsp;·&nbsp;
+    <a href="https://jellyho.github.io/TwinVLA/">Project Page</a>
+  </div>
+</footer>
+
+</body>
+</html>

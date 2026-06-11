@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / names / metrics / quoted phrases in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Matrix: Infinite-Horizon World Generation with Real-Time Moving Control</title>
+<meta name="keywords" content="world model, video generation, real-time control, infinite-horizon, 世界模型, diffusion transformer, consistency model, 游戏数据">
+<meta name="description" content="首个可在实时交互控制下生成无限长高保真720p视频流的世界模拟器，结合AAA级游戏训练数据与扩散Transformer架构。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">生成模型 · Generative Models · arXiv 2024</span>
+    <h1>The Matrix: Infinite-Horizon World Generation with Real-Time Moving Control</h1>
+    <div class="sub">首个实时可交互、无限长高保真世界生成器</div>
+    <div class="authors">Ruili Feng, Han Zhang, Zhantao Yang, Jie Xiao, Zhilei Shu, Zhiheng Liu, Andy Zheng, Yukun Huang, Yu Liu, Hongyang Zhang</div>
+    <p class="lead">The Matrix 是一个基础世界模拟器，能够以实时、响应式控制生成连续的 720p 高保真真实场景视频流，同时支持第一人称与第三人称视角。系统仅使用有限的 AAA 游戏数据（Forza Horizon 5、Cyberpunk 2077）与大规模真实世界视频进行训练，即可在多种地形中以 8–16 FPS 的速度连续生成，并对未见场景具备 zero-shot 泛化能力。</p>
+    <div class="meta">
+      <span>arXiv 2412.03568</span>
+      <span>Video DiT · 2.7B 参数</span>
+      <span>8–16 FPS 实时渲染</span>
+      <span><a href="https://arxiv.org/abs/2412.03568">📄 arXiv:2412.03568</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>video generation</span>
+      <span>real-time control</span>
+      <span>infinite-horizon</span>
+      <span>世界模型</span>
+      <span>diffusion transformer</span>
+      <span>consistency model</span>
+      <span>游戏数据</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有世界模型面临三个核心瓶颈：（1）仅聚焦于低保真非 AAA 游戏；（2）生成长度受限（通常不超过约一分钟）；（3）无法实现实时渲染。这些问题使世界模型难以作为真正可交互的游戏引擎或仿真平台。
+    </p>
+    <blockquote>
+      "The first scalable, high-fidelity 1280×720 pixel world model in real time" — combining AAA game realism, infinite-length generation, and frame-level control in a single system.
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="teaser — The Matrix 生成的多场景画面">
+      <figcaption>The Matrix 在 Forza Horizon 5、Cyberpunk 2077 及真实世界场景中的生成效果展示，分别对应驾驶、步行与机器人操控三种控制模式。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>720p</b><small>生成分辨率 (1280×720)</small></div>
+      <div><b>8–16 FPS</b><small>实时渲染速度</small></div>
+      <div><b>2.7B</b><small>模型参数量</small></div>
+      <div><b>∞</b><small>理论生成长度（无限时域）</small></div>
+    </div>
+    <figure>
+      <img src="img/overview.webp" alt="overview — 系统与基线对比">
+      <figcaption>与现有方法的对比：The Matrix 是唯一同时实现无限视频长度、720p 分辨率、帧级实时控制（8–16 FPS）及控制泛化能力的世界模型，而 Genie（1 FPS、无泛化）、GameNGen（4秒上限）与 GameGen-X（仅视频级控制）均在一个或多个维度存在明显不足。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      The Matrix 由三个核心模块构成：<strong>Interactive Module</strong>（将键盘输入转化为语言描述后注入扩散过程）、<strong>Shift-Window Denoising Process Model（Swin-DPM）</strong>（滑动窗口无限长生成）以及 <strong>Stream Consistency Model（SCM）</strong>（蒸馏加速实现实时推理）。骨干网络为 Video DiT，共 32 个注意力块，基础参数量 2.3B，加上 Interactive Module 后总计 2.7B。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="architecture — 四阶段训练流程">
+      <figcaption>四阶段训练流程：Stage 1 在无标注 Source 数据上进行 warm-up（20k 步，LoRA rank 128）；Stage 2 训练 Interactive Module（20k 步，冻结 DiT）；Stage 3 微调 Swin-DPM（60k 步，全参数）；Stage 4 蒸馏 SCM（10k 步，以 Swin-DPM 为教师模型）。所有阶段：batch size 32，学习率 1×10⁻⁵，bfloat16 精度。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/modules.webp" alt="modules — Interactive Module 与 Swin-DPM 示意图">
+      <figcaption>（a）Interactive Module：将键盘输入翻译为自然语言描述（如 "The car is driving forward"），经 T5 encoder 编码后通过 causal cross-attention 层（每两个 DiT block 后插入一层，causal relation window ω=4）注入生成过程。（b）Swin-DPM：滑动时域窗口去噪，窗口大小 w=T；每完成 k 步去噪后，最左侧 token 出队并缓存解码，下一窗口通过重新追加 noise level 为 0 的缓存 token 维持时序连续性。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>训练数据：GameData 平台</h3>
+        <p>自主构建的游戏数据采集系统，利用 Cheat Engine、Reshade 插件和 OBS 录制，从 CPU 内存状态中同步捕获游戏视频帧与控制信号：</p>
+        <ul>
+          <li>Forza Horizon 5：约 <strong>1.2M</strong> 视频-控制对</li>
+          <li>Cyberpunk 2077：约 <strong>1M</strong> 视频-控制对</li>
+          <li>共 <strong>750k</strong> 标注样本 + <strong>1.2M</strong> 无标注样本（6 秒片段，60 FPS）</li>
+          <li>DROID 机器人数据集：564 个场景中筛选出 <strong>50k</strong> 条 6 秒片段（含 7-DOF 关节角度标签）</li>
+        </ul>
+        <p>Forza 数据过滤：平衡控制信号、碰撞检测、卡顿角色去除、运动-控制不匹配检测、伪影去除，共五项策略。</p>
+      </div>
+      <div class="card">
+        <h3>Stream Consistency Model（SCM）</h3>
+        <p>SCM 将 Swin-DPM 蒸馏为 <strong>4 步</strong>一致性模型，推理速度提升 <strong>10–20×</strong>，最终实现 8–16 FPS 的实时渲染。</p>
+        <p>代价是视觉质量有所下降（FVD 从 1211.30 上升到 1936.79），但控制精度（Move-LPIPS）从 0.125 进一步提升至 0.109，体现了速度-质量之间的权衡关系。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在三个场景下评估：Forza Horizon 5（赛车驾驶）、Cyberpunk 2077（角色步行）以及 DROID 机器人操控。评估指标包含视觉质量（FID、FVD、CLIP Score，在 2048 秒随机生成视频上计算）与控制精度（Move-PSNR、Move-LPIPS，在 2048 秒固定测试集上计算）。
+    </p>
+
+    <h3>帧级控制精度（4.1 节）</h3>
+    <table>
+      <tr>
+        <th>场景</th>
+        <th>Move-LPIPS ↓</th>
+        <th>Move-PSNR ↑</th>
+      </tr>
+      <tr>
+        <td>Cyberpunk 2077</td>
+        <td>0.129</td>
+        <td>28.24</td>
+      </tr>
+      <tr>
+        <td>Forza Horizon 5</td>
+        <td class="good">0.125</td>
+        <td class="good">28.98</td>
+      </tr>
+      <tr>
+        <td>DROID 机器人</td>
+        <td>0.180</td>
+        <td>27.90</td>
+      </tr>
+    </table>
+
+    <h3>各模块消融（速度-质量权衡，Table 2）</h3>
+    <table>
+      <tr>
+        <th>组件</th>
+        <th>推理速度</th>
+        <th>FVD ↓</th>
+        <th>Move-LPIPS ↓</th>
+      </tr>
+      <tr>
+        <td>+ Interactive Module（基线）</td>
+        <td>55 sec / 48 frames</td>
+        <td>1211.30</td>
+        <td>0.125</td>
+      </tr>
+      <tr>
+        <td>+ Swin-DPM</td>
+        <td>0.8 FPS</td>
+        <td>1651.50</td>
+        <td>0.113</td>
+      </tr>
+      <tr>
+        <td class="good">+ SCM（完整系统）</td>
+        <td class="good">8–16 FPS</td>
+        <td>1936.79</td>
+        <td class="good">0.109</td>
+      </tr>
+    </table>
+    <p>注：Swin-DPM 的引入使 FVD 上升（视觉质量有所牺牲），但保持了强控制精度；SCM 进一步提升推理速度约 10–20×，并进一步降低 Move-LPIPS 至 0.109。</p>
+
+    <figure>
+      <img src="img/infinite_gen.webp" alt="infinite_gen — 无限长视频生成示例">
+      <figcaption>无限时域生成示例：一分钟连续生成视频横跨沙漠、河流、草地、雪地并伴随昼夜切换；另有 2.5 分钟视频通过 DiT 文字提示跨越多个多样化场景。补充材料中包含长达半小时的连续生成示例。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/generalization.webp" alt="generalization — 对未见场景与对象的泛化">
+      <figcaption>Zero-shot 泛化能力：（左）汽车在从未出现于训练数据的室内办公室场景中行驶；（右）通过文字提示将运动控制迁移到人类角色。关闭 Interactive Module 后，系统可作为无条件长视频生成器使用。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文中未设专门的 Limitations 节。以下内容部分为作者在实验分析中直接指出（标注"论文指出"），部分为从设计与实验结果中推断（标注"推断"）。</div>
+
+    <details class="lim" open>
+      <summary>速度与视觉质量之间存在明显权衡（论文指出）</summary>
+      <p>引入 Swin-DPM 后 FVD 从 1211.30 上升至 1651.50，进一步加入 SCM 后升至 1936.79。实现实时推理（8–16 FPS）是以视觉保真度为代价的，现阶段难以同时达到最高画质与最快速度。</p>
+    </details>
+    <details class="lim">
+      <summary>泛化能力仅作定性验证（推断）</summary>
+      <p>对未见场景（如室内办公室）和未见对象（如人类角色）的泛化结果仅以定性图示呈现，未提供系统性的量化评估，泛化边界尚不明确。</p>
+    </details>
+    <details class="lim">
+      <summary>训练数据依赖特定游戏，评估领域有限（推断）</summary>
+      <p>训练数据主要来自 Forza Horizon 5 与 Cyberpunk 2077 两款 AAA 游戏，以及 DROID 机器人数据集；评估域相对集中，系统在其他类型游戏或真实世界场景中的表现尚未系统验证。</p>
+    </details>
+    <details class="lim">
+      <summary>控制粒度受限于键盘指令抽象（推断）</summary>
+      <p>Interactive Module 将键盘输入翻译为自然语言描述（如 "The car is driving forward"），控制信号经过一层语言抽象，精细的运动轨迹或连续动作空间的控制能力尚未得到充分探索。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · The Matrix: Infinite-Horizon World Generation with Real-Time Moving Control · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2412.03568">https://arxiv.org/abs/2412.03568</a>
+  </div>
+</footer>
+
+</body>
+</html>

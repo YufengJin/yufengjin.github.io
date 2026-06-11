@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  RT-1: Robotics Transformer for Real-World Control at Scale
+  arXiv: 2212.06817
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RT-1: Robotics Transformer for Real-World Control at Scale</title>
+<meta name="keywords" content="机器人学习, transformer, 模仿学习, 多任务机器人, 真实世界控制, zero-shot泛化, EfficientNet, TokenLearner, action tokenization, 大规模数据">
+<meta name="description" content="RT-1 是谷歌提出的大规模机器人 Transformer 模型，以 130k 真实演示训练，在 700+ 任务中实现 97% 成功率，并对未见任务具备强泛化能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · ICRA 2023</span>
+    <h1>RT-1: Robotics Transformer for Real-World Control at Scale</h1>
+    <div class="sub">用大规模真实演示训练的通用机器人 Transformer，实现多任务操控与零样本泛化</div>
+    <div class="authors">Anthony Brohan, Noah Brown, Chelsea Finn, Sergey Levine 等 (共 50+ 位作者) · Google Research & Everyday Robotics</div>
+    <p class="lead">
+      RT-1 是一个专为真实世界机器人控制设计的 Transformer 模型：以 17 个月、13 台机器人收集的 ~130k 次演示进行训练，覆盖 700+ 条任务指令，实现了在已见任务上 97% 的成功率，以及对未见新任务的强泛化能力（76%），远超此前最强的 imitation learning 和多模态大模型基线。
+    </p>
+    <div class="meta">
+      <span>35M 参数</span><span>130k 演示</span><span>700+ 任务指令</span>
+      <span><a href="https://arxiv.org/abs/2212.06817">📄 arXiv:2212.06817</a></span>
+      <span><a href="https://robotics-transformer1.github.io/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>机器人学习</span>
+      <span>transformer</span>
+      <span>模仿学习</span>
+      <span>多任务机器人</span>
+      <span>zero-shot 泛化</span>
+      <span>action tokenization</span>
+      <span>EfficientNet</span>
+      <span>TokenLearner</span>
+      <span>大规模数据</span>
+      <span>真实世界控制</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      视觉、语言领域已出现能力强大的通用预训练模型，但机器人领域却迟迟未能复制这一成功。
+      核心瓶颈在于：高质量机器人演示数据稀缺且昂贵，而现有方法往往依赖工程繁琐的自主采集流程或代价高昂的人工演示。
+      那么，<strong>能否在大规模、多样化的机器人数据上训练单一多任务模型，使其对新任务、新环境、新物体实现零样本泛化？</strong>
+    </p>
+    <blockquote>
+      "Open-ended task-agnostic training, combined with high-capacity architectures" enables models to
+      effectively learn from varied robotic data — just as large language and vision models benefit from
+      scale and diversity.
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="RT-1 teaser: 700+ tasks, 130k demonstrations, 3000 evaluation trials">
+      <figcaption>
+        <strong>图 1：RT-1 总览。</strong>以 ~130k 次演示（覆盖 700+ 任务）训练、经 3000 次真实测试验证：在已见任务上达到 97% 成功率，并对全新任务、环境、物体展现出强泛化能力。右侧示意了 RT-1 可完成的多样化操控技能。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>97%</b><small>已见任务成功率</small></div>
+      <div><b>76%</b><small>未见任务泛化成功率</small></div>
+      <div><b>130k</b><small>真实演示样本</small></div>
+      <div><b>700+</b><small>覆盖任务指令数</small></div>
+    </div>
+
+    <figure>
+      <img src="img/robot_setup.webp" alt="Robot setup: training classroom and evaluation kitchens">
+      <figcaption>
+        <strong>图 2：硬件与场景设置。</strong>左：机器人"教室"训练环境；中：两个真实办公厨房用于评估（包含一个训练时从未见过的厨房）；右：可扩展技能与物体多样性的移动操控平台。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      RT-1 将语言指令和历史图像帧作为输入，输出离散化的机器人动作 token。整个架构由三个模块串联组成：
+      基于 FiLM 调制的 EfficientNet 视觉编码器、压缩 token 的 TokenLearner，以及解码动作的 decoder-only Transformer。
+      模型仅有 35M 参数，却能在 100ms 预算内以 3Hz 频率实时控制机器人。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="RT-1 architecture diagram">
+      <figcaption>
+        <strong>图 3：RT-1 架构。</strong>语言指令经 Universal Sentence Encoder (USE) 嵌入，通过 FiLM 层条件化预训练的 EfficientNet-B3 提取 81 个视觉 token；TokenLearner 将其压缩为 8 个 token；历史 6 帧共 48 个 token 送入 8 层 decoder-only Transformer，输出 11 维离散动作（256 bins/维）。
+      </figcaption>
+    </figure>
+
+    <h3>视觉-语言编码（Vision-Language Tokenization）</h3>
+    <p>
+      图像以预训练的 <strong>EfficientNet-B3</strong>（ImageNet 初始化）提取特征，生成 9×9×512 的特征图（共 81 个视觉 token）。
+      语言指令通过 <strong>Universal Sentence Encoder</strong> 转化为嵌入向量，再以 <strong>FiLM（Feature-wise Linear Modulation）</strong> 层将语义条件注入视觉编码器，实现指令对视觉特征的逐层调制。
+      FiLM 层采用恒等初始化，总参数量仅约 16M。
+    </p>
+
+    <h3>TokenLearner 压缩</h3>
+    <p>
+      81 个视觉 token 通过 <strong>TokenLearner</strong>（基于 element-wise 注意力）压缩为 8 个 token，显著降低后续 Transformer 的计算量。
+      6 帧历史图像产生 48 个 token（8×6），送入 Transformer 处理。
+      TokenLearner 和 token 复用分别带来 <strong>2.4×</strong> 和 <strong>1.7×</strong> 的推理加速，保证实时控制（3 Hz，100ms/步）。
+    </p>
+
+    <h3>动作离散化（Action Discretization）</h3>
+    <p>
+      机器人动作包含 11 个维度（7 维手臂关节 + 3 维底座移动 + 1 维模式切换），每维离散为 <strong>256 个 bin</strong>，使用 categorical cross-entropy loss 和因果掩码训练。
+      这一设计将连续控制问题转化为分类问题，使 Transformer 架构可以直接被复用于动作预测。
+    </p>
+
+    <h3>训练数据</h3>
+    <p>
+      数据采集历时 17 个月，使用 <strong>13 台机器人</strong>收集了 <strong>~130k 次演示</strong>，覆盖 <strong>744 项技能</strong>（包括拾放、抽屉操作、容器交互等），指令多样性超过 700 条。
+      数据多样性（任务种类）被实验验证比数据数量更关键：消融研究显示，去除 25% 的任务种类（但保留 97% 的数据量）对泛化能力的损害，等效于将数据集规模缩减 49%。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      所有实验均在真实机器人上进行，共计 3000 次评测。基线方法包括 BC-Z（视觉-语言 imitation learning）、Gato（通用多模态大模型）及 SayCan 框架。
+      评估维度覆盖：已见/未见任务成功率、干扰物鲁棒性、背景鲁棒性、长时序任务执行，以及异构数据融合收益。
+    </p>
+
+    <h3>主要对比结果</h3>
+    <table>
+      <tr>
+        <th>评测场景</th>
+        <th>BC-Z</th>
+        <th>Gato</th>
+        <th>RT-1（本文）</th>
+        <th>提升</th>
+      </tr>
+      <tr>
+        <td>已见任务（200+ 条指令）</td>
+        <td>72%</td>
+        <td>65%</td>
+        <td class="good">97%</td>
+        <td>+25% vs BC-Z</td>
+      </tr>
+      <tr>
+        <td>未见新任务（21 条指令）</td>
+        <td>52%</td>
+        <td>52%</td>
+        <td class="good">76%</td>
+        <td>+24% vs next best</td>
+      </tr>
+      <tr>
+        <td>干扰物鲁棒（hard 场景）</td>
+        <td>47%</td>
+        <td>—</td>
+        <td class="good">83%</td>
+        <td>+36%</td>
+      </tr>
+      <tr>
+        <td>背景鲁棒性</td>
+        <td>41%</td>
+        <td>—</td>
+        <td class="good">59%</td>
+        <td>+18%</td>
+      </tr>
+      <tr>
+        <td>长时序任务 Kitchen1（SayCan）</td>
+        <td>13%</td>
+        <td>0%</td>
+        <td class="good">67%</td>
+        <td>+54% vs BC-Z</td>
+      </tr>
+      <tr>
+        <td>长时序任务 Kitchen2（未见场景）</td>
+        <td>13%</td>
+        <td>0%</td>
+        <td class="good">67%</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <figure>
+      <img src="img/baselines.webp" alt="Comparison with baselines across task types">
+      <figcaption>
+        <strong>图 4：与基线的全面对比。</strong>RT-1 在已见任务（Seen）和未见任务（Unseen）上均大幅超越 BC-Z 和 Gato，尤其在需要泛化的场景优势显著。SayCan 长时序任务中，Gato 几乎为 0%，BC-Z 为 13%，而 RT-1 达到 67%。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/robustness.webp" alt="Robustness evaluation with distractors and new backgrounds">
+      <figcaption>
+        <strong>图 5：鲁棒性评测。</strong>干扰物鲁棒性测试中，场景分为 0–5 个简单干扰（easy）、9 个中等干扰（medium）、9 个含遮挡的硬干扰（hard）；背景鲁棒性测试中，包括原始场景、花纹背景、全新厨房。RT-1 在所有条件下均显著超越基线。
+      </figcaption>
+    </figure>
+
+    <h3>消融：数据规模与多样性</h3>
+    <figure>
+      <img src="img/data_ablation.webp" alt="Data ablation: task diversity vs data quantity">
+      <figcaption>
+        <strong>图 6：数据消融实验。</strong>任务多样性（task diversity）比数据数量更关键——去除 25% 的任务种类（保留 97% 数据量）对泛化的损害，等效于将数据集规模缩减 49%。右图展示了从仿真数据融合和多机器人混训的收益。
+      </figcaption>
+    </figure>
+
+    <h3>异构数据融合</h3>
+    <ul>
+      <li><strong>仿真数据融合：</strong>加入仿真数据后，未见仿真物体的成功率从 23% 提升至 87%，而真实物体性能仅从 92% 微降至 90%（几乎无损）。</li>
+      <li><strong>多机器人混训：</strong>将 Everyday Robots 与 Kuka 数据混训后，bin-picking 任务成功率从 22%（单机器人训练）提升至 39%（提升 77%）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均由论文作者明确陈述（stated），非推断。</div>
+
+    <details class="lim" open>
+      <summary>受限于 Imitation Learning 的上限</summary>
+      <p>
+        作者明确指出："It may not be able to surpass the performance of the demonstrators."
+        模型本质上是在复刻人类演示者的行为，难以超越演示者的操作水平，也无法通过探索发现更优策略。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>泛化仅限于已见概念的新组合</summary>
+      <p>
+        "Generalization to new instructions is limited to combinations of previously seen concepts" — 模型能够组合已学的技能与物体，但无法泛化到训练中从未出现过的全新动作或物体类别。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>仅适用于非精细操控任务</summary>
+      <p>
+        RT-1 适用于 "a large but not very dexterous set of manipulation tasks"，对精细化抓取（如插针、装配）等高灵巧度任务的适用性有限。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>背景与环境鲁棒性有待提升</summary>
+      <p>
+        作者承认："robustness to backgrounds and environments could be further improved by greatly increasing the environment diversity."
+        当前数据来自相对固定的厨房场景，对更广泛环境的适应性仍受限。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>实时控制约束限制模型容量</summary>
+      <p>
+        3 Hz 的控制频率（100ms 预算）约束了可部署的模型规模。相比无实时约束的架构，这在模型容量与推理速度之间形成了权衡。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · RT-1: Robotics Transformer for Real-World Control at Scale · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2212.06817">https://arxiv.org/abs/2212.06817</a>
+  </div>
+</footer>
+
+</body>
+</html>

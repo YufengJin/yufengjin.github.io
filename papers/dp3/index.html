@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Diffusion Policy: Generalizable Visuomotor Policy Learning via Simple 3D Representations</title>
+<meta name="keywords" content="3D Diffusion Policy, DP3, imitation learning, point cloud, visuomotor policy, diffusion model, 机器人操作, generalization, dexterous manipulation, 三维表征">
+<meta name="description" content="DP3 将紧凑的 3D 点云表征与 Diffusion Policy 结合，仅需少量演示即可在 72 个仿真任务和 4 个真实机器人任务上达到高成功率，并展现出强泛化能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2024 · 机器人操作</span>
+    <h1>3D Diffusion Policy</h1>
+    <div class="sub">Generalizable Visuomotor Policy Learning via Simple 3D Representations</div>
+    <div class="authors">Yanjie Ze&nbsp;·&nbsp;Gu Zhang&nbsp;·&nbsp;Kangning Zhang&nbsp;·&nbsp;Chenyuan Hu&nbsp;·&nbsp;Muhan Wang&nbsp;·&nbsp;Huazhe Xu &nbsp;|&nbsp; 上海 Qi Zhi Institute · 上海交通大学 · 清华大学 · Shanghai AI Lab</div>
+    <p class="lead">DP3 将紧凑的 3D 点云视觉表征与 Diffusion Policy 相结合，提出一种高效的视觉运动策略学习框架。仅需 10 条演示数据，即可在 72 个仿真任务中大幅超越 2D 基线；在 4 个真实机器人灵巧操作任务上，以 40 条演示实现平均 <strong>85%</strong> 的成功率，并展现出跨空间、视角、外观与实例的强泛化能力。</p>
+    <div class="meta">
+      <span>RSS 2024</span>
+      <span>72 仿真任务</span>
+      <span>4 真实机器人任务</span>
+      <span><a href="https://arxiv.org/abs/2403.03954">📄 arXiv:2403.03954</a></span>
+      <span><a href="https://3d-diffusion-policy.github.io">🌐 项目主页</a></span>
+    </div>
+    <div class="kw">
+      <span>3D Diffusion Policy</span>
+      <span>point cloud</span>
+      <span>imitation learning</span>
+      <span>visuomotor policy</span>
+      <span>diffusion model</span>
+      <span>机器人操作</span>
+      <span>dexterous manipulation</span>
+      <span>泛化能力</span>
+      <span>3D representation</span>
+      <span>DP3</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">模仿学习为机器人提供了一条习得复杂技能的有效路径，但现有方法主要依赖 2D 图像或深度图作为视觉输入，在处理空间理解、视角变化与实例泛化等问题时存在明显局限。如何以最简单的方式引入 3D 信息，同时保持策略学习的高效性与泛化性，是本文要解决的核心问题。</p>
+    <blockquote>"Enabling robots to dexterous manipulation of objects is a longstanding challenge for roboticists, primarily due to the necessity to manage a broader spectrum of motor skills… Visual imitation learning, which takes high-dimensional visual observations such as images or depth maps, eases the need for task-specific state estimation and thus gains its popularity."</blockquote>
+
+    <p>现有方法（如 Diffusion Policy）以 2D RGB 图像为输入，面临两大核心挑战：</p>
+    <ul>
+      <li><strong>空间感知不足：</strong>2D 图像缺乏深度信息，难以精确理解物体在三维空间中的位置与形状，对灵巧操作（如倒液、卷薄片）尤为不利。</li>
+      <li><strong>泛化能力有限：</strong>基于图像的策略对视角变化、光照变化和目标外观变化高度敏感，往往需要大量多样化的演示数据才能泛化。</li>
+    </ul>
+    <p>本文核心假设：<strong>稀疏点云提供的紧凑 3D 表征</strong>天然具备几何一致性，无需颜色通道即可实现优越的泛化，且单视角点云（仅一台 RealSense L515 相机）已足够。</p>
+
+    <figure>
+      <img src="img/generalization.webp" alt="3D space generalization">
+      <figcaption>Fig. 3：<strong>在 3D 空间中以少量数据实现泛化。</strong>以 MetaWorld Reach 任务为例，仅给定 5 条演示（红色点），在 1000 次评估中可视化成功的评估点（蓝色）。DP3 在整个 3D 空间中均可成功；Diffusion Policy 和 IBC 仅在局部成功；BC-RNN 则几乎无法学习。从左到右成功次数：0 / 285 / 327 / 415。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>72</b><small>仿真任务总数</small></div>
+      <div><b>85%</b><small>真实机器人平均成功率</small></div>
+      <div><b>74.4</b><small>仿真平均成功率（DP3）vs 59.8（Diffusion Policy）</small></div>
+      <div><b>24.2%</b><small>相对提升（vs Diffusion Policy）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">DP3 由两个模块构成：<strong>Perception（感知）</strong>模块将来自单视角深度相机的稀疏点云编码为紧凑的 3D 特征；<strong>Decision（决策）</strong>模块以 Diffusion Policy 为骨干，在机器人状态（关节角）条件下预测动作序列。两模块端到端联合训练。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="DP3 pipeline overview">
+      <figcaption>Fig. 2：<strong>DP3 端到端训练与评估流程。</strong>训练阶段：感知模块从点云中提取紧凑 3D 表征，决策模块（Diffusion Policy）基于该表征与机器人状态生成动作。评估阶段：机器人通过单目深度相机采集点云，实时执行推理得到动作序列。</figcaption>
+    </figure>
+
+    <h3>Perception：从点云到紧凑 3D 表征</h3>
+    <p>深度图经相机内参投影为点云，随后经过以下处理：</p>
+    <ul>
+      <li><strong>裁剪（Cropping）：</strong>保留以机器人为中心的边界框内的点，去除地面与背景噪声，减少冗余点。</li>
+      <li><strong>下采样（Downsampling）：</strong>使用最远点采样（FPS）将点云稀疏化至 512 或 1024 点，大幅降低计算量。</li>
+      <li><strong>颜色通道去除：</strong>不使用 RGB 颜色，仅保留 XYZ 坐标，从而对外观变化天然鲁棒。</li>
+      <li><strong>DP3 Encoder：</strong>采用轻量 MLP 网络对点云编码，最终输出 64 维紧凑特征向量 <em>v</em>。该设计远比 PointNet++、Point Transformer 等复杂编码器计算高效，实验表明其精度也更优（见 Table V）。</li>
+    </ul>
+
+    <figure>
+      <img src="img/pointcloud_obs.webp" alt="3D visual observations in simulation">
+      <figcaption>Fig. 4：<strong>仿真中的 3D 视觉观测。</strong>从多个不同仿真任务中采样，展示经过下采样处理后的点云。点云清晰呈现了机器人末端执行器与目标物体的空间结构，无需颜色信息即可区分关键部件。</figcaption>
+    </figure>
+
+    <h3>Decision：Diffusion Policy 动作生成</h3>
+    <p>决策模块采用基于卷积网络的 Diffusion Policy（DDIM 噪声调度器）。以机器人关节状态 <em>s</em> 与感知特征 <em>v</em> 为条件，通过去噪过程预测未来 <em>T</em> 步动作序列。训练目标为：</p>
+    <blockquote>L = MSE(ε<sup>θ</sup>(α<sub>k</sub>a<sup>0</sup> + β<sub>k</sub>ε, k, v, s), ε)</blockquote>
+    <p>其中 α<sub>k</sub>、β<sub>k</sub> 为噪声调度参数，采用 one-step noise adding 策略。推理时使用 sample prediction（而非 epsilon prediction）以获得更快的收敛速度。实现细节：使用卷积网络 Diffusion Policy，DDIM 噪声调度；在 MetaWorld 任务上训练 1000 epochs，其他任务训练 8000 epochs；batch size 为 128；Projection head 输出维度为 1024 或 256。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead"><strong>仿真基准：</strong>72 个任务，跨 7 个领域（Adroit、Bi-DexHands、DexArt、DexDeform、DexMV、HORA、MetaWorld），涵盖阴影手 / Allegro 手 / 平行夹爪等多种机器人形态，任务类型包含刚性/变形物体操作。每个任务仅使用 <strong>10 条演示</strong>（DexArt 和 HORA 除外）。<strong>真实机器人：</strong>4 个灵巧任务（Roll-Up、Dumpling、Drill、Pour），每任务 40 条演示，使用 Frankia 手臂 + Allegro 手 / 平行夹爪，RealSense L515 单目深度相机。</p>
+
+    <figure>
+      <img src="img/sim_results.webp" alt="Simulation benchmark results table">
+      <figcaption>Table II：<strong>仿真基准对比（72 任务平均成功率）。</strong>DP3 在平均成功率上达到 <strong>74.4±29</strong>，显著优于 Diffusion Policy（59.8±9）、BCRNN（48±17）、IBC（0±0）及其 3D 变体。DP3 与所有基线相比均有明显提升，且在困难任务（如 Adroit Hammer 100±0、DexArt Assembly 99±1）上表现尤为突出。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>算法</th><th>仿真平均（72任务）</th><th>Adroit Hammer</th><th>MetaWorld Easy</th><th>真实机器人平均</th></tr>
+      <tr><td><strong>DP3</strong></td><td class="good">74.4 ± 29</td><td class="good">100 ± 0</td><td class="good">90.9</td><td class="good">85%</td></tr>
+      <tr><td>Diffusion Policy</td><td>59.8 ± 9</td><td>48 ± 17</td><td>95.0</td><td>—</td></tr>
+      <tr><td>BCRNN</td><td>48 ± 17</td><td>0 ± 0</td><td>—</td><td>—</td></tr>
+      <tr><td>IBC</td><td>0 ± 0</td><td>0 ± 0</td><td>—</td><td>—</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/realrobot.webp" alt="Real robot benchmark tasks">
+      <figcaption>Fig. 10：<strong>真实机器人基准。</strong>4 个灵巧操作任务：(1) Roll-Up — Allegro 手将硅胶薄片卷成卷；(2) Dumpling — 捏合薄片边缘制成饺子形；(3) Drill — 抓住电钻并触碰目标绿色方块；(4) Pour — 抓取碗、倒入肉糜、放回桌面。图示展示了各任务的关键阶段点云轨迹。</figcaption>
+    </figure>
+
+    <h3>关键发现</h3>
+    <ul>
+      <li><strong>效率优势：</strong>DP3 在 ~500 epochs 内收敛，而 Diffusion Policy 需要 3000 epochs 且常陷入次优。</li>
+      <li><strong>少演示扩展性：</strong>仿真中大多数任务仅用 10 条演示；真实任务用 40 条演示。DP3 在 Adroit 类任务中以更少演示达到可比精度。</li>
+      <li><strong>安全性优势：</strong>DP3 安全违规率（Safety Violation Rate）远低于基于图像的基线，在 Roll-Up 任务上为 0，总平均为 <strong>0.0</strong>，而 Diffusion Policy (Depth) 平均为 21.0。</li>
+      <li><strong>推理速度：</strong>DP3 推理 58.1ms、预测 4 个动作步，而 PointNeXt 等复杂编码器推理更慢（60–120ms）。</li>
+    </ul>
+
+    <h3>消融实验 Ablations</h3>
+    <p>论文对 3D 表征选择、点云编码器设计和 DP3 设计细节进行了系统消融（Tables IV–VII）：</p>
+    <ul>
+      <li><strong>3D 表征对比（Table IV）：</strong>点云 > RGB-D 图像 > Depth 图像 > Voxel，使用点云的 DP3 在 6 个消融任务上平均成功率 <strong>100±0</strong>，而 RGB-D 为 62±c、Depth 为 80±c（各任务差异较大）。</li>
+      <li><strong>点云编码器对比（Table V）：</strong>DP3 的轻量 MLP Encoder 平均 <strong>72.3</strong>，优于 PointNet（15.7）、PointNet++（16.0）、Point Transformer（26.0）等。作者将其归因于预训练编码器使用固定相机、需特征变换，与 DP3 的单视角设置不兼容。</li>
+      <li><strong>设计选项（Table VII）：</strong>裁剪点云 (+)、使用 LayerNorm、Sample prediction、Projection head 尺寸 1024 等组合最终达到平均 <strong>72.3</strong>，消除任意一项均会导致性能下降。</li>
+    </ul>
+
+    <figure>
+      <img src="img/realworld.webp" alt="Real-world robot setup and learning curves">
+      <figcaption>左：DP3 真实机器人实验装置，包含 Allegro 手与 Franka 手臂，以及 RealSense L515 深度相机（"DP3"字样由薄片摆放而成）。右：MetaWorld 任务学习曲线对比，DP3（蓝色）收敛速度明显快于 Diffusion Policy（红色），epsilon prediction（虚线）也具有竞争力。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note：</b>论文 Conclusion 部分明确提出一条局限性（stated）；其余由设计特点推断（inferred from the design）。</div>
+
+    <details class="lim" open>
+      <summary>最优 3D 表征尚未确定（stated）</summary>
+      <p>论文明确指出："Though we demonstrate the importance of 3D representations, the optimal 3D representation for control is still yet discovered."  当前 DP3 选择了稀疏点云 + 轻量 MLP，但其他 3D 表征（如隐式场、Gaussian splatting、dense voxel grid）是否更优仍是开放问题。</p>
+    </details>
+
+    <details class="lim">
+      <summary>视角变化的局限：依赖准确的相机-机器人变换（inferred）</summary>
+      <p>DP3 在视角泛化实验（Table IX）中，对轻微视角偏移通过点云变换保持一致性；但论文也指出"it is important to acknowledge that while the network can generalize across minor variations in camera views, significant changes might be hard to handle."  较大视角变化（如从顶视到侧视）仍具挑战。</p>
+    </details>
+
+    <details class="lim">
+      <summary>复杂场景中的点云质量限制（inferred）</summary>
+      <p>DP3 使用单目深度相机，点云质量依赖深度图精度。在遮挡严重或反光材质（如金属、玻璃）场景下，点云噪声增大；同时论文也提及 "Cluttered Scenes" 需要 50 条演示（对比标准 40 条），说明场景复杂度对数据需求有影响。</p>
+    </details>
+
+    <details class="lim">
+      <summary>任务范围：目前限于单阶段操作（inferred）</summary>
+      <p>论文提及双手操作、可变形物体操作等复杂场景均在仿真中测试，真实机器人任务（4 个）均为单阶段。论文明确将"exploring tasks with long horizons"列为未来工作方向。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · 3D Diffusion Policy (DP3) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2403.03954">https://arxiv.org/abs/2403.03954</a>
+    &nbsp;|&nbsp;
+    项目主页: <a href="https://3d-diffusion-policy.github.io">3d-diffusion-policy.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

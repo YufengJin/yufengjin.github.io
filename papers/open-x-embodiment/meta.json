@@ -1,0 +1,11 @@
+{
+  "slug": "open-x-embodiment",
+  "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+  "arxiv_id": "2310.08864",
+  "url": "https://arxiv.org/abs/2310.08864",
+  "category": "机器人 · Robotics",
+  "keywords": ["Open X-Embodiment", "RT-X", "cross-embodiment transfer", "机器人学习", "vision-language-action model", "多机器人数据集", "RT-2-X", "迁移学习"],
+  "summary_zh": "汇聚21个机构22种机器人的60个数据集（超百万条轨迹）构建OXE数据集，训练RT-1-X与RT-2-X模型，验证跨机器人正向迁移，RT-2-X在涌现技能任务上相比单一机器人训练取得约3倍提升（75.8% vs 27.3%）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

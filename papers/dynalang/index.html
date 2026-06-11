@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / names / metrics / quoted phrases kept in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning to Model the World with Language</title>
+<meta name="keywords" content="world model, language grounding, 多模态世界模型, reinforcement learning, embodied AI, Dynalang, DreamerV3, vision-language navigation">
+<meta name="description" content="Dynalang 将多样化语言视为预测未来观测的信号，构建多模态世界模型，同时完成语言理解与策略学习，在多个具身 AI 任务上超越基线方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICML 2024 · 具身智能 · 世界模型</span>
+    <h1>Learning to Model the World with Language</h1>
+    <div class="sub">用语言预测未来：Dynalang 多模态世界模型</div>
+    <div class="authors">Jessy Lin · Yuqing Du · Olivia Watkins · Danijar Hafner · Pieter Abbeel · Dan Klein · Anca Dragan &nbsp;|&nbsp; UC Berkeley &amp; Google DeepMind</div>
+    <p class="lead">
+      Dynalang 将语言（任务指令、状态描述、动态解释、纠错反馈）统一视为<strong>预测未来观测的信号</strong>，构建多模态世界模型，在该模型的想象空间中训练策略，无需设计专门的语言融合模块，在 HomeGrid、Messenger、VLN-CE 和 LangRoom 四类任务上全面超越 model-free 及 model-based 基线。
+    </p>
+    <div class="meta">
+      <span>arXiv 2308.01399</span>
+      <span>ICML 2024</span>
+      <span>基于 DreamerV3 扩展</span>
+      <span><a href="https://arxiv.org/abs/2308.01399">📄 arXiv:2308.01399</a></span>
+      <span><a href="https://dynalang.github.io/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>language grounding</span>
+      <span>多模态世界模型</span>
+      <span>reinforcement learning</span>
+      <span>embodied AI</span>
+      <span>Dynalang</span>
+      <span>DreamerV3</span>
+      <span>vision-language navigation</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有具身 AI 智能体在处理语言时存在严重局限——它们往往只能接受简单的<em>任务指令</em>（如"拿起苹果"），却无法利用更丰富的语言形式：状态描述（"碗在厨房里"）、动态解释（"这个按钮会关掉电视"）、以及纠错反馈。当这些多样化语言信号涌入时，model-free 的基线方法（如 R2D2）甚至会出现<strong>性能退化</strong>的现象。
+    </p>
+    <blockquote>
+      "We argue that agents should interpret such diverse language as a signal that helps them predict the future — what they will observe and what reward they will receive — rather than as a direct command to execute."
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="Dynalang 预测示意图">
+      <figcaption>
+        <strong>Figure 1：</strong>Dynalang 在 HomeGrid 环境中对真实世界模型预测的可视化。Agent 接收不同类型的语言提示（任务、状态描述、动态解释），并据此更新对未来帧的预测——这一自监督信号驱动语言与视觉的联合理解，无需额外标注。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>4</b><small>评测环境 (HomeGrid / Messenger / VLN-CE / LangRoom)</small></div>
+      <div><b>4</b><small>语言类型 (task / state / dynamics / corrections)</small></div>
+      <div><b>500M</b><small>TinyStories tokens 用于文本预训练</small></div>
+      <div><b>S3</b><small>唯一能在 Messenger Stage 3 取得非零成绩的方法</small></div>
+    </div>
+
+    <figure>
+      <img src="img/environments.webp" alt="四个评测环境">
+      <figcaption>
+        <strong>Figure 2：</strong>四个评测环境概览。HomeGrid：格子世界，含多类语言提示；Messenger：阅读随机化游戏手册完成消息传递；VLN-CE：在 Matterport3D 真实感房屋中执行自然语言导航指令；LangRoom：具身问答，Agent 需导航探索并生成文字回答。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Dynalang 以 DreamerV3 为基础，将其扩展为<strong>多模态世界模型</strong>：每个时间步同时编码一帧图像和一个语言 token，通过 GRU 序列模型在潜空间中进行未来预测，再由 Actor-Critic 在世界模型的"想象"轨迹中学习策略——语言理解完全由未来预测的自监督信号驱动。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="Dynalang 架构图">
+      <figcaption>
+        <strong>Figure 3：</strong>（左）世界模型学习：每步输入一帧图像与一个文字 token，GRU 序列模型预测下一状态的离散 latent 表示，解码器重建图像、语言、奖励和 episode 终止信号，整体以变分自编码目标训练。（右）策略学习：Actor-Critic 完全在世界模型的想象 rollout 中训练，无需与真实环境额外交互。
+      </figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>多模态序列建模</h3>
+        <p>
+          图像帧与文字 token 被编码为<strong>离散 latent 表示</strong>，投影到同一潜空间，无需显式的时序对齐。序列模型（GRU）在此空间上联合预测下一时刻的视觉与语言表示，解码器分别重建：
+        </p>
+        <ul>
+          <li>图像（视觉一致性）</li>
+          <li>文字 token（语言预测）</li>
+          <li>奖励信号</li>
+          <li>Episode 终止标志</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>策略学习与文本预训练</h3>
+        <p>
+          Actor-Critic 仅在世界模型想象的 rollout 中训练，最大化预测的累计奖励。得益于多模态生成目标，模型可在<strong>无 action 、无 reward</strong> 的纯文本数据上预训练，再迁移到下游 RL 任务。在大词表（10,000 token）场景下，用语言 action 的世界模型预测做正则，有效防止策略坍塌到特定词汇。
+        </p>
+      </div>
+    </div>
+
+    <h3>设计亮点：语言作为预测信号</h3>
+    <p>
+      核心洞察在于将语言的<em>监督角色</em>与<em>行动角色</em>解耦：语言提示经由未来预测损失自监督地嵌入世界模型，无需人工标注语言含义。这使得动态解释（"按下蓝色按钮会打开门"）和纠错（"你走错方向了"）这类在传统 instruction-following 范式中难以处理的语言类型，自然地融入统一框架。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在四个具有代表性的语言-具身任务上评测 Dynalang，基线包括 model-free 方法（IMPALA、R2D2）与 model-based 方法（多种语言条件化 DreamerV3 变体），以及任务专用架构 EMMA。
+    </p>
+
+    <h3>HomeGrid — 多样化语言提示</h3>
+    <p>
+      格子世界中，Agent 需完成物体操纵任务，并接收四类语言：仅任务（task only）、加状态描述（+ state）、加动态解释（+ dynamics）、加纠错（+ corrections）。关键发现：
+    </p>
+    <ul>
+      <li>Dynalang 随语言类型增多<strong>单调提升</strong>；</li>
+      <li>R2D2 在语言变多时性能<strong>退化</strong>（无法利用多样化语言）；</li>
+      <li>IMPALA 无法完成任务。</li>
+    </ul>
+
+    <figure>
+      <img src="img/homegrid_results.webp" alt="HomeGrid 实验结果">
+      <figcaption>
+        <strong>Figure 5：</strong>HomeGrid 各语言条件下任务完成率曲线。Dynalang（蓝线）在所有语言条件下均优于基线，且能随语言丰富程度持续提升；R2D2（橙线）在多类语言下性能下滑，佐证了传统 instruction-following 方案的局限。
+      </figcaption>
+    </figure>
+
+    <h3>Messenger — 游戏手册阅读</h3>
+    <p>
+      Agent 需阅读描述随机化实体角色与规则的游戏手册，完成消息传递并规避敌人。难度分三阶段（S1/S2/S3）。
+    </p>
+    <ul>
+      <li>S1：Dynalang <strong>大幅领先</strong>所有 model-based 基线，尽管从零训练 token 嵌入；</li>
+      <li>S3：其他方法完全失败（零成绩），<strong>Dynalang 唯一</strong>取得非零性能；</li>
+      <li>文本预训练（in-domain 手册 或 TinyStories ~500M tokens）进一步提升 S2 成绩，且 TinyStories 预训练<strong>超越</strong> T5 嵌入基线的最终性能。</li>
+    </ul>
+
+    <figure>
+      <img src="img/messenger_results.webp" alt="Messenger 实验结果">
+      <figcaption>
+        <strong>Figure 6：</strong>Messenger 三阶段训练曲线。S3 阶段（最难）仅 Dynalang 取得非零得分，验证了多模态世界模型在高复杂度语言推理任务上的优越性。
+      </figcaption>
+    </figure>
+
+    <h3>VLN-CE — 真实感室内导航</h3>
+    <p>
+      在 Matterport3D 真实感房屋中，Agent 须跟随自然语言指令导航至目标位置（success rate 衡量）。Dynalang 在 success rate 上<strong>显著超越 R2D2 model-free 基线</strong>，但与使用演示数据或专用架构的 SOTA 方法仍有差距（paper 明确承认）。
+    </p>
+
+    <h3>LangRoom — 具身问答与文本生成</h3>
+    <p>
+      Agent 需导航找到颜色目标，并通过<em>生成语言 action</em> 回答问题。在大词表（10,000 token）下：
+    </p>
+    <ul>
+      <li>One-hot token 编码从零训练<strong>失败</strong>；</li>
+      <li>用世界模型预测正则化语言 action 后，性能<strong>恢复</strong>；</li>
+      <li>预训练（in-domain 或 TinyStories）进一步超越 T5 嵌入基线，体现多模态生成模型的迁移学习潜力。</li>
+    </ul>
+
+    <h3>消融分析</h3>
+    <p>
+      在 Messenger S1 上，作者系统对比了多种语言条件化策略（GRU 嵌入、SentenceBERT、T5 + image adapter、cross-attention、two-way cross-attention 等变体），Dynalang 在无需专用对齐模块的情况下<strong>全面超越所有变体</strong>，验证了"语言作为预测信号"这一核心设计的有效性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>注：</b>本文<strong>没有独立的 Limitations 章节</strong>。以下条目中，标注"<em>论文明确指出</em>"者来自正文；其余为根据方法设计<em>推断</em>的潜在局限。
+    </div>
+
+    <details class="lim" open>
+      <summary>VLN-CE 与 SOTA 仍有差距（论文明确指出）</summary>
+      <p>作者在 VLN-CE 实验中明确写道："performance is not yet competitive with state-of-the-art VLN methods"，这些 SOTA 方法往往使用人类演示、大型预训练视觉-语言编码器或专用导航架构，Dynalang 均未采用。</p>
+    </details>
+
+    <details class="lim">
+      <summary>大词表语言生成的不稳定性（推断自设计）</summary>
+      <p>LangRoom 实验显示，词表扩大至 10,000 时 one-hot 训练直接失败，需要额外的正则化（世界模型预测约束）或预训练才能恢复稳定性。这限制了 Dynalang 在开放域语言生成任务上的直接应用。</p>
+    </details>
+
+    <details class="lim">
+      <summary>每步单 token 的语言处理假设（推断自设计）</summary>
+      <p>Dynalang 每个时间步仅处理一个视频帧和一个语言 token，不依赖时序对齐，但这也意味着长句描述被拆散到多步处理，可能丢失句子级别的语义连贯性，在需要理解长篇指令的任务中存在潜在风险。</p>
+    </details>
+
+    <details class="lim">
+      <summary>计算量与模型复杂度（推断自设计）</summary>
+      <p>在世界模型想象空间中训练 Actor-Critic 需要维护和展开完整的 GRU 世界模型，计算成本高于 model-free 基线。论文未提供与基线方法的训练时间或 FLOPs 对比数据。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Learning to Model the World with Language · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2308.01399">https://arxiv.org/abs/2308.01399</a>
+  </div>
+</footer>
+
+</body>
+</html>

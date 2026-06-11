@@ -1,0 +1,11 @@
+{
+  "slug": "sapien",
+  "title": "SAPIEN: A SimulAted Part-based Interactive ENvironment",
+  "arxiv_id": "2003.08515",
+  "url": "https://arxiv.org/abs/2003.08515",
+  "category": "机器人 · Robotics",
+  "keywords": ["机器人仿真", "关节体", "PartNet-Mobility", "部件感知", "articulated objects", "robotic simulation", "part segmentation", "PhysX", "强化学习", "物体操作"],
+  "summary_zh": "SAPIEN 是一个真实物理感知的仿真平台，提供 46 类 14,068 个关节体模型（PartNet-Mobility 数据集），集成 PhysX 物理仿真、多模态渲染和 ROS 接口，支持机器人部件感知与交互任务的研究。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

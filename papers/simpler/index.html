@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 自动生成，仅供学习参考。
+  原文：https://arxiv.org/abs/2405.05941
+  Body text in 中文; academic terms / metrics / names kept in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluating Real-World Robot Manipulation Policies in Simulation (SIMPLER)</title>
+<meta name="keywords" content="real-to-sim evaluation, robot manipulation, simulation, SIMPLER, system identification, visual matching, generalist policies, benchmark">
+<meta name="description" content="SIMPLER：在仿真中可扩展、可复现地评估真实机器人操作策略，通过控制间隙与视觉间隙缩小实现强相关性。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · 仿真评估 · ICRA 2024</span>
+    <h1>Evaluating Real-World Robot Manipulation Policies in Simulation</h1>
+    <div class="sub">SIMPLER：可扩展、可复现的机器人操作策略仿真评估框架</div>
+    <div class="authors">Xuanlin Li*, Kyle Hsu*, Jiayuan Gu* · Karl Pertsch, Oier Mees, Homer Rich Walke · Chuyuan Fu, Sean Kirmani, Sergey Levine, Jiajun Wu, Chelsea Finn, Hao Su, Quan Vuong, Ted Xiao<br>UC San Diego · Stanford University · UC Berkeley · Google DeepMind</div>
+    <p class="lead">
+      真实机器人评估代价高昂、难以规模化。本文提出 SIMPLER（Simulated Manipulation Policy Evaluation for Real Robot Setups），通过系统辨识缩小控制间隙、"Visual Matching"方法缩小视觉间隙，在仿真中对真实策略进行评估，实现与真实世界强相关的可复现评估流程。
+    </p>
+    <div class="meta">
+      <span>arXiv 2024-05</span>
+      <span>~1500 真实评估对照轨迹</span>
+      <span>Google Robot &amp; WidowX (BridgeData V2)</span>
+      <span><a href="https://arxiv.org/abs/2405.05941">📄 arXiv:2405.05941</a></span>
+      <span><a href="https://simpler-env.github.io">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>real-to-sim evaluation</span>
+      <span>robot manipulation</span>
+      <span>system identification</span>
+      <span>visual matching</span>
+      <span>仿真评估</span>
+      <span>generalist policies</span>
+      <span>MMRV</span>
+      <span>sim-to-real gap</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      随着通用机器人操作策略（如 RT-1、RT-2、Octo）的迅速发展，对其进行全面评估的代价也在急剧上升——真实世界评估需要大量人力、时间，且难以复现。本文核心问题是：<strong>能否将在真实数据上训练的策略放入仿真环境中评估，并使仿真结果与真实表现保持高度相关？</strong>
+    </p>
+    <blockquote>
+      "Real-world evaluation of such policies is not scalable and faces reproducibility challenges, which are likely to worsen as policies broaden the spectrum of tasks they can perform."
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="SIMPLER teaser — real vs. simulated evaluations correlation">
+      <figcaption>
+        <strong>图0：SIMPLER 框架概览。</strong>左侧展示真实机器人评估的繁重流程（上）与 SIMPLER 仿真评估流程（下）；右侧散点图显示在 Google Robot 与 WidowX 机器人上，约 1500 条评估轨迹中，仿真成功率与真实成功率呈现出强相关性，验证了仿真评估作为可靠代理的有效性。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>~1500</b><small>配对 sim-and-real 评估轨迹</small></div>
+      <div><b>0.924</b><small>SIMPLER-VisMatch Pearson r（Google Robot 平均）</small></div>
+      <div><b>0.056</b><small>SIMPLER-VisMatch MMRV（越低越好）</small></div>
+      <div><b>2</b><small>支持的机器人形态：Google Robot &amp; WidowX</small></div>
+    </div>
+
+    <p>
+      现有数字孪生（digital twin）方案需要大量手工建模，不具备规模化潜力。本文的关键洞察是：<em>不需要精确复刻真实环境，只需仿真策略排名与真实排名高度一致即可</em>。为此，需解决两个核心间隙：<strong>控制间隙</strong>（control gap）和<strong>视觉间隙</strong>（visual gap）。
+    </p>
+
+    <figure>
+      <img src="img/environments.webp" alt="SIMPLER simulated environments">
+      <figcaption>
+        <strong>图1：SIMPLER 仿真环境套件。</strong>涵盖 Google Robot（RT 系列评估任务：Pick Coke Can、Move Near、Open/Close Drawer）和 BridgeData V2（WidowX）对应的操作任务。所有环境均可通过标准 Gym 接口一行代码导入。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      SIMPLER 通过两个主要技术消除真实与仿真之间的差距：（1）系统辨识（System Identification, SysID）消除控制间隙；（2）Visual Matching（绿幕背景 + 纹理匹配）消除视觉间隙。
+    </p>
+
+    <h3>消除控制间隙：System Identification (SysID)</h3>
+    <p>
+      控制间隙的核心问题是：在仿真中回放真实动作序列时，机器人末端执行器轨迹与真实不符，导致抓取失败。本文通过最小化如下损失来优化仿真控制器的 PD 参数（刚度 <em>p</em> 与阻尼 <em>d</em>）：
+    </p>
+    <ul>
+      <li><strong>平移损失</strong> L<sub>transl</sub>：真实与仿真末端位置的 L2 距离均值</li>
+      <li><strong>旋转损失</strong> L<sub>rot</sub>：基于 Frobenius 范数的旋转误差均值</li>
+      <li><strong>优化方法</strong>：模拟退火（Simulated Annealing），共 3 轮，利用现有开源数据集中的演示轨迹，无需采集新数据</li>
+    </ul>
+    <p>
+      利用离线数据集（如 RT-1 或 BridgeData V2 演示），无需进行额外真实数据采集，即可完成系统辨识。
+    </p>
+
+    <figure>
+      <img src="img/control_gap.webp" alt="System identification results — control gap">
+      <figcaption>
+        <strong>图2：系统辨识效果。</strong>对 Google Robot "Pick Coke Can" 任务，SysID 前（左）仿真轨迹严重偏离真实，导致抓取失败；SysID 后（右）仿真机器人能准确跟踪真实运动，成功复现抓取动作。
+      </figcaption>
+    </figure>
+
+    <h3>消除视觉间隙：Visual Matching</h3>
+    <p>
+      视觉差异会导致策略在仿真中表现失真。Visual Matching 包含两个步骤：
+    </p>
+    <ul>
+      <li>
+        <strong>绿幕背景（Green Screening）</strong>：从真实评估视频第一帧中抠除前景（使用在线图像修复工具），将仿真前景（机械臂和操作对象）叠加到真实背景图像上。合成公式：I' = M ⊙ I<sub>sim</sub> + (1-M) ⊙ I<sub>real</sub>
+      </li>
+      <li>
+        <strong>纹理匹配（Texture Matching）</strong>：对外观差异较大的对象，通过（1）从真实图像中分割对象，（2）对齐仿真物体位姿，（3）将真实纹理"反投影"到仿真网格，实现精准纹理迁移；对机器人手臂则使用 GIMP 等工具直接涂色匹配。
+      </li>
+    </ul>
+    <p>
+      作为对比，本文还探索了另一种方法：<strong>Variant Aggregation</strong>——对场景视觉属性（背景、灯光、桌面纹理等）进行大量随机化，通过在多个变体上平均结果来获得鲁棒估计。实验表明 Visual Matching 效果更优。
+    </p>
+
+    <figure>
+      <img src="img/visual_matching.webp" alt="Visual Matching approach">
+      <figcaption>
+        <strong>图3：Visual Matching 方法示意。</strong>左列为原始仿真渲染，中列为绿幕合成（真实背景 + 仿真前景），右列为额外进行纹理匹配后的效果，大幅缩小了与真实图像的视觉差距。
+      </figcaption>
+    </figure>
+
+    <h3>评估指标：MMRV 与 Pearson r</h3>
+    <p>
+      传统 Pearson 相关系数存在两个缺陷：（1）只关注线性关系；（2）对真实性能接近的策略极为敏感。本文提出新指标 <strong>Mean Maximum Rank Violation (MMRV)</strong>（范围 [0,1]，越低越好），通过加权排名违反幅度来更准确地刻画仿真评估质量：
+    </p>
+    <ul>
+      <li>RankViolation(i, j) = |R<sub>i</sub> − R<sub>j</sub>| × 𝟙[排名与真实不一致]</li>
+      <li>MMRV = 每个策略最大 RankViolation 的平均值</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 Google Robot（RT-1、RT-1-X、RT-2-X、Octo-Base）和 WidowX (BridgeData V2) 上进行配对 sim-and-real 评估，对比 SIMPLER 与验证集 MSE 等基线方法的策略排名质量。
+    </p>
+
+    <h3>主要结果：与真实评估的强相关性</h3>
+
+    <figure>
+      <img src="img/results_google.webp" alt="Real vs SIMPLER success rates on Google Robot tasks">
+      <figcaption>
+        <strong>图4：Google Robot 任务上的真实 vs. SIMPLER 成功率对比。</strong>SIMPLER-VisMatch 各任务均呈现出低 MMRV、高 Pearson r，表明仿真策略排名与真实排名高度一致。
+      </figcaption>
+    </figure>
+
+    <p>核心数值结果（Google Robot，6个策略检查点对比）：</p>
+    <table>
+      <tr>
+        <th>评估方法</th>
+        <th>Pick Coke Can MMRV ↓</th>
+        <th>Drawer MMRV ↓</th>
+        <th>平均 MMRV ↓</th>
+        <th>平均 Pearson r ↑</th>
+      </tr>
+      <tr>
+        <td>Validation MSE</td>
+        <td>0.412</td>
+        <td>0.306</td>
+        <td>0.375</td>
+        <td>0.308</td>
+      </tr>
+      <tr>
+        <td>SIMPLER-VarAgg（ours）</td>
+        <td>0.084</td>
+        <td>0.235</td>
+        <td>0.143</td>
+        <td>0.778</td>
+      </tr>
+      <tr>
+        <td class="good">SIMPLER-VisMatch（ours）</td>
+        <td class="good">0.031</td>
+        <td class="good">0.027</td>
+        <td class="good">0.056</td>
+        <td class="good">0.924</td>
+      </tr>
+    </table>
+
+    <blockquote>
+      "Simulated manipulation policy evaluation with SIMPLER leads to strong correlation with real-world policy performance, and we recommend SIMPLER-'Visual Matching' as the default approach since it directly minimizes visual discrepancies between real and simulated environments."
+    </blockquote>
+
+    <h3>分布偏移鲁棒性预测</h3>
+    <p>
+      本文进一步验证 SIMPLER 能否准确预测策略对分布偏移的敏感性，对比了背景、灯光、干扰物、桌面纹理、相机位姿等 5 类分布偏移轴。关键发现：
+    </p>
+    <ul>
+      <li>相机位姿变化和桌面纹理变化对策略影响最大，灯光和干扰物影响较小——这一规律在仿真和真实世界中高度一致</li>
+      <li>固体颜色变化平均导致成功率下降 4%，图案纹理变化导致下降 25%——仿真对应数值为 2% 和 24%，极为吻合</li>
+      <li><strong>预测新型分布偏移</strong>：仿真中 Octo-Base 对机械臂纹理极为敏感（成功率从 0% 到 29.3%），真实实验（用礼品包装纸包裹机械臂）证实了这一预测，而 RT-1-X 则更具鲁棒性</li>
+    </ul>
+
+    <h3>消融研究</h3>
+    <p>
+      视觉匹配消融（Google Robot Drawer 任务，3 个策略）：
+    </p>
+    <table>
+      <tr>
+        <th>Green Screen</th>
+        <th>Drawer Matching</th>
+        <th>Robot Matching</th>
+        <th>MMRV ↓</th>
+        <th>Real-Sim Success Gap ↓</th>
+      </tr>
+      <tr><td>✗</td><td>✗</td><td>✗</td><td>0.087</td><td>0.272</td></tr>
+      <tr><td>✓</td><td>✗</td><td>✗</td><td>0.087</td><td>0.198</td></tr>
+      <tr><td>✓</td><td>✓</td><td>✗</td><td>0.142</td><td>0.253</td></tr>
+      <tr>
+        <td class="good">✓</td>
+        <td class="good">✓</td>
+        <td class="good">✓</td>
+        <td class="good">0.050</td>
+        <td class="good">0.136</td>
+      </tr>
+    </table>
+    <p>
+      仅部分应用 Visual Matching（如只匹配抽屉而不匹配机械臂）反而会导致 MMRV 变差，说明<em>场景各部分的视觉一致性至关重要，需整体应用</em>。
+    </p>
+    <p>
+      控制消融：SIMPLER SysID 方案的控制损失（0.131）和 MMRV（0.031）均优于两个替代参数设置（0.267/0.070 和 0.432/0.100）。
+    </p>
+    <p>
+      物理属性敏感性（质量、摩擦系数等）：在合理参数范围内，SIMPLER 评估保持稳定（低 MMRV、高 Pearson r）。
+    </p>
+    <p>
+      物理仿真器无关性：在 Isaac Sim 上复现 SIMPLER（Variant Aggregation），同样获得与 SAPIEN 相近的强相关性，说明框架不依赖特定物理引擎。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性均为论文作者在 Conclusion 部分明确陈述（stated）。</div>
+
+    <details class="lim" open>
+      <summary>仅针对刚体操作任务（Rigid-Object Manipulation）</summary>
+      <p>
+        当前 SIMPLER 环境专注于物理仿真相对简单的刚体抓取与操作任务。许多近期研究已展示了布料、流体等软体对象的操作能力，但这类任务的仿真物理远未成熟，将 SIMPLER 扩展到柔性/软体对象操作（如利用 IPC 等软体物理仿真）是未来的重要研究方向。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>绿幕方法仅适用于固定相机，且无法准确模拟阴影等视觉细节</summary>
+      <p>
+        "Green-screening" 方法要求场景中的相机位置固定（fixed cameras），无法处理动态视角变化，且在合成图像时难以还原物体阴影、反射等精细视觉特征，可能对部分对视觉敏感的策略造成影响。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>环境创建流程仍需一定人工干预</summary>
+      <p>
+        当前构建 SIMPLER 评估环境的流程（资产整理、场景组装、纹理匹配等）仍需要人工参与，尚未实现全自动化。实现从真实场景图像全自动生成大规模高保真仿真评估环境是雄心勃勃的未来目标，需要场景重建、材质估计等多方面技术的进一步突破。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's LaTeX source and figures · Evaluating Real-World Robot Manipulation Policies in Simulation (SIMPLER) · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2405.05941">https://arxiv.org/abs/2405.05941</a> &nbsp;|&nbsp;
+    Project: <a href="https://simpler-env.github.io">simpler-env.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

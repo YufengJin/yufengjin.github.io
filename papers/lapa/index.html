@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Latent Action Pretraining from Videos (LAPA)
+  arXiv: 2410.11758
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latent Action Pretraining from Videos (LAPA)</title>
+<meta name="keywords" content="VLA, latent action, 视频预训练, VQ-VAE, 机器人操作, action quantization, pretraining, Vision-Language-Action">
+<meta name="description" content="LAPA 通过 VQ-VAE 从无标注视频中学习离散 latent action，无需人工动作标注即可预训练 VLA 模型，在真实机器人操作中超越 OpenVLA。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2025 · 机器人操作 · Robotics</span>
+    <h1>Latent Action Pretraining from Videos</h1>
+    <div class="sub">无需动作标注，从海量视频中预训练 Vision-Language-Action 模型</div>
+    <div class="authors">Seonghyeon Ye, Joel Jang, Byeongguk Jeon, Sejune Joo, Jianwei Yang, Baolin Peng, Ajay Mandlekar, Reuben Tan, Yu-Wei Chao, Bill Yuchen Lin, Lars Liden, Kimin Lee, Jianfeng Gao, Luke Zettlemoyer, Dieter Fox, Minjoon Seo</div>
+    <p class="lead">LAPA（Latent Action Pretraining for general Action models）利用 VQ-VAE 从无动作标注的互联网视频中自动发现离散 latent action，在无需机器人遥操作数据的情况下预训练 VLA 模型，最终通过小规模有标注数据微调映射到真实机器人指令，显著超越现有最优方法 OpenVLA，同时实现约 30× 的预训练效率提升。</p>
+    <div class="meta">
+      <span>ICLR 2025</span>
+      <span>arXiv 2410.11758</span>
+      <span>提交：2024-10-15</span>
+      <span><a href="https://arxiv.org/abs/2410.11758">📄 arXiv:2410.11758</a></span>
+      <span><a href="https://arxiv.org/pdf/2410.11758">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>latent action</span>
+      <span>视频预训练</span>
+      <span>VQ-VAE</span>
+      <span>机器人操作</span>
+      <span>action quantization</span>
+      <span>pretraining without labels</span>
+      <span>embodiment transfer</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有 Vision-Language-Action (VLA) 模型的预训练依赖于机器人遥操作收集的有标注动作数据，
+      这使得可用数据规模极为有限。互联网上存在海量的人类操作视频（如 YouTube、Something-Something 等），
+      却因缺少机器人动作标签而无法直接用于 VLA 预训练。
+      如何利用这些无标注视频数据，是扩展机器人基础模型的核心瓶颈。
+    </p>
+    <blockquote>
+      "We introduce LAPA, an unsupervised method for pretraining Vision-Language-Action (VLA) models
+      without ground-truth robot action labels."
+    </blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="LAPA problem formulation">
+      <figcaption>
+        <strong>图 1 — 问题设定。</strong>LAPA 的目标是构建通用机器人基础模型：
+        利用海量无动作标注的人类操作视频（左上）进行预训练，再以少量有标注机器人数据微调，
+        最终部署到真实机器人（右下）。与需要大规模遥操作数据的现有方法不同，
+        LAPA 完全绕过了对真实动作标签的依赖。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>50.1%</b><small>LAPA (Open-X) 真实机器人平均成功率</small></div>
+      <div><b>43.9%</b><small>OpenVLA (Open-X) 对比基准成功率</small></div>
+      <div><b>30×</b><small>LAPA 相对 OpenVLA 的预训练效率提升</small></div>
+      <div><b>272h</b><small>LAPA 预训练所用 H100 GPU 时（OpenVLA 需 21,500 A100 时）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      LAPA 将预训练分为三个阶段：首先用 VQ-VAE 从视频帧对中学习离散 latent action；
+      接着让 VLM 从视频观测和语言指令中预测这些 latent action（行为克隆）；
+      最后在小规模有标注机器人数据上微调，将 latent action 映射为真实机器人指令。
+    </p>
+    <figure>
+      <img src="img/x2.webp" alt="LAPA method overview">
+      <figcaption>
+        <strong>图 2 — LAPA 三阶段流水线。</strong>
+        <em>Stage 1（Latent Action Quantization）：</em>编码器输入当前帧 x<sub>t</sub> 与未来帧 x<sub>t+h</sub>，
+        输出离散 latent action z<sub>t</sub>；解码器从 z<sub>t</sub> 重建未来帧（自监督）。
+        <em>Stage 2（Latent Pretraining）：</em>VLM 学习从观测序列和语言指令预测 z<sub>t</sub>。
+        <em>Stage 3（Action Finetuning）：</em>替换 latent action head，在真实机器人数据上微调为端到端控制器。
+      </figcaption>
+    </figure>
+
+    <h3>Stage 1：Latent Action Quantization（VQ-VAE）</h3>
+    <p>
+      编码器采用 C-ViViT 架构，输入当前帧与未来帧（间隔 H 步），通过 cross-attention 提取"帧间变化"，
+      输出离散 latent action token z<sub>t</sub>（词表大小 K<sup>L</sup>，默认 8<sup>4</sup>=4096 种）。
+      解码器在给定 z<sub>t</sub> 和当前帧的条件下重建未来帧。
+      为防止梯度塌缩，使用 NSVQ（Normalized Straight-Through Vector Quantization）替代标准 VQ。
+      整个过程完全自监督，无需任何动作标注。
+    </p>
+
+    <h3>Stage 2：Latent VLA 预训练</h3>
+    <p>
+      以预训练 VLM（7B 参数）为骨干，冻结视觉编码器，对语言模型参数进行行为克隆训练：
+      给定视频帧序列和语言任务描述，预测对应的 latent action token 序列。
+      训练数据可以是任意无标注视频（如 Open-X Embodiment 数据集或 Something-Something V2 人类视频），
+      无需机器人遥操作数据。
+    </p>
+
+    <h3>Stage 3：Action Finetuning</h3>
+    <p>
+      仅需少量有标注的机器人演示数据：移除 latent action head，替换为任务专用 action head，
+      微调模型将学到的 latent 表征映射到真实机器人端效器动作。
+      由于 Stage 2 已学到丰富的视觉-语言-动作表征，Stage 3 收敛快、所需数据量少。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      评估在三个基准上进行：Language Table 仿真、SIMPLER 仿真（Open-X 子集）、
+      以及真实世界桌面操作（pick、cover、knock 三类任务，共 54 次 rollout）。
+      对比基线包括 Scratch、UniPi、VPT、ActionVLA、OpenVLA 等。
+    </p>
+
+    <h3>Language Table 仿真结果</h3>
+    <table>
+      <tr>
+        <th>模型</th>
+        <th>In-Domain Seen</th>
+        <th>In-Domain Unseen</th>
+        <th>Cross-Task Seen</th>
+        <th>Cross-Task Unseen</th>
+        <th>Cross-Env Seen</th>
+        <th>Cross-Env Unseen</th>
+      </tr>
+      <tr><td>Scratch</td><td>15.6±9.2</td><td>15.2±8.3</td><td>27.2±13.6</td><td>22.4±11.0</td><td>15.6±9.2</td><td>15.2±8.3</td></tr>
+      <tr><td>UniPi</td><td>22.0±12.5</td><td>13.2±7.7</td><td>20.8±12.0</td><td>16.0±9.1</td><td>13.6±8.6</td><td>12.0±7.5</td></tr>
+      <tr><td>VPT</td><td>44.0±7.5</td><td>32.8±4.6</td><td>72.0±6.8</td><td>60.8±6.6</td><td>18.0±7.7</td><td>18.4±9.7</td></tr>
+      <tr><td>LAPA</td><td class="good">62.0±8.7</td><td class="good">49.6±9.5</td><td class="good">73.2±6.8</td><td class="good">54.8±9.1</td><td class="good">33.6±12.7</td><td class="good">29.6±12.0</td></tr>
+      <tr><td>ActionVLA</td><td>77.0±3.5</td><td>58.8±6.6</td><td>77.0±3.5</td><td>58.8±6.6</td><td>64.8±5.2</td><td>54.0±7.0</td></tr>
+    </table>
+    <p>
+      LAPA 在 In-Domain Seen 上从 Scratch 的 15.6% 提升至 62.0%，Cross-Env Seen 从 15.6% 提升至 33.6%，
+      显示出跨环境泛化能力。ActionVLA 使用有标注动作数据预训练，作为上界参考。
+    </p>
+
+    <h3>真实机器人操作结果</h3>
+    <figure>
+      <img src="img/x3.webp" alt="Real-world manipulation results">
+      <figcaption>
+        <strong>图 3 — 真实桌面操作成功率对比。</strong>
+        评估三类泛化：Seen Obj. Unseen Combo（见过物体但未见过组合）、Unseen Obj.（未见物体）、
+        Unseen Instr.（未见指令）。LAPA (Open-X) 在三类泛化上均优于或持平 OpenVLA (Open-X)，
+        平均成功率 50.1% vs. 43.9%。
+      </figcaption>
+    </figure>
+    <table>
+      <tr>
+        <th>模型</th>
+        <th>Seen Obj. Unseen Combo</th>
+        <th>Unseen Obj.</th>
+        <th>Unseen Instr.</th>
+        <th>平均 AVG</th>
+      </tr>
+      <tr><td>Scratch</td><td>18.0</td><td>20.3</td><td>25.4</td><td>21.2</td></tr>
+      <tr><td>ActionVLA (Bridge)</td><td>38.3</td><td>31.8</td><td>27.7</td><td>32.6</td></tr>
+      <tr><td>OpenVLA (Bridge)</td><td>35.6</td><td>34.6</td><td>22.1</td><td>30.8</td></tr>
+      <tr><td>LAPA (Bridge)</td><td>43.4</td><td>31.4</td><td>35.6</td><td>36.8</td></tr>
+      <tr><td>OpenVLA (Open-X)</td><td>46.2</td><td>42.1</td><td>43.4</td><td>43.9</td></tr>
+      <tr><td>LAPA (Open-X)</td><td class="good">57.8</td><td class="good">43.9</td><td class="good">48.5</td><td class="good">50.1</td></tr>
+      <tr><td>LAPA (Human Videos)</td><td>36.5</td><td>37.4</td><td>28.1</td><td>34.0</td></tr>
+    </table>
+
+    <h3>人类视频预训练（跨体态迁移）</h3>
+    <p>
+      LAPA 使用 Something-Something V2（人类手部操作视频，无机器人数据）进行预训练后，
+      在真实机器人任务上仍能超越 OpenVLA (Bridge) 的平均成功率（34.0% vs. 30.8%），
+      证明 latent action 空间可跨体态迁移（embodiment transfer）。
+    </p>
+
+    <h3>Latent Action 可解释性分析</h3>
+    <figure>
+      <img src="img/x6.webp" alt="Latent action analysis">
+      <figcaption>
+        <strong>图 6 — Latent Action 语义映射。</strong>
+        在 Open-X Embodiment 数据集上，将 latent action 嵌入二维空间可视化，
+        显示出与真实动作（移动方向、抓取/放置等）的语义对应关系，
+        说明 VQ-VAE 在无监督下自动发现了具有意义的动作表征。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <ul>
+      <li><strong>模型规模：</strong>更大的 VLM 骨干（参数量）带来持续性能提升。</li>
+      <li><strong>数据规模：</strong>预训练数据量增加，下游任务成功率稳步提升。</li>
+      <li><strong>Latent action 词表大小：</strong>Language Table 任务中，增大词表比增加序列长度更有效；
+        SIMPLER 和真实世界任务保持 8<sup>4</sup>=4096 种动作空间。</li>
+      <li><strong>窗口大小 H：</strong>默认 H=3（5Hz 视频下约 0.6 秒）效果稳健；极端值下性能下降。</li>
+      <li><strong>微调数据量：</strong>即便微调数据极少，LAPA 仍持续优于 Scratch。</li>
+      <li><strong>训练轮次：</strong>1 个 epoch 即达到最优性能，无需多轮训练。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性均由论文作者在原文中明确陈述（stated）。
+    </div>
+    <details class="lim" open>
+      <summary>精细抓取动作能力不足</summary>
+      <p>
+        论文明确指出："LAPA underperforms compared to action pretraining when it comes to
+        fine-grained motion generation tasks like grasping."
+        在需要精确末端执行器控制的抓取任务中，LAPA 与使用有标注动作数据预训练的 ActionVLA 相比仍有差距，
+        例如在 pick-and-place 任务中 OpenVLA 在部分精细抓取场景优于 LAPA。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>实时推理延迟</summary>
+      <p>
+        "Similar to prior VLAs, LAPA also encounters latency challenges during real-time inference."
+        作为基于大型语言模型的 VLA，LAPA 继承了 VLA 家族共有的推理速度瓶颈，
+        尚未针对在线控制进行专门优化。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>评估场景局限于操作任务</summary>
+      <p>
+        当前实验主要集中于桌面操作场景。论文指出尚未探索 LAPA 在导航、自动驾驶等其他
+        机器人应用领域（"beyond manipulation videos, such as those from self-driving cars, navigation"）
+        的适用性，这些场景的泛化能力有待验证。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Latent Action Pretraining from Videos (LAPA) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2410.11758">https://arxiv.org/abs/2410.11758</a>
+  </div>
+</footer>
+
+</body>
+</html>

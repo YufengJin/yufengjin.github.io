@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--
+  Paper Poster — 自动生成，仅供学习参考
+  Paper: Video Language Planning (arXiv 2310.10625)
+  Lang: zh | Generated: 2026-06-10
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Language Planning</title>
+<meta name="keywords" content="video language planning, long-horizon planning, tree search, vision-language model, text-to-video model, 机器人操作, goal-conditioned policy, 长时序规划">
+<meta name="description" content="VLP 将 vision-language model 与 text-to-video model 结合，通过树搜索在视频空间中完成长时序机器人任务规划。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · CoRL 2023</span>
+    <h1>Video Language Planning</h1>
+    <div class="sub">在视频与语言空间中进行长时序机器人任务规划</div>
+    <div class="authors">Yilun Du · Mengjiao Yang · Pete Florence · Fei Xia · Ayzaan Wahid · Brian Ichter · Pierre Sermanet · Tianhe Yu · Pieter Abbeel · Joshua B. Tenenbaum · Leslie Kaelbling · Andy Zeng · Jonathan Tompson &nbsp;|&nbsp; Google DeepMind · MIT · UC Berkeley</div>
+    <p class="lead">VLP（Video Language Planning）提出将 vision-language model（VLM）与 text-to-video model 组合，通过树搜索在<em>视频与语言</em>构成的联合空间中规划长时序机器人任务。VLM 同时充当策略（生成文字动作）和价值函数（评估视频进度），text-to-video model 充当动力学模型，在推理时以更多算力换取更高质量的视频计划。</p>
+    <div class="meta">
+      <span>arXiv 2023-10-16</span>
+      <span>3 个机器人平台</span>
+      <span>仿真 + 真实机器人</span>
+      <span><a href="https://arxiv.org/abs/2310.10625">📄 arXiv:2310.10625</a></span>
+      <span><a href="https://video-language-planning.github.io/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>video language planning</span>
+      <span>long-horizon planning</span>
+      <span>tree search</span>
+      <span>vision-language model</span>
+      <span>text-to-video model</span>
+      <span>goal-conditioned policy</span>
+      <span>机器人操作</span>
+      <span>长时序规划</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">长时序机器人操作需要同时具备：（i）对高层语义任务的抽象推理；（ii）对低层物理动力学的准确建模。大语言模型（LLM）和视觉语言模型（VLM）善于高层推理，但局限于文字表达、难以推理物理约束；text-to-video 模型善于捕捉视觉动力学，但只能生成短时域片段。如何将两者结合以实现<em>数百帧级</em>的长时序视觉规划，是本文核心问题。</p>
+    <blockquote>"We are interested in enabling visual planning for complex long-horizon tasks in the space of generated videos and language, leveraging recent advances in large generative models pretrained on Internet-scale data."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="VLP teaser figure — overview of the algorithm">
+      <figcaption><strong>图 1：VLP 总览。</strong> 给定当前图像观测，VLM policy（左上）生成下一步文字动作，video model（右上）将其转换为短时视频帧序列；VLM heuristic（左下）对各视频分支打分，树搜索（中）选出最优分支并递归扩展，最终输出长时视频计划；goal-conditioned policy（右下）逐帧执行动作。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>98%</b><small>仿真 Group-by-Color 视频计划成功率（VLP vs UniPi 4%）</small></div>
+      <div><b>92%</b><small>仿真 Group-by-Color 任务执行完成率</small></div>
+      <div><b>3</b><small>支持的机器人硬件平台</small></div>
+      <div><b>~100s</b><small>计划可延伸至数百帧的长时序视频</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">VLP 以三个模块为核心：（1）<strong>VLM as Policy</strong>——根据当前图像和语言目标生成候选文字动作；（2）<strong>Video Model as Dynamics</strong>——将文字动作转化为合成的短时视频帧；（3）<strong>VLM as Heuristic Function</strong>——预测距离目标完成还需多少步，用于剪枝。三者通过<em>树搜索（beam search + parallel hill climbing）</em>组合，在推理时可用更多计算换取更好的视频计划质量。</p>
+
+    <figure>
+      <img src="img/overview.webp" alt="VLP long-horizon video plan examples">
+      <figcaption><strong>图 2：长时视频计划示例。</strong> VLP 仅给定初始图像和语言目标，自主生成语言子目标序列（左侧列表）和对应视频帧序列（右侧图像），涵盖仿真 Language Table 环境（上）和真实桌面（下）两种场景。</figcaption>
+    </figure>
+
+    <h3>VLM as Policy &amp; Heuristic Function</h3>
+    <p>
+      VLP 使用 PaLM-E 作为 VLM。给定图像 <em>x</em> 和语言目标 <em>g</em>，policy π<sub>VLM</sub>(x, g) 采样出 <em>A</em> 个候选文字动作 <em>a</em>。heuristic function H<sub>VLM</sub>(x, g) 在长轨迹片段上微调，输出"距目标还需几步"的标量估计——取负值作为启发值（越接近目标值越大）。为防止动力学模型被"利用"（exploiting model dynamics），若某视频帧的启发值超过固定阈值则直接丢弃。
+    </p>
+
+    <h3>Text-to-Video Model as Dynamics</h3>
+    <p>
+      给定当前帧 <em>x</em> 和文字动作 <em>a</em>，视频模型 f<sub>VM</sub>(x, a) 合成一段短时视频 x<sub>1:S</sub>，预测执行该动作后的视觉结果序列。长时计划通过自回归拼接（递归将最后一帧作为新起点）延伸至数百帧。对多相机双臂平台（ALOHA），各视角视频在 channel 维度拼接后联合生成，保证多视角一致性。
+    </p>
+
+    <h3>树搜索规划算法（Algorithm 1）</h3>
+    <p>
+      初始化 <em>B</em> 条平行规划 beam。每一步：① π<sub>VLM</sub> 为当前帧生成 <em>A</em> 个动作；② f<sub>VM</sub> 对每个动作合成 <em>D</em> 个视频分支（共 A×D 个）；③ H<sub>VLM</sub> 打分，选最高分视频加入当前 beam；④ 每 5 步，用最高分 beam 替换最低分 beam。最终输出 H<sub>VLM</sub> 得分最高的 beam 对应的视频计划。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="VLP planning budget ablation and planning tree">
+      <figcaption><strong>图 3：规划预算 vs. 成功率（左）与 7DoF 移动机械臂规划树（右）。</strong> 左图显示随 beam / branching factor 增大，"make line"任务成功率从 4% 升至 56%；右图展示规划树中 VLP 如何剪枝不合理动作分支（如未打开抽屉直接放置水果），保留正确的动作序列。</figcaption>
+    </figure>
+
+    <h3>Goal-Conditioned Policy 执行视频计划</h3>
+    <p>
+      给定合成视频计划 x<sub>1:H</sub>，goal-conditioned policy π<sub>control</sub>(x, x<sub>g</sub>) 以当前帧 <em>x</em> 和下一目标帧 x<sub>g</sub> 为输入，输出低层控制动作 <em>u</em>，每帧执行固定步数。采用 receding horizon control（滚动时域控制）：执行固定步数后，用最新观测重新规划（replanning），以消除累积误差。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在 Language Table 仿真环境和对应真实机器人（桌面机械臂）、7DoF 移动机械臂、14DoF 双臂 ALOHA 三个平台上进行。评估分两部分：（i）视频计划合成质量（人工判断视频是否完成任务，各方法各生成 50 条）；（ii）实际执行成功率（reward + completion rate）。</p>
+
+    <h3>视频计划合成质量（Table 1）</h3>
+    <table>
+      <tr><th>方法</th><th>Move Area（Sim）</th><th>Group Color（Sim）</th><th>Make Line（Sim）</th><th>Move Area（Real）</th><th>Group Color（Real）</th><th>Make Line（Real）</th></tr>
+      <tr><td>UniPi</td><td>2%</td><td>4%</td><td>2%</td><td>4%</td><td>12%</td><td>4%</td></tr>
+      <tr><td>VLP (No Value Function)</td><td>10%</td><td>42%</td><td>8%</td><td>20%</td><td>64%</td><td>4%</td></tr>
+      <tr><td class="good">VLP (Ours)</td><td class="good">58%</td><td class="good">98%</td><td class="good">66%</td><td class="good">78%</td><td class="good">100%</td><td class="good">56%</td></tr>
+    </table>
+
+    <h3>长时序任务执行成功率（Table 2）</h3>
+    <table>
+      <tr><th>方法</th><th>Move Area Reward</th><th>Move Area Completion</th><th>Group Color Reward</th><th>Group Color Completion</th><th>Make Line Reward</th><th>Make Line Completion</th></tr>
+      <tr><td>UniPi</td><td>30.8</td><td>0%</td><td>44.0</td><td>4%</td><td>44.0</td><td>4%</td></tr>
+      <tr><td>LAVA</td><td>59.8</td><td>22%</td><td>50.0</td><td>2%</td><td>33.5</td><td>0%</td></tr>
+      <tr><td>RT-2</td><td>18.5</td><td>0%</td><td>46.0</td><td>26%</td><td>36.5</td><td>2%</td></tr>
+      <tr><td>PaLM-E</td><td>36.5</td><td>0%</td><td>43.5</td><td>2%</td><td>26.2</td><td>0%</td></tr>
+      <tr><td class="good">VLP (Ours)</td><td class="good">87.3</td><td class="good">64%</td><td class="good">95.8</td><td class="good">92%</td><td class="good">65.0</td><td class="good">16%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="Multiview video plans for dexterous manipulation on ALOHA">
+      <figcaption><strong>图 4：多视角视频计划（14DoF 双臂 ALOHA）。</strong> VLP 在 4 个相机视角上同步生成视频计划，用于"将桌上所有物品堆叠"任务——包括堆叠碗、杯、餐具等一系列子步骤。VLP 仅给定第一帧图像，自动生成跨视角一致的长时视频。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>
+      <strong>规划预算（Table 3）：</strong>增加 beam 数（1→2）、规划时域（1→2）、branching factor（4→16），"make line" 任务完成率从 0% 上升至 16%，reward 从 48.9 升至 65.0。搜索力度越大，执行成功率持续提升。
+    </p>
+    <p>
+      <strong>动作提取方式（Table 4）：</strong>对比 inverse dynamics / goal policy (last frame) / goal policy (every frame) 三种从视频提取动作的方式。"goal-conditioned policy on every frame"在 Group-by-Color 任务上获得最高 reward（95.8）和最高完成率（92%），超过只用最后一帧的 85.0/66%，说明密集帧级控制更有效。
+    </p>
+
+    <figure>
+      <img src="img/execution.webp" alt="Simulation and real execution of VLP">
+      <figcaption><strong>图 5：仿真（左）与真实机器人（右）执行展示。</strong> VLP 在仿真 Language Table 环境中完成"将所有方块移至左下角"、"按颜色分组"、"排成一横行"三类长时序任务；在真实机器人上同样成功执行相同任务。</figcaption>
+    </figure>
+
+    <h3>泛化能力</h3>
+    <p>
+      当 VLM 和 video model 在大规模 Internet 数据（含 YouTube 视频）上联合预训练后，VLP 能够泛化到：（i）训练集中未见过的新物体（如橡皮圈、纸杯蛋糕、木质六边形）；（ii）不同光照条件下的新环境；（iii）新任务指令（如"Pick snicker energy bar"、"Move moose toy near green pear"）。这种泛化能力来自将视频合成与低层控制解耦——video model 负责视觉动力学泛化，goal-conditioned policy 只需泛化到邻近视觉目标。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为论文作者在 Section 5 "Limitations and Conclusion" 中明确陈述（stated），无推断内容。</div>
+
+    <details class="lim" open>
+      <summary>图像表征无法捕捉完整三维状态</summary>
+      <p>"Our planning approach leverages images as a world state representation. In many tasks, this is insufficient as it does not capture the full 3D state and cannot encode latent factors such as physics or mass." 论文提出的缓解方向：生成多视角视频，或让 heuristic function 以完整视频为输入。</p>
+    </details>
+
+    <details class="lim">
+      <summary>视频动力学模型存在物理幻觉</summary>
+      <p>"we observed that our video dynamics model does not always simulate dynamics accurately. In several situations, we observed that synthesized videos would make objects spontaneously appear or teleport to new locations."（物体凭空出现或瞬移）论文建议使用更大的 video model、更多训练数据、或引入显式强化学习反馈（如 RLHF for physics）来缓解。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理计算开销随搜索预算线性增长</summary>
+      <p>VLP 的计划质量随 beam 数和 branching factor 增大而提升，但推理时间也相应增长。在实时机器人控制场景中，需要在计划质量与响应延迟之间做出权衡。（作者在论文中提及此 scaling 特性，但未给出具体推理时延数据，此条为设计层面的隐含局限。）</p>
+    </details>
+
+    <details class="lim">
+      <summary>视频模型训练依赖带语言标注的短时轨迹数据</summary>
+      <p>VLP 的 text-to-video model 需要短时图像轨迹片段与对应语言标签进行监督训练，数据采集与标注成本较高。尽管作者指出 VLP 可从不完整语言标注数据中受益（未标注段仍可用于学习动力学），但对新机器人平台和新任务域的数据需求仍构成实际部署的障碍。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Video Language Planning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2310.10625">https://arxiv.org/abs/2310.10625</a>
+    &nbsp;|&nbsp;
+    <a href="https://video-language-planning.github.io/">Project Page</a>
+  </div>
+</footer>
+
+</body>
+</html>

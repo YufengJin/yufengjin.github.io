@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LDA-1B: Scaling Latent Dynamics Action Model via Universal Embodied Data Ingestion</title>
+<meta name="keywords" content="robot foundation model, latent dynamics, diffusion transformer, DINO, embodied AI, 具身智能, imitation learning, data scaling, world model, heterogeneous data">
+<meta name="description" content="LDA-1B 是一个十亿参数机器人基础模型，通过统一世界建模从 3 万小时异构具身数据中联合学习动力学、策略与视觉预测，在抓取、灵巧操作和长视野任务中超越现有方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2026 · 机器人基础模型</span>
+    <h1>LDA-1B: Scaling Latent Dynamics Action Model via Universal Embodied Data Ingestion</h1>
+    <div class="sub">十亿参数机器人基础模型，通过统一世界建模从 3 万小时异构具身数据中学习</div>
+    <div class="authors">Jiangran Lyu, Kai Liu, Xuheng Zhang, Haoran Liao, Yusen Feng, Wenxuan Zhu, Tingrui Shen, Jiayi Chen, Jiazhao Zhang, Yifei Dong, Wenbo Cui, Senmao Qi, Shuo Wang, Yixin Zheng, Mi Yan, Xuesong Shi, Haoran Li, Dongbin Zhao, Ming-Yu Liu, Zhizheng Zhang, Li Yi, Yizhou Wang, He Wang</div>
+    <p class="lead">LDA-1B 提出一个统一世界模型框架，对策略学习、前向动力学、逆向动力学与视觉预测四类目标进行联合训练，使模型能够从异质具身数据（人类视频、低质量轨迹、高质量轨迹）中充分汲取知识，在真实机器人抓取、灵巧手操作和长视野任务中均超越 π0.5 和 GR00T-N1.6 等现有方法。</p>
+    <div class="meta">
+      <span>RSS 2026</span>
+      <span>1B 参数</span>
+      <span>EI-30k: 30,000+ 小时</span>
+      <!-- REQUIRED: link back to the source paper. -->
+      <span><a href="https://arxiv.org/abs/2602.12215">📄 arXiv:2602.12215</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords (mixed 中英 academic terms) -->
+    <div class="kw">
+      <span>robot foundation model</span>
+      <span>latent dynamics</span>
+      <span>diffusion transformer</span>
+      <span>DINO</span>
+      <span>具身智能</span>
+      <span>embodied AI</span>
+      <span>world model</span>
+      <span>heterogeneous data</span>
+      <span>灵巧操作</span>
+      <span>data scaling</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有机器人基础模型主要依赖行为克隆（behavior cloning），无法充分利用异质具身数据中蕴含的可迁移动力学知识；统一世界模型（Unified World Model）虽然有潜力，却受限于"coarse data usage and fragmented datasets"。如何将数十万小时的人类视频、低质量轨迹与高质量机器人轨迹统一纳入训练，是提升可扩展性的核心挑战。</p>
+
+    <blockquote>"Existing methods primarily rely on behavior cloning, which discards transferable dynamics knowledge embedded in heterogeneous embodied data."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="LDA-1B overview">
+      <figcaption>图 1：LDA-1B 总览。模型对策略学习（policy learning）、前向动力学（forward dynamics）、逆向动力学（inverse dynamics）和视觉预测（visual forecasting）进行联合训练，通过任务嵌入（task embedding）区分不同质量与类型的数据。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>+21%</b><small>contact-rich 操作相对 π0.5 提升</small></div>
+      <div><b>+48%</b><small>灵巧操作相对 π0.5 提升</small></div>
+      <div><b>+23%</b><small>长视野任务相对 π0.5 提升</small></div>
+      <div><b>30k+</b><small>EI-30k 数据集小时数</small></div>
+    </div>
+
+    <figure>
+      <img src="img/task_overview.webp" alt="task overview">
+      <figcaption>图：真实世界评测任务概览，涵盖 Pick &amp; Place、Contact-rich、精细操作（Fine）、长视野（Long-horizon）以及灵巧手（Dexterous）五类任务，横跨 Galbot G1 双臂夹爪机器人与 Unitree G1 灵巧手平台。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">LDA-1B 的核心是一个多模态扩散 Transformer（MM-DiT），对动作序列与未来视觉 latent 联合去噪，配合通用具身数据摄取（Universal Embodied Data Ingestion）框架，将不同质量与模态的数据统一分配训练目标。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="MM-DiT architecture">
+      <figcaption>图 2：LDA 架构。以冻结的 Qwen3-VL-4B-Instruct 提取 VLM token、冻结的 DINOv3-ViT-s 提供视觉 latent，MM-DiT 通过共享 self-attention 层使动作专家（action expert）与视觉专家（visual expert）交互，同时完成策略学习、前向 / 逆向动力学和视觉预测四项目标的联合训练。</figcaption>
+    </figure>
+
+    <h3>通用具身数据摄取（Universal Embodied Data Ingestion）</h3>
+    <p>框架将异质数据划分为三个角色：<strong>无动作人类视频</strong>监督视觉预测（visual forecasting）；<strong>低质量轨迹</strong>提供动力学监督；<strong>高质量轨迹</strong>同时支持策略学习与动力学学习。Register token 充当缺失模态的占位符，使模型能在统一架构下处理不完整输入。此外，论文构建了 <strong>EI-30k</strong> 数据集——8,030 小时真实机器人数据 + 8,600 小时仿真数据 + 7,200 小时有动作人类示范 + 10,000 小时无动作人类视频，总计超 30,000 小时，全部以 LeRobot 格式标准化并手动对齐末端执行器坐标系。</p>
+
+    <figure>
+      <img src="img/dataset.webp" alt="EI-30k dataset statistics">
+      <figcaption>图 4：EI-30k 数据集统计。四类数据来源分布与片段时长直方图，覆盖真实机器人、仿真、有动作和无动作人类视频。</figcaption>
+    </figure>
+
+    <h3>DINO Latent Space 用于视觉预测</h3>
+    <p>与像素空间 VAE 不同，LDA-1B 采用 DINO 特征作为视觉预测目标，"reduce redundant appearance modeling"并避免"entangling appearance, geometry, and dynamics at low-level feature granularity"。仿真实验显示，从 VAE 切换到 DINO 表示使成功率从 20.0% 大幅提升至 55.4%。</p>
+
+    <figure>
+      <img src="img/dino.webp" alt="DINO latent dynamics visualization">
+      <figcaption>图 9：DINO latent 前向动力学可视化。预测的未来视觉表示准确捕捉了语义物体结构（如杯子位置与形状），验证了动力学模型的有效性。</figcaption>
+    </figure>
+
+    <h3>训练配置</h3>
+    <ul>
+      <li>48 块 H800 GPU，400k 迭代，共 4,608 GPU 小时</li>
+      <li>Batch size 32 × 48（预训练），学习率 1e-4，余弦调度</li>
+      <li>Hidden size 1536，16 层，32 注意力头</li>
+      <li>视觉观测采样率 3 Hz，动作采样率 10 Hz；动作 chunk size = 16，历史帧数 = 2</li>
+    </ul>
+
+    <figure>
+      <img src="img/scaling.webp" alt="scaling analysis">
+      <figcaption>图 10：数据规模分析。随着训练数据增加至 30,000 小时，动作预测误差降至 6.6，验证了 LDA-1B 的良好可扩展性。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在仿真（RoboCasa-GR1）和真实机器人（Galbot G1 夹爪 + Unitree G1 灵巧手）上与 GR00T-N1.6、GR00T-EI10k、UWM-1B、π0.5 进行对比；采用少样本微调（few-shot fine-tuning）评估迁移效率。</p>
+
+    <h3>仿真基准：RoboCasa-GR1</h3>
+    <table>
+      <tr><th>模型</th><th>成功率（Success Rate）</th></tr>
+      <tr><td>UWM-1B</td><td>19.3%</td></tr>
+      <tr><td>GR00T-N1.6</td><td>47.6%</td></tr>
+      <tr><td>GR00T-EI10k</td><td>51.3%</td></tr>
+      <tr><td class="good"><strong>LDA-1B（本文）</strong></td><td class="good">55.4%</td></tr>
+    </table>
+    <p>消融实验显示，将视觉 latent 从 VAE 替换为 DINO 是最关键的设计选择，成功率从 20.0% 跃升至 55.4%。</p>
+
+    <h3>真实世界抓取操作</h3>
+    <figure>
+      <img src="img/gripper_results.webp" alt="gripper manipulation results">
+      <figcaption>图 4：真实世界夹爪操作成功率对比（8 类任务）。LDA-1B 在 Contact-rich（+21%）、Long-horizon（+23%）类任务上超越 π0.5；"Clean the Rubbish"长视野双臂任务中 LDA-1B 达 35%，基线全部为 0%。</figcaption>
+    </figure>
+
+    <h3>灵巧手操作</h3>
+    <figure>
+      <img src="img/dexterous_results.webp" alt="dexterous manipulation results">
+      <figcaption>图 5：灵巧操作对比（3 低自由度 BrainCo 手 + 2 高自由度 Sharpa 手）。LDA-1B 在"Pull Nail"达 80%（vs π0.5 大幅失败），在"Flip Bread"高自由度任务达 90%（vs π0.5 仅 10%），整体领先 48%。</figcaption>
+    </figure>
+
+    <h3>泛化能力（Table III）</h3>
+    <table>
+      <tr><th>测试条件</th><th>LDA-1B 成功率</th></tr>
+      <tr><td>未见物体 / 背景</td><td>60%</td></tr>
+      <tr><td>分布外（OOD）位置</td><td>40%</td></tr>
+    </table>
+    <p>在两项泛化测试中 LDA-1B 均显著超越基线模型。</p>
+
+    <h3>混合质量数据微调（Table IV）</h3>
+    <p>在低质量轨迹加入后，LDA-1B 性能<strong>提升 10 个百分点</strong>；而 π0.5 在同等条件下<strong>下降 10–20 个百分点</strong>，验证了通用数据摄取框架对低质量数据的有效利用能力。</p>
+
+    <h3>目标梯度协调性</h3>
+    <p>余弦相似度分析（gradient cosine similarity）显示，四项训练目标在 400k 步后梯度方向高度一致，表明联合训练没有导致目标冲突。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>以下局限性由论文作者明确说明，并非推断。</div>
+
+    <details class="lim" open>
+      <summary>固定 DINO 视觉特征的局限</summary>
+      <p>模型依赖冻结的 DINO 视觉编码器（DINOv3-ViT-s），预训练阶段视觉表示不参与更新，"reliance on fixed DINO visual features … may constrain generalization to new visual perspectives"。未来工作计划联合学习视觉表示与潜在动力学。</p>
+    </details>
+
+    <details class="lim">
+      <summary>以自我为中心（egocentric）的摄像头视角为主</summary>
+      <p>EI-30k 数据集及训练任务主要使用第一人称（head-mounted 或 wrist）视角，"predominantly egocentric camera viewpoints … may constrain generalization to new visual perspectives"，对第三人称视角场景的泛化尚未充分验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>计算成本较高</summary>
+      <p>预训练需要 48 块 H800 GPU 共 4,608 GPU 小时。虽然推理时只需单次前向传播，但大规模预训练的资源门槛仍较高，限制了社区复现的便利性。（此条为设计推断，论文未单独列出。）</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · LDA-1B: Scaling Latent Dynamics Action Model via Universal Embodied Data Ingestion · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.12215">https://arxiv.org/abs/2602.12215</a>
+  </div>
+</footer>
+
+</body>
+</html>

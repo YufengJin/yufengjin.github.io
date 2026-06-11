@@ -1,0 +1,22 @@
+{
+  "slug": "egoscale",
+  "title": "EgoScale: Scaling Dexterous Manipulation with Diverse Egocentric Human Data",
+  "arxiv_id": "2602.16710",
+  "url": "https://arxiv.org/abs/2602.16710",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "dexterous manipulation",
+    "egocentric video",
+    "VLA",
+    "human-to-robot transfer",
+    "scaling law",
+    "灵巧手",
+    "第一视角预训练",
+    "flow matching",
+    "cross-embodiment",
+    "机器人操作"
+  ],
+  "summary_zh": "EgoScale 在逾 2 万小时第一视角人类操作视频上预训练 VLA，发现数据规模与验证损失之间的对数线性 scaling law（R²=0.9983），通过轻量 mid-training 在 22 自由度灵巧手上实现 54% 成功率提升，并验证跨机器人本体泛化能力。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

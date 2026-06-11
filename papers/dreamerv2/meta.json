@@ -1,0 +1,11 @@
+{
+  "slug": "dreamerv2",
+  "title": "Mastering Atari with Discrete World Models",
+  "arxiv_id": "2010.02193",
+  "url": "https://arxiv.org/abs/2010.02193",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": ["DreamerV2", "world model", "discrete representations", "RSSM", "KL balancing", "latent imagination", "model-based RL", "categorical latents", "Atari benchmark", "强化学习"],
+  "summary_zh": "DreamerV2 以离散 categorical 潜变量和 KL balancing 改进世界模型，在 Atari 55 款游戏上首次实现纯粹在世界模型内部学习行为并达到人类水平，单 GPU 超越 Rainbow 和 IQN 等顶级 model-free 算法。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

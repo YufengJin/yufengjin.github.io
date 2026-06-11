@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Align-Then-stEer: Adapting the Vision-Language Action Models through Unified Latent Guidance</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 机器人操作, diffusion policy, cross-embodiment, latent space, VAE, classifier guidance, 跨机器人迁移, fine-tuning">
+<meta name="description" content="ATE 框架通过统一隐空间对齐与分类器引导，实现 VLA 模型到新机器人及新任务的高效迁移，在仿真与真实环境分别获得最高 9.8% 与 32% 的成功率提升。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>Align-Then-stEer (ATE)</h1>
+    <div class="sub">通过统一隐空间引导，高效迁移 Vision-Language-Action 模型</div>
+    <div class="authors">Yang Zhang, Chenwei Wang, Ouyang Lu, Yuan Zhao, Yunfei Ge, Zhenglong Sun, Xiu Li, Chi Zhang, Chenjia Bai, Xuelong Li &nbsp;·&nbsp; China Telecom AI Institute · Tsinghua · CUHK-Shenzhen · NPU</div>
+    <p class="lead">ATE 是一个即插即用的 VLA 适配框架：首先利用非对称 VAE 将不同机器人平台的动作空间对齐到统一隐空间，再通过 classifier guidance 将扩散/流式 VLA 的生成过程导向目标分布，从而以极少数据实现跨任务与跨机器人的高效迁移。在仿真 RoboTwin 与 ManiSkill 基准上平均提升 <strong>9.8%</strong>，在真实双臂 RealMan 机器人跨机器人场景中提升 <strong>32%</strong> 成功率。</p>
+    <div class="meta">
+      <span>RoboTwin 1.0 · ManiSkill3</span>
+      <span>双臂 RealMan 7-DoF 机器人</span>
+      <span>π₀ · RDT-1B · Diffusion Policy</span>
+      <!-- REQUIRED: link back to the source paper -->
+      <span><a href="https://arxiv.org/abs/2509.02055">📄 arXiv:2509.02055</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>机器人操作</span>
+      <span>cross-embodiment 迁移</span>
+      <span>diffusion policy</span>
+      <span>VAE 隐空间对齐</span>
+      <span>classifier guidance</span>
+      <span>跨任务适配</span>
+      <span>data-efficient fine-tuning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">大规模预训练的 Vision-Language-Action（VLA）模型在通用机器人控制上展现出巨大潜力，但将其适配到新机器人平台或新任务时面临两大核心挑战：<strong>动作空间异构</strong>（不同机器人的 DoF、动作量纲、频率均不同）与<strong>数据稀缺</strong>（现实中目标任务数据往往只有数十条轨迹）。直接在目标任务上 fine-tune 往往导致灾难性遗忘，丢失预训练阶段习得的视觉-运动先验。</p>
+    <blockquote>"Unlike prior methods that directly fine-tune VLAs, ATE aligns disparate action spaces into a unified latent representation and steers the VLA's generation via guidance, enabling data-efficient cross-task and cross-embodiment adaptation."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="ATE teaser figure">
+      <figcaption><strong>Figure 1：</strong>ATE 是一个即插即用框架，无需修改原始 VLA 架构。它在 RoboTwin、ManiSkill 仿真基准与真实双臂 RealMan 7-DoF 机器人上均取得显著成功率增益，并支持长时序操作任务。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>+9.8%</b><small>RoboTwin 1.0 平均成功率（RDT-1B backbone）</small></div>
+      <div><b>+8.7%</b><small>RoboTwin 1.0 平均成功率（π₀ backbone）</small></div>
+      <div><b>+32%</b><small>真实跨机器人场景（π₀，120k steps）</small></div>
+      <div><b>+10.2%</b><small>ManiSkill3 平均成功率（RDT-1B backbone）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">ATE 分两个阶段：<strong>Stage 1</strong> 利用非对称 VAE（Info-VAE）将预训练阶段与适配阶段的动作空间统一到同一隐空间；<strong>Stage 2</strong> 在 fine-tuning 时引入 classifier guidance，将扩散/流式 VLA 的去噪过程向目标隐空间的 mode 导引，同时保留预训练积累的视觉-运动先验。整个额外计算量仅来自两个轻量 VAE，对原始 VLA 架构零改动。</p>
+
+    <h3>Stage 1 — 统一动作隐空间（Unified Action Latent Space）</h3>
+    <figure>
+      <img src="img/stage1.webp" alt="Stage 1: Unified Action Latent Space">
+      <figcaption><strong>Figure 2(a)：</strong>第一阶段使用两个非对称 VAE：一个在大规模预训练数据上训练得到"预训练隐空间"，另一个在目标任务数据上训练并受反向 KL 散度约束（mode-seeking），将适配阶段的动作分布压缩到预训练隐空间的某个 mode 内，从而在隐空间层面消除跨机器人的 embodiment gap。</figcaption>
+    </figure>
+    <p>第一阶段的关键设计在于使用<strong>反向 KL 散度</strong>（reverse KL）约束适配 VAE，令其具有 mode-seeking 行为。这确保适配动作的隐表示落在预训练隐空间的高密度区域，而非分散到各处，从而保证下游引导信号的有效性。两个 VAE 均为轻量结构，训练成本远低于 VLA 本身。</p>
+
+    <h3>Stage 2 — 分类器引导（Classifier Guidance for Steering）</h3>
+    <figure>
+      <img src="img/stage2.webp" alt="Stage 2: Classifier Guidance">
+      <figcaption><strong>Figure 2(b)：</strong>第二阶段在 fine-tuning 期间，将 Stage 1 得到的统一隐空间作为引导信号源，计算梯度 g 并在每个去噪步骤 k 上施加于 VLA 的噪声预测。这一梯度将 VLA 输出推向"目标分布在统一隐空间中的 mode"，在保留预训练先验的同时迅速收敛到新任务。</figcaption>
+    </figure>
+    <p>在推理阶段，classifier guidance 梯度 g 无需目标动作标注（标注仅用于训练 VAE），因此推理过程与标准 VLA 相同，无额外延迟。这一设计对 diffusion policy 与 flow matching 两类生成框架均适用，与 backbone 选择无关。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在三个层面验证 ATE：（1）仿真基准 RoboTwin 1.0（17 个任务）与 ManiSkill3（2 个任务）；（2）真实双臂 RealMan 7-DoF 机器人（4 个任务）；（3）鲁棒性测试（光照变化、视觉干扰、人工干预）。Backbone 选取 RDT-1B、π₀、Diffusion Policy。适配数据仅 50 条/任务（仿真）或 50 条/任务（真实）。</p>
+
+    <h3>RoboTwin 1.0 仿真基准（节选）</h3>
+    <table>
+      <tr><th>任务</th><th>RDT-1B</th><th>RDT+ATE</th><th>π₀</th><th>π₀+ATE</th></tr>
+      <tr><td>Block Hammer Beat</td><td>52%</td><td class="good">71% (↑19)</td><td>38%</td><td class="good">44% (↑6)</td></tr>
+      <tr><td>Block Handover</td><td>69%</td><td class="good">91% (↑22)</td><td>80%</td><td class="good">92% (↑12)</td></tr>
+      <tr><td>Blocks Stack (Easy)</td><td>10%</td><td class="good">31% (↑21)</td><td>30%</td><td class="good">50% (↑20)</td></tr>
+      <tr><td>Dual Bottles Pick (Easy)</td><td>76%</td><td class="good">87% (↑11)</td><td>48%</td><td class="good">85% (↑37)</td></tr>
+      <tr><td>Empty Cup Place</td><td>22%</td><td class="good">61% (↑39)</td><td>32%</td><td class="good">36% (↑4)</td></tr>
+      <tr><td>Put Apple Cabinet</td><td>20%</td><td class="good">45% (↑25)</td><td>34%</td><td class="good">55% (↑21)</td></tr>
+      <tr><td>Bottle Adjust</td><td>53%</td><td>37% (↓16)</td><td>39%</td><td class="good">45% (↑6)</td></tr>
+      <tr><td><strong>平均（17 任务）</strong></td><td>31.8%</td><td class="good"><strong>41.6% (↑9.8)</strong></td><td>36.1%</td><td class="good"><strong>44.8% (↑8.7)</strong></td></tr>
+    </table>
+
+    <h3>ManiSkill3 仿真基准</h3>
+    <table>
+      <tr><th>任务</th><th>RDT-1B</th><th>RDT+ATE</th></tr>
+      <tr><td>Push Cube</td><td>65.2%</td><td class="good">78.4% (↑13.2)</td></tr>
+      <tr><td>Pick Cube</td><td>7.6%</td><td class="good">14.8% (↑7.2)</td></tr>
+      <tr><td><strong>平均</strong></td><td>36.4%</td><td class="good"><strong>46.6% (↑10.2)</strong></td></tr>
+    </table>
+
+    <h3>真实机器人实验（Real-World）</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="Real-world evaluation results">
+      <figcaption><strong>Figure 4：</strong>真实双臂 RealMan 7-DoF 机器人上的结果。上方为四个任务在不同训练步数下的成功率曲线（ATE vs. π₀ baseline）；下方展示长时序、单臂、双臂等代表任务的完整执行轨迹。ATE 在 120k steps 时平均成功率达 58.1%，而 baseline 仅为 16.7%。</figcaption>
+    </figure>
+
+    <h3>训练收敛速度对比（Diffusion Policy Backbone）</h3>
+    <figure>
+      <img src="img/training_curves.webp" alt="Training convergence curves">
+      <figcaption><strong>Figure 3：</strong>在分布内（in-distribution）与分布外（out-of-distribution）任务上，ATE 变体（蓝色）相比 Diffusion Policy baseline（橙色）在各检查点均取得更高成功率，且收敛更快。在难度较高的任务（如 shoe place）100 epochs 时成功率接近翻倍。</figcaption>
+    </figure>
+
+    <h3>Ablation：两阶段 Info-VAE 的必要性</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="Ablation study">
+      <figcaption><strong>Figure 6：</strong>消融研究对比"两阶段 Info-VAE"（先在预训练数据上训练，再用反向 KL 对齐适配数据）与"单阶段 VAE"（仅在目标任务数据上训练）。两阶段方案在 π₀ 与 Diffusion Policy 两个 backbone 上均显著优于单阶段，验证了统一隐空间对跨机器人迁移的关键作用。</figcaption>
+    </figure>
+    <p>消融结果表明，两阶段 Info-VAE 设计是性能提升的核心：仅靠单阶段 VAE（缺乏与预训练隐空间的对齐约束）无法有效保留预训练先验，导致长时序任务和高难度任务的成功率显著下降。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note：</b>论文未设专门的 Limitations 节。以下条目中，标注"<em>stated</em>"者来自论文正文的明确描述，标注"<em>inferred</em>"者为根据方法设计合理推断。</div>
+
+    <details class="lim" open><summary>依赖预训练阶段动作数据（stated）</summary><p>Stage 1 的预训练 VAE 需要访问预训练阶段的动作数据以构建统一隐空间。若预训练数据不可获取（如闭源 VLA），则无法复现完整的对齐流程。论文使用 OXE subset、DROID、Kuka、ALOHA 等公开数据集进行 VAE 训练（3000 episodes）。</p></details>
+
+    <details class="lim"><summary>部分任务存在负向迁移（stated）</summary><p>在 RoboTwin 1.0 上，少数任务出现性能下降：Bottle Adjust（RDT: 53% → 37%，↓16）、Blocks Stack Hard（π₀: 8% → 7%，↓1）、Tool Adjust（π₀: 70% → 69%，↓1）。这说明当目标任务动作分布与预训练隐空间的 mode 差异较大时，强制对齐可能带来负面效果。</p></details>
+
+    <details class="lim"><summary>真实实验规模与任务多样性有限（inferred）</summary><p>真实机器人实验仅在双臂 RealMan 7-DoF 平台上进行，任务局限于厨房场景（Cook Bun、Pick Bun、Make Sandwich、Use Toaster），鲁棒性测试每种条件仅 5 trials。跨平台（如不同 DoF 或移动底盘）的泛化能力尚未验证。</p></details>
+
+    <details class="lim"><summary>推理阶段 VAE 解码开销（inferred）</summary><p>虽然论文声称 ATE 引入"可忽略的额外开销"，但 Stage 2 的 classifier guidance 在每个去噪步骤 k 需要计算梯度 g，实时部署时可能对推理延迟产生影响，论文未给出量化延迟数据。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Align-Then-stEer (ATE) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2509.02055">https://arxiv.org/abs/2509.02055</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "slug": "adaworld",
+  "title": "AdaWorld: Learning Adaptable World Models with Latent Actions",
+  "arxiv_id": "2503.18938",
+  "url": "https://arxiv.org/abs/2503.18938",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": [
+    "world model",
+    "latent action",
+    "self-supervised learning",
+    "video prediction",
+    "visual planning",
+    "自适应世界模型",
+    "diffusion model",
+    "迁移学习"
+  ],
+  "summary_zh": "AdaWorld 通过自监督从无标注视频中提取 latent action，以此为条件预训练基于扩散的自回归世界模型，实现跨环境高效迁移与极少样本快速适应，在动作迁移、仿真质量和视觉规划任务上全面超越 action-agnostic 基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

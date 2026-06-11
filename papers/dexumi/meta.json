@@ -1,0 +1,11 @@
+{
+  "slug": "dexumi",
+  "title": "DexUMI: Using Human Hand as the Universal Manipulation Interface for Dexterous Manipulation",
+  "arxiv_id": "2505.21864",
+  "url": "https://arxiv.org/abs/2505.21864",
+  "category": "机器人 · Robotics",
+  "keywords": ["dexterous manipulation", "universal manipulation interface", "exoskeleton", "灵巧手", "robot hand inpainting", "遥操作效率", "具身智能", "embodiment gap"],
+  "summary_zh": "DexUMI 利用可穿戴外骨骼和 robot hand inpainting 视觉适应流水线，将人类灵巧操作技能高效迁移至多款机器人手，在两个平台上实现平均 86% 的任务成功率，数据采集效率是传统遥操作的 3.2 倍。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

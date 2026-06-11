@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Pragmatic VLA Foundation Model (LingBot-VLA)</title>
+<meta name="keywords" content="VLA, vision-language-action, robot manipulation, 双臂机器人, 基础模型, imitation learning, flow matching, scaling law, 数据扩展, 机器人操作">
+<meta name="description" content="LingBot-VLA 利用约 2 万小时真实双臂机器人数据训练的 VLA 基础模型，在实际基准测试中超越 π₀.₅，同时实现 1.5–2.8× 训练提速。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>A Pragmatic VLA Foundation Model</h1>
+    <div class="sub">LingBot-VLA：大规模真实数据驱动的双臂机器人 VLA 基础模型</div>
+    <div class="authors">Wei Wu, Fan Lu, Yunnan Wang, Shuai Yang, Shi Liu, Fangjing Wang, Qian Zhu, He Sun, Yong Wang, Shuailei Ma, Yiyu Ren, Kejia Zhang, Hui Yu, Jingmei Zhao, Shuai Zhou, Zhenqi Qiu, Houlong Xiong, Ziyu Wang, Zechen Wang, Ran Cheng, Yong-Lu Li, Yongtao Huang, Xing Zhu, Yujun Shen, Kecheng Zheng</div>
+    <p class="lead">LingBot-VLA 在约 2 万小时来自 9 种双臂机器人配置的真实世界遥操作数据上预训练，采用 Mixture-of-Transformers 架构与 Flow Matching 动作预测，在 GM-100 百任务真实基准上以 17.30% SR / 35.41% PS 超越 π₀.₅，同时训练吞吐量提升 1.5–2.8 倍。</p>
+    <div class="meta">
+      <span>双臂机器人 · 9 平台</span>
+      <span>~20,000 小时真实数据</span>
+      <span>GM-100 百任务基准</span>
+      <span><a href="https://arxiv.org/abs/2601.18692">📄 arXiv:2601.18692</a></span>
+      <span><a href="https://arxiv.org/pdf/2601.18692">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>双臂机器人</span>
+      <span>imitation learning</span>
+      <span>flow matching</span>
+      <span>scaling law</span>
+      <span>基础模型</span>
+      <span>机器人操作</span>
+      <span>Mixture-of-Transformers</span>
+      <span>数据扩展</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前 VLA 模型面临两大核心挑战：<strong>数据规模不足</strong>与<strong>训练效率低下</strong>。大多数方法仅在数千小时数据上训练，且缺乏能在海量数据上高效扩展的训练框架，难以验证真正意义上的 scaling law。LingBot-VLA 的目标是构建一个务实可用的 VLA 基础模型——覆盖 9 种真实双臂机器人、2 万小时遥操作数据，并在 100 项任务的标准化基准上与主流方法直接对比。</p>
+    <blockquote>"We present LingBot-VLA, a vision-language-action system trained on around 20,000 hours of real-world data from 9 popular dual-arm robot configurations."</blockquote>
+    <figure>
+      <img src="img/overview.webp" alt="LingBot-VLA overview">
+      <figcaption>图1：LingBot-VLA 总览。左侧展示数据采集所用的 9 种双臂机器人平台（共约 2 万小时），中间为 Mixture-of-Transformers 模型架构，右侧为跨平台的 GM-100 百任务实体评测结果。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>~20,000<small style="font-size:16px">h</small></b><small>真实遥操作预训练数据</small></div>
+      <div><b>9</b><small>种双臂机器人平台</small></div>
+      <div><b>+4.28%</b><small>平均 SR 超越 π₀.₅（GM-100）</small></div>
+      <div><b>261</b><small>samples/s（8-GPU 训练吞吐）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">LingBot-VLA 以 Qwen2.5-VL 为视觉语言骨干，引入独立的"action expert"模块，通过 Mixture-of-Transformers (MoT) 框架将视觉语言与动作两条通路解耦，再经共享 self-attention 机制耦合；动作输出采用 Flow Matching 预测 50-token 动作块；深度信息通过 vision distillation 蒸馏融入，进一步提升空间感知能力。</p>
+    <figure>
+      <img src="img/dataset.webp" alt="Pre-training dataset visualization">
+      <figcaption>图2：LingBot-VLA 预训练数据集可视化。9 种机器人平台的视觉观测示例，涵盖多样化的操作场景与任务类型；标注流程先由人工标注员将视频分解为原子动作，再由 Qwen3-VL-235B 自动生成语言指令。</figcaption>
+    </figure>
+
+    <h3>Mixture-of-Transformers (MoT) 架构</h3>
+    <p>视觉语言路径与动作路径各自拥有独立的 Transformer 层（MLP、layer norm 等），通过 <em>blockwise causal attention</em> 实现模态间解耦：观测块与动作 token 分别处理，避免跨模态梯度干扰。共享的 self-attention 则保证两条路径能够互通信息，实现高效的跨模态对齐。输入观测包含三视角 RGB-D 图像、自然语言任务指令和机器人本体感知状态。</p>
+
+    <h3>Flow Matching 动作预测 + Vision Distillation</h3>
+    <p>动作头采用 Flow Matching 对连续动作分布建模，每次预测 50-token 的动作序列块，支持快速推理。深度感知模块以可学习 query 与深度 token 对齐，并引入蒸馏损失（distillation loss）将专用深度模型的空间感知能力迁移至视觉骨干，无需推理时额外调用独立深度模型。训练效率优化包括：Fully Sharded Data Parallel (FSDP)、针对 action expert 的 shard 分组（减少通信开销）、bfloat16 存储 + float32 规约的混合精度策略、FlexAttention 稀疏多模态注意力，以及 torch.compile 算子融合——最终实现 GPU 数量从 8 到 256 的近线性吞吐扩展。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验分为三部分：(1) GM-100 大规模真实世界基准——在 3 种机器人平台上各评测 100 项任务，指标为 Success Rate (SR) 和 Progress Score (PS)；(2) RoboTwin 2.0 仿真基准——干净场景与随机化场景；(3) 训练吞吐量分析。基线方法包括 WALL-OSS、GR00T N1.6 和 π₀.₅。</p>
+
+    <h3>GM-100 真实世界基准（Table 1）</h3>
+    <table>
+      <tr><th>平台</th><th>方法</th><th>SR (%)</th><th>PS (%)</th></tr>
+      <tr><td>Agibot G1</td><td>WALL-OSS</td><td>2.99</td><td>8.75</td></tr>
+      <tr><td>Agibot G1</td><td>GR00T N1.6</td><td>5.23</td><td>12.63</td></tr>
+      <tr><td>Agibot G1</td><td>π₀.₅</td><td>7.77</td><td>21.98</td></tr>
+      <tr><td>Agibot G1</td><td>LingBot w/o depth</td><td>12.82</td><td>30.04</td></tr>
+      <tr><td>Agibot G1</td><td><strong>LingBot w/ depth</strong></td><td class="good">11.98</td><td class="good">30.47</td></tr>
+      <tr><td>AgileX</td><td>WALL-OSS</td><td>2.26</td><td>8.16</td></tr>
+      <tr><td>AgileX</td><td>GR00T N1.6</td><td>3.26</td><td>10.52</td></tr>
+      <tr><td>AgileX</td><td>π₀.₅</td><td>17.20</td><td>34.82</td></tr>
+      <tr><td>AgileX</td><td>LingBot w/o depth</td><td>15.50</td><td>36.31</td></tr>
+      <tr><td>AgileX</td><td><strong>LingBot w/ depth</strong></td><td class="good">18.93</td><td class="good">40.36</td></tr>
+      <tr><td>Galaxea R1Pro</td><td>WALL-OSS</td><td>6.89</td><td>14.13</td></tr>
+      <tr><td>Galaxea R1Pro</td><td>GR00T N1.6</td><td>14.29</td><td>24.83</td></tr>
+      <tr><td>Galaxea R1Pro</td><td>π₀.₅</td><td>14.10</td><td>26.14</td></tr>
+      <tr><td>Galaxea R1Pro</td><td>LingBot w/o depth</td><td>18.89</td><td>34.71</td></tr>
+      <tr><td>Galaxea R1Pro</td><td><strong>LingBot w/ depth</strong></td><td class="good">20.98</td><td class="good">35.40</td></tr>
+      <tr style="font-weight:700"><td>平均</td><td><strong>LingBot w/ depth</strong></td><td class="good">17.30</td><td class="good">35.41</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">LingBot-VLA 平均 SR 超越 π₀.₅ <strong>4.28%</strong>，平均 PS 超越 <strong>7.76%</strong>。</p>
+
+    <h3>RoboTwin 2.0 仿真基准（Table 2）</h3>
+    <table>
+      <tr><th>场景</th><th>π₀.₅ SR (%)</th><th>LingBot w/o depth SR (%)</th><th>LingBot w/ depth SR (%)</th></tr>
+      <tr><td>干净场景 (Clean)</td><td>82.74</td><td>86.50</td><td class="good">88.56</td></tr>
+      <tr><td>随机化场景 (Randomized)</td><td>76.76</td><td>85.34</td><td class="good">86.68</td></tr>
+    </table>
+
+    <h3>Scaling Law 与数据效率</h3>
+    <figure>
+      <img src="img/scaling_law.webp" alt="Pre-training data scaling law">
+      <figcaption>图5：预训练数据规模扩展实验。从 3,000 小时到 20,000 小时，Success Rate 和 Progress Rate 均呈现持续上升趋势，且"no signs of saturation"——说明更多数据仍有提升空间，scaling law 在多个平台上均成立。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/data_efficiency.webp" alt="Post-training data efficiency">
+      <figcaption>图6：后训练数据效率分析。仅用 80 个 demonstrations（相比 π₀.₅ 的完整 130 个）时，LingBot-VLA 在 SR 和 PS 上均超越使用全部数据的 π₀.₅，且两者性能差距随后训练数据量增加而显著拉大。</figcaption>
+    </figure>
+
+    <h3>训练吞吐量（Ablation）</h3>
+    <p>基于 Qwen2.5-VL-3B-π 骨干，优化后的训练框架在 8-GPU 配置下达到 <strong>261 samples/second</strong>，较现有 VLA 专用代码库实现 <strong>1.5∼2.8× 提速</strong>。GPU 从 8 到 256 扩展时吞吐量近线性增长，验证了框架的大规模训练可行性。关键优化手段包括 FSDP 分布式训练、FlexAttention 稀疏注意力、torch.compile 算子融合及 bfloat16 混合精度。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文未设专门的 Limitations 节；以下第 1 条为作者在正文中明确指出的问题，第 2、3 条为基于设计推断（<em>inferred from the design</em>）。</div>
+    <details class="lim" open><summary>仅覆盖双臂机器人，平台多样性有限</summary><p>作者明确表示，未来工作将聚焦于"scaling the model versatility by integrating single-arm and mobile robotic data"——当前版本仅在 9 种双臂配置上训练，单臂与移动机器人场景尚未覆盖。（stated）</p></details>
+    <details class="lim"><summary>仿真与真实环境的 sim-to-real gap</summary><p>论文指出"simulation environments typically employ idealized physical models"，真实部署中摩擦、光照、传感器噪声等因素可能导致性能下降。（stated）</p></details>
+    <details class="lim"><summary>绝对成功率仍较低，泛化到长视野任务存在挑战</summary><p>GM-100 最高平均 SR 仅为 17.30%，说明在百任务规模的开放式评测下模型仍有较大提升空间；测试集约 50% 的原子动作未出现在训练集 top-100 中，泛化难度较高。（inferred）</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · A Pragmatic VLA Foundation Model (LingBot-VLA) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2601.18692">https://arxiv.org/abs/2601.18692</a>
+  </div>
+</footer>
+
+</body>
+</html>

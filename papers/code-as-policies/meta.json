@@ -1,0 +1,11 @@
+{
+  "slug": "code-as-policies",
+  "title": "Code as Policies: Language Model Programs for Embodied Control",
+  "arxiv_id": "2209.07753",
+  "url": "https://arxiv.org/abs/2209.07753",
+  "category": "机器人 · Robotics",
+  "keywords": ["code generation", "language model", "robot policy", "few-shot prompting", "embodied control", "hierarchical code generation", "机器人操控", "自然语言指令", "Python policy", "LLM for robotics"],
+  "summary_zh": "利用在代码上训练的大语言模型，通过少样本提示将自然语言指令直接转化为可执行 Python 机器人策略代码，无需额外训练即可在多类机器人平台上完成空间推理、泛化新指令等复杂任务。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

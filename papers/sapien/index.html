@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--
+  SAPIEN: A SimulAted Part-based Interactive ENvironment
+  中文海报，无 EN 版本。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAPIEN: A SimulAted Part-based Interactive ENvironment</title>
+<meta name="keywords" content="机器人仿真, 关节体, PartNet-Mobility, 部件感知, 物体操作, 强化学习, articulated objects, robotic simulation, part segmentation, PhysX">
+<meta name="description" content="SAPIEN是一个真实物理感知的仿真环境，提供大规模关节体数据集（PartNet-Mobility），支持机器人视觉感知与交互任务的研究。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CVPR 2020 · 机器人仿真</span>
+    <h1>SAPIEN: A SimulAted Part-based Interactive ENvironment</h1>
+    <div class="sub">首个支持大规模关节体的物理仿真环境，为机器人感知与交互研究提供基础设施</div>
+    <div class="authors">Fanbo Xiang, Yuzhe Qin, Kaichun Mo, Yikuan Xia, Hao Zhu, Fangchen Liu, Minghua Liu, Hanxiao Jiang, Yifu Yuan, He Wang, Li Yi, Angel X. Chang, Leonidas J. Guibas, Hao Su &nbsp;·&nbsp; UC San Diego / Stanford / Simon Fraser / Google Research / UC Los Angeles</div>
+    <p class="lead">SAPIEN 是一个真实物理感知的仿真平台，集成了 46 个物体大类、14,068 个关节体模型（PartNet-Mobility 数据集），提供完整的 PhysX 物理仿真、ROS 接口以及 Python API，支持机器人感知（部件检测、运动属性估计）和交互（启发式控制、强化学习）研究。</p>
+    <div class="meta">
+      <span>CVPR 2020</span>
+      <span>Physics Simulation</span>
+      <span>Articulated Objects</span>
+      <a href="https://arxiv.org/abs/2003.08515"><span>arXiv:2003.08515</span></a>
+      <span><a href="https://sapien.ucsd.edu">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>机器人仿真</span>
+      <span>关节体</span>
+      <span>PartNet-Mobility</span>
+      <span>部件感知</span>
+      <span>articulated objects</span>
+      <span>robotic simulation</span>
+      <span>part segmentation</span>
+      <span>PhysX</span>
+      <span>强化学习</span>
+      <span>物体操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">构建家庭辅助机器人一直是视觉与机器人领域的核心追求。机器人要完成开冰箱、拿取物品等日常任务，就必须能够感知并操作具有可动部件的关节体（如门、抽屉、水龙头）。然而现有仿真环境在物理真实性、关节体规模和向真实机器人的迁移能力上均存在明显不足。</p>
+    <blockquote>"We take one step further in constructing an environment that supports household tasks for training robot learning algorithm. Our work, SAPIEN, is a realistic and physics-rich simulated environment that hosts a large-scale set for articulated objects."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="SAPIEN robot-object interaction">
+      <figcaption>图 1. SAPIEN 中的机器人-物体交互示例。上方为整体场景的光线追踪渲染，下方展示机器人摄像头视角输出：RGB 图像、表面法线、深度图以及运动部件语义分割图——机器人正在学习操作一台洗碗机。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>46</b><small>关节体物体大类</small></div>
+      <div><b>14,068</b><small>PartNet-Mobility 模型数</small></div>
+      <div><b>2,346</b><small>带运动属性标注的模型</small></div>
+      <div><b>~5000Hz</b><small>仿真器最高运行频率</small></div>
+    </div>
+
+    <h3>为什么需要 SAPIEN？</h3>
+    <p>现有仿真环境（OpenAI Gym、RLBench、DeepMind Control Suite 等）普遍存在以下问题：</p>
+    <ul>
+      <li><strong>物理真实性不足：</strong>大多简化物理，难以模拟关节体的复杂约束与运动。</li>
+      <li><strong>物体种类稀少：</strong>仅支持少量预定义场景，缺乏大规模多样化关节体。</li>
+      <li><strong>缺乏部件级理解：</strong>无法支持需要精确部件感知的任务（如识别水龙头手柄并旋转）。</li>
+      <li><strong>与真实机器人的语义鸿沟：</strong>不提供 ROS 兼容接口，难以迁移到真实硬件。</li>
+    </ul>
+    <p>如表 1 所示，与 Shape2Motion、RPM-Net、Hu et al. 等已有部件数据集相比，SAPIEN 以 46 类、2,346 个模型（14,068 个可动部件）显著领先，且提供丰富的纹理和真实渲染效果。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SAPIEN 围绕三个核心模块构建：SAPIEN Engine（基于 PhysX 的物理仿真）、SAPIEN Renderer（支持 OpenGL、光线追踪的渲染器）和 SAPIEN Asset（PartNet-Mobility 数据集及机器人模型库）。三者通过统一框架集成，提供 Python API 和 ROS 接口。</p>
+
+    <figure>
+      <img src="img/system.webp" alt="SAPIEN Simulator Overview">
+      <figcaption>图 2. SAPIEN 仿真器总览。左侧为 SAPIEN Renderer，接受场景信息，输出自定义着色和场景信息（RGB-D 及语义分割）。中间的 SAPIEN Engine 集成了 PhysX 物理仿真和 ROS 控制接口，支持多种机器人动作与功能。右侧的 SAPIEN Asset 包含大规模的 PartNet-Mobility 数据集，提供部件级可仿真模型。</figcaption>
+    </figure>
+
+    <h3>SAPIEN Engine — 物理仿真核心</h3>
+    <p>SAPIEN 使用开源的 Nvidia PhysX 4.1 提供精确的关节体物理仿真，支持机器人操作系统（ROS）。提供三种关节体类型：<strong>kinematic joint system</strong>（运动学关节，提供运动对象约束）、<strong>dynamic joint system</strong>（动态关节，模拟受力变化）以及 <strong>PhysX articulation</strong>（关节铰链）。仿真器可在单核上以约 5000Hz 运行，使用 OpenGL 渲染约 700Hz，支持同步与异步两种运行模式，后者允许仿真与客户端算法独立运行。</p>
+
+    <h3>SAPIEN Renderer — 多模态渲染</h3>
+    <p>SAPIEN Renderer 支持 OpenGL 4.5 和 GLSL，提供 RGB 图像、深度图、法线图以及语义分割图的同步输出。还集成了基于 OmniNavi diffuse model 的 GGX specular model，并通过将 OpenGL 替换为 Nvidia OptiX 光线追踪引擎，以较低渲染速率（约 1 帧/步）生成高质量照片真实感图像（见图 1 上方）。</p>
+
+    <h3>PartNet-Mobility 数据集 — 大规模关节体资产</h3>
+    <p>SAPIEN Asset 提供 PartNet-Mobility 数据集：涵盖 46 个物体大类的 2,346 个三维交互模型，每个模型均标注了部件级关节（运动类型：平移、转动）和关节极限。模型使用 URDF 格式描述，支持 PhysX 物理模拟；接触采用网格分解方案，确保在仿真中精确处理碰撞。针对每个可动部件，还提供了运动限制的相对位置标注（作为 part states），以及针对螺钉等特殊运动的处理（combined hinge+slider = screw）。</p>
+
+    <figure>
+      <img src="img/tasks.webp" alt="SAPIEN Enables Many Robotic Interaction Tasks">
+      <figcaption>图 3. SAPIEN 支持的多样机器人交互任务示例（从左至右）：水龙头操作（faucet manipulation）、物体抓取（object fetching）、椅子折叠（chair folding）、物品放置（object placing）。每列展示任务的初始状态、中间过程与目标状态。</figcaption>
+    </figure>
+
+    <h3>机器人接口与控制</h3>
+    <p>SAPIEN 通过 ROS 接口提供传感器数据、控制指令和运动规划能力。在最低层，力和力矩可直接作用于关节，类似 OpenAI Gym；ROS 控制器提供关节空间和笛卡尔坐标空间控制；高层提供基于 MoveIt! 的轨迹规划和逆运动学求解。客户端 API 统一了接口，使仿真机器人与真实机器人使用完全相同的 ROS API，无需额外适配即可部署。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">论文在两类核心视觉任务上评估 SAPIEN：<strong>Movable Part Detection</strong>（可动部件检测）和 <strong>Motion Attributes Estimation</strong>（运动属性估计），并展示两类机器人交互任务（door/drawer 开合）的启发式方法与强化学习结果。</p>
+
+    <h3>任务一：可动部件检测</h3>
+    <p>使用 Mask R-CNN（以 2D RGB 图像为输入）和 PartNet-InsSeg（以 3D RGB-D partial scans 为输入）两种算法在 PartNet-Mobility 数据集上评估。数据集：46 个类别共 2,346 个物体，使用 75%（1,772 个形状）训练、25%（574 个形状）测试；从随机视角采样 20 张 512×512 图像，在仿真中用简单照明渲染（RGB、深度、法线、语义分割图）。评估指标为 per-part-category Average Precision（AP）及全类平均 mAP。</p>
+
+    <table>
+      <tr><th>算法</th><th>输入</th><th>Cabinet</th><th>Table</th><th>Faucet</th><th>All mAP</th></tr>
+      <tr>
+        <td>Mask R-CNN</td><td>2D RGB</td>
+        <td>62.0 / 94.2 / 66.4 / 27.7</td>
+        <td>54.3 / 88.0 / 3.4 / 6.3 / 0.0</td>
+        <td>52.5 / 47.9 / 99.7 / 54.4 / 67.5</td>
+        <td class="good">53.0</td>
+      </tr>
+      <tr>
+        <td>PartNet-InsSeg</td><td>PC (XYZ)</td>
+        <td>20.6 / 65.9 / 33.1 / 9.8</td>
+        <td>15.7 / 71.3 / 1.7 / 1.0</td>
+        <td>60.2 / 58.8 / 99.4 / 42.7</td>
+        <td class="good">43.8</td>
+      </tr>
+      <tr>
+        <td>PartNet-InsSeg</td><td>PC (XYZRGB)</td>
+        <td>17.6 / 64.3 / 23.6 / 5.0</td>
+        <td>16.4 / 8.1 / 8.1 / 1.3 / 2.1 / 1.0</td>
+        <td>29.0 / 64.1 / 78.0 / 42.0 / 63.5</td>
+        <td class="good">37.1</td>
+      </tr>
+    </table>
+    <p>结果表明：两种方法在检测小型可动部件（如桌脚轮 table wheel 和桌子脚轮 table caster）上表现较差；对具有相对均衡尺寸分布的物体类别（如风扇 fan 和水龙头 faucet）效果更好。</p>
+
+    <figure>
+      <img src="img/detection.webp" alt="Movable Part Detection Results">
+      <figcaption>图 4. 可动部件检测定性结果。左列：Mask R-CNN 检测结果（每个边界框代表检测到的可动部件）；中间与右列：PartNet-InsSeg 的结果（含点云实例分割）及 ground truth（不同颜色代表不同部件）。</figcaption>
+    </figure>
+
+    <h3>任务二：运动属性估计</h3>
+    <p>针对关节体的运动属性估计任务，论文考虑两类刚性运动：<strong>3D rotation</strong>（3D 旋转）和 <strong>3D translation</strong>（3D 平移）。对平移运动用 3 维向量表示方向；对旋转运动用两个 3 维向量分别表示旋转轴方向和轴上一点的相对位置。评估指标包括：方向差（direction diff）、旋转轴起点差（origin diff）、以及旋转角误差与平移距离误差。</p>
+
+    <table>
+      <tr><th>Setting</th><th>Dir (°)↓</th><th>Orig (cm)↓</th><th>Rot (°)↓</th><th>Trans (cm)↓</th></tr>
+      <tr><td>2D acc, 2D acc</td><td>7.94</td><td>76.62</td><td>43.53</td><td>8.24</td></tr>
+      <tr><td>2D acc, 5 acc</td><td>5.48</td><td>59.35</td><td>34.05</td><td>7.48</td></tr>
+      <tr><td>5 acc, 5 acc</td><td>3.13</td><td>36.85</td><td>19.99</td><td class="good">6.41</td></tr>
+      <tr><td>5 acc, 5 acc + depth</td><td class="good">2.84</td><td class="good">35.09</td><td class="good">18.23</td><td>6.42</td></tr>
+    </table>
+    <p>实验表明加入深度信息对方向估计和旋转轴定位有明显帮助；增加视角数量（从 2 到 5）显著提升各项指标。</p>
+
+    <h3>机器人交互任务</h3>
+    <p>论文在 SAPIEN 中演示了两类机器人操作任务的执行：</p>
+    <ul>
+      <li><strong>Door Opening and Drawer-pulling（启发式方法）：</strong>给定抓取点，智能体通过 Position-Based Control 沿圆弧轨迹开门，或沿直线轨迹拉抽屉。使用 Franka Gripper 进行抓取实验，在门/抽屉任务上分别取得 <strong>81.7%</strong> 和 <strong>84.3%</strong> 的成功率（成功标准：关节打开距离超过目标长度 80%）。</li>
+      <li><strong>强化学习（RL）：</strong>使用 PPO 训练智能体在给定 2D 图像观测下执行开门任务，在 1M 步训练后达到 <strong>81.7% success rate</strong>（收敛值），展示了 SAPIEN 作为 RL 训练环境的可用性。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 论文未设立独立的 Limitations 章节。以下局限性部分为作者在论文中明确提及（stated），部分为从设计中推断（inferred）。</div>
+
+    <details class="lim" open>
+      <summary>关节体物理仿真的精度权衡（stated）</summary>
+      <p>论文指出，"it is still infeasible to simulate real-world physics exactly, any physical simulator needs to decide the level-of-details and accuracy it operates on." 现有物理仿真无法完全复现真实世界的物理特性，特别是软体和流体（SAPIEN 仅支持刚体关节体）。</p>
+    </details>
+
+    <details class="lim">
+      <summary>小型部件检测性能较差（stated）</summary>
+      <p>论文在实验结果中明确指出："both methods perform poorly on detecting small movable parts (e.g., table wheel and table caster)"，这一现象在真实机器人操作中尤为关键，需要更好的算法设计。</p>
+    </details>
+
+    <details class="lim">
+      <summary>仅支持刚体关节体（inferred from design）</summary>
+      <p>SAPIEN 的 PartNet-Mobility 数据集仅覆盖家用场景中的刚性可动部件（门、抽屉、水龙头等），不支持软体变形物体（如布料、果蔬）的仿真。这限制了其在更广泛操作任务（如食品处理、衣物整理）中的应用。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Sim-to-Real 迁移差距（inferred from design）</summary>
+      <p>尽管 SAPIEN 提供光线追踪渲染和 ROS 接口，但仿真图像与真实摄像头图像之间仍存在外观差距（domain gap），可能影响模型在真实机器人上的迁移效果，需要额外的 domain adaptation 方法。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · SAPIEN: A SimulAted Part-based Interactive ENvironment · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2003.08515">https://arxiv.org/abs/2003.08515</a>
+  </div>
+</footer>
+
+</body>
+</html>

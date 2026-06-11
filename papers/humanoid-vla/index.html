@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Humanoid-VLA: Towards Universal Humanoid Control with Visual Integration
+  arXiv: 2502.14795
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humanoid-VLA: Towards Universal Humanoid Control with Visual Integration</title>
+<meta name="keywords" content="humanoid robot, VLA, 视觉语言动作, egocentric vision, motion generation, language-motion alignment, whole-body control, self-supervised augmentation">
+<meta name="description" content="Humanoid-VLA 将语言理解、第一人称视觉感知与运动控制融为一体，实现具有自主感知能力的通用人形机器人控制。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICML 2025 · 机器人控制 · VLA</span>
+    <h1>Humanoid-VLA</h1>
+    <div class="sub">Towards Universal Humanoid Control with Visual Integration</div>
+    <div class="authors">Pengxiang Ding*, Jianfei Ma*, Xinyang Tong* 等 · Westlake University / Westlake Robotics / Zhejiang University</div>
+    <p class="lead">
+      Humanoid-VLA 是首个面向人形机器人的 VLA（Vision-Language-Action）框架，将语言理解、第一人称（egocentric）视觉感知与全身运动控制统一于单一系统中。针对现有方法依赖反应式机制、缺乏自主感知能力以及标注数据稀缺等问题，该框架通过语言-动作预对齐与视觉条件微调两阶段训练，并引入自监督数据增强策略，有效利用大规模无标注视频数据，使人形机器人能够在真实场景中完成物体交互与环境探索任务。
+    </p>
+    <div class="meta">
+      <span>ICML 2025</span>
+      <span>Unitree G1 机器人</span>
+      <span>Llama3-70B 基座</span>
+      <span><a href="https://arxiv.org/abs/2502.14795">📄 arXiv:2502.14795</a></span>
+      <span><a href="https://arxiv.org/pdf/2502.14795">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>humanoid robot</span>
+      <span>VLA</span>
+      <span>视觉语言动作</span>
+      <span>egocentric vision</span>
+      <span>motion generation</span>
+      <span>language-motion alignment</span>
+      <span>whole-body control</span>
+      <span>self-supervised augmentation</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前人形机器人控制框架主要依赖反应式机制——跟踪人体演示或响应语言命令，但<strong>无法自主感知环境、识别交互目标</strong>。这一根本局限使机器人在需要物体操作或复杂环境探索的场景中举步维艰。同时，数据稀缺是另一瓶颈：现有动作捕捉数据集缺乏同步的第一人称视觉信息，遥操作采集成本极高，导致训练数据在数量和多样性上均严重不足。
+    </p>
+    <blockquote>
+      "Current data acquisition methods, focusing mainly on human joint poses, lack integration with egocentric vision. Thus, they can only teach robots what actions are performed, not the underlying intent or context."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="Humanoid-VLA 与先前方法对比示意图">
+      <figcaption>
+        <strong>图1：先前方法 vs. Humanoid-VLA。</strong>
+        先前方法通过模仿人体演示执行运动，依赖反应式机制。Humanoid-VLA 具备自主感知能力，可主动识别交互目标并执行物体交互任务，显著超越了基于演示模仿的方法。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>0.929M</b><small>训练片段总数（含合成数据）</small></div>
+      <div><b>7790 h</b><small>训练视频总时长</small></div>
+      <div><b>25×</b><small>数据规模超过前人工作</small></div>
+      <div><b>8 类</b><small>真实机器人任务（Unitree G1）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Humanoid-VLA 由三个主要模块构成：<strong>语言-动作预对齐（Language-Motion Pre-Alignment）</strong>、<strong>视觉条件微调（Vision-Conditioned Fine-Tuning）</strong>，以及集成已有工作的<strong>全身控制器（Whole-Body Controller）</strong>。整体以 Llama3-70B 为基座 LLM，将运动码本与语言词汇表统一为共享词表，实现运动 token 与文本 token 的无缝融合。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="Humanoid-VLA 系统总览">
+      <figcaption>
+        <strong>图2：Humanoid-VLA 系统总览。</strong>
+        左侧为语言-动作预对齐阶段：使用非第一人称人体运动数据集与文本描述对进行预训练，学习通用运动模式和动作语义。右侧为视觉条件微调阶段：冻结预训练 transformer 层，引入视觉编码器，通过 cross-attention 将视觉特征 $X_v$ 与语言特征 $X_d$ 融合，实现上下文感知的运动生成。
+      </figcaption>
+    </figure>
+
+    <h3>组合式动作量化（Compositional Motion Quantization）</h3>
+    <p>
+      模型将每帧身体姿态分解为五个部位（左腿、右腿、躯干、左臂、右臂），为每个部位独立训练编码器 $\mathcal{E}_b$ 和码本 $V_b$，将部位数据 $c_t$ 压缩为离散表示 $\hat{z}_t \in \mathbb{R}^5$。优化目标 $\mathcal{L}_{hvq}$ 结合了重建损失、嵌入损失和承诺损失。这种分解式编码的核心优势在于：可在 token 级别对特定身体部位进行替换、扰动或重排，为后续自监督数据增强奠定灵活的操作基础。
+    </p>
+
+    <h3>自监督数据增强（Self-Supervised Data Augmentation）</h3>
+    <figure>
+      <img src="img/aug_pipeline.webp" alt="自监督数据增强流程">
+      <figcaption>
+        <strong>图3：数据获取流程。</strong>
+        提出的自监督数据增强方案将大量纯运动数据转换为带有标注的运动数据。框架包含两个核心模块：组合式动作量化方法和自动数据增强方法，共同实现数据集的可扩展扩充。四类增强任务（&lt;Track&gt;、&lt;Time&gt;、&lt;Occlusion&gt;、&lt;State&gt;）从原始运动数据中自动生成问答对，无需人工标注。
+      </figcaption>
+    </figure>
+    <p>
+      框架设计了四类增强任务：
+    </p>
+    <ul>
+      <li><strong>&lt;Track&gt;</strong>：提取特定关节（如根关节）的时序轨迹，生成"Please move your center position along the trajectory of &lt;Track&gt;"等指令-答案对。</li>
+      <li><strong>&lt;Occlusion&gt;</strong>：临时遮蔽特定身体关节，训练模型重建被遮挡的运动，生成如"missing left arm &lt;Occlusion&gt; motion data. Please complete the motion"的指令。</li>
+      <li><strong>&lt;Time&gt;</strong>：结合时间条件，约束生成运动的时长。</li>
+      <li><strong>&lt;State&gt;</strong>：以目标姿态 token $z_t$ 为条件，引导模型生成以特定状态结束的运动序列。</li>
+    </ul>
+    <p>
+      训练分两阶段：首先使用从视频提取的大规模低质量数据建立初步语言-动作对齐；随后用小规模高质量 Mocap 数据进行精调，确保动作符合正确的人体运动学规律。
+    </p>
+
+    <h3>视觉条件微调（Vision-Conditioned Fine-Tuning）</h3>
+    <p>
+      冻结预对齐阶段的 transformer 层权重，引入视觉编码器。在解码器每一层插入 cross-attention 模块，以语言 token $X_d^l$ 为 query，视觉 token $X_v^l$ 为 key 和 value，融合得到统一表示 $X_u^l$：
+    </p>
+    <blockquote>
+      $X_u^l = \text{Softmax}\!\left(\frac{Q_l K_l^T}{\sqrt{D}}\right) V_l$，其中 $Q_l = X_d^l W_Q^l$，$K_l = V_l = X_v^l W_{K/V}^l$。
+    </blockquote>
+    <p>
+      仅训练新引入的 cross-attention 参数，实现参数高效的视觉融合，将学到的运动知识迁移到视觉引导的真实场景中。
+    </p>
+
+    <h3>全身控制器（Whole-Body Controller）</h3>
+    <p>
+      集成目标条件强化学习策略（RL policy），将 VLA 生成的运动序列映射为人形机器人的关节力矩 $j_t \in \mathbb{R}^{24}$，使用 PPO（Proximal Policy Optimization）在 IsaacGym 物理仿真器中训练，实现端到端的物理可行运动执行。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验从两个维度评估 Humanoid-VLA：<strong>（1）运动生成质量</strong>（运动学保真度 + 物理合理性）；<strong>（2）视觉集成效果</strong>（在 Unitree G1 真实机器人上的任务成功率）。基线模型包括 MDM（扩散式）和 T2M-GPT（自回归式），使用 HumanML3D 和自建 Humanoid-S 数据集评估。
+    </p>
+
+    <h3>运动学保真度（Kinematic Fidelity）</h3>
+    <p>使用 FID（分布相似度）和 Diversity（生成多样性，200 个随机运动的平均欧氏距离）作为评估指标。</p>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>HumanML3D FID↓</th>
+        <th>HumanML3D DIV↑</th>
+        <th>Humanoid-S FID↓</th>
+        <th>Humanoid-S DIV↑</th>
+      </tr>
+      <tr>
+        <td>MDM</td>
+        <td>0.889<sup>±.026</sup></td>
+        <td>3.855<sup>±.053</sup></td>
+        <td>2.351<sup>±.590</sup></td>
+        <td>4.111<sup>±.261</sup></td>
+      </tr>
+      <tr>
+        <td>T2M-GPT</td>
+        <td>0.531<sup>±.020</sup></td>
+        <td>4.555<sup>±.058</sup></td>
+        <td>1.101<sup>±.189</sup></td>
+        <td>4.199<sup>±.218</sup></td>
+      </tr>
+      <tr>
+        <td><strong>Humanoid-VLA</strong></td>
+        <td class="good">0.467<sup>±.018</sup></td>
+        <td class="good">4.585<sup>±.086</sup></td>
+        <td class="good">1.037<sup>±.147</sup></td>
+        <td class="good">4.466<sup>±.213</sup></td>
+      </tr>
+    </table>
+    <p>
+      在 HumanML3D 上，Humanoid-VLA 的 FID 为 <strong>0.467</strong>，相比 MDM 提升 <strong>47.5%</strong>，相比 T2M-GPT 提升 <strong>12%</strong>；在 Humanoid-S 上 Diversity 达到 <strong>4.466</strong>，超越 MDM <strong>6%</strong>。
+    </p>
+
+    <h3>物理合理性（Physical Plausibility）</h3>
+    <p>在 IsaacGym 中追踪模型生成的运动学轨迹，评估全局 MPJPE（$E_\text{mpjpe}^g$，mm）、PA-MPJPE（$E_\text{mpjpe}^\text{pa}$，mm）、加速度误差（$E_\text{accel}$，mm/s²）和速度误差（$E_\text{vel}$，mm/s）：</p>
+    <table>
+      <tr>
+        <th>条件难度</th>
+        <th>输入条件</th>
+        <th>$E_\text{mpjpe}^g$↓</th>
+        <th>$E_\text{mpjpe}^\text{pa}$↓</th>
+        <th>$E_\text{accel}$↓</th>
+        <th>$E_\text{vel}$↓</th>
+      </tr>
+      <tr>
+        <td>Easy</td>
+        <td>D（文本描述）</td>
+        <td>36.13</td><td>1.53</td><td>34.42</td><td>18.73</td>
+      </tr>
+      <tr>
+        <td>Medium</td>
+        <td>D + T（描述+时长）</td>
+        <td class="good">31.07</td><td class="good">1.18</td><td class="good">27.84</td><td class="good">14.76</td>
+      </tr>
+      <tr>
+        <td>Hard</td>
+        <td>D + $S_1$ + $S_N$（描述+始末状态）</td>
+        <td>37.14</td><td>1.34</td><td>34.69</td><td>18.08</td>
+      </tr>
+    </table>
+    <p>RL 策略在中等难度下（D+T 条件）达到最优追踪精度：全局位置误差 $E_\text{mpjpe}^g$ 为 <strong>31.07 mm</strong>，姿态精度误差 $E_\text{mpjpe}^\text{pa}$ 仅 <strong>1.18 mm</strong>，体现平滑且物理一致的运动生成能力。</p>
+
+    <h3>真实机器人实验（Vision Integration）</h3>
+    <figure>
+      <img src="img/real_experiments.webp" alt="真实机器人实验">
+      <figcaption>
+        <strong>图4：真实环境机器人实验。</strong>
+        Humanoid-VLA 在 Unitree G1 机器人上展示物体交互能力：精确执行踢球任务（kick ball）及绕障碍导航任务（avoid obstacle），验证 VLA 框架利用视觉信息生成适当运动的有效性。
+      </figcaption>
+    </figure>
+    <p>在 Unitree G1 机器人上评估 4 大类、8 项代表性任务，每项任务重复测试 10 次：</p>
+    <table>
+      <tr><th>任务</th><th>成功率（SR）</th></tr>
+      <tr><td>Turn to an object（转向物体）</td><td class="good">10/10</td></tr>
+      <tr><td>Hold an object（抓握物体）</td><td>9/10</td></tr>
+      <tr><td>Wave to people（向人挥手）</td><td class="good">10/10</td></tr>
+      <tr><td>Avoid an obstacle（绕障碍）</td><td>9/10</td></tr>
+      <tr><td>Jump over an object（跨越障碍）</td><td>9/10</td></tr>
+      <tr><td>Dance with a partner（与人共舞）</td><td>8/10</td></tr>
+      <tr><td>Punch an obstacle（击打障碍）</td><td class="good">10/10</td></tr>
+      <tr><td>Kick a ball（踢球）</td><td>9/10</td></tr>
+    </table>
+
+    <h3>消融实验（Ablation on Data Augmentation）</h3>
+    <p>
+      在数据增强的消融实验中，仅使用低质量视频数据训练时 FID 为 0.698；仅使用高质量 Mocap 数据时 FID 为 0.557；<strong>结合两者后 FID 降至 0.467</strong>，代表 <strong>16% 的改善</strong>。
+      这有力验证了将大规模视频运动数据纳入训练的重要性，以及自监督数据增强策略的有效性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>论文未设独立局限性章节。以下各点综合了论文在结论部分明确提及（<em>stated</em>）的内容，以及从方法与实验设计中合理推断（<em>inferred</em>）的局限。
+    </div>
+    <details class="lim" open>
+      <summary>复杂灵巧操作任务成功率仍有提升空间（<em>stated</em>）</summary>
+      <p>
+        论文结论明确指出："In the future, we aim to enhance the success rate of humanoid robots in performing more complex loco-manipulation tasks."——说明当前框架在精细运动操作（loco-manipulation）任务上仍存在不足，尤其在涉及手部精细控制的场景中。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>依赖 RGB 单目摄像头，缺乏深度感知（<em>inferred</em>）</summary>
+      <p>
+        视觉感知模块仅使用 RGB 摄像头采集第一人称图像，缺乏深度信息。对于需要精确三维定位的交互任务（如精确抓握），单目视觉可能引入定位误差，限制了交互精度。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>对齐数据规模与质量的平衡问题（<em>inferred</em>）</summary>
+      <p>
+        从视频中提取的低质量运动数据（human motion recovery）精度不足，而高质量 Mocap 数据规模有限。尽管两阶段训练策略有效缓解了这一矛盾，但数据质量的根本瓶颈仍制约着模型在极细粒度运动任务上的表现。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>第一人称视觉微调数据规模较小（<em>inferred</em>）</summary>
+      <p>
+        视觉条件微调阶段依赖采集到的真实场景运动捕捉数据（与第一人称视觉同步），而遥操作采集成本高、规模有限，可能制约视觉感知能力在更广泛任务分布上的泛化性。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    内容来自论文原文与图表，仅供学习参考 · Humanoid-VLA: Towards Universal Humanoid Control with Visual Integration<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2502.14795">https://arxiv.org/abs/2502.14795</a>
+  </div>
+</footer>
+
+</body>
+</html>

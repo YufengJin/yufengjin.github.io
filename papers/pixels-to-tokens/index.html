@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Pixels to Tokens: A Systematic Study of Latent Action Supervision for Vision-Language-Action Models</title>
+<meta name="keywords" content="VLA, latent action, vision-language-action, 机器人操作, discrete token, action supervision, LIBERO, RoboTwin, 策略学习, imitation learning">
+<meta name="description" content="系统研究四种 latent action 监督策略在 VLA 模型中的效果：图像型策略擅长长视野任务，动作型策略适合复杂运动协调；直接离散 token 监督整体表现最优。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>From Pixels to Tokens: A Systematic Study of Latent Action Supervision for Vision-Language-Action Models</h1>
+    <div class="sub">系统研究四种 latent action 监督策略，揭示图像型 vs. 动作型 latent action 的任务适配规律</div>
+    <div class="authors">Yihan Lin, Haoyang Li, Yang Li, Haitao Shen, Yihan Zhao, Chao Shao, Jing Zhang &nbsp;·&nbsp; RUCKBReasoning</div>
+    <p class="lead">本文在统一的 VLA baseline 下，系统对比四种 latent action 监督策略：图像型（image-based）策略在长视野推理与场景泛化上表现更优，动作型（action-based）策略在复杂运动协调任务上更具优势；整体而言，直接让 VLM 预测离散 latent action token（LA-Direct / LA-Tok）的显式监督效果最强。</p>
+    <div class="meta">
+      <span>Robotics · cs.RO</span>
+      <span>LIBERO · RoboTwin 2.0 · Real-world JAKA</span>
+      <span>Qwen3-VL-2B backbone</span>
+      <span><a href="https://arxiv.org/abs/2605.04678">📄 arXiv:2605.04678</a></span>
+      <span><a href="https://github.com/RUCKBReasoning/From_Pixels_to_Tokens">GitHub 代码</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>latent action</span>
+      <span>discrete token</span>
+      <span>机器人操作</span>
+      <span>策略学习</span>
+      <span>imitation learning</span>
+      <span>LIBERO</span>
+      <span>RoboTwin</span>
+      <span>action supervision</span>
+      <span>long-horizon</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      视觉-语言-动作模型（VLA）近年兴起，但异构动作空间（不同机器人、不同任务的动作格式各异）给策略学习带来挑战。Latent action 作为中间表示，可将视觉/动作信息压缩为统一的离散 token，从而桥接 VLM 和机器人控制。然而，latent action 的设计空间复杂——应从图像侧提取还是动作侧提取？如何与 VLM 集成？哪种监督形式最有效？这些问题缺乏系统研究。
+    </p>
+    <blockquote>"We investigate how different latent action supervision choices affect VLA policy learning under a unified baseline."</blockquote>
+    <figure>
+      <img src="img/overview.webp" alt="overview of latent actions in VLA">
+      <figcaption>图 1：Latent action 在 VLA 中的整体框架。左：统一的 VLA pipeline；右：两种视角（图像型 vs. 动作型）及四种集成策略（LA-Align、LA-Direct、LA-Cond、LA-Tok）。图像型 latent action 通过 VQ-VAE 从视觉转换中提取离散表示；动作型 latent action 则从连续动作序列中提取行为模式。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>+10.8%</b><small>LA-Direct 在 LIBERO-Long 上的提升（85.8% → 96.6%）</small></div>
+      <div><b>+17.5%</b><small>LA-Tok 在 RoboTwin 2.0 平均成功率提升</small></div>
+      <div><b>+20.9%</b><small>LA-Cond 多任务联合训练消除负迁移的提升</small></div>
+      <div><b>4×</b><small>四种系统策略在统一 baseline 下全面对比</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      作者在 <strong>Qwen3-VL-2B</strong> 为骨干的统一 VLA baseline 上，从两个互补视角设计四种 latent action 集成策略，并以统一目标函数 ℒ = ℒ_action + λℒ_latent 进行训练，以隔离各策略对最终性能的影响。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="four integration strategies">
+      <figcaption>图 3：五种架构实例对比。(a) Baseline：标准 VLA，无 latent action；(b) LA-Align：通过余弦相似度正则化做隐式表示对齐；(c) LA-Direct：VLM 直接预测离散 latent action token；(d) LA-Cond：VLM 联合预测 latent action token，再条件解码最终动作；(e) LA-Tok：将连续动作离散化为 token 作为 VLM 监督目标。</figcaption>
+    </figure>
+
+    <h3>视角一：轨迹正则化（Trajectory Regularization）— 图像型</h3>
+    <p>
+      图像型 latent action 使用 VQ-VAE 将相邻帧的视觉变化编码为离散 token z_t^img，捕捉场景级动态。三种集成策略：
+    </p>
+    <ul>
+      <li><strong>LA-Align（Strategy 1）</strong>：隐式对齐，用余弦相似度约束 VLM 隐状态与 latent action 表示对齐，不改变输出形式。</li>
+      <li><strong>LA-Direct（Strategy 2）</strong>：显式直接解码，VLM 直接预测离散 latent action token，作为附加监督目标。</li>
+      <li><strong>LA-Cond（Strategy 3）</strong>：显式条件解码，VLM 联合预测 latent token，动作头再以此为条件生成最终动作。</li>
+    </ul>
+
+    <h3>视角二：目标统一（Target Unification）— 动作型</h3>
+    <p>
+      动作型 latent action 将连续动作 chunk 压缩为离散 token z_t^act，采用频域与时域结合：<em>"FFT modeling low-frequency trends, 1D temporal convolutions capturing fast variations."</em> Strategy 4（<strong>LA-Tok</strong>）将这些离散 token 直接作为 VLM 的监督目标，实现异构动作空间的统一表示。
+    </p>
+    <p>
+      所有策略共享同一骨干网络（Qwen3-VL-2B）、placeholder 设计和动作头，确保对比的公平性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在三个 benchmark 上展开：仿真环境 <strong>LIBERO</strong>（长视野任务 LIBERO-Long 等 4 个子集）、<strong>RoboTwin 2.0</strong>（双臂高难度操作，20 项任务）以及真实环境 <strong>JAKA</strong> 机械臂任务（碗叠放等多步操作）。每组实验各报告成功率（%）。
+    </p>
+
+    <h3>主要结果：形态-任务对应规律</h3>
+    <table>
+      <tr><th>Benchmark</th><th>Baseline</th><th>LA-Align</th><th>LA-Direct</th><th>LA-Cond</th><th>LA-Tok</th></tr>
+      <tr><td>LIBERO 平均</td><td>93.1%</td><td>97.0%</td><td class="good">97.1%</td><td>96.6%</td><td>95.5%</td></tr>
+      <tr><td>LIBERO-Long</td><td>85.8%</td><td>94.8%</td><td class="good">96.6%</td><td>94.2%</td><td>92.6%</td></tr>
+      <tr><td>RoboTwin 2.0 平均</td><td>60.5%</td><td>70.5%</td><td>71.8%</td><td>73.8%</td><td class="good">78.0%</td></tr>
+    </table>
+    <p>
+      图像型策略（LA-Direct）在需要长视野推理的 LIBERO-Long 上取得 <strong>+10.8%</strong> 提升（85.8% → 96.6%）；动作型策略（LA-Tok）在运动协调要求更高的 RoboTwin 2.0 上取得 <strong>+17.5%</strong> 平均提升。
+    </p>
+
+    <h3>表示形式对比：离散 token vs. 连续回归</h3>
+    <p>
+      消融实验表明，离散 token 监督显著优于等价连续回归变体：
+    </p>
+    <ul>
+      <li>LA-Direct：<strong>97.1%</strong> vs. 连续变体 94.4%</li>
+      <li>LA-Tok：<strong>95.5%</strong> vs. 连续变体 93.3%</li>
+    </ul>
+    <blockquote>"Directly supervising the VLM to predict latent actions provides a simple and consistent supervision target."</blockquote>
+
+    <h3>真实环境结果</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="real-world manipulation results">
+      <figcaption>图 4：真实世界 JAKA 机械臂操作任务结果（完成度百分比，0–100 分，10 次 rollout 均值）。LA-Direct 在 Stack 4 Bowls 任务上得分 79 vs. baseline 48；LA-Tok 在 Stack 2–3 Bowls 任务上达到最高 89。</figcaption>
+    </figure>
+
+    <h3>多任务联合训练</h3>
+    <figure>
+      <img src="img/multitask.webp" alt="multi-task training comparison">
+      <figcaption>图 5：Baseline（左）vs. LA-Cond（右）在 10 项 RoboTwin 任务上的联合训练对比。绿色表示相对单任务训练的性能提升，红色表示下降。LA-Cond 消除了负迁移，实现 <strong>+20.9%</strong> 的平均提升，而 baseline 在多个任务上出现性能下降。</figcaption>
+    </figure>
+
+    <h3>数据效率</h3>
+    <p>
+      LA-Tok 仅使用 <strong>50%</strong> 数据即可达到 94.0% 成功率，而 baseline 使用全量数据（100%）才达到 80%，体现出显著的数据效率优势。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文中明确陈述（stated by the authors）。</div>
+    <details class="lim" open>
+      <summary>策略覆盖范围有限（Strategy Coverage）</summary>
+      <p>本文提出的四种集成策略（LA-Align、LA-Direct、LA-Cond、LA-Tok）基于两个视角进行系统化设计，但并不能穷尽所有可能的 latent action 集成方式，存在其他设计空间尚待探索。</p>
+    </details>
+    <details class="lim">
+      <summary>Latent Action 模型质量的影响未充分研究</summary>
+      <p>实验中使用的 image-based 和 action-based latent action 模型本身的质量（如 VQ-VAE 的重建精度、量化误差）对下游 VLA 性能的影响尚未系统分析，未来需进一步研究。</p>
+    </details>
+    <details class="lim">
+      <summary>真实世界评估平台单一</summary>
+      <p>真实世界实验仅在单臂 JAKA 机械臂平台上进行，未涵盖双臂或更多样化的真实硬件，策略在不同硬件平台上的泛化性有待验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · From Pixels to Tokens · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2605.04678">https://arxiv.org/abs/2605.04678</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal World Modeling for Robot Control</title>
+<meta name="keywords" content="world model, autoregressive diffusion, VLA, robot manipulation, Mixture-of-Transformers, KV-cache, 因果视频建模, 机器人操作">
+<meta name="description" content="LingBot-VA：一种自回归扩散框架，通过因果视频世界建模与动作预测的联合学习，在长时域操作任务中大幅超越现有VLA方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>Causal World Modeling for Robot Control</h1>
+    <div class="sub">LingBot-VA：用因果视频世界模型驱动机器人操作</div>
+    <div class="authors">Lin Li, Qihang Zhang, Yiming Luo, Shuai Yang, Ruilin Wang, Fei Han, Mingrui Yu, Zelin Gao, Nan Xue, Xing Zhu, Yujun Shen, Yinghao Xu &nbsp;·&nbsp; 2026</div>
+    <p class="lead">LingBot-VA 是一个自回归扩散框架，将视频帧预测（visual dynamics）与策略执行（policy execution）在统一的因果序列中联合建模，通过 KV-cache 保留完整历史上下文，在长时域操作、样本效率和泛化能力三个维度上全面超越现有 VLA 方法。</p>
+    <div class="meta">
+      <span>5.3B 参数 (Wan2.2-5B + 350M action stream)</span>
+      <span>50 个真实演示即可完成任务后训练</span>
+      <span>RoboTwin 2.0 · LIBERO · 6 个真实世界任务</span>
+      <span><a href="https://arxiv.org/abs/2601.21998">📄 arXiv:2601.21998</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>autoregressive diffusion</span>
+      <span>VLA</span>
+      <span>robot manipulation</span>
+      <span>Mixture-of-Transformers</span>
+      <span>KV-cache</span>
+      <span>因果视频建模</span>
+      <span>机器人操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有 Vision-Language-Action（VLA）策略直接从当前观测映射到动作，缺乏对物理世界动态的显式建模，导致长时域任务中容易遗忘历史、分布外泛化脆弱。这篇工作的核心主张是：</p>
+    <blockquote>"Video world modeling, alongside vision-language pre-training, establishes a fresh and independent foundation for robot learning."</blockquote>
+    <p>传统 VLA 学习的是直接映射 π(action|observation)，而 LingBot-VA 将其分解为两个步骤：先通过视觉动态预测 p(o<sub>t+1</sub>|o<sub>≤t</sub>) 生成下一帧，再通过逆动力学 g(a<sub>t</sub>|o<sub>t</sub>, o<sub>t+1</sub>) 从相邻帧对推断动作。这一分解有三个关键优势：（1）保持对物理因果关系的显式约束；（2）通过 KV-cache 保留无限长历史，克服基于 chunk 方法的"短期记忆"问题；（3）大量互联网视频数据可直接用于预训练视觉动态模块。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="LingBot-VA teaser">
+      <figcaption><strong>图1：LingBot-VA 概览。</strong>系统包含四个维度：(1) 在多样化视频与机器人数据上预训练；(2) 在真实世界和仿真任务上的综合评估结果；(3) 视觉动态预测等多元能力；(4) 时间记忆和少样本适应等涌现特性。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>98.5%</b><small>LIBERO 平均成功率（新 SOTA）</small></div>
+      <div><b>+8.2%</b><small>RoboTwin Easy Horizon=3 vs 前任 SOTA</small></div>
+      <div><b>+15.6%</b><small>仅 10 个演示时 Make Breakfast progress score 相对 π₀.₅ 提升</small></div>
+      <div><b>50</b><small>个真实演示即可完成 6 类操作任务后训练</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">LingBot-VA 将视频 token 与动作 token 交错排列成统一因果序列，由一个 Mixture-of-Transformers（MoT）架构以自回归方式联合预测，同时配备闭环滚动推理机制和异步推理流水线以实现实时执行。</p>
+
+    <figure>
+      <img src="img/framework.webp" alt="LingBot-VA Framework">
+      <figcaption><strong>图2：框架总览。</strong>LingBot-VA 采用自回归扩散，通过双流 Mixture-of-Transformers 架构（视频流：3072-dim；动作流：768-dim）实现统一的视频-动作世界建模。视频流预测未来的潜在视觉状态，动作流解码对应动作，两路通过 cross-modal fusion 耦合。</figcaption>
+    </figure>
+
+    <h3>统一编码与 Mixture-of-Transformers 架构</h3>
+    <p>视频帧通过因果 VAE 以 4×16×16 的时空压缩比编码为每帧 192 个 spatial token；动作通过轻量 MLP 映射到 token embedding，与视频 token 共享同一潜在空间。MoT 采用非对称容量设计：视频流 3072-dim，动作流 768-dim，两路通过 cross-modal attention 融合。统一的损失函数为：L = L<sub>dyn</sub> + λ·L<sub>inv</sub>，其中 L<sub>dyn</sub> 监督视频 token 的速度场（flow matching），L<sub>inv</sub> 以当前帧与下一帧为条件监督动作解码。</p>
+
+    <h3>因果注意力掩码与 Teacher Forcing 预训练</h3>
+    <figure>
+      <img src="img/attention.webp" alt="Causal Attention Mask">
+      <figcaption><strong>图3：Teacher Forcing Attention Mask。</strong>因果注意力掩码确保每个 token 只能 attend 到时序上在其之前的 token，从而在预训练中强制执行"物理动态的时间箭头"，同时允许对完整轨迹并行处理。</figcaption>
+    </figure>
+    <p>LingBot-VA 使用 Teacher Forcing 训练策略："Each token can only attend to preceding tokens in temporal sequence"，在强制因果一致性的同时实现高效的并行训练。训练时随机采样 chunk size K ∈ [1,8]，使得部署时可灵活权衡闭环修正频率与计算效率。另一关键技巧是 Noisy History Augmentation："During training, randomly augment video history with noise; enables partial denoising (s=0.5 instead of s=1.0) at inference, halving video generation steps."动作网络权重初始化采用视频权重插值并以 α=√(d<sub>v</sub>/d<sub>a</sub>) 缩放，确保训练梯度平稳收敛。</p>
+
+    <h3>异步推理流水线与 FDM Grounding</h3>
+    <figure>
+      <img src="img/async.webp" alt="Asynchronous Pipeline">
+      <figcaption><strong>图4：异步流水线设计。</strong>同步流水线因视频生成耗时导致动作执行延迟；Naive async 则因"open-loop degradation"使模型偏好时序平滑的幻想序列；FDM-grounded async 引入 Forward Dynamics Model 将真实观测重新对齐后再做预测，在速度与精度间取得平衡。</figcaption>
+    </figure>
+    <p>部署阶段 KV-cache 将历史计算缓存，"Only new tokens require full attention computation; cached history tokens are reused"，显著降低推理延迟。为解决 Naive async 带来的开环退化问题，引入 Forward Dynamics Model（FDM）：模型利用最近的真实反馈想象施加动作后的视觉状态，强迫与环境观测重对齐后再向前预测。</p>
+
+    <h3>预训练数据与规模</h3>
+    <p>使用 16K 小时数据，来自 6 个来源（Agibot、RoboMind、InternData-A1、OXE、UMI、RoboCOIN）聚合。模型规模：5.3B 参数（Wan2.2-5B 视频主干 + 350M 动作流）。预训练：1.4T tokens，AdamW（lr=1×10⁻⁴，bfloat16 精度）。后训练：50 个任务演示，3K steps，lr=1×10⁻⁵。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">LingBot-VA 在三类基准上评估：RoboTwin 2.0（50 个双臂仿真任务，Easy / Hard），LIBERO（4 个子集），以及 6 个真实世界操作任务（长时域 / 精细操作 / 可变形物体）。</p>
+
+    <h3>RoboTwin 2.0 仿真评估</h3>
+    <table>
+      <tr>
+        <th>指标</th>
+        <th>X-VLA*</th>
+        <th>π₀</th>
+        <th>π₀.₅</th>
+        <th>Motus</th>
+        <th class="good">LingBot-VA (Ours)</th>
+      </tr>
+      <tr><td>Easy Avg (50 tasks)</td><td>72.9</td><td>65.9</td><td>82.7</td><td>88.7</td><td class="good">92.93 (+4.2)</td></tr>
+      <tr><td>Hard Avg (50 tasks)</td><td>72.8</td><td>58.4</td><td>76.8</td><td>87.0</td><td class="good">91.55 (+4.6)</td></tr>
+      <tr><td>Easy Horizon=1</td><td>81.6</td><td>66.5</td><td>85.1</td><td>91.0</td><td class="good">94.18 (+3.2)</td></tr>
+      <tr><td>Hard Horizon=1</td><td>82.5</td><td>61.6</td><td>80.2</td><td>90.6</td><td class="good">93.56 (+3.0)</td></tr>
+      <tr><td>Easy Horizon=2</td><td>59.3</td><td>66.1</td><td>79.3</td><td>85.2</td><td class="good">90.35 (+5.2)</td></tr>
+      <tr><td>Hard Horizon=2</td><td>55.9</td><td>54.7</td><td>73.0</td><td>80.9</td><td class="good">86.95 (+6.1)</td></tr>
+      <tr><td>Easy Horizon=3</td><td>61.2</td><td>61.6</td><td>78.6</td><td>85.0</td><td class="good">93.22 (+8.2)</td></tr>
+      <tr><td>Hard Horizon=3</td><td>66.0</td><td>50.2</td><td>67.4</td><td>84.2</td><td class="good">93.28 (+9.1)</td></tr>
+    </table>
+    <p>注意：随 Horizon 增大，LingBot-VA 的优势进一步扩大（Horizon=3 时领先 +8.2% / +9.1%），印证了 KV-cache 长时记忆在多步任务中的核心价值。</p>
+
+    <h3>LIBERO 基准评估</h3>
+    <table>
+      <tr><th>方法</th><th>LIBERO-Spatial</th><th>LIBERO-Object</th><th>LIBERO-Goal</th><th>LIBERO-Long</th><th>平均</th></tr>
+      <tr><td>Octo</td><td>78.9</td><td>85.7</td><td>84.6</td><td>51.1</td><td>75.1</td></tr>
+      <tr><td>SmolVLA</td><td>93.0</td><td>94.0</td><td>91.0</td><td>77.0</td><td>88.8</td></tr>
+      <tr><td>π₀</td><td>96.8</td><td>98.8</td><td>95.8</td><td>85.2</td><td>94.1</td></tr>
+      <tr><td>X-VLA</td><td>98.2</td><td>98.6</td><td>97.8</td><td>97.6</td><td>98.1</td></tr>
+      <tr><td class="good">LingBot-VA (Ours)</td><td class="good">98.5±0.3</td><td class="good">99.6±0.3</td><td>97.2±0.2</td><td class="good">98.5±0.5</td><td class="good">98.5</td></tr>
+    </table>
+
+    <h3>真实世界任务</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="Real-world deployment results">
+      <figcaption><strong>图5：真实世界部署结果。</strong>六类操作任务：Make Breakfast、Pick Screws（长时域）；Insert Tubes、Unpack Delivery（精细操作）；Fold Clothes、Fold Pants（可变形物体）。LingBot-VA 在成功率和 progress score 两个指标上均"substantially outperforming π₀.₅"。</figcaption>
+    </figure>
+
+    <h3>样本效率</h3>
+    <figure>
+      <img src="img/sampleeff.webp" alt="Sample efficiency comparison">
+      <figcaption><strong>图8：样本效率对比。</strong>仅使用 10 个演示时，LingBot-VA 在 Make Breakfast 任务上的 progress score 比 π₀.₅ 高 15.6%，在 RoboTwin 上高 10.3%。在多种数据规模下均保持优势。</figcaption>
+    </figure>
+
+    <h3>时间记忆任务</h3>
+    <figure>
+      <img src="img/memory.webp" alt="Temporal memory evaluation">
+      <figcaption><strong>图9：时间记忆评估。</strong>Wipe Plate（需计数重复 6 次）和 Search Box（需记住空容器位置）两个任务。LingBot-VA 依靠完整 KV-cache 保留全部历史，"substantially outperforms π₀.₅ on both memory tasks"。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <table>
+      <tr><th>消融维度</th><th>设置</th><th>Easy_all</th><th>Horizon=1</th><th>Horizon=2</th><th>Horizon=3</th></tr>
+      <tr><td>基准</td><td class="good">LingBot-VA (Ours)</td><td class="good">92.9</td><td class="good">94.2</td><td class="good">90.4</td><td class="good">93.2</td></tr>
+      <tr><td rowspan="2">部署策略</td><td>FDM-grounded Async</td><td>90.4</td><td>92.5</td><td>87.7</td><td>85.6</td></tr>
+      <tr><td>Naive Async</td><td>74.3</td><td>83.3</td><td>70.3</td><td>32.9</td></tr>
+      <tr><td>预训练主干</td><td>WAN (无因果世界建模)</td><td>80.6</td><td>84.9</td><td>76.3</td><td>67.6</td></tr>
+    </table>
+    <p>消融结果清晰表明：Naive async 在 Horizon=3 时性能崩溃至 32.9%，而 FDM grounding 将其恢复至 85.6%；替换为普通 WAN 主干则损失 12.3 个百分点，证明因果世界建模预训练是核心贡献。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性部分为论文作者明确指出（标注"stated"），部分为从设计推断（标注"inferred"）。</div>
+
+    <details class="lim" open>
+      <summary>视频 token 生成计算开销大 （stated）</summary>
+      <p>论文明确指出："Video token generation remains computationally intensive"。自回归逐帧生成在部署时仍有较高延迟，即使通过异步流水线和 partial denoising 已显著缓解，实时性仍弱于直接动作回归方法。</p>
+    </details>
+
+    <details class="lim">
+      <summary>接触动力学为隐式建模 （stated）</summary>
+      <p>论文明确指出当前版本为"implicit rather than explicit contact dynamics modeling"，对需要精确力/力矩控制的精细操作（如拧螺丝）可能存在上限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>动作表示统一化假设 （inferred）</summary>
+      <p>（推断）LingBot-VA 将动作统一为 30 维向量（双臂：7 EEF + 7 关节 + 1 夹爪，每臂），依赖于机器人形态一致性假设。对于腿式机器人、多指手等不同形态，需重新定义动作表示，框架的跨形态泛化能力尚未验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>多模态感知输入缺失 （stated，future work）</summary>
+      <p>论文将"multi-modal sensory inputs (tactile, force, audio) for robust manipulation"列为未来工作方向，当前系统仅依赖视觉输入，对无视觉线索的操作任务（如在遮挡下搜索）能力有限。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Causal World Modeling for Robot Control (LingBot-VA) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2601.21998">https://arxiv.org/abs/2601.21998</a>
+  </div>
+</footer>
+
+</body>
+</html>

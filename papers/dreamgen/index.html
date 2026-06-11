@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报。
+  Paper: DreamGen: Unlocking Generalization in Robot Learning through Video World Models
+  arXiv: 2505.12705
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamGen: Unlocking Generalization in Robot Learning through Video World Models</title>
+<meta name="keywords" content="robot learning, video world model, neural trajectory, pseudo action labeling, behavior generalization, environment generalization, imitation learning, 策略泛化, 视频生成, 机器人操作">
+<meta name="description" content="DreamGen 利用视频世界模型生成"神经轨迹"合成数据，使机器人仅凭单一任务遥操作数据便能在22种新行为和未见过的环境中实现泛化。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人学习 · NVIDIA Research · arXiv 2025</span>
+    <h1>DreamGen</h1>
+    <div class="sub">Unlocking Generalization in Robot Learning through Video World Models</div>
+    <div class="authors">Joel Jang, Seonghyeon Ye, Zongyu Lin, Jiannan Xiang, Johan Bjorck, Yu Fang, Fengyuan Hu, Spencer Huang 等 · NVIDIA &amp; 合作机构</div>
+    <p class="lead">DreamGen 提出了一套四阶段流水线，利用视频世界模型（video world models）生成"神经轨迹"（neural trajectories）——带伪动作标注的合成机器人视频——以此大幅扩充训练数据。仅凭单一 pick-and-place 任务的遥操作数据，便能训练出可在 <strong>22 种全新行为</strong>和<strong>未见过的环境</strong>中泛化的策略。</p>
+    <div class="meta">
+      <span>arXiv 2505.12705 · 2025年5月</span>
+      <span>仿真 + 三种真实机器人</span>
+      <span>GR1 人形机器人 / Franka / SO-100</span>
+      <span><a href="https://arxiv.org/abs/2505.12705">📄 arXiv:2505.12705</a></span>
+      <span><a href="https://research.nvidia.com/labs/gear/dreamgen">🌐 项目主页</a></span>
+    </div>
+    <div class="kw">
+      <span>video world model</span>
+      <span>neural trajectory</span>
+      <span>pseudo action labeling</span>
+      <span>behavior generalization</span>
+      <span>environment generalization</span>
+      <span>imitation learning</span>
+      <span>策略泛化</span>
+      <span>视频生成</span>
+      <span>机器人操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人策略的泛化能力长期受限于数据匮乏：遥操作采集成本高昂，且单一场景的数据难以覆盖多样行为与陌生环境。如何在<em>极少真实数据</em>的前提下，让策略跨行为、跨环境迁移，是领域核心难题。</p>
+    <blockquote>"DreamGen, a simple yet highly effective 4-stage pipeline for training robot policies that generalize across behaviors and environments through <em>neural trajectories</em>—synthetic robot data generated from video world models."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DreamGen 泛化概览">
+      <figcaption><strong>图1：DreamGen 泛化能力展示。</strong>系统利用视频世界模型生成跨越 22 种新行为和未见环境的合成轨迹，而训练所用的真实遥操作数据仅来自单一 pick-and-place 任务。左侧展示行为泛化（seen environments, novel behaviors），右侧展示环境泛化（unseen environments）。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>22</b><small>新行为泛化（zero-shot novel behaviors）</small></div>
+      <div><b>43.2%</b><small>DreamGen 在 14 新行为上的平均成功率（vs. baseline 11.2%）</small></div>
+      <div><b>28.5%</b><small>在未见环境+新行为的平均成功率（baseline 为 0%）</small></div>
+      <div><b>10–13</b><small>每任务真实轨迹数（极少数据即可显著提升）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DreamGen 将视频世界模型从实时规划器转变为合成数据生成器，通过四个阶段构建"神经轨迹"：视频模型微调 → 视频生成 → 伪动作标注 → 策略训练。</p>
+    <figure>
+      <img src="img/pipeline.webp" alt="DreamGen 四阶段流水线">
+      <figcaption><strong>图2：DreamGen 完整流水线。</strong> (1) 用 LoRA 将视频世界模型（如 WAN2.1、Cosmos、CogVideoX）在机器人轨迹上微调，使其捕捉机器人动态；(2) 用语言指令和初始帧引导模型在多样环境生成合成视频；(3) 用 IDM 或 LAPA 从视频帧对中提取伪动作；(4) 将视频-伪动作对（神经轨迹）与真实数据混合训练视觉运动策略。</figcaption>
+    </figure>
+
+    <h3>Stage 1 &amp; 2：视频世界模型微调与生成</h3>
+    <p>以 LoRA 对预训练视频扩散模型进行 embodiment-specific 微调，使模型学会特定机器人的运动动态和手臂外观。推理时，以初始帧（机器人当前状态）和语言指令（目标行为描述）为条件，生成跨越不同环境和行为的合成机器人操作视频，构成丰富的视觉观测序列。</p>
+
+    <h3>Stage 3：伪动作标注（Pseudo Action Labeling）</h3>
+    <p>论文提出两种方式从生成视频中恢复伪动作：</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>IDM（Inverse Dynamics Model）</h3>
+        <p>扩散 transformer 以两帧图像为条件预测动作 chunk；采用滑动窗口策略逐帧推断，生成与视频对齐的完整动作序列。需要预先训练的 IDM 模型（需真实动作监督）。</p>
+      </div>
+      <div class="card">
+        <h3>LAPA（Latent Action Model）</h3>
+        <p>Transformer encoder-decoder 以 VQ-VAE 目标训练，捕捉帧间视觉变化（visual delta）作为潜在动作表示，<strong>无需真实机器人动作标注</strong>，可从纯视频数据学习。</p>
+      </div>
+    </div>
+
+    <h3>Stage 4：策略训练</h3>
+    <p>将神经轨迹（生成视频 + 伪动作）与真实遥操作数据混合，训练视觉运动策略（visuomotor policy）。实验中每任务仅需 <strong>10–13 条真实轨迹</strong>，配合 100–300 条神经轨迹，即可取得显著提升。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在仿真（RoboCasa 平台，24 个任务）和真实环境（GR1 人形机器人、Franka 机械臂、SO-100）上评估。核心指标为任务成功率（%）。</p>
+
+    <h3>行为泛化 &amp; 环境泛化（Table 1）</h3>
+    <p>以 GR00T N1 为 baseline，在 GR1 人形机器人上评估：</p>
+    <table>
+      <tr><th>评估场景</th><th>GR00T N1 Baseline</th><th>DreamGen</th><th>提升</th></tr>
+      <tr><td>已见环境 · 新行为（14 任务）</td><td>11.2%</td><td class="good">43.2%</td><td>+32.0 pts</td></tr>
+      <tr><td>未见环境 · 新行为（13 任务）</td><td>0.0%</td><td class="good">28.5%</td><td>+28.5 pts</td></tr>
+    </table>
+    <p>个别任务中，DreamGen 在"Pour Water"、"Light Candle"、"Hit Keyboard"等行为上达到 <strong>90%–95%</strong> 成功率。</p>
+
+    <h3>真实世界数据增强（Figure 5）</h3>
+    <p>在三种真实机器人平台上，以极少真实数据配合神经轨迹：</p>
+    <table>
+      <tr><th>机器人平台</th><th>任务数</th><th>Baseline</th><th>DreamGen</th></tr>
+      <tr><td>GR1 人形机器人</td><td>4</td><td>37%</td><td class="good">46.4%</td></tr>
+      <tr><td>Franka 机械臂</td><td>3</td><td>23%</td><td class="good">37%</td></tr>
+      <tr><td>SO-100</td><td>2</td><td>21%</td><td class="good">45.5%</td></tr>
+    </table>
+    <figure>
+      <img src="img/realworld.webp" alt="真实机器人评估结果">
+      <figcaption><strong>图5：真实机器人平台上的数据增强效果。</strong>三种机器人（GR1 人形机器人、Franka 机械臂、SO-100）在各自任务上，神经轨迹数据增强均带来一致的成功率提升。每任务仅使用 10–13 条真实遥操作轨迹。</figcaption>
+    </figure>
+
+    <h3>RoboCasa 仿真扩展性（Figure 4）</h3>
+    <p>在 RoboCasa 24 个任务上，神经轨迹数量与策略性能呈 <strong>log-linear</strong> 正相关：240k 神经轨迹配合 7.2k 真实数据时，平均成功率达 <strong>~57.6%</strong>；仅用 IDM 神经轨迹（无真实数据）达 <strong>20.55%</strong>（24 任务平均）。</p>
+    <figure>
+      <img src="img/scaling.webp" alt="仿真扩展性曲线">
+      <figcaption><strong>图4：RoboCasa 神经轨迹数量 vs. 策略性能。</strong>在低数据（720条）、中数据（2.4k条）、高数据（7.2k条）三种真实数据规模下，增加神经轨迹均带来 log-linear 的性能提升，验证了合成数据的可扩展性。</figcaption>
+    </figure>
+
+    <h3>DreamGen Bench（视频生成基准）</h3>
+    <p>论文引入 DreamGen Bench 评估视频世界模型质量，包含 Instruction Following (IF) 和 Physics Alignment (PA) 两个维度（GPT 评估），并验证其与下游策略成功率的 Pearson 相关系数 <strong>&gt;0.90</strong>。</p>
+
+    <h3>消融实验要点</h3>
+    <ul>
+      <li>IDM 与 LAPA 均有效，LAPA 无需真实动作标注，适用范围更广。</li>
+      <li>混合真实数据与神经轨迹始终优于单独使用其中一种。</li>
+      <li>视频模型 LoRA 微调对捕捉机器人特定动态至关重要。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为论文原文（Limitation 章节）明确陈述，非推断。</div>
+
+    <details class="lim" open>
+      <summary>任务复杂度有限（Task Complexity）</summary>
+      <p>"Tasks are relatively simple and cover a limited portion of the robot's full kinematic capabilities." 当前实验任务较为简单，尚未覆盖机器人全部运动学能力，对高自由度、长时程复杂任务的有效性有待验证。</p>
+    </details>
+    <details class="lim">
+      <summary>计算成本高昂（Computational Cost）</summary>
+      <p>"Generating the 240k-sample RoboCasa dataset took 54 hours on 1500 NVIDIA L40 GPUs." 大规模神经轨迹生成对算力要求极高，限制了方法在资源受限场景下的可用性。</p>
+    </details>
+    <details class="lim">
+      <summary>初始帧需人工提供（Manual Initial Frame）</summary>
+      <p>"Method also relies on manually providing initial frames, which introduces operational overhead." 视频生成需要手工准备初始帧，增加了部署时的操作负担，难以实现完全自动化。</p>
+    </details>
+    <details class="lim">
+      <summary>自动评估器存在幻觉风险（Evaluator Hallucination）</summary>
+      <p>"Automatic evaluator used in DreamGen Bench...can occasionally hallucinate, especially when evaluating physical realism." 基于 GPT 的视频质量评估偶尔出现幻觉，特别是在物理合理性判断上，影响基准可靠性。</p>
+    </details>
+    <details class="lim">
+      <summary>缺乏与相关工作的直接基准对比</summary>
+      <p>"Does not directly benchmark against" existing video-generation-for-robot-learning methods. 论文未与全部相关视频学习方法进行直接定量比较，结果的绝对优越性有待进一步验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DreamGen: Unlocking Generalization in Robot Learning through Video World Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2505.12705">https://arxiv.org/abs/2505.12705</a> &nbsp;|&nbsp;
+    项目主页: <a href="https://research.nvidia.com/labs/gear/dreamgen">research.nvidia.com/labs/gear/dreamgen</a>
+  </div>
+</footer>
+
+</body>
+</html>

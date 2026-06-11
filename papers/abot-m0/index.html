@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</title>
+<meta name="keywords" content="VLA, 机器人操作, Action Manifold Learning, diffusion policy, 具身智能, 数据集, 多形态机器人, 扩散策略, LIBERO, 前馈推理">
+<meta name="description" content="ABot-M0 提出 Action Manifold Learning，使机器人动作预测更快更稳；并构建 UniACT 大规模多形态数据集，在 LIBERO、RoboTwin 等主流基准上达到最先进性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>ABot-M0</h1>
+    <div class="sub">VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</div>
+    <div class="authors">Yandan Yang, Shuang Zeng, Tong Lin, Xinyuan Chang, Dekang Qi, Junjin Xiao, Haoyun Liu, Ronghan Chen, Yuzhi Chen, Dongjie Huo, Feng Xiong, Xing Wei, Zhiheng Ma, Mu Xu</div>
+    <p class="lead">ABot-M0 是一个通用机器人操作基础模型，核心创新为 <strong>Action Manifold Learning（AML）</strong>——将动作预测约束在低维流形上，显著提升推理速度与策略稳定性；同时构建了 <strong>UniACT</strong> 大规模统一数据集（600 万条轨迹、9500+ 小时、20+ 形态机器人），在 LIBERO、RoboTwin 2.0 等主流基准上刷新最优性能。</p>
+    <div class="meta">
+      <span>arXiv 2026-02</span>
+      <span>Qwen3-VL 4B + 0.16B DiT</span>
+      <span>6M+ trajectories · 9500h+</span>
+      <span><a href="https://arxiv.org/abs/2602.11236">📄 arXiv:2602.11236</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>Action Manifold Learning</span>
+      <span>具身智能</span>
+      <span>扩散策略</span>
+      <span>多形态机器人</span>
+      <span>UniACT 数据集</span>
+      <span>LIBERO</span>
+      <span>前馈推理</span>
+      <span>diffusion transformer</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">构建真正通用的机器人智能体面临两大核心挑战：<strong>数据稀缺</strong>（跨形态、跨任务的高质量轨迹匮乏）与<strong>动作表示低效</strong>（高维噪声预测在速度和稳定性方面均有瓶颈）。现有 VLA 模型往往依赖单一数据源或特定硬件平台，泛化能力有限。</p>
+    <blockquote>"effective robot actions lie not in the full high-dimensional space but on a low-dimensional, smooth manifold"</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="UniACT 数据集组成概览">
+      <figcaption><strong>Fig. 2：</strong>UniACT 数据集组成概览。汇聚六个开源数据集，覆盖 600 万条轨迹、9500+ 小时、20+ 种机器人形态，提供统一的动作表示与标注规范。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>6M+</b><small>UniACT 轨迹数</small></div>
+      <div><b>98.6%</b><small>LIBERO 平均成功率</small></div>
+      <div><b>86.06%</b><small>RoboTwin 2.0 成功率</small></div>
+      <div><b>80.5%</b><small>LIBERO-Plus 零样本泛化</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">ABot-M0 由两个核心模块组成：<strong>Qwen3-VL（4B）视觉语言主干</strong>负责语义理解，<strong>0.16B Diffusion Transformer（DiT）动作专家</strong>负责动作生成。两者通过 cross-attention 融合，并可选配 3D 几何感知模块。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="ABot-M0 整体架构">
+      <figcaption><strong>Fig. 3：</strong>ABot-M0 完整架构。左侧 Qwen3-VL 提取视觉语义特征，右侧 DiT 动作专家通过 cross-attention 注入 VLM 特征与可选 3D 信息，输出去噪动作序列。</figcaption>
+    </figure>
+
+    <h3>Action Manifold Learning（AML）</h3>
+    <p>传统扩散策略预测噪声（epsilon-prediction）或速度，AML 直接在低维流形上预测去噪后的干净动作序列。具体而言，DiT 主干计算去噪预测 <em>Â_t = V_θ(φ_t, A_t^τ, q_t)</em>，但损失函数施加在速度上并带有重权重因子 <em>w(τ) = 1/(1−τ)²</em>。推理时通过 ODE 求解从纯噪声迭代生成动作块。该设计使模型在极少去噪步数（2 步）及超大动作块（chunk size 30）下仍能保持稳定性能，而基线 GR00T 在同等条件下性能大幅下降。</p>
+
+    <figure>
+      <img src="img/aml_concept.webp" alt="Action Manifold Learning 概念图">
+      <figcaption><strong>Fig. 4：</strong>AML 概念对比。左：传统噪声/速度预测，动作分布散落于高维空间；右：AML 将有效动作约束在低维平滑流形，预测更直接，路径更短。</figcaption>
+    </figure>
+
+    <h3>UniACT 数据集与多形态统一</h3>
+    <p>UniACT 汇聚六个开源数据集，关键工程包括：</p>
+    <ul>
+      <li><strong>动作标准化：</strong>将所有机器人动作统一为末端执行器坐标系中的 delta 动作，使用旋转向量表示；</li>
+      <li><strong>单臂/双臂统一：</strong>采用零填充（pad-to-dual-arm）策略，将单臂机器人视为双臂的特殊情形；</li>
+      <li><strong>质量过滤：</strong>自动化清洗流程过滤约 16% 的低质量轨迹；</li>
+      <li><strong>Task-Uniform 采样：</strong>平衡形态覆盖与技能多样性，优于 Trajectory-Uniform 和 Embodiment-Uniform 策略。</li>
+    </ul>
+
+    <figure>
+      <img src="img/data_pipeline.webp" alt="UniACT 数据清洗流程">
+      <figcaption><strong>Fig. 1：</strong>UniACT 数据清洗与预处理流程，涵盖数据质量治理的各个环节，从异构来源构建统一高质量数据集。</figcaption>
+    </figure>
+
+    <h3>双流感知与 3D 信息注入</h3>
+    <p>模型支持可选的 3D 感知增强：使用 VGGT 从单张图像重建 3D 特征，或使用 Qwen-Image-Edit 合成多视角图像提供几何先验。消融实验显示，cross-attention 融合优于 concatenation 与 Q-Former 方案；多视角（2 视图）配置在 LIBERO-Plus 上达到 70.2%，高于单视角的 68.0%。</p>
+
+    <figure>
+      <img src="img/sampling.webp" alt="不同采样策略的形态分布">
+      <figcaption><strong>Fig. 5：</strong>三种采样策略（Trajectory-Uniform、Task-Uniform、Embodiment-Uniform）在 OXE、AgiBot-Beta、RoboCoin 上的形态分布对比。Task-Uniform 在技能多样性与形态覆盖之间取得最佳平衡。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 LIBERO、LIBERO-Plus（零样本泛化）、RoboCasa GR1、RoboTwin 2.0 四大基准上与主流方法对比，ABot-M0 在所有基准上均取得最优或接近最优的成绩。</p>
+
+    <h3>LIBERO 标准基准</h3>
+    <table>
+      <tr><th>方法</th><th>L-Spatial</th><th>L-Object</th><th>L-Goal</th><th>L-Long</th><th>Average</th></tr>
+      <tr><td>Diffusion Policy</td><td>78.5</td><td>87.5</td><td>73.5</td><td>64.8</td><td>76.1</td></tr>
+      <tr><td>OpenVLA</td><td>84.7</td><td>88.4</td><td>79.2</td><td>53.7</td><td>76.5</td></tr>
+      <tr><td>π₀</td><td>98.0</td><td>96.8</td><td>94.4</td><td>88.4</td><td>94.4</td></tr>
+      <tr><td>π₀.₅</td><td>98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>97.6</td><td>98.4</td><td>97.9</td><td>94.5</td><td>97.1</td></tr>
+      <tr><td class="good"><strong>ABot-M0（ours）</strong></td><td class="good">98.8</td><td class="good">99.8</td><td class="good">99.0</td><td class="good">96.6</td><td class="good">98.6%</td></tr>
+    </table>
+
+    <h3>LIBERO-Plus 零样本泛化（OOD）</h3>
+    <p>LIBERO-Plus 测试相机视角、机器人形态、语言指令、光照、背景、噪声、布局等七种扰动下的零样本泛化能力。</p>
+    <table>
+      <tr><th>方法</th><th>Camera</th><th>Robot</th><th>Language</th><th>Light</th><th>BG</th><th>Noise</th><th>Layout</th><th>Total</th></tr>
+      <tr><td>OpenVLA</td><td>0.8</td><td>3.5</td><td>23.0</td><td>8.1</td><td>34.8</td><td>15.2</td><td>28.5</td><td>15.6</td></tr>
+      <tr><td>UniVLA</td><td>1.8</td><td>46.2</td><td>69.6</td><td>69.0</td><td>81.0</td><td>21.2</td><td>31.9</td><td>42.9</td></tr>
+      <tr><td>π₀</td><td>13.8</td><td>6.0</td><td>58.8</td><td>85.0</td><td>81.4</td><td>79.0</td><td>68.9</td><td>53.6</td></tr>
+      <tr><td>RIPT-VLA</td><td>55.2</td><td>31.2</td><td>77.6</td><td>88.4</td><td>91.6</td><td>73.5</td><td>74.2</td><td>68.4</td></tr>
+      <tr><td class="good"><strong>ABot-M0（ours）</strong></td><td class="good">60.4</td><td class="good">67.9</td><td class="good">86.4</td><td class="good">96.2</td><td class="good">91.6</td><td class="good">86.4</td><td class="good">82.6</td><td class="good">80.5%</td></tr>
+    </table>
+
+    <h3>RoboCasa GR1 与 RoboTwin 2.0</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>RoboCasa GR1（24 个桌面任务）</h3>
+        <table>
+          <tr><th>方法</th><th>平均成功率</th></tr>
+          <tr><td>GR00T-N1.6</td><td>47.6%</td></tr>
+          <tr><td>Qwen3GR00T</td><td>47.8%</td></tr>
+          <tr><td>Qwen3OFT</td><td>48.8%</td></tr>
+          <tr><td class="good"><strong>ABot-M0</strong></td><td class="good">58.3%</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>RoboTwin 2.0（50+ 任务）</h3>
+        <table>
+          <tr><th>方法</th><th>Clean</th><th>Randomized</th></tr>
+          <tr><td>π₀.₅</td><td>42.98%</td><td>43.84%</td></tr>
+          <tr><td>X-VLA</td><td>72.80%</td><td>72.84%</td></tr>
+          <tr><td class="good"><strong>ABot-M0</strong></td><td class="good">86.06%</td><td class="good">85.08%</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3>消融实验：AML 的优势</h3>
+    <p>与 Qwen3-VL-GR00T 基线相比，AML 在各种极限条件下均表现出明显优势：</p>
+    <ul>
+      <li><strong>默认配置</strong>（4 步去噪，chunk=8）：ABot-M0 71.0% vs. GR00T 69.3%；</li>
+      <li><strong>极端加速</strong>（2 步去噪）：ABot-M0 69.7% vs. GR00T 67.2%；</li>
+      <li><strong>超大动作块</strong>（chunk=30）：ABot-M0 62.8%（下降 8.2 个点）vs. GR00T 45.7%（下降 23.6 个点）。</li>
+    </ul>
+    <p>VLM 特征交互消融显示，直接使用最终层原始特征（71.0%）优于中间层或 action-query 增强方案。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文无独立 Limitations 章节，以下限制部分为作者在 Future Work 与讨论中明确陈述（标注 <em>stated</em>），部分为设计层面合理推断（标注 <em>inferred</em>）。</div>
+    <details class="lim" open>
+      <summary>数据规模尚未达到临界质量（stated）</summary>
+      <p>作者指出 "data scale remains below critical mass" for truly general embodied agents，当前 600 万轨迹在任务多样性和覆盖密度上仍有明显缺口，尤其缺乏人体示范（UMI 等）数据。</p>
+    </details>
+    <details class="lim">
+      <summary>跨数据集动作表示异构性（stated）</summary>
+      <p>"action representations, coordinate systems, and control frequencies differ across datasets"，统一标准化虽有效但不可避免地引入近似误差，在高精度任务中影响更明显。</p>
+    </details>
+    <details class="lim">
+      <summary>VLM 空间感知能力有限（stated）</summary>
+      <p>"vision-language models demonstrate strong capabilities in parsing natural language…Nevertheless, their spatial perception typically remains qualitative"，在精细位置判断和高精度操控场景下存在固有瓶颈。</p>
+    </details>
+    <details class="lim">
+      <summary>高精度场景中误差积累（stated）</summary>
+      <p>预训练模型在高精度操控场景下 "exhibit accumulated errors and unstable spatial alignment"，长时序任务中策略漂移问题有待解决。</p>
+    </details>
+    <details class="lim">
+      <summary>仅限桌面/双臂操控形态（inferred）</summary>
+      <p>实验以桌面机械臂为主。作者在 Future Work 中明确提出将扩展至腿式机器人、无人机和类人形机器人，说明当前版本对这些形态的支持尚未验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.11236">https://arxiv.org/abs/2602.11236</a>
+  </div>
+</footer>
+
+</body>
+</html>

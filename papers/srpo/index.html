@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRPO: Self-Referential Policy Optimization for Vision-Language-Action Models</title>
+<meta name="keywords" content="VLA, reinforcement learning, 机器人操作, policy optimization, world model, LIBERO, 进度奖励, self-referential">
+<meta name="description" content="SRPO 利用模型自身成功轨迹作为参考，结合潜在世界表征计算进度奖励，仅需 200 步 RL 训练即可将 VLA 成功率从 48.9% 提升至 99.2%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2511.15605</span>
+    <h1>SRPO: Self-Referential Policy Optimization for Vision-Language-Action Models</h1>
+    <div class="sub">自参照策略优化：无需额外监督，让 VLA 在 200 步内从 48.9% 跃升至 99.2%</div>
+    <div class="authors">Senyu Fei, Siyin Wang, Li Ji, Ao Li, Shiduo Zhang, Liming Liu, Jinlong Hou, Jingjing Gong, Xianzhong Zhao, Xipeng Qiu</div>
+    <p class="lead">
+      SRPO 提出一种全新的 VLA 强化学习后训练框架：以模型在 batch 内自身产生的成功轨迹作为"自参照"基准，
+      通过预训练视觉世界模型（V-JEPA 2）的潜在表征计算进度奖励，彻底摆脱对人工奖励设计或额外专家演示的依赖。
+      在 LIBERO 基准上仅需 200 步 RL 训练即实现 103% 相对提升，真实机器人实验也显著优于 SFT 基线。
+    </p>
+    <div class="meta">
+      <span>arXiv 2511.15605</span>
+      <span>2025 年 11 月</span>
+      <span>LIBERO / Real-World Manipulation</span>
+      <span><a href="https://arxiv.org/abs/2511.15605">📄 arXiv:2511.15605</a></span>
+      <span><a href="https://arxiv.org/pdf/2511.15605">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>reinforcement learning</span>
+      <span>机器人操作</span>
+      <span>world model</span>
+      <span>进度奖励</span>
+      <span>LIBERO</span>
+      <span>self-referential</span>
+      <span>policy optimization</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前 VLA 模型过度依赖专家演示，导致严重的 <em>demonstration bias</em>（演示偏差）——模型只学会复制演示中的轨迹，
+      无法探索更优策略。强化学习（RL）是克服这一限制的关键，但现有 VLA-RL 方法面临两大困境：
+      <strong>稀疏奖励</strong>（仅依赖二值成功信号，失败轨迹的信息完全浪费）
+      以及<strong>繁琐的人工奖励工程</strong>（需任务相关的密集奖励，难以泛化）。
+    </p>
+    <blockquote>
+      "Reinforcement learning (RL) is a vital post-training strategy to overcome these limits,
+      yet current VLA-RL methods...are crippled by severe reward sparsity."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="SRPO overview：与现有 VLA-RL 方法的对比">
+      <figcaption>
+        图 1：三种 VLA-RL 范式对比。(a) 现有方法依赖稀疏的结果奖励（成功/失败二值），失败轨迹信息完全丢弃；
+        (b) 手工设计过程奖励，需任务专属工程；(c) SRPO 利用 batch 内成功轨迹作为自参照，
+        通过潜在世界表征为失败轨迹提供细粒度进度奖励，无需任何额外监督。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>99.2%</b><small>LIBERO Online SRPO 平均成功率</small></div>
+      <div><b>48.9%</b><small>One-shot SFT 基线（起点）</small></div>
+      <div><b>103%</b><small>相对提升（200 步内，无额外监督）</small></div>
+      <div><b>+86.7%</b><small>真实机器人 π₀-FAST 改善幅度</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      SRPO 框架由两个核心模块组成：<strong>World Progress Reward Modeling</strong>（世界进度奖励建模）
+      和 <strong>Self-Referential Policy Optimization</strong>（自参照策略优化）。
+      前者借助预训练视觉世界模型 V-JEPA 2 在潜在空间中衡量轨迹的行为进度，
+      后者以此进度信号替代稀疏结果奖励驱动策略更新。
+    </p>
+    <figure>
+      <img src="img/pipeline.webp" alt="SRPO 方法流程图">
+      <figcaption>
+        图 2：SRPO 完整流程。① 用 V-JEPA 2 对 batch 内所有轨迹（成功+失败）编码为潜在表征；
+        ② 用 DBSCAN 对成功轨迹的潜在表征聚类，得到多个"行为参照中心"；
+        ③ 对失败轨迹计算其与最近参照中心的 L2 距离，经 Sigmoid 映射为 (0,1) 进度奖励；
+        ④ 成功轨迹直接赋予 reward = 1.0；
+        ⑤ 以轨迹级进度奖励 g 替代结果信号，输入 GRPO 目标函数更新策略。
+      </figcaption>
+    </figure>
+
+    <h3>World Progress Reward Modeling</h3>
+    <p>
+      对于 batch 中的每条轨迹，V-JEPA 2 将视频片段编码为紧凑的潜在向量序列。
+      成功轨迹通过 DBSCAN 聚类后形成若干"参照中心"，代表不同的成功行为模式。
+      失败轨迹 i 到最近参照中心的 L2 距离 d<sub>i</sub> 经标准化后，
+      通过 Sigmoid 函数 φ 映射为进度奖励：
+    </p>
+    <blockquote>
+      g<sub>i</sub> = 1.0（成功轨迹）；g<sub>i</sub> = φ((d<sub>i</sub> − d̄) / σ<sub>d</sub>)（失败轨迹）
+    </blockquote>
+    <p>
+      采用聚类而非单一参照轨迹的关键原因是：随着 RL 训练推进，成功策略愈发多样化，
+      单一参照会造成"后期性能收益显著衰减"，而多中心参照能持续覆盖探索空间。
+    </p>
+    <p>
+      与像素级世界模型（如 Cosmos-Predict2）不同，V-JEPA 2 的<strong>潜在表征</strong>天然具备跨任务迁移能力，
+      "naturally capture transferable behavioral progress patterns"，无需任务专属微调。
+    </p>
+
+    <h3>Self-Referential Policy Optimization</h3>
+    <p>
+      策略更新沿用 GRPO（Group Relative Policy Optimization）框架，
+      将轨迹级进度奖励 g 替代原始结果信号，以标准化优势估计驱动梯度：
+    </p>
+    <blockquote>
+      Â = (g − μ<sub>g</sub>) / σ<sub>g</sub>
+    </blockquote>
+    <p>
+      目标函数包含 clipped surrogate loss 与 KL 散度正则项，防止策略偏离 SFT 初始化过远。
+      "自参照"的精髓在于：参照基准完全来自模型自身的 in-batch 成功轨迹，
+      无需外部专家演示，随训练动态更新，天然契合当前策略的能力边界。
+    </p>
+
+    <figure>
+      <img src="img/progress.webp" alt="进度奖励质量对比">
+      <figcaption>
+        图 3：三种进度估计方式的对比（模拟环境 + 真实环境）。
+        SRPO（潜在表征）的进度曲线单调递增、平滑，
+        而像素级和 ImageBind 基线的曲线则出现振荡或停滞，无法有效引导策略学习。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在 <strong>LIBERO</strong>（4 个任务套件：Spatial / Object / Goal / Long，
+      每套件 10 个任务，每任务 1 条演示）和真实 <strong>X-ARM 7</strong> 机器人上进行（5 类操作任务）。
+      基线模型为 OpenVLA*-One（one-shot SFT，仅单条演示训练），评估指标为任务成功率。
+    </p>
+
+    <h3>LIBERO 基准主结果（Table 1）</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>平均</th></tr>
+      <tr><td>OpenVLA*-One（One-shot SFT）</td><td>61.7</td><td>55.5</td><td>42.6</td><td>35.8</td><td>48.9</td></tr>
+      <tr><td>+ Offline SRPO</td><td>97.5</td><td>91.4</td><td>90.1</td><td>91.0</td><td>92.5</td></tr>
+      <tr><td class="good">+ Online SRPO</td><td class="good">100.0</td><td class="good">99.4</td><td class="good">98.6</td><td class="good">98.8</td><td class="good">99.2</td></tr>
+    </table>
+    <p>
+      Online SRPO 在 Spatial 套件上实现满分（100.0%），四套件平均达 <strong>99.2%</strong>，
+      较 SFT 基线提升 <strong>50.3 个百分点</strong>，代表"103% 的相对提升，无需任何额外监督"。
+    </p>
+
+    <h3>LIBERO-Plus 鲁棒性测试（Table 2）</h3>
+    <table>
+      <tr><th>方法</th><th>平均成功率（7 扰动维度）</th></tr>
+      <tr><td>One-shot SFT 基线</td><td>19.4%</td></tr>
+      <tr><td>+ Online SRPO</td><td>59.6%（+40.2 pts）</td></tr>
+      <tr><td class="good">+ Online SRPO + 数据增强</td><td class="good">82.1%（+51.4 pts）</td></tr>
+    </table>
+    <p>
+      LIBERO-Plus 涵盖相机位置、机器人初始化、语言描述、光照、背景、噪声、布局 7 个扰动维度，
+      代表"167% 相对提升"（相对 SFT 19.4%）。
+    </p>
+
+    <h3>进度奖励质量定量评估（Table 3）</h3>
+    <table>
+      <tr><th>方法</th><th>SC (Spearman ↑)</th><th>Mono ↑</th><th>MMD ↑</th><th>JS ↑</th><th>SMD ↑</th></tr>
+      <tr><td>Pixel-level</td><td>0.125</td><td>0.498</td><td>0.274</td><td>0.548</td><td>2.100</td></tr>
+      <tr><td>ImageBind</td><td>0.957</td><td>0.837</td><td>0.356</td><td>0.408</td><td>18.111</td></tr>
+      <tr><td class="good">SRPO（V-JEPA 2）</td><td class="good">0.998</td><td class="good">0.992</td><td class="good">0.615</td><td class="good">0.572</td><td class="good">188.799</td></tr>
+    </table>
+    <p>
+      SRPO 在 Spearman 时序相关性（0.998）和单调性（0.992）上接近完美，
+      成功/失败轨迹分布分离度（SMD = 188.799）远超竞争方案，验证潜在世界模型表征的优越性。
+    </p>
+
+    <h3>真实机器人实验（Section 5.4）</h3>
+    <figure>
+      <img src="img/results.webp" alt="真实机器人结果对比">
+      <figcaption>
+        图 8：真实 X-ARM 7 机器人上 5 类操作任务（水果放置、毛巾折叠、黑板擦拭、卡片选取等）的成功率对比。
+        SRPO（offline RL）相较 SFT 基线，π₀（扩散策略）平均提升 +66.8%，π₀-FAST（自回归策略）平均提升 +86.7%。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验">
+      <figcaption>
+        图 10：Object 套件消融实验。去掉"自参照机制"（改用固定外部专家参照）导致性能在次优结果处停滞，
+        训练步数需增加约 1.4×；去掉"聚类机制"（改用单条最近成功轨迹）在训练后期性能收益显著下降。
+        超参数分析显示 α=0.8（进度奖励权重）为最优，α=0 仅靠结果奖励不足以高效学习。
+      </figcaption>
+    </figure>
+
+    <h3>训练效率</h3>
+    <p>
+      SRPO 在 LIBERO 四套件上达到收敛所需步数：Spatial 79 步、Object 59 步、Goal 103 步、Long 219 步。
+      相较 GRPO，SRPO 展现出"steeper efficiency slope...especially for long-horizon tasks"，
+      长时序任务收敛速度提升尤为明显。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>Note：</b>以下局限性部分为论文作者明确陈述，部分为从设计出发的推断，已分别标注。
+    </div>
+    <details class="lim" open>
+      <summary>真实环境采用 Offline RL 而非 Online RL（作者明确陈述）</summary>
+      <p>
+        出于安全顾虑，真实机器人实验采用 Advantage-Weighted Regression（离线 RL 范式），
+        而非模拟环境中的完整 online RL。这意味着真实场景下无法像模拟中那样进行在线探索，
+        可能限制自参照机制在动态多样化真实任务中的充分发挥。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>潜在世界模型依赖 V-JEPA 2 预训练质量（推断）</summary>
+      <p>
+        SRPO 的进度奖励质量高度依赖 V-JEPA 2 所提供的潜在表征。
+        若目标任务域与 V-JEPA 2 预训练数据差异较大（如工业场景、水下操作等），
+        潜在表征的迁移能力可能下降，进而影响进度奖励的可靠性。论文本身未对此进行系统性分析。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>像素级世界模型方案存在场景一致性问题（作者明确陈述）</summary>
+      <p>
+        论文附录 E 通过 Cosmos-Predict2 像素级世界模型的实验展示了"generated videos suffer from
+        poor scene consistency"，证明像素级方案在多样任务下泛化困难，
+        这也是作者选择潜在表征而非像素预测的核心依据，但同时表明 SRPO 的方法论选择受限于此类问题的存在。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>仅使用第三视角视觉观测（作者明确陈述）</summary>
+      <p>
+        SRPO 在实验中"achieves SOTA using only third-person visual observations and language instructions"，
+        无需腕部图像、本体感知或 3D 数据。虽然这是一个优点，
+        但也意味着对于依赖精细末端执行器信息的高精度操作任务，该方案尚未完整验证。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · SRPO: Self-Referential Policy Optimization for Vision-Language-Action Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.15605">https://arxiv.org/abs/2511.15605</a>
+  </div>
+</footer>
+
+</body>
+</html>

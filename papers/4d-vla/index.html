@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4D-VLA: Spatiotemporal Vision-Language-Action Pretraining with Cross-Scene Calibration</title>
+<meta name="keywords" content="VLA, 机器人预训练, RGB-D, 4D表征, spatiotemporal reasoning, memory bank sampling, 多视角泛化, coordinate alignment, imitation learning, MV-Bench">
+<meta name="description" content="4D-VLA 通过引入深度感知的空间视觉 token 与记忆库时序采样，解决多机器人数据集联合预训练中的坐标系混乱与状态混乱问题，在 LIBERO 与真实操作任务上显著超越 OpenVLA。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2506.22242</span>
+    <h1>4D-VLA</h1>
+    <div class="sub">Spatiotemporal Vision-Language-Action Pretraining with Cross-Scene Calibration</div>
+    <div class="authors">Jiahui Zhang, Yurui Chen, Yueming Xu, Ze Huang, Yanpeng Zhou, Yu-Jie Yuan, Xinyue Cai, Guowei Huang, Xingyue Quan, Hang Xu, Li Zhang†&nbsp;·&nbsp;复旦大学数据科学学院 &amp; 华为诺亚方舟实验室</div>
+    <p class="lead">4D-VLA 将 RGB-D 深度信息与历史时序帧融入 VLA 预训练，通过空间对齐 token 和记忆库采样（Memory Bank Sampling）解决多机器人数据集联合训练时出现的"坐标系混乱"与"状态混乱"问题，在 LIBERO 仿真平台和真实操作实验中均大幅超越 OpenVLA 基线。</p>
+    <div class="meta">
+      <span>2025 · 复旦大学</span>
+      <span>LIBERO Avg +12.1pp vs OpenVLA</span>
+      <span>真实场景 Avg 85.63% vs 27.70%</span>
+      <span><a href="https://arxiv.org/abs/2506.22242">📄 arXiv:2506.22242</a></span>
+      <span><a href="https://github.com/LogosRoboticsGroup/4D-VLA">GitHub 代码</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>机器人预训练</span>
+      <span>RGB-D</span>
+      <span>4D表征</span>
+      <span>spatiotemporal reasoning</span>
+      <span>memory bank sampling</span>
+      <span>多视角泛化</span>
+      <span>coordinate alignment</span>
+      <span>imitation learning</span>
+      <span>MV-Bench</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">大规模机器人预训练的关键障碍：当把多个异构机器人数据集混合训练时，单帧 RGB 图像缺乏充足的空间与时序上下文，导致 action 分布极度分散，模型难以收敛。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>坐标系混乱（Coordinate System Chaos）</h3>
+        <p>动作定义在机器人坐标系中，而视觉输入缺乏足够的空间上下文。论文指出：<em>"if the image does not fully capture the robot's body, it becomes challenging to infer the robot's exact position and orientation."</em> 不同相机外参与内参使得同一动作在不同数据集中的视觉表征截然不同。</p>
+      </div>
+      <div class="card">
+        <h3>状态混乱（State Chaos）</h3>
+        <p>单帧图像缺少必要的时序与上下文线索以消除动作歧义。论文指出这包括"symmetric trajectories——where it is difficult to infer the direction of motion"，以及"visually similar observations correspond to entirely different actions"的情形，使得模型对当前运动方向无法判断。</p>
+      </div>
+    </div>
+
+    <blockquote>"We identify two primary factors contributing to incomplete input: coordinate system chaos and state chaos, both of which severely limit the training efficiency achievable with diverse robotic datasets."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="teaser">
+      <figcaption>图 1：左侧展示坐标系混乱问题——不同数据集的相机视角与机器人摆放导致同一动作在视觉上呈现截然不同的分布；右侧对比 OpenVLA 与 4D-VLA 的整体性能，后者在 LIBERO 和真实场景均取得显著提升。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>88.6%</b><small>LIBERO Avg（±0.3）</small></div>
+      <div><b>+12.1pp</b><small>vs OpenVLA (76.5%)</small></div>
+      <div><b>85.63%</b><small>真实操作 Full Model</small></div>
+      <div><b>81.0%</b><small>MV-Bench In-View Avg</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">4D-VLA 以顺序 RGB-D 输入为基础，构建两类核心机制：① 空间感知视觉 token（Spatial Vision Token）将深度信息提升至世界坐标，实现跨场景坐标系对齐；② 记忆库采样（Memory Bank Sampling, MBS）从时序窗口中自适应挑选 k=5 帧历史信息，既捕捉关键状态变化，又避免冗余。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="pipeline">
+      <figcaption>图 2：4D-VLA 整体 pipeline。视觉编码器提取 RGB 特征图；深度图经由相机内外参反投影至世界坐标，通过可学习位置嵌入 ℰₛ 编码后与视觉特征做逐元素加法，形成 spatial vision token eˢᵀ；记忆库从 n=20 帧的时序窗口中选取 k=5 帧历史 token；拼接文本 token 后输入 LLM 骨干，最终接 MLP action head 输出预测动作。</figcaption>
+    </figure>
+
+    <h3>空间感知视觉 Token（Spatial Vision Token）</h3>
+    <p>
+      给定 RGB 图像 I ∈ ℝ³ˣʰˣʷ，视觉编码器 ℰ 提取特征图 fᵥ = ℰ(I)。深度图 D 通过相机外参 [R|T] 和内参 K 反投影得到世界坐标点云 Pₘ，再经可学习位置嵌入 ℰₛ 编码并与视觉特征做逐元素加法：
+    </p>
+    <blockquote>eˢᵀ = P(ℰ(I) + ℰₛ(Pₘ))</blockquote>
+    <p>此设计使 token 同时携带外观与精确三维位置信息，消除坐标系混乱。</p>
+
+    <h3>记忆库采样（Memory Bank Sampling, MBS）</h3>
+    <p>
+      从长度为 n=20 的历史帧序列中自适应选取 k=5 帧：算法顺序遍历帧组，维护一个相似度队列，保证每帧与已选帧的相似度低于当前队列最大值，从而避免冗余、保留关键状态转变。历史 token 与时序偏移通过可学习编码 ℰₜ(t-j) 注入相对位置信息，最终与当前帧合并：
+    </p>
+    <blockquote>𝒳 = ⋃ᵢ∈ℋ [eᵢᵀ | eᵢˢᵀ] ∪ {eᵗᵉˣᵗ}</blockquote>
+    <p>Action head 采用 MLP，在延迟（160.0 ms）与成功率（86.6%）之间取得最优平衡，相比 Autoregressive（0.6 FPS）和 Diffusion head 均有优势。</p>
+
+    <h3>MV-Bench 多视角评测基准</h3>
+    <p>论文提出 MV-Bench——一个覆盖 270° 前向视角范围内 6 个训练视角的仿真评测集，同时评估 In-View（已见视角）与 Cross-View（偏移 Δ15°/Δ30°）的泛化能力，填补了现有 VLA 多视角评测的空白。</p>
+
+    <figure>
+      <img src="img/mvbench.webp" alt="MV-Bench">
+      <figcaption>图 3：MV-Bench 6 个训练相机视角的设置（覆盖 0°、60°、120°、270°、300°、330°），用于评估 VLA 的空间感知与新视角泛化能力。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">评测平台：LIBERO 仿真基准（4 个子任务）、MV-Bench 多视角仿真评测、真实 Franka 机器臂操作（4 项任务 × 多视角泛化）。基线方法：OpenVLA。所有数字均源自论文原文。</p>
+
+    <h3>Table 1 · LIBERO 仿真基准</h3>
+    <table>
+      <tr><th>方法</th><th>LIBERO-Spatial</th><th>LIBERO-Object</th><th>LIBERO-Goal</th><th>LIBERO-Long</th><th>Avg</th></tr>
+      <tr><td>OpenVLA</td><td>84.7±0.9</td><td>88.4±0.8</td><td>79.2±1.0</td><td>53.7±1.3</td><td>76.5±0.6</td></tr>
+      <tr><td class="good">4D-VLA（Ours）</td><td class="good">88.9±0.5</td><td class="good">95.2±0.3</td><td class="good">90.9±0.4</td><td class="good">79.1±1.2</td><td class="good">88.6±0.3</td></tr>
+    </table>
+
+    <h3>Table 2 · MV-Bench 多视角仿真</h3>
+    <table>
+      <tr><th>方法 / 视角类型</th><th>0°</th><th>60°</th><th>120°</th><th>270°</th><th>300°</th><th>330°</th><th>Avg</th></tr>
+      <tr><td>OpenVLA In-View</td><td>57.4</td><td>50.0</td><td>50.6</td><td>43.5</td><td>53.8</td><td>57.8</td><td>52.2</td></tr>
+      <tr><td class="good">4D-VLA In-View</td><td class="good">83.2</td><td class="good">87.0</td><td class="good">79.5</td><td class="good">70.2</td><td class="good">75.8</td><td class="good">90.2</td><td class="good">81.0</td></tr>
+      <tr><td>OpenVLA Cross-View (Δ15°)</td><td colspan="6" style="text-align:center">—</td><td>50.5</td></tr>
+      <tr><td class="good">4D-VLA Cross-View (Δ15°)</td><td colspan="6" style="text-align:center">—</td><td class="good">73.8</td></tr>
+    </table>
+
+    <h3>Table 3 · 真实机器臂操作</h3>
+    <table>
+      <tr><th>配置</th><th>Task 1</th><th>Task 2</th><th>Task 3</th><th>Task 4</th><th>Avg</th></tr>
+      <tr><td>OpenVLA</td><td>45.00</td><td>22.50</td><td>30.00</td><td>13.33</td><td>27.70</td></tr>
+      <tr><td>Base VLA</td><td>35.00</td><td>20.00</td><td>5.00</td><td>2.67</td><td>15.67</td></tr>
+      <tr><td>+Pretraining</td><td>60.00</td><td>60.00</td><td>40.00</td><td>28.00</td><td>47.00</td></tr>
+      <tr><td>+Pretraining+Coord</td><td>75.00</td><td>60.00</td><td>85.00</td><td>34.67</td><td>63.67</td></tr>
+      <tr><td>+Pretraining+Hist</td><td>80.00</td><td>77.50</td><td>70.00</td><td>36.00</td><td>65.88</td></tr>
+      <tr><td class="good">Full Model（Ours）</td><td class="good">90.00</td><td class="good">82.50</td><td class="good">90.00</td><td class="good">80.00</td><td class="good">85.63</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="results">
+      <figcaption>图 5：真实场景多视角泛化测试——标准视角（In-View）与新视角（Δ15°、Δ25°、Δ45° 偏移）下的成功率对比。4D-VLA 在所有偏移角度均显著优于 OpenVLA（平均 55% vs 18%），体现出空间感知预训练带来的跨视角泛化能力。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>Table 5 对时序编码方式进行系统消融：可学习相对位置编码 + Concat 融合达到最高成功率 75.6%；使用绝对位置编码则完全失效（0.0%）；去掉所有历史编码降至 63.0%。</p>
+    <p>Table 8 对帧采样方法进行对比（LIBERO-Spatial）：MBS（0.866）优于单帧（0.738）、Adaptive Pooling（0.604）、Grid Pooling（0.620）和 Q-Former（0.556），同时延迟 160.0 ms 与显存占用 8682.9 MB 均处于合理水平。</p>
+
+    <figure>
+      <img src="img/ablation.webp" alt="ablation">
+      <figcaption>图 6：历史帧窗口大小与帧采样效率的对比分析。随时序窗口 n 增大，成功率先升后趋于稳定；MBS 在 n=20、k=5 时取得最佳权衡。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下第 1 条为论文作者在正文中明确陈述的局限；第 2、3 条为基于方法设计推断（inferred）的潜在局限，未在论文中直接点明。</div>
+
+    <details class="lim" open>
+      <summary>依赖 RGB-D 硬件（stated）</summary>
+      <p>论文明确指出："A limitation of our approach is its reliance on RGB-D input, which introduces hardware restriction." 相比纯 RGB 方法，4D-VLA 需要深度传感器，限制了在无深度摄像头场景下的直接部署。</p>
+    </details>
+
+    <details class="lim">
+      <summary>计算与延迟开销（inferred）</summary>
+      <p>Memory Bank Sampling 引入 k=5 历史帧的 spatial token，相比单帧推理延迟从 76.5 ms 增加至 160.0 ms（约 2.1×）。在对实时性要求极高的场景（如高速操作）下可能存在瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>相机标定精度依赖（inferred）</summary>
+      <p>空间感知 token 的构造依赖精确的相机内参 K 和外参 [R|T] 将深度图反投影至世界坐标。若标定存在误差或外参在运行中漂移，空间对齐效果会受损，可能影响在标定精度受限场景下的稳定性。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · 4D-VLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.22242">https://arxiv.org/abs/2506.22242</a>
+  </div>
+</footer>
+
+</body>
+</html>

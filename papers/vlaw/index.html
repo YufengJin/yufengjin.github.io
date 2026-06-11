@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLAW: Iterative Co-Improvement of Vision-Language-Action Policy and World Model</title>
+<meta name="keywords" content="VLA, world model, 机器人操作, 迭代协同优化, 合成数据, video generation, 扩散策略, imitation learning">
+<meta name="description" content="VLAW 通过迭代协同优化 VLA 策略与世界模型，利用真实回滚数据接地世界模型，生成高质量合成轨迹，实现平均 39.2% 的成功率绝对提升。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">arXiv 2026 · 机器人 · Robotics</span>
+    <h1>VLAW: Iterative Co-Improvement of Vision-Language-Action Policy and World Model</h1>
+    <div class="sub">用世界模型生成合成数据，迭代协同提升 VLA 策略与世界模型的物理真实性</div>
+    <div class="authors">Yanjiang Guo, Tony Lee, Lucy Xiaoyang Shi, Jianyu Chen, Percy Liang, Chelsea Finn &nbsp;·&nbsp; Stanford University / Tsinghua University</div>
+    <p class="lead">VLAW 提出一种迭代框架：通过真实机器人回滚数据接地预训练世界模型，再让接地后的世界模型生成大量合成轨迹以优化 VLA 策略；两者相互增益，循环迭代，在 DROID 平台五类接触密集任务中平均成功率提升 39.2%。</p>
+    <div class="meta">
+      <span>cs.RO · arXiv 2602.12063</span>
+      <span>DROID 平台 · Franka Panda</span>
+      <span>5 任务类别 · 50 次/任务评估</span>
+      <span><a href="https://arxiv.org/abs/2602.12063">📄 arXiv:2602.12063</a></span>
+      <span><a href="https://arxiv.org/pdf/2602.12063">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>world model</span>
+      <span>机器人操作</span>
+      <span>迭代协同优化</span>
+      <span>合成数据</span>
+      <span>video generation</span>
+      <span>扩散策略</span>
+      <span>imitation learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      大规模预训练 VLA 策略（如 π₀.₅）在泛化上表现出色，但在新任务上直接部署时需要大量真实示范或代价高昂的物理回滚才能完成微调。现有方法要么依赖人工重置与监督（成本高），要么在合成数据与真实物理之间存在较大 sim-to-real gap。
+    </p>
+    <blockquote>
+      "Although the learned world model achieves high fidelity on the downstream tasks from which online data are collected, our current evaluation is limited to five task categories."
+    </blockquote>
+    <p>
+      世界模型（video generation model）是生成合成机器人数据的理想工具，但预训练世界模型往往缺乏对目标任务物理动态的精确建模——尤其是接触密集型操作（如叠放物体、擦黑板、翻书）。VLAW 的核心洞察是：<strong>少量真实回滚数据足以将预训练世界模型接地，使其能忠实模拟目标任务的物理过程；接地后的世界模型又能批量生成高质量合成轨迹来训练 VLA 策略，从而减少对昂贵真实交互的依赖。</strong>
+    </p>
+    <figure>
+      <img src="img/teaser.webp" alt="VLAW teaser">
+      <figcaption>
+        <strong>VLAW 总体思路。</strong>传统 VLA 在线回滚需要人工重置与持续监督，成本极高。VLAW 利用有限的真实回滚数据（每次迭代仅 50 条）训练接地世界模型，再由世界模型生成大量合成训练数据（每任务 500 条），大幅降低对真实物理交互的依赖，同时实现显著的策略性能提升。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>39.2%</b><small>平均绝对成功率提升（vs 基础策略）</small></div>
+      <div><b>11.6%</b><small>合成数据带来的额外提升（vs 仅用真实数据）</small></div>
+      <div><b>50</b><small>每次迭代所需真实回滚条数</small></div>
+      <div><b>2</b><small>迭代轮数即达最优</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      VLAW 是一个四步迭代循环：①收集真实回滚轨迹；②用回滚数据微调世界模型（同时与 DROID 示范数据联合训练以防 catastrophic forgetting）；③让 VLA 策略在世界模型中进行 closed-loop 推演，生成合成轨迹并由奖励模型过滤；④用过滤后的合成轨迹以加权 flow-matching 损失更新 VLA 策略。
+    </p>
+    <figure>
+      <img src="img/pipeline.webp" alt="VLAW 四步流程">
+      <figcaption>
+        <strong>VLAW 四步迭代流程。</strong>（1）在目标任务上收集真实机器人回滚轨迹；（2）以回滚数据对预训练 Ctrl-World 模型进行接地微调，使用扩散目标 ℒ = 𝔼‖x̂₀(x_{t′},t′,c)−x₀‖²，并与 DROID 演示数据联合训练（正则化系数 λ）；（3）策略在接地世界模型中并行推演，生成 N 条合成轨迹，经 Qwen3-VL 奖励模型按成功率阈值过滤；（4）以加权 flow-matching 损失更新 VLA 策略，成功轨迹权重更高。
+      </figcaption>
+    </figure>
+
+    <h3>世界模型接地（World Model Grounding）</h3>
+    <p>
+      世界模型以预训练 Ctrl-World（在 DROID 数据集上训练的动作条件视频生成模型）为起点。关键改进在于：在微调时同时使用<strong>成功与失败</strong>的真实轨迹，并与原始 DROID 数据联合训练，以正则化系数 λ 控制两者比例。这一设计防止模型对合成成功场景过度乐观（over-optimism），保证世界模型能如实模拟任务失败动态，为后续策略优化提供可靠的负样本信号。
+    </p>
+
+    <h3>策略优化（Policy Optimization via Filtered Synthetic Data）</h3>
+    <p>
+      VLA 策略（π₀.₅）在接地世界模型中进行 closed-loop 推演：当前观测输入策略，策略输出动作，世界模型生成下一帧观测，依此循环最长 20 秒。推演结束后，Qwen3-VL 奖励模型以成功率阈值对轨迹进行二值过滤。过滤通过的轨迹以<strong>加权 flow-matching 损失</strong>更新策略参数，成功轨迹获得更高权重。作者指出，这等价于一种正则化强化学习，但完全使用监督学习实现，避免了策略梯度方法的不稳定性。
+    </p>
+
+    <figure>
+      <img src="img/worldmodel.webp" alt="世界模型精度对比">
+      <figcaption>
+        <strong>世界模型接地效果对比。</strong>从左到右：预训练 Ctrl-World（未接地）、仅用专家数据微调、加入在线回滚数据后微调。接地后，世界模型对接触密集型交互（如擦除痕迹、翻书翘起）的渲染精度显著提升，PSNR 从 16.32 提升至 21.77，FVD 从 225.13 降至 64.12。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在 DROID 平台（Franka Panda + Robotiq 双指爪）上进行，评估五类接触密集型任务：Stacking（叠放）、Wiping（擦除）、Open Book（翻书）、Scooping（勺取）、Drawing（绘图）。每类任务各进行 50 次评估。基线方法包括：Filtered BC（仅在真实成功轨迹上做监督微调）和 DSRL（在潜在噪声空间做扩散策略优化）。
+    </p>
+
+    <h3>世界模型精度（Action Replay 评估）</h3>
+    <table>
+      <tr><th>指标</th><th>预训练（无接地）</th><th>+专家数据微调</th><th>+在线回滚（完整接地）</th></tr>
+      <tr><td>PSNR ↑</td><td>16.32</td><td>19.87</td><td class="good">21.77</td></tr>
+      <tr><td>SSIM ↑</td><td>0.634</td><td>0.748</td><td class="good">0.784</td></tr>
+      <tr><td>LPIPS ↓</td><td>0.347</td><td>0.189</td><td class="good">0.136</td></tr>
+      <tr><td>FID ↓</td><td>41.03</td><td>12.76</td><td class="good">9.58</td></tr>
+      <tr><td>FVD ↓</td><td>225.13</td><td>99.98</td><td class="good">64.12</td></tr>
+    </table>
+    <p>交互事件混淆矩阵（50 条 clip）：TP=26，FN=4，TN=19，FP=1，显示世界模型对接触事件的识别具有高准确性。</p>
+
+    <h3>策略成功率（5 任务 × 50 次评估）</h3>
+    <table>
+      <tr><th>方法</th><th>Stacking</th><th>Wiping</th><th>Open Book</th><th>Scooping</th><th>Drawing</th><th>Mean</th></tr>
+      <tr><td>Base (π₀.₅)</td><td>0.62</td><td>0.46</td><td>0.56</td><td>0.44</td><td>0.22</td><td>0.460</td></tr>
+      <tr><td>DSRL</td><td>0.70</td><td>0.40</td><td>0.50</td><td>0.60</td><td>0.30</td><td>0.500</td></tr>
+      <tr><td>Filtered BC (Iter 1)</td><td>0.80</td><td>0.62</td><td>0.72</td><td>0.64</td><td>0.46</td><td>0.648</td></tr>
+      <tr><td>Filtered BC (Iter 2)</td><td>0.88</td><td>0.76</td><td>0.82</td><td>0.74</td><td>0.56</td><td>0.752</td></tr>
+      <tr><td>VLAW (Iter 1)</td><td>0.80</td><td>0.72</td><td>0.80</td><td>0.72</td><td>0.68</td><td>0.744</td></tr>
+      <tr><td>VLAW (Iter 2)</td><td class="good">0.92</td><td class="good">0.86</td><td class="good">0.86</td><td class="good">0.92</td><td class="good">0.78</td><td class="good">0.868</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="成功率迭代对比">
+      <figcaption>
+        <strong>各方法迭代提升曲线。</strong>VLAW 在两次迭代后成功率（0.868）显著高于 Filtered BC（0.752）和 DSRL（0.500）。第一迭代 VLAW 与 Filtered BC Iter 2 相当，但 VLAW 第二迭代借助更高质量的合成数据进一步拉开差距，尤其在 Drawing（难任务）上从 0.22 提升至 0.78。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Ablation Studies）</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验">
+      <figcaption>
+        <strong>Drawing 任务消融实验。</strong>将合成轨迹数量从 500 条减至 250 条，或去掉真实数据联合训练，均导致性能下降，验证了合成数据规模与真实数据正则化两者的必要性。
+      </figcaption>
+    </figure>
+    <p>
+      消融结果表明：① 合成数据量越大，策略性能越好；② 在世界模型微调阶段去掉原始 DROID 数据会导致 catastrophic forgetting，使合成轨迹质量下降；③ 策略在线回滚数据对世界模型接地至关重要，仅用专家演示数据无法达到相同精度。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性部分为作者在论文结论部分明确陈述（标注 <em>stated</em>），部分为从方法设计中推断（标注 <em>inferred</em>）。</div>
+    <details class="lim" open><summary>评估任务类别有限（stated）</summary>
+      <p>作者明确指出："Although the learned world model achieves high fidelity on the downstream tasks from which online data are collected, our current evaluation is limited to five task categories."  目前仅在 DROID 平台五类任务上验证，对更大规模、更多样化任务集的泛化性尚未得到系统评估。</p>
+    </details>
+    <details class="lim"><summary>世界模型分布偏移问题（inferred）</summary>
+      <p>世界模型在目标任务数据上接地，若 VLA 策略在推演时产生分布外动作，世界模型可能生成失真帧，进而影响合成轨迹质量。论文中对跨任务泛化的世界模型稳定性讨论有限。</p>
+    </details>
+    <details class="lim"><summary>真实回滚仍有一定成本（inferred）</summary>
+      <p>虽然每次迭代仅需 50 条真实回滚，但接触密集型任务仍需人工监督和场景重置。与完全无需真实交互的纯仿真方法相比，VLAW 在部署便利性上仍存在一定门槛。</p>
+    </details>
+    <details class="lim"><summary>奖励模型过滤的可靠性（inferred）</summary>
+      <p>使用 Qwen3-VL 作为奖励模型对合成轨迹做二值过滤，VLM 对复杂接触状态（如勺取成功与否）的判断可能存在误判，错误过滤可能引入噪声训练数据。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · VLAW: Iterative Co-Improvement of Vision-Language-Action Policy and World Model · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.12063">https://arxiv.org/abs/2602.12063</a>
+  </div>
+</footer>
+
+</body>
+</html>

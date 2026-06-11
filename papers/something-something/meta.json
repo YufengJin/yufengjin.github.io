@@ -1,0 +1,11 @@
+{
+  "slug": "something-something",
+  "title": "The \"something something\" video database for learning and evaluating visual common sense",
+  "arxiv_id": "1706.04261",
+  "url": "https://arxiv.org/abs/1706.04261",
+  "category": "计算机视觉 · Computer Vision",
+  "keywords": ["video dataset", "common sense", "action recognition", "crowd-sourcing", "视频数据库", "temporal reasoning", "直觉物理", "动作识别", "curriculum learning", "人机交互"],
+  "summary_zh": "Something-Something 是一个包含 108,499 条短视频、174 个细粒度动作类别的大规模众包视频数据集，通过让工作者主动表演模板驱动的动作并录制视频，捕捉人类与物体之间的基础物理交互，专为训练和评估神经网络的视觉常识推理能力而设计。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

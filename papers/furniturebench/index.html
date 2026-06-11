@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FurnitureBench: Reproducible Real-World Benchmark for Long-Horizon Complex Manipulation</title>
+<meta name="keywords" content="furniture assembly, long-horizon manipulation, robotic benchmark, imitation learning, offline RL, reproducibility, FurnitureSim, 真实机器人">
+<meta name="description" content="FurnitureBench 是一个可复现的真实世界家具组装基准，提供超过 200 小时的遥操作演示数据、3D 可打印家具模型和模拟环境，系统评估了模仿学习与离线强化学习在长时域复杂操作任务中的能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2023 · 机器人操作基准</span>
+    <h1>FurnitureBench</h1>
+    <div class="sub">Reproducible Real-World Benchmark for Long-Horizon Complex Manipulation</div>
+    <div class="authors">Minho Heo*, Youngwoon Lee* (UC Berkeley), Doohyun Lee, Joseph J. Lim — KAIST &amp; UC Berkeley · RSS 2023</div>
+    <p class="lead">FurnitureBench 将家具组装作为长时域复杂机器人操作的下一个里程碑基准。它提供了 3D 可打印家具模型、超过 219.6 小时的遥操作演示数据（5000+ 条演示）、一键复现的机器人控制软件以及基于 Isaac Gym 的 FurnitureSim 模拟器，使任何实验室都能以标准化方式评估强化学习与模仿学习算法在真实世界中的表现。</p>
+    <div class="meta">
+      <span>RSS 2023</span><span>8 种家具模型</span><span>200+ 小时演示</span>
+      <span><a href="https://arxiv.org/abs/2305.12821">📄 arXiv:2305.12821</a></span>
+      <span><a href="https://clvrai.com/furniture-bench">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>furniture assembly</span>
+      <span>long-horizon manipulation</span>
+      <span>robotic benchmark</span>
+      <span>imitation learning</span>
+      <span>offline RL</span>
+      <span>reproducibility</span>
+      <span>FurnitureSim</span>
+      <span>真实机器人</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 基准设计</a>
+  <a href="#exp">3 · 实验结果</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有真实世界机器人操作基准仅能评估推物、拾放等简单短时域任务。要让机器人真正胜任日常任务（整理房间、烹饪、组装家具），需要更具挑战性、可复现的长时域复杂操作基准。</p>
+    <blockquote>"these approaches have been limited to learning simple behaviors in current real-world manipulation benchmarks, such as pushing or pick-and-place."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="FurnitureBench Teaser">
+      <figcaption><strong>FurnitureBench 概览。</strong>（左）机器人在真实环境中组装好的家具陈列。（右）基准包含 8 种不同家具模型，每种模型均受 IKEA 家具启发、经由 3D 打印制作，从而保证任意实验室均可复现相同实验条件。</figcaption>
+    </figure>
+    <p>家具组装之所以是理想的基准任务，在于它同时要求：</p>
+    <ul>
+      <li><strong>长时域规划（Long-horizon planning）</strong>：单次完整组装平均需 60–230 秒、600–2300 个低层步骤，远超 Roboturk（15–120 秒）等现有基准。</li>
+      <li><strong>多样灵巧技能（Diverse dexterous skills）</strong>：抓取、重定向、插接（inserting）、螺旋固定（screwing）等技能缺一不可。</li>
+      <li><strong>可靠 3D 感知（3D perception）</strong>：需通过正面摄像头与腕部摄像头协作完成精准对齐。</li>
+    </ul>
+    <div class="kpi">
+      <div><b>8</b><small>种家具模型</small></div>
+      <div><b>5000+</b><small>条遥操作演示</small></div>
+      <div><b>219.6h</b><small>演示总时长</small></div>
+      <div><b>10Hz</b><small>末端执行器控制频率</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 基准设计</h2>
+    <p class="lead">FurnitureBench 围绕"可复现（reproducible）"与"易用（easy-to-use）"两大核心目标设计，涵盖真实世界机器人系统、标准化家具模型、演示数据集与模拟器四大模块。</p>
+
+    <figure>
+      <img src="img/environment_setup.webp" alt="Robot System Setup">
+      <figcaption><strong>真实世界实验环境。</strong>系统由一台 7-DoF Franka Emika Panda 机械臂、三台 Intel RealSense D435 RGB-D 相机和 IKEA TOMMARYD 桌面组成；AprilTag 用于估计家具零件位姿以辅助任务初始化，不作为策略观测输入。</figcaption>
+    </figure>
+
+    <h3>可复现系统设计</h3>
+    <p>机器人系统使用学术界广泛采用的硬件（Franka Panda + RealSense D435），家具零件全部经由 3D 打印制作——研究者只需下载模型文件即可在自己实验室复现完全相同的家具零件。绿色摄影背景与受控照明（色温 4600K–6000K，亮度 ≤4000 lm）进一步降低环境变量。任务初始化 GUI 工具引导用户将零件摆放至从预定分布采样的目标位姿，确保不同实验室的评测结果可比较。</p>
+
+    <h3>演示数据集</h3>
+    <p>作者使用 Oculus Quest 2 VR 控制器与键盘共同完成了 <strong>219.6 小时</strong>的成功演示采集，覆盖所有 8 种家具与 3 个随机化等级（low / medium / high）。单条演示约 300–3000 步，属于典型的长时域轨迹。</p>
+
+    <h3>FurnitureSim 模拟器</h3>
+    <p>FurnitureSim 基于 Isaac Gym 与 Factory 构建，支持快速在线渲染与离线光线追踪渲染，与真实世界共享相同的 3D 家具模型与机器人控制器。模拟实验结果与真实世界结果呈<em>正相关</em>，可作为算法快速迭代的代理指标；但仍存在 sim-to-real domain gap，策略不能直接迁移。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>观测空间</h3>
+        <ul>
+          <li>正面摄像头 RGB（1280×720 → 中心裁剪 224×224）</li>
+          <li>腕部摄像头 RGB（直接下采样 224×224）</li>
+          <li>本体感知状态：末端位置、四元数方向、速度、夹爪宽度</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>评测算法</h3>
+        <ul>
+          <li><strong>BC</strong>（Behavioral Cloning）+ ResNet-18 encoder</li>
+          <li><strong>IQL</strong>（Implicit Q-Learning）+ R3M features</li>
+          <li>指标：技能成功率（10 次 trial 平均）、完成阶段数（phases）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验结果</h2>
+    <p class="lead">基准评测分三部分：单技能基准（Single-Skill）、全装配基准（Full-Assembly）和模拟器基准（Simulation）。整体结论是：现有 IL 与离线 RL 算法在该基准上尚无法取得实质进展，特别是在"插接"和"螺旋固定"技能上。</p>
+
+    <h3>单技能基准结果（lamp 家具，部分）</h3>
+    <table>
+      <tr><th>技能</th><th>BC (low)</th><th>IQL (low)</th><th>BC (med)</th><th>IQL (med)</th></tr>
+      <tr><td>Grasping 1</td><td>0%</td><td class="good">70%</td><td>0%</td><td>40%</td></tr>
+      <tr><td>Placing</td><td>40%</td><td class="good">90%</td><td>30%</td><td>20%</td></tr>
+      <tr><td>Grasping 2</td><td>30%</td><td class="good">0%</td><td>20%</td><td>20%</td></tr>
+      <tr><td>Inserting</td><td>0%</td><td class="good">20%</td><td>0%</td><td>0%</td></tr>
+      <tr><td>Screwing</td><td>10%</td><td class="good">10%</td><td>0%</td><td>0%</td></tr>
+    </table>
+    <p>IQL 在 square_table 的 Screwing 技能（low randomness）达到 <strong>90%</strong> 成功率，而 Inserting 技能在所有家具上普遍为 <strong>0–20%</strong>，证明"精准对齐插接"是当前算法的主要瓶颈。</p>
+
+    <figure>
+      <img src="img/evaluation_full_assembly.webp" alt="Full Assembly Benchmark Results">
+      <figcaption><strong>全装配基准结果。</strong>BC 和 IQL 在所有 8 种家具、3 种随机化等级下的完成阶段数（phases）均值，误差条表示最小/最大完成数。BC 和 IQL 均无法完成任何一对家具零件的组装（完成阶段数约为 1–2 / 12）。</figcaption>
+    </figure>
+
+    <h3>one_leg 装配消融分析（IQL-R3M，平均完成阶段数）</h3>
+    <table>
+      <tr><th>实验设置</th><th>low randomness</th><th>medium randomness</th></tr>
+      <tr><td>Original（低随机化数据）</td><td class="good">3.8</td><td>—</td></tr>
+      <tr><td>Original（中随机化数据）</td><td>3.0</td><td class="good">3.0</td></tr>
+      <tr><td>Mixed data（混合数据）</td><td class="good">4.6</td><td class="good">3.7</td></tr>
+      <tr><td>Front camera only（无腕部摄像头）</td><td>2.0</td><td>1.3</td></tr>
+      <tr><td>No AprilTag</td><td>3.1</td><td>2.4</td></tr>
+      <tr><td>Random AprilTag</td><td>3.4</td><td>2.7</td></tr>
+    </table>
+
+    <h3>可复现性验证</h3>
+    <figure>
+      <img src="img/reproducibility.webp" alt="Reproducibility Analysis">
+      <figcaption><strong>可复现性分析。</strong>10 名参与者各自独立搭建实验环境（约 3 小时），并在各自环境中评测同一 IQL-R3M 策略。新环境平均达到原始环境性能的 <strong>84%</strong>（范围 75%–93%），证明基准具备良好的跨实验室复现性。</figcaption>
+    </figure>
+
+    <h3>关键发现</h3>
+    <ul>
+      <li>IQL 整体优于 BC，低随机化初始化带来更高成功率。</li>
+      <li>Mixed data（2000 条演示）相比 Original（1000 条）显著提升：low 从 3.8 → <strong>4.6</strong>，med 从 3.0 → <strong>3.7</strong>。</li>
+      <li>腕部摄像头至关重要：仅使用正面摄像头时成功率从 3.8 骤降至 <strong>2.0</strong>。</li>
+      <li>视觉策略并非依靠 AprilTag 作弊：去除 AprilTag 后性能仅轻微下降（3.8 → 3.1）。</li>
+      <li>模拟与真实世界结果呈正相关，可用作快速代理指标。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文"Limitations and Future work"节中明确陈述。</div>
+
+    <details class="lim" open>
+      <summary>家具模型经过简化，与真实 IKEA 家具存在差异</summary>
+      <p>"the 3D furniture models are still tailored to common robotic arms for research, e.g., all pieces have widths larger than 2 cm for easy grasping, which is larger than the tiny screws used in real-world IKEA furniture. Furthermore, our furniture models are much smaller in scale compared to the real-world furniture."尽管如此，作者认为基准仍涵盖大多数长时域操作挑战（temporal credit assignment、exploration、perception、dexterous manipulation）。</p>
+    </details>
+
+    <details class="lim">
+      <summary>单任务、单臂评测，缺乏多任务与多臂协作</summary>
+      <p>当前基准主要以单任务标准、单 Franka Panda 手臂评测。未来方向包括：多任务强化学习（利用不同家具类别的共享信息）、多臂/移动机器人协作，以提升操作灵巧性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>FurnitureSim 存在 sim-to-real domain gap</summary>
+      <p>"system identification is very challenging. For example, the same torque command does not lead to the same robot trajectories in simulation and the real world due to inaccurate robot modeling (e.g., mass of each robot part, friction of joints)."视觉域与物理域均存在差异，直接 sim-to-real 策略迁移困难。作者将弥合该差距列为未来工作。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · FurnitureBench · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2305.12821">https://arxiv.org/abs/2305.12821</a>
+  </div>
+</footer>
+
+</body>
+</html>

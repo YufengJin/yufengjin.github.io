@@ -1,0 +1,11 @@
+{
+  "slug": "worldmem",
+  "title": "WorldMem: Long-term Consistent World Simulation with Memory",
+  "arxiv_id": "2504.12369",
+  "url": "https://arxiv.org/abs/2504.12369",
+  "category": "生成模型 · Generative Models",
+  "keywords": ["world simulation", "memory bank", "long-term consistency", "video diffusion", "状态感知注意力", "Diffusion Transformer", "Plücker embedding", "视频生成", "3D spatial consistency", "动态场景建模"],
+  "summary_zh": "WorldMem 通过引入记忆库与状态感知 cross-attention，让视频扩散模型在生成超长序列时仍能忠实重建先前观测的场景，在 Minecraft 超窗口基准上 PSNR 较基线提升 6.66，LPIPS 降低至三分之一。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

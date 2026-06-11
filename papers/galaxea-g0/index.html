@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Galaxea Open-World Dataset and G0 Dual-System VLA Model
+  arXiv: 2509.00576
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxea Open-World Dataset and G0 Dual-System VLA Model</title>
+<meta name="keywords" content="VLA, 机器人操作, dual-system, open-world dataset, Vision-Language-Action, 三阶段训练, 单体具身预训练, 双系统框架">
+<meta name="description" content="Galaxea 开放世界数据集联合 G0 双系统框架，以单体具身预训练大幅提升 VLA 模型在真实场景中的操作能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>Galaxea Open-World Dataset and G0 Dual-System VLA Model</h1>
+    <div class="sub">大规模开放世界机器人数据集 + 双系统 VLA 框架</div>
+    <div class="authors">Tao Jiang, Tianyuan Yuan, Yicheng Liu, Chenhao Lu, Jianning Cui, Xiao Liu, Shuiqi Cheng, Jiyang Gao, Huazhe Xu, Hang Zhao</div>
+    <p class="lead">
+      本文提出 <strong>Galaxea Open-World Dataset</strong>——一个在真实人居与工作环境中采集的大规模、高保真机器人行为数据集，并在此基础上设计了 <strong>G0</strong> 双系统框架：以 Vision-Language Model (VLM) 负责慢思考规划，以 Vision-Language-Action (VLA) 模型负责快速精细执行。三阶段训练流程（跨具身预训练 → 单体具身预训练 → 任务后训练）显著提升了模型在真实场景中的操作能力与迁移效率。
+    </p>
+    <div class="meta">
+      <span>arXiv · 2025-08-30</span>
+      <span>500 小时高保真数据</span>
+      <span>100K 演示轨迹</span>
+      <span><a href="https://arxiv.org/abs/2509.00576">📄 arXiv:2509.00576</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>双系统框架</span>
+      <span>open-world dataset</span>
+      <span>单体具身预训练</span>
+      <span>机器人操作</span>
+      <span>Vision-Language-Action</span>
+      <span>flow matching</span>
+      <span>三阶段训练</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      VLA 模型的发展面临一个核心瓶颈：缺乏大规模、高质量的<strong>开放世界</strong>机器人数据。现有数据集（如 BridgeData V2、DROID、Open X-Embodiment）大多在受控或人工布置的实验室场景中采集，场景多样性有限、语言标注粗糙，难以支撑 VLA 向真实世界的泛化。
+    </p>
+    <blockquote>
+      "a substantial bottleneck persists due to the scarcity of large-scale, high-quality, open-world robot data."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="Galaxea 开放世界数据集与 G0 双系统框架概览">
+      <figcaption>
+        <strong>Figure 1</strong>：Galaxea Open-World Dataset 在真实人居与工作环境中收集高质量机器人行为数据；G0 是一个由 VLM（慢系统，负责规划）与 VLA（快系统，负责执行）组成的双系统框架。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>500h</b><small>高保真数据总时长</small></div>
+      <div><b>100K</b><small>演示轨迹数量</small></div>
+      <div><b>150+</b><small>任务类别</small></div>
+      <div><b>50</b><small>真实场景数量</small></div>
+    </div>
+    <p>
+      现有多具身数据集（如 OXE）虽然规模庞大，但来自不同机器人平台，动作空间不统一，反而可能因"具身鸿沟（embodiment gap）"损害特定机器人的学习效果。本文以<strong>单一机器人平台</strong>（Galaxea R1 Lite）在 11 个真实地点的 50 个场景采集数据，涵盖居民区、餐饮、零售和办公等多种环境，并提供细粒度子任务级别的语言标注，从根本上解决数据多样性与一致性的矛盾。
+    </p>
+    <figure>
+      <img src="img/platform.webp" alt="Galaxea R1 Lite 机器人平台与真实场景数据采集">
+      <figcaption>
+        <strong>Figure 2</strong>：<strong>(a)</strong> Galaxea R1 Lite 平台：23-DoF 双臂移动机器人（6-DoF 双臂 + 3-DoF 躯干 + 6-DoF 全向底盘），最高速度 1.5 m/s，承载 5 kg，配备立体 RGB 头部相机及双腕 Intel RealSense D405 RGB-D 相机。<strong>(b)</strong> 机器人编队在多个真实世界环境中采集数据，确保数据的高保真度与场景多样性。
+      </figcaption>
+    </figure>
+    <div class="grid2">
+      <div class="card">
+        <h3>数据采集三原则</h3>
+        <ul>
+          <li><strong>Observability</strong>：视觉流包含所有任务相关信息</li>
+          <li><strong>数量与质量</strong>：简单任务需约 100 条演示；复杂序列质量优先</li>
+          <li><strong>Linguistic grounding</strong>：子任务级语言标注，支持多模态对齐</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>数据集核心统计</h3>
+        <ul>
+          <li>1,600+ 种独特物体</li>
+          <li>58 种操作技能（从 "pick" 到 "whole-body" 协调）</li>
+          <li>11 个物理采集地点</li>
+          <li>使用同构遥操作（isomorphic teleoperation）采集</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      G0 由两个异步运行的系统组成：<strong>G0-VLM</strong>（System 2，慢系统）负责高层规划，将自然语言指令分解为子任务序列；<strong>G0-VLA</strong>（System 1，快系统）以 flow matching 方式生成 action chunk，实现精细执行。整个框架采用<strong>三阶段渐进式训练</strong>。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="G0-VLA 架构与三阶段训练流程">
+      <figcaption>
+        <strong>Figure 7</strong>：G0-VLA 架构与三阶段训练流程。<strong>Stage 1</strong> 在跨具身数据（约 1,000 小时 OXE + 500 小时 Galaxea + 200 小时内部数据，共 1,700 小时）上以自回归方式预训练 VLM（使用 FAST tokenizer 将连续动作转为离散索引）。<strong>Stage 2</strong> 在具有子任务级语言标注的 Galaxea 数据上训练完整 VLA（预训练 VLM + 新初始化的 Action Transformer），以 flow matching loss 监督动作重建。<strong>Post-train</strong> 用最多 100 条轨迹对下游任务进行微调。颜色标识不同 token 模态。
+      </figcaption>
+    </figure>
+
+    <h3>G0-VLA：快系统（System 1）</h3>
+    <p>
+      G0-VLA 以预训练 VLM（基于 PaLiGemma，含 SigLIP 视觉编码器 + 单层 MLP 投影 + Transformer）为骨干，新增 Action Transformer（flow matching action expert）作为动作生成头。给定语言指令、视觉观测与本体感知状态，生成 action chunk <em>A<sub>t</sub> = a<sub>t:t+k</sub></em>（水平为 k）。
+    </p>
+    <ul>
+      <li><strong>Stage 1</strong>：仅训练 VLM，以 FAST tokenizer + 标准 cross-entropy loss 预测下一个动作 token；使用高层任务描述（Galaxea 数据中仅用高层描述）。</li>
+      <li><strong>Stage 2</strong>：两大关键要素——单一具身（action space 一致）+ 语言-动作对齐（子任务级细粒度 language-action pairs）；以 flow matching loss 训练完整 VLA。</li>
+      <li><strong>Post-train</strong>：在下游任务上微调，最多使用 100 条轨迹，训练目标与 Stage 2 相同。</li>
+    </ul>
+
+    <h3>G0-VLM：慢系统（System 2）</h3>
+    <p>
+      G0-VLM 基于开源 <strong>Qwen2.5-VL</strong> 进行指令微调，融合 Galaxea 数据中的人工标注子任务与合成高层指令。训练时对关键帧（子任务终止或夹爪状态变化）赋予更高采样权重，并引入 1 秒间隔的 k 帧历史图像与机器人动作作为上下文。使用 <strong>DeepSeek-R1</strong> reasoning LLM 生成自然语言指令（任务名称、历史/当前/下一子任务），大幅提升指令多样性与语义覆盖。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验设计围绕核心问题：<em>预训练数据如何影响 VLA？</em> 评测指标为 "progress score"（每任务 10 次测试运行的平均分），基准任务涵盖桌面操作、少样本迁移与移动操作。
+    </p>
+
+    <h3>评测基准任务</h3>
+    <figure>
+      <img src="img/benchmarks.webp" alt="四个评测基准任务">
+      <figcaption>
+        <strong>Figure 8</strong>：四个评测基准任务。<strong>Table Bussing</strong>（满分 6 分）：整理杂乱桌面（钢笔、耳机、书籍）；<strong>Microwave Operation</strong>（满分 5 分）：将食物放入微波炉；<strong>Bed Making</strong>（满分 4 分）：整理凌乱被褥（需全身协调）；<strong>Blocks Stacking</strong>（满分 6 分）：用积木拼出指定词语。
+      </figcaption>
+    </figure>
+
+    <h3>G0-VLA 预训练权重对比</h3>
+    <p>在每任务 100 条训练轨迹的微调设置下，对比以下配置：</p>
+    <ul>
+      <li><strong>G0 (Full)</strong>：Stage-1 + Stage-2 预训练（400 小时）</li>
+      <li><strong>G0 (Stage-2 400h)</strong>：仅 Stage-2（400 小时）</li>
+      <li><strong>G0 (Stage-2 200h)</strong>：仅 Stage-2（200 小时）</li>
+      <li><strong>G0 (Stage-1)</strong>：仅 Stage-1 预训练</li>
+      <li><strong>G0 (Scratch)</strong>：无动作预训练</li>
+      <li><strong>π₀</strong>：官方发布的预训练权重</li>
+    </ul>
+    <figure>
+      <img src="img/results_finetune.webp" alt="不同预训练 VLA 的微调基准结果">
+      <figcaption>
+        <strong>Figure 9</strong>：不同预训练 VLA 的微调基准结果。G0 (Full) 在平均 progress score 上表现最优，在 Table Bussing、Microwave Operation、Bed Making 等抓取任务中领先；G0 (Stage-2) 在语言跟随、动作一致性与全身控制上表现最佳；G0 (Stage-1) 是所有预训练模型中最差的，"underscoring the importance of single-embodiment pre-training"。
+      </figcaption>
+    </figure>
+
+    <h3>关键发现：单体具身预训练 vs. 跨具身预训练</h3>
+    <p>
+      少样本迁移实验（每任务仅 20 条轨迹，10 个 epoch）表明：含 Stage-2 的模型显著优于无 Stage-2 的模型，动作更流畅稳定；而"Stage-1 alone do not show a clear advantage over models trained from scratch"，说明跨具身动作预训练单独使用可能不足。Bed Making（全身协调任务）的 per-skill progress 分析进一步印证：Stage-2 单体预训练大幅改善底盘与躯干控制，而跨具身预训练（Stage-1、π₀）"yields weaker performance, in some cases worse than training from scratch"，说明具身鸿沟在全身动作控制上尤为突出。
+    </p>
+
+    <h3>G0-VLM 指令准确率（%）</h3>
+    <table>
+      <tr>
+        <th>模型</th>
+        <th>Table Bussing</th>
+        <th>Microwave Operation</th>
+        <th>Make the Bed</th>
+        <th>Build Blocks</th>
+      </tr>
+      <tr>
+        <td>Gemini-2.5-pro</td>
+        <td>32.0</td><td>15.8</td><td>54.2</td><td>55.0</td>
+      </tr>
+      <tr>
+        <td>Qwen2.5-VL-72B</td>
+        <td>26.3</td><td>16.8</td><td>48.1</td><td>21.7</td>
+      </tr>
+      <tr>
+        <td>Qwen2.5-VL-32B</td>
+        <td>21.3</td><td>14.8</td><td>54.2</td><td>21.0</td>
+      </tr>
+      <tr>
+        <td>Qwen2.5-VL-7B</td>
+        <td>26.3</td><td>17.2</td><td>46.9</td><td>24.7</td>
+      </tr>
+      <tr>
+        <td><strong>G0-VLM（本文）</strong></td>
+        <td class="good">83.3</td>
+        <td class="good">74.2</td>
+        <td class="good">78.2</td>
+        <td class="good">75.6</td>
+      </tr>
+    </table>
+    <p>G0-VLM "surpasses baseline accuracy by over 50%"，验证了机器人应用需要精确对齐的动作原语，而非仅仅通用视觉-语言理解能力。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文未设独立的 Limitations 节。以下条目均为从设计与实验现象中<em>推断（inferred）</em>的局限，非作者明确陈述。</div>
+
+    <details class="lim" open>
+      <summary>单一硬件平台的泛化约束</summary>
+      <p>
+        整个数据集以 Galaxea R1 Lite 单一机器人平台采集，以确保动作空间一致性。这是 Stage-2 单体预训练有效的关键前提，但也意味着模型在其他具身形态（不同 DoF、不同传感器配置）上的直接泛化受限——新平台需重新采集数据并经历相应的训练阶段。（inferred）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>跨具身预训练（Stage-1）的负迁移风险</summary>
+      <p>
+        实验显示，对于具身鸿沟较大的任务（如全身协调的 Bed Making），Stage-1 的跨具身预训练"in some cases worse than training from scratch"，说明动作空间不对齐时，大规模跨具身数据可能带来负迁移。如何在跨具身广度与单体一致性之间取得平衡，仍是开放问题。（inferred）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>评测场景与真实长尾分布的差距</summary>
+      <p>
+        当前基准任务（Table Bussing、Microwave Operation、Bed Making、Blocks Stacking）设计合理但数量有限，每任务最多 100 条训练轨迹。论文中对移动操作（mobile manipulation）等更复杂场景的定量评测较少，泛化能力在更广泛的长尾任务上尚待验证。（inferred）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>双系统异步通信的延迟与协调开销</summary>
+      <p>
+        G0-VLM（慢系统）与 G0-VLA（快系统）异步运行；慢系统的规划延迟可能在高动态任务中影响实时性。论文未详细报告两系统间通信延迟对任务成功率的影响。（inferred）
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Galaxea Open-World Dataset and G0 Dual-System VLA Model · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2509.00576">https://arxiv.org/abs/2509.00576</a>
+  </div>
+</footer>
+
+</body>
+</html>

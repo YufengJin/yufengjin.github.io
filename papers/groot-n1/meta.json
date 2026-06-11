@@ -1,0 +1,11 @@
+{
+  "slug": "groot-n1",
+  "title": "GR00T N1: An Open Foundation Model for Generalist Humanoid Robots",
+  "arxiv_id": "2503.14734",
+  "url": "https://arxiv.org/abs/2503.14734",
+  "category": "机器人 · Robotics",
+  "keywords": ["humanoid robot", "Vision-Language-Action", "diffusion transformer", "双系统架构", "flow matching", "imitation learning", "仿人机器人基础模型", "teleoperation", "neural trajectory", "data pyramid"],
+  "summary_zh": "GR00T N1 是 NVIDIA 发布的面向通用仿人机器人的开放 VLA 基础模型，采用双系统架构（VLM + Diffusion Transformer），结合数据金字塔与神经轨迹增强，在仿真和真实机器人任务上均超越最先进模仿学习基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

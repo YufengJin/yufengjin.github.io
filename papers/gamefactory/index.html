@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameFactory: Creating New Games with Generative Interactive Videos</title>
+<meta name="keywords" content="游戏生成, video diffusion, action control, scene generalization, domain adapter, autoregressive generation, GF-Minecraft, style-action decoupling">
+<meta name="description" content="GameFactory 利用预训练视频扩散模型，通过 style-action 解耦实现跨场景可泛化的动作控制游戏视频生成框架。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICCV 2025 Highlight · 生成模型 · Generative Models</span>
+    <h1>GameFactory: Creating New Games with Generative Interactive Videos</h1>
+    <div class="sub">跨场景可泛化的动作控制游戏视频生成框架</div>
+    <div class="authors">Jiwen Yu · Yiran Qin · Xintao Wang · Pengfei Wan · Di Zhang · Xihui Liu &nbsp;|&nbsp; University of Hong Kong, Kuaishou Technology</div>
+    <p class="lead">GameFactory 提出了一个将预训练视频扩散模型与小规模游戏数据相结合的框架，通过 style-action 解耦与多阶段训练策略，使动作控制能力能够泛化到开放域场景，从而实现跨场景的全新游戏内容生成。</p>
+    <div class="meta">
+      <span>ICCV 2025 Highlight</span>
+      <span>70 小时 GF-Minecraft 数据集</span>
+      <span>无限长度自回归生成</span>
+      <span><a href="https://arxiv.org/abs/2501.08325">📄 arXiv:2501.08325</a></span>
+      <span><a href="https://yujiwen.github.io/gamefactory">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>游戏视频生成</span>
+      <span>video diffusion</span>
+      <span>action control</span>
+      <span>scene generalization</span>
+      <span>style-action decoupling</span>
+      <span>domain adapter</span>
+      <span>autoregressive generation</span>
+      <span>GF-Minecraft</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">游戏开发是一项极度耗费人力的过程，生成式视频模型具备自主创作游戏内容的潜力。然而现有方法普遍面临两大核心挑战：<strong>动作可控性</strong>（精准响应键盘与鼠标输入）和<strong>场景泛化性</strong>（不局限于固定的游戏风格与场景）。</p>
+    <blockquote>"Generative videos have the potential to revolutionize game development by autonomously creating new content… GameFactory tackles the critical challenge of scene-generalizable action control, which most existing methods fail to address."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="GameFactory teaser：在多种开放域场景中进行动作控制游戏视频生成">
+      <figcaption><strong>Figure 1</strong>（论文原图）：GameFactory 在多样化开放域场景（森林、海洋、城市等）中生成动作可控的游戏视频。黄色按钮表示<strong>已按下的键盘键位</strong>，箭头表示<strong>鼠标移动方向</strong>。该框架仅在小规模 Minecraft 数据上学习动作控制，却能将控制能力迁移至全新开放域场景，生成全新游戏体验。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>70h</b><small>GF-Minecraft 数据集时长</small></div>
+      <div><b>FID 121.18</b><small>多阶段训练场景泛化 FID↓</small></div>
+      <div><b>Cam 0.0997</b><small>相机姿态误差↓（场景泛化）</small></div>
+      <div><b>∞</b><small>自回归无限长度视频生成</small></div>
+    </div>
+
+    <h3>现有方法的不足</h3>
+    <p>以往的游戏视频生成工作（如 GameNGen、DIAMOND、Genie 等）大多在固定游戏环境下训练，动作控制能力与特定游戏风格深度耦合，无法泛化到新场景。此外，人类采集数据（如 VPT 数据集）存在严重的行为偏差：前进键（W）出现频率高达 50.11%，而后退键仅占 0.32%，导致模型难以学到均匀分布的动作控制能力。</p>
+
+    <figure>
+      <img src="img/schematic.webp" alt="GameFactory 整体方案示意图">
+      <figcaption><strong>Figure 2</strong>（论文原图）：GameFactory 的整体方案示意。<span style="color:#91ABDF">蓝色上方</span>展示预训练模型在开放域的强大生成能力；<span style="color:#ABD68E">绿色下方</span>展示从少量游戏数据中学习动作控制模块，并"插件式"集成到预训练模型中，实现新游戏创建。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">GameFactory 的核心创新在于三个相互配合的模块：<strong>动作控制模块</strong>（精准处理键盘与鼠标输入）、<strong>自回归长视频生成</strong>（支持无限长度交互视频）、以及<strong>style-action 解耦策略</strong>（通过多阶段训练使动作控制脱离游戏风格绑定）。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="动作控制模块架构图">
+      <figcaption><strong>Figure 3</strong>（论文原图）：动作控制模块的详细架构。<strong>键盘输入</strong>（离散信号）通过 cross-attention 与视频特征交互，类似文本条件化方式；<strong>鼠标输入</strong>（连续信号）经 MLP 和 temporal self-attention 处理后与特征拼接。分组操作（滑动窗口 w=3）解决了帧率与动作粒度不匹配的问题，并捕捉动作的延迟效果。</figcaption>
+    </figure>
+
+    <h3>动作控制模块（Action Control Module）</h3>
+    <p>将动作控制集成到基于 transformer 的 latent video diffusion 模型中：</p>
+    <ul>
+      <li><strong>时序对齐（Temporal Alignment）</strong>：采用滑动窗口（大小 w=3）对动作进行分组，处理视频帧与动作输入之间的粒度不匹配，同时捕捉动作效果的延迟性。</li>
+      <li><strong>鼠标控制</strong>：连续运动信号经 MLP 处理后与特征拼接，再通过 temporal self-attention 建模时序依赖。消融实验显示 concatenation 优于 cross-attention（Cam: 0.0685 vs. 更高误差）。</li>
+      <li><strong>键盘控制</strong>：离散输入通过 cross-attention 与视频特征交互（类似文本条件化），消融实验显示 cross-attention 优于 concatenation（Cam: 0.0439 vs. 更高误差）。</li>
+    </ul>
+
+    <h3>自回归长视频生成（Autoregressive Long-Video Generation）</h3>
+    <p>标准扩散模型在长序列生成上存在局限。GameFactory 采用<strong>变噪声水平</strong>策略：靠后帧携带更多噪声，靠前帧噪声较少作为条件帧。在训练时，仅对预测帧计算损失（不含条件帧），避免梯度泄漏。在推理时，系统迭代选取最近的 k+1 帧作为条件，生成 N−k 个新帧，从而支持<strong>无限长度</strong>的交互视频生成。</p>
+
+    <h3>Style-Action 解耦策略（四阶段训练）</h3>
+    <figure>
+      <img src="img/training_pipeline.webp" alt="四阶段训练流水线">
+      <figcaption><strong>Figure 5</strong>（论文原图）：四阶段训练流水线。Phase #0：在开放域数据上预训练视频扩散模型；Phase #1：在游戏视频上进行 LoRA fine-tuning，学习游戏风格；Phase #2：冻结预训练权重和 LoRA 参数，仅训练动作控制模块；Phase #3：推理时移除 LoRA 权重，保留动作控制同时消除游戏风格偏差，实现开放域场景泛化。</figcaption>
+    </figure>
+    <p>关键洞察：若在 Phase #2 同时学习风格和动作控制，动作控制能力将与特定游戏风格深度绑定，无法泛化。通过先用 LoRA 隔离风格学习（Phase #1），再单独训练动作控制（Phase #2），最后推理时丢弃 LoRA（Phase #3），动作控制模块得以保留开放域生成先验，从而实现跨场景泛化。</p>
+
+    <h3>GF-Minecraft 数据集</h3>
+    <p>为解决人类行为偏差问题，作者构建了 GF-Minecraft 数据集：70 小时的 Minecraft 游戏录像，采用<strong>无偏采样</strong>策略收集动作（前进/后退/左/右/跳跃等各键出现频率均衡，约 13.56%），涵盖多样化环境（森林、沙漠、雪地等），并附有文本描述。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在 GF-Minecraft 测试集上评估动作可控性（Cam 相机姿态误差↓、Flow 光流误差↓）和生成质量（FID↓、FVD↓），并在开放域视频上评估场景泛化能力。</p>
+
+    <h3>动作控制机制消融（Table 2）</h3>
+    <table>
+      <tr><th>控制方式</th><th>Cam ↓</th><th>Flow ↓</th></tr>
+      <tr><td>键盘 cross-attention（最优）</td><td class="good">0.0439</td><td class="good">7.79</td></tr>
+      <tr><td>鼠标 concatenation（最优）</td><td class="good">0.0685</td><td class="good">18.64</td></tr>
+    </table>
+    <p>消融实验表明：<strong>离散键盘输入</strong>适合用 cross-attention 建模（类似文本条件化），而<strong>连续鼠标信号</strong>适合用 concatenation 方式注入特征。鼠标运动对视觉的影响强于键盘输入。</p>
+
+    <h3>场景泛化对比（Table 3）</h3>
+    <table>
+      <tr><th>方法</th><th>Cam ↓</th><th>Flow ↓</th><th>FID ↓</th><th>FVD ↓</th></tr>
+      <tr><td>One-phase training（基线）</td><td>0.1134</td><td>76.02</td><td>167.79</td><td>1323.58</td></tr>
+      <tr><td><strong>Multi-phase training（本文）</strong></td><td class="good">0.0997</td><td class="good">54.13</td><td class="good">121.18</td><td class="good">1256.94</td></tr>
+    </table>
+    <p>多阶段训练在所有指标上均显著优于单阶段基线，验证了 style-action 解耦策略的有效性。</p>
+
+    <h3>数据集对比：GF-Minecraft vs. VPT（Table 4）</h3>
+    <table>
+      <tr><th>训练数据</th><th>Cam ↓</th><th>Flow ↓</th><th>FID ↓</th></tr>
+      <tr><td>VPT（人类行为偏差）</td><td>0.1324</td><td>107.67</td><td>156.69</td></tr>
+      <tr><td><strong>GF-Minecraft（无偏采样）</strong></td><td class="good">0.0839</td><td class="good">43.48</td><td class="good">125.85</td></tr>
+    </table>
+    <p>VPT 数据集中前进键（W）出现频率为 50.11%，后退键仅 0.32%；GF-Minecraft 中各键频率均衡（约 13.56%）。使用 VPT 训练的模型无法执行跳跃、后退等罕见动作，而 GF-Minecraft 训练的模型能成功完成这些动作。</p>
+
+    <h3>长视频生成消融（Table 6）</h3>
+    <table>
+      <tr><th>训练策略</th><th>Cam ↓</th><th>Flow ↓</th><th>FID ↓</th></tr>
+      <tr><td>全帧计算损失</td><td>0.1547</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>仅预测帧计算损失（本文）</strong></td><td class="good">0.0924</td><td class="good">85.45</td><td class="good">136.95</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="定性结果：键盘动作控制效果对比">
+      <figcaption><strong>Figure 6</strong>（论文原图）：定性结果展示。黄色按钮指示当前按下的键盘键位，验证了模型对离散动作输入的精准跟踪能力。与基线方法相比，GameFactory 生成的视频能更准确地响应键盘操作并保持时序一致性。</figcaption>
+    </figure>
+
+    <h3>拓展实验：跨游戏迁移</h3>
+    <p>GameFactory 不仅限于 Minecraft 风格。实验展示了将学到的动作控制能力迁移至赛车游戏场景的能力，验证了该框架的<strong>跨游戏类型泛化</strong>潜力。此外，论文还展示了碰撞检测行为（在 Minecraft 中遇到墙壁时停止前进）的自动涌现，以及超过 100 帧的长序列生成效果。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为论文作者明确指出（stated），代表当前 GameFactory 框架尚未解决的开放性挑战。</div>
+
+    <details class="lim" open>
+      <summary>关卡设计与玩法机制（Level Design &amp; Gameplay Mechanics）</summary>
+      <p>GameFactory 目前缺乏生成<strong>多样化关卡结构与游戏玩法机制</strong>的能力。论文明确指出 "design of diverse levels and gameplay" 是重要的未来方向，现有框架更侧重于视觉连续性而非结构化游戏逻辑。</p>
+    </details>
+
+    <details class="lim">
+      <summary>玩家反馈系统（Player Feedback Systems）</summary>
+      <p>当前框架不支持完整的<strong>玩家交互反馈循环</strong>，如血量、得分、碰撞奖励等游戏状态反馈机制。论文将 "player feedback systems" 列为未来工作。</p>
+    </details>
+
+    <details class="lim">
+      <summary>游戏内物体操纵（In-Game Object Manipulation）</summary>
+      <p>GameFactory 目前无法精细地操控游戏世界中的<strong>具体物体</strong>（如拾取道具、建造方块等），仅能控制摄像机视角和角色运动方向。</p>
+    </details>
+
+    <details class="lim">
+      <summary>长上下文记忆与实时生成（Long-Context Memory &amp; Real-Time Generation）</summary>
+      <p>自回归生成框架虽支持无限长度视频，但仍面临<strong>长上下文记忆衰减</strong>（超长序列中早期信息丢失）和<strong>实时生成速度</strong>两大挑战。论文将 "long-context memory" 和 "real-time game generation" 均列为尚待解决的问题。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · GameFactory: Creating New Games with Generative Interactive Videos · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2501.08325">https://arxiv.org/abs/2501.08325</a>
+  </div>
+</footer>
+
+</body>
+</html>

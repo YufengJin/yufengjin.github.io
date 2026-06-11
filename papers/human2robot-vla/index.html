@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergence of Human to Robot Transfer in Vision-Language-Action Models</title>
+<meta name="keywords" content="human-to-robot transfer, vision-language-action model, VLA, co-training, embodiment-agnostic representation, cross-embodiment, imitation learning, 机器人操作, π0.5, 涌现能力">
+<meta name="description" content="研究发现：当 VLA 模型在多样化机器人数据上进行预训练后，利用人类视频数据迁移技能到机器人的能力会自然涌现，无需显式对齐机制，成功率最高提升 39%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>Emergence of Human to Robot Transfer in Vision-Language-Action Models</h1>
+    <div class="sub">人类视频数据迁移机器人技能的能力是 VLA 多样化预训练的涌现属性</div>
+    <div class="authors">Simar Kareer, Karl Pertsch, James Darpinian, Judy Hoffman, Danfei Xu, Sergey Levine, Chelsea Finn, Suraj Nair &nbsp;·&nbsp; Georgia Tech / Stanford / Physical Intelligence</div>
+    <p class="lead">
+      本文探究 Vision-Language-Action (VLA) 模型能否利用人类示范视频数据来提升机器人技能迁移。研究发现，<strong>human-to-robot transfer 是一种涌现能力</strong>：只有当模型在足够多样化的场景、任务和机器人形态上完成预训练后，co-training 人类视频数据才能带来显著收益。最终在多个泛化任务上成功率最高翻倍，验证了跨形态表征统一的关键作用。
+    </p>
+    <div class="meta">
+      <span>arXiv 2025-12-27</span>
+      <span>4 个操作任务</span>
+      <span>14 小时人类示范数据</span>
+      <span><a href="https://arxiv.org/abs/2512.22414">📄 arXiv:2512.22414</a></span>
+      <span><a href="https://arxiv.org/pdf/2512.22414">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>human-to-robot transfer</span>
+      <span>vision-language-action model</span>
+      <span>co-training</span>
+      <span>embodiment-agnostic representation</span>
+      <span>cross-embodiment</span>
+      <span>涌现能力</span>
+      <span>π0.5</span>
+      <span>imitation learning</span>
+      <span>机器人操作</span>
+      <span>pretraining diversity</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      训练机器人需要大量专门的遥操作数据，成本高且难以规模化。互联网上拥有海量人类操作视频，理论上可以极大丰富训练数据多样性——但人与机器人在形态、视角、运动方式上存在巨大差异，直接利用并非易事。
+    </p>
+    <p>
+      过去的研究尝试用显式的跨形态对齐（如视频预测、形态嵌入对齐）来桥接这一鸿沟，但效果不稳定。本文提出一个不同视角：这种迁移能力是否是大规模 VLA <em>预训练多样性</em>带来的<strong>涌现属性</strong>，而非需要专门设计的桥接机制？
+    </p>
+    <blockquote>
+      "Human-to-robot transfer is an emergent property of diverse VLA pretraining."
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="Scaling and transfer results across pretraining diversity">
+      <figcaption>
+        <strong>Figure 2（原文）：</strong>"Per-task improvement from human data: We plot the difference in performance between policies fine-tuned with robot + human data versus robot-only data, isolating the lift from human supervision. Gains are largest when pre-training spans diverse tasks, scenes, and embodiments, suggesting that broad pre-training improves transfer from human videos."
+        — 当预训练多样性从 0% 提升至 100%，人类数据带来的增益从接近 0 跃升至显著正值，佐证了涌现假说。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>+39%</b><small>Spice 任务成功率提升（32%→71%）</small></div>
+      <div><b>+25%</b><small>Dresser 任务成功率提升（25%→50%）</small></div>
+      <div><b>+21%</b><small>Sort Eggs 准确率提升（57%→78%）</small></div>
+      <div><b>14h</b><small>人类示范视频总时长（4 个任务）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      本文在 π0.5（pi-0.5）VLA 基础上，以 50-50 的比例混合人类示范与机器人数据进行 fine-tuning，同时预测 high-level 子任务和 low-level 连续动作，无需任何显式的跨形态对齐机制。
+    </p>
+
+    <figure>
+      <img src="img/arch.webp" alt="Architecture: co-training pipeline">
+      <figcaption>
+        <strong>系统架构：</strong>人类操作者佩戴头戴摄像头（及可选腕部摄像头），所采集的 ego-centric 视频经过手部 3D 关键点提取，转换为相对 6-DoF end-effector 轨迹，与机器人数据共同 fine-tune π0.5 VLA 模型（π0.5+ego）。
+      </figcaption>
+    </figure>
+
+    <h3>数据采集：人类示范</h3>
+    <p>
+      实验人员佩戴头戴摄像头（模拟机器人主相机视角）与左右腕部摄像头，在四个任务上共采集约 <strong>14 小时</strong>人类示范数据：
+    </p>
+    <ul>
+      <li><strong>Bussing（餐具收拾）</strong>：3 小时，移动操作任务</li>
+      <li><strong>Spice Rack（香料整理）</strong>：3 小时，桌面操作任务</li>
+      <li><strong>Dresser（梳妆台整理）</strong>：3 小时，桌面操作任务</li>
+      <li><strong>Sort Eggs（鸡蛋分拣）</strong>：5 小时，桌面操作任务</li>
+    </ul>
+
+    <figure>
+      <img src="img/data.webp" alt="Data collection setup and task overview">
+      <figcaption>
+        <strong>Figure 3（原文）：</strong>"Training mixture and benchmark. Our fine-tuning mix is evenly split between human data for generalization tasks and robot data for the nearest neighbor task."
+        — 左侧展示人类佩戴设备采集场景，右侧为四个任务的机器人执行场景，fine-tuning 数据各占 50%。
+      </figcaption>
+    </figure>
+
+    <h3>动作空间对齐</h3>
+    <p>
+      人类手部 3D 关键点被转换为相对 6-DoF end-effector 轨迹，维度与机器人动作空间（18 维：双臂各 6 维 + 底盘移动 6 维）相同，<em>但不估计人类夹爪状态</em>（夹爪动作仅从机器人数据学习）。
+    </p>
+
+    <h3>Co-training 策略</h3>
+    <p>
+      在 π0.5 基础上同时预测 <strong>high-level subtask</strong>（子任务语言描述）与 <strong>low-level continuous action</strong>（连续动作），混合比例固定为 robot:human = 50:50。研究特别考察了不同 <strong>pretraining diversity</strong>（0%～100%）对迁移效果的影响，以验证涌现假说。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 4 个操作任务上评估 co-training（Robot + Human）与纯机器人数据 fine-tuning（Robot only）的差异，并系统分析 pretraining diversity、wrist camera、high-level/low-level 分工等关键因素。
+    </p>
+
+    <h3>主要性能对比</h3>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th>Robot Only 基线</th>
+        <th>Robot + Human（本文）</th>
+        <th>提升</th>
+      </tr>
+      <tr>
+        <td>Spice Rack</td>
+        <td>32%</td>
+        <td class="good">71%</td>
+        <td>+39%</td>
+      </tr>
+      <tr>
+        <td>Dresser</td>
+        <td>25%</td>
+        <td class="good">50%</td>
+        <td>+25%</td>
+      </tr>
+      <tr>
+        <td>Bussing</td>
+        <td>53%</td>
+        <td class="good">63%</td>
+        <td>+10%</td>
+      </tr>
+      <tr>
+        <td>Sort Eggs</td>
+        <td>57%</td>
+        <td class="good">78%</td>
+        <td>+21%</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;">所有数字均来自原文，verbatim。</p>
+
+    <figure>
+      <img src="img/results.webp" alt="Task performance results">
+      <figcaption>
+        <strong>Figure 7（原文）：</strong>"Human to robot transfer finetuning π0.5. We evaluate performance across a suite of static and mobile tasks, each testing either scene, object, or task level generalization present only in the human data. We see clear human to robot transfer resulting in nearly double the score on the target tasks."
+      </figcaption>
+    </figure>
+
+    <h3>Pretraining Diversity 的涌现效应</h3>
+    <p>
+      实验系统地改变预训练数据集的任务/场景/形态多样性（0%～100%），发现：
+    </p>
+    <ul>
+      <li>0%～25% 多样性时，co-training 人类数据几乎无收益甚至略有下降</li>
+      <li>75%～100% 多样性时，人类数据带来的提升显著跃升</li>
+      <li>加入跨形态机器人数据（cross-embodiment pretraining）后效果最强</li>
+    </ul>
+    <blockquote>
+      "Performance of Robot Finetuning on Sort Eggs plateaus, even as the pretraining diversity improves. In contrast, Human+Robot Finetuning performance scales sharply with pretraining, suggesting that broader pretraining enables more effective transfer from human data."
+    </blockquote>
+
+    <h3>表征分析（TSNE 可视化）</h3>
+    <figure>
+      <img src="img/tsne.webp" alt="TSNE representation analysis">
+      <figcaption>
+        <strong>Figure 5（原文）：</strong>"VLA representation of human and robot data. We plot the latent embeddings of our VLA by performing a TSNE analysis on mean-pooled tokens from the final layer of the VLM backbone. With no pre-training, it is clear that the model has disjoint representations between human and robot data. But as pretraining becomes more diverse, latent overlap increases, which correlates with performance on our generalization tasks."
+        — 预训练多样性越高，人类与机器人的 latent embedding 越趋于融合，直接解释了涌现迁移能力的来源。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation_target.webp" alt="Ablation: target robot data vs human data">
+      <figcaption>
+        消融：人类数据 vs. 目标任务机器人数据对比。Sort Eggs 和 Dresser 任务中，人类数据效果接近甚至媲美目标机器人数据；Bussing 任务中目标机器人数据（65%）显著优于人类数据（25%）。
+      </figcaption>
+    </figure>
+    <div class="grid2">
+      <div class="card">
+        <h3>High-level vs. Low-level 分工</h3>
+        <p>对于移动操作任务（Bussing、Dresser），high-level 子任务预测和 low-level 动作预测<strong>均有必要</strong>；两者共同 co-training 才能充分利用人类示范数据。</p>
+      </div>
+      <div class="card">
+        <h3>腕部摄像头的作用</h3>
+        <p>腕部摄像头对精细操作任务（Bussing、Dresser）有明显帮助，对其他任务（Spice、Eggs）影响有限，符合直觉：<em>"some (but not all) tasks will benefit from the added observability of wrist cameras."</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性部分来自作者在原文中的明确陈述（<em>stated</em>），部分为从方法设计推断（<em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>依赖大规模、多样化的机器人预训练数据（stated）</summary>
+      <p>
+        Human-to-robot transfer 的涌现需要"vast datasets of robot teleoperation data in pretraining"作为前提。对于没有大规模预训练基础的场景，本方法的收益将大幅缩水，限制了其通用性。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>人类夹爪状态未估计（stated）</summary>
+      <p>
+        当前实现无法从人类手部关键点直接估计夹爪开合状态，夹爪动作完全依赖机器人数据学习。这是一个明确的信息缺失，可能影响需要精确抓握的任务迁移效果。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>人类数据规模仍有限（stated）</summary>
+      <p>
+        当前实验使用约 14 小时的情景式人类示范数据。作者展望未来可以扩展至更大规模的人类视频，包括日常活动的被动录制，认为模型规模持续扩大将解锁更多涌现能力。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>某些任务上人类数据效果有限（inferred from results）</summary>
+      <p>
+        Bussing 任务中，人类数据（25% success）远不及目标机器人数据（65%），说明对于运动复杂度高、形态差异大的任务，跨形态迁移存在固有瓶颈。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · <em>Emergence of Human to Robot Transfer in Vision-Language-Action Models</em> · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2512.22414">https://arxiv.org/abs/2512.22414</a>
+  </div>
+</footer>
+
+</body>
+</html>

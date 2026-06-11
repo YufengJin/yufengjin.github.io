@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / names / metrics / quotes in English.
+  arXiv: 2307.00595
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RH20T: A Comprehensive Robotic Dataset for Learning Diverse Skills in One-Shot</title>
+<meta name="keywords" content="机器人操控数据集, one-shot imitation learning, multi-modal perception, contact-rich manipulation, 多模态感知, force-torque sensing, 机器人技能泛化, 遥操作数据采集">
+<meta name="description" content="RH20T 是一个超过 11 万条序列的大规模多模态机器人操控数据集，涵盖视觉、力觉、音频和动作信息，旨在支持单样本模仿学习与通用技能泛化。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · ICRA 2024</span>
+    <h1>RH20T: A Comprehensive Robotic Dataset for Learning Diverse Skills in One-Shot</h1>
+    <div class="sub">首个大规模多模态 contact-rich 机器人操控数据集，支持单样本技能泛化</div>
+    <div class="authors">Hao-Shu Fang, Hongjie Fang, Zhenyu Tang, Jirong Liu, Chenxi Wang, Junbo Wang, Haoyi Zhu, Cewu Lu &nbsp;·&nbsp; 上海交通大学</div>
+    <p class="lead">
+      RH20T（Robot-Human Demonstration in 20TB）是一个包含超过 <strong>110,000 条</strong>真实世界机器人操控序列的大规模数据集。每条序列同步采集 RGB-D 视觉、6DoF 力/力矩、音频及本体感知信息，并附有对应的人类示范视频与语言描述，覆盖 <strong>147 项任务 / 42 种技能</strong>，横跨 7 种机器人配置。其设计目标是推动机器人在开放域中实现单样本（one-shot）技能迁移与多模态感知。
+    </p>
+    <div class="meta">
+      <span>ICRA 2024</span>
+      <span>上海交通大学</span>
+      <span>2023-07-02</span>
+      <span><a href="https://arxiv.org/abs/2307.00595">📄 arXiv:2307.00595</a></span>
+      <span><a href="https://rh20t.github.io">🌐 Project Page: rh20t.github.io</a></span>
+    </div>
+    <div class="kw">
+      <span>机器人操控数据集</span>
+      <span>one-shot imitation learning</span>
+      <span>multi-modal perception</span>
+      <span>contact-rich manipulation</span>
+      <span>force-torque sensing</span>
+      <span>机器人技能泛化</span>
+      <span>遥操作数据采集</span>
+      <span>多视角标定</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">
+      现有机器人操控研究主要停留在推送（push）、抓取（pick-place）等简单任务，且几乎仅依赖视觉（visual-only）反馈。然而现实中许多操控技能高度依赖力觉与触觉——如切割、旋转、插拔等 contact-rich 动作。造成这一差距的核心瓶颈有两个：<strong>（1）缺乏大规模多样化的真实机器人数据集</strong>；<strong>（2）现有方法忽略了视觉之外的多模态感知</strong>。
+    </p>
+    <blockquote>
+      "In reality, there are many complex skills, some of which may even require both visual and tactile perception to solve. This paper aims to unlock the potential for an agent to generalize to hundreds of real-world skills with multi-modal perception."
+    </blockquote>
+    <figure>
+      <img src="img/page1.webp" alt="RH20T数据集总览">
+      <figcaption>
+        <strong>图1：RH20T 数据集总览。</strong>使用多种机器人臂与多样化环境配置采集数据。每条机器人操控序列包含多模态视觉、力觉、音频和动作数据，并通过标定的多视角相机记录。数据集涵盖多样化操控技能，每条序列配有对应的人类示范视频与语言描述。共提供超过 110K 条机器人序列和 110K 条人类示范序列，包含超过 5000 万帧图像及 140+ 项任务。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>110K+</b><small>机器人操控序列</small></div>
+      <div><b>110K+</b><small>对应人类示范视频</small></div>
+      <div><b>50M+</b><small>总图像帧数</small></div>
+      <div><b>147</b><small>任务 / 42 种技能</small></div>
+    </div>
+    <p>
+      与同类公开数据集的对比凸显了 RH20T 的全面性：MIME（8.3K 条）、RoboTurk（2.1K 条）、RoboNet（162K 条，但多为随机游走）、BC-Z（60.1K 条，技能单一）均无法同时覆盖多机器人、力觉感知、相机标定与人类示范等维度。RH20T 是目前社区中规模最大、模态最丰富的真实世界机器人操控数据集。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method（数据集构建）</h2>
+    <p class="lead">
+      RH20T 的构建核心在于：设计直觉高效的力反馈遥操作平台，建立多模态多视角同步采集流水线，以及完善的数据层级结构（hierarchy），以支持密集的 &lt;human demo, robot manipulation&gt; 配对。
+    </p>
+    <figure>
+      <img src="img/page2.webp" alt="数据集规模对比与硬件配置">
+      <figcaption>
+        <strong>表1（上）：与同类数据集对比。</strong>RH20T 在序列数量（110K）、机器人种类（12 种）、模态丰富度（RGB-D、力矩、音频、本体感知）、相机外参标定和人类示范等方面全面领先。<br>
+        <strong>表2（下）：硬件配置详情。</strong>7 种机器人配置涵盖 Flexiv、UR5、Franka、Kuka 等主流机械臂，搭配 ATI、OptoForce 等力矩传感器；表3 给出各模态采样频率（RGB 10Hz、关节力矩 100Hz、触觉 200Hz 等）。
+      </figcaption>
+    </figure>
+
+    <h3>多模态同步采集平台</h3>
+    <p>
+      每套采集平台由机械臂（含力矩传感器与夹爪）、8-10 个全局 RGB-D 相机、2 个麦克风、1 个 haptic 设备（提供力反馈）和踏板组成。所有相机在采集前完成外参标定，数据通过时间戳对齐同步保存。人类示范在同一平台上由操作者佩戴第一视角相机完成。平均培训时间不足 1 小时，成功/失败比例约为 10:1。
+    </p>
+    <p>
+      关键创新是引入 <strong>haptic device 力反馈遥操作</strong>代替传统 3D 鼠标或 VR 遥控——后者在 contact-rich 任务中容易引起碰撞和紧急停止。力反馈使操作者能够精确感知接触力，显著提升了 contact-rich 技能（切割、插拔、折叠等）的数据质量。
+    </p>
+
+    <h3>数据层级结构（Data Hierarchy）</h3>
+    <p>
+      RH20T 按照任务内相似度将数据组织成树状层级。叶节点为具体的人类示范（human demo）与机器人操控序列，共同祖先越近则相关性越强。这种层级设计支持为每条机器人序列配对来自不同视角、场景、操作者的多条人类示范，仅一项任务即可构建出数百万条 &lt;human demo, robot manipulation&gt; 配对样本。
+    </p>
+
+    <h3>数据多样性设计</h3>
+    <ul>
+      <li><strong>任务多样性：</strong>48 项来自 RLBench，29 项来自 MetaWorld，70 项自提出，共 147 项任务，涵盖 42 种技能动词。</li>
+      <li><strong>机器人多样性：</strong>4 种机械臂、4 种夹爪、3 种力矩传感器，构成 7 种机器人配置。</li>
+      <li><strong>环境多样性：</strong>超过 50 种桌布纹理材质随机替换，引入干扰物体，由数十名志愿者以多样化轨迹操控。</li>
+      <li><strong>组合性（Compositionality）：</strong>数据集包含短序列单一操控与长序列组合操控（如抓插头→插入插座→开关→开灯）。</li>
+    </ul>
+
+    <figure>
+      <img src="img/page3.webp" alt="数据采集平台与数据统计">
+      <figcaption>
+        <strong>图5：数据采集平台示意图。</strong>平台配置包括机械臂（含力矩传感器）、手内相机、8-10 个全局相机、麦克风、haptic device 和踏板。<strong>图6（右上）：</strong>多视角 RGBD 融合点云示意——红色锥体表示相机位姿，机器人模型根据关节角度实时渲染，证明所有相机已相对机器人基座坐标系完成标定，且数据在时间域对齐。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">
+      论文以 ACT（Action Chunking with Transformers）作为 baseline，在真实机器人平台上验证 RH20T 数据集对迁移学习与少样本（few-shot）学习能力的提升效果。实验任务为"抓取方块并放置在砝码上"，在与 RH20T 不同摄像头视角、桌布纹理和机器人配置的新环境中评估。
+    </p>
+
+    <h3>实验配置</h3>
+    <ul>
+      <li>硬件：Flexiv 机械臂 + Intel RealSense RGB-D 相机 + Dahuan-95 夹爪</li>
+      <li>新环境采集：75 条遥操作序列</li>
+      <li>来自 RH20T 的预训练数据：335 条同任务 + 195 条跨任务（3 个相关任务）</li>
+      <li>评估：每种配置在真实机器人上重复 20 次；划分三阶段（Reach / Pick / Place）分别统计成功率；时限 60 秒</li>
+      <li>ACT 超参数：hidden channel 512，feedforward channel 3200，chunk size 20（对应 2s @ 10Hz），训练图像分辨率 640×360，评估采用 temporal ensembling（k=0.01）</li>
+    </ul>
+
+    <figure>
+      <img src="img/page4.webp" alt="实验结果表格">
+      <figcaption>
+        <strong>表4 & 表5：ACT 在不同训练设置下的成功率（%）。</strong>上表为原环境评估（20 次），下表为跨环境泛化评估（新物体/桌布，10 次）。"Pretrain Task" 列标注是否使用 RH20T 同任务或跨任务预训练。
+      </figcaption>
+    </figure>
+
+    <h3>关键结论</h3>
+    <ul>
+      <li>
+        <strong>预训练加速收敛：</strong>使用 RH20T 预训练后，以 500 epochs 训练的模型表现优于无预训练下 750 epochs 的结果，说明预训练显著提升样本效率。
+      </li>
+      <li>
+        <strong>跨任务预训练进一步提升：</strong>加入 3 个相关任务数据的多任务预训练，在所有指标上优于仅使用同任务预训练的结果。
+      </li>
+      <li>
+        <strong>少样本场景优势显著：</strong>仅用 40 条新环境示范 + RH20T 预训练的模型，优于使用 75 条示范但无预训练的对应组；进一步降至 10 条示范，多任务预训练效果仍优于 75 条无预训练 baseline。
+      </li>
+      <li>
+        <strong>跨环境泛化（Table V）：</strong>在使用新砝码（金属/粉色）和新桌布（白色/蓝色）测试时，使用 RH20T 多任务预训练的模型持续优于无预训练版本，表明数据集增强了模型的泛化能力。
+      </li>
+    </ul>
+
+    <figure>
+      <img src="img/page5.webp" alt="实验平台与泛化评估">
+      <figcaption>
+        <strong>图7：实验平台与泛化测试物体。</strong>(a) 实验平台（Flexiv 臂 + RealSense）；(b) 不同砝码（金属、粉色）评估物体泛化；(c) 不同桌布（白色、蓝色）评估场景泛化。这些变量在训练集中均未出现。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验要点</h3>
+    <p>
+      实验系统对比了无预训练（不同 epochs）、仅同任务预训练、同任务+跨任务预训练三类设置，在 10 / 40 / 75 条示范规模下分别评估。结论清晰：<strong>无论示范数量多少，RH20T 预训练（尤其是多任务预训练）均能一致提升 Reach、Pick、Place 三个阶段成功率</strong>。值得注意的是，该实验所用 RH20T 数据与评估环境在相机视角、桌布、机器人配置上均不同，体现了数据集的跨域迁移价值。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>说明：</b>以下局限性均为论文作者在 Discussion & Conclusion 中明确陈述（stated）。</div>
+
+    <details class="lim" open>
+      <summary>数据采集成本高昂</summary>
+      <p>
+        论文明确指出："the cost of data collection is expensive"。RH20T 涉及多种机器人平台配置、大量人工遥操作、精密传感器标定，难以被资源有限的研究团队复制。这也是当前大规模真实世界机器人数据采集面临的共性挑战。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>机器人基础模型（foundation model）能力尚未评估</summary>
+      <p>
+        论文明确指出："the potential of robotic foundation models is not evaluated on our dataset"。作者尝试复现若干近期机器人基础模型的结果，但"haven't succeeded yet due to the limit of computing resources"。因此本文仅以 ACT 为 baseline 进行少样本评估，数据集对大规模基础模型的提升潜力有待后续研究验证。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>操控范围待扩展</summary>
+      <p>
+        当前 RH20T 主要覆盖单臂操控场景。论文展望未来工作时指出，希望将数据集扩展至 "broader robotic manipulation, including dual-arm and multi-finger dexterous manipulation"（双臂操控和多指灵巧手操控）。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · RH20T: A Comprehensive Robotic Dataset for Learning Diverse Skills in One-Shot · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2307.00595">https://arxiv.org/abs/2307.00595</a>
+    &nbsp;·&nbsp;
+    Project: <a href="https://rh20t.github.io">rh20t.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

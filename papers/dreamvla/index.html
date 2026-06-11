@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamVLA: A Vision-Language-Action Model Dreamed with Comprehensive World Knowledge</title>
+<meta name="keywords" content="VLA, vision-language-action, 机器人操作, world knowledge prediction, dynamic regions, depth forecasting, semantic features, diffusion transformer, CALVIN, 具身智能">
+<meta name="description" content="DreamVLA 通过预测动态区域、深度图和语义特征作为"世界知识"来增强 VLA 模型的操作推理能力，在 CALVIN ABC-D 上取得 4.44 平均长度的最优性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · VLA · 2025</span>
+    <h1>DreamVLA</h1>
+    <div class="sub">A Vision-Language-Action Model Dreamed with Comprehensive World Knowledge</div>
+    <div class="authors">Wenyao Zhang, Hongsi Liu, Zekun Qi, Yunnan Wang, Xinqiang Yu, Jiazhao Zhang, Runpei Dong, Jiawei He, Fan Lu, He Wang, Zhizheng Zhang, Li Yi, Wenjun Zeng, Xin Jin &mdash; SJTU / EIT / THU / Galbot / PKU / UIUC / USTC</div>
+    <p class="lead">DreamVLA 让 VLA 模型在生成动作之前，先"梦想"出机器人任务中最关键的世界知识——动态区域、深度图与语义特征——从而大幅提升操作推理与泛化能力，在 CALVIN ABC-D 基准上取得 <strong>4.44</strong> 平均连续完成长度，超越所有已知方法。</p>
+    <div class="meta">
+      <span>arXiv 2507.04447</span>
+      <span>cs.CV / cs.RO · 2025</span>
+      <span>CALVIN ABC-D: 4.44 avg. len.</span>
+      <span><a href="https://arxiv.org/abs/2507.04447">📄 arXiv:2507.04447</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>机器人操作</span>
+      <span>world knowledge prediction</span>
+      <span>dynamic regions</span>
+      <span>depth forecasting</span>
+      <span>semantic features</span>
+      <span>diffusion transformer</span>
+      <span>CALVIN</span>
+      <span>具身智能</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前 VLA 模型大多直接将视觉观测与语言指令映射为动作序列，缺乏对"未来会发生什么"的显式推理。已有研究尝试通过预测整帧图像或生成子目标来引入前瞻性，但这类方法引入了大量冗余像素信息、缺少显式 3D 知识，且对未来状态的高层理解十分有限，导致泛化能力不足。</p>
+    <blockquote>"Prior work relies on redundant pixel information, lacks explicit 3D knowledge, and fails to capture high-level understanding of future states."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="VLA方法对比示意图">
+      <figcaption><strong>图 1：</strong>四类 VLA 范式对比。(a) 普通 VLA 直接映射观测→动作；(b) 借助独立图像/视频生成或 copilot 模型预测未来帧/轨迹后再驱动动作头；(c) 先预测子目标图像再生成动作；(d) 本文提出的 DreamVLA，显式预测动态区域、深度图与语义特征（DINOv2 + SAM）作为世界知识，显著增强动作推理与泛化。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4.44</b><small>CALVIN ABC-D 平均长度（SOTA）</small></div>
+      <div><b>92.6%</b><small>LIBERO 综合成功率</small></div>
+      <div><b>76.7%</b><small>真实 Franka 机器人成功率</small></div>
+      <div><b>3×</b><small>世界知识类型（动态 + 深度 + 语义）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DreamVLA 将多模态输入（RGB 图像、语言指令、机器人状态）送入统一的 GPT-2 骨干 Transformer，通过两类可学习查询令牌——<code>&lt;dream&gt;</code>（世界知识预测）与 <code>&lt;action&gt;</code>（动作生成）——同步建模"下一步世界状态"和"下一步执行动作"。预测分支通过三个轻量解码器分别输出动态区域、深度图和语义特征，动作分支则使用 diffusion transformer 生成连续动作序列。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="DreamVLA框架总览">
+      <figcaption><strong>图 2：DreamVLA 整体框架。</strong>多模态输入经各自编码器（CLIP 文本编码器、Masked Autoencoder 视觉编码器、状态编码器）嵌入后，拼接送入 LLM；LLM 输出分两路：<code>&lt;dream&gt;</code> 查询经三个轻量解码器分别预测动态区域（CoTracker 监督）、深度图（Depth-Anything 监督）、语义特征（DINOv2 + SAM 监督）；<code>&lt;action&gt;</code> 查询送入 diffusion transformer 生成最终动作。</figcaption>
+    </figure>
+
+    <h3>动态区域预测（Dynamic Regions）</h3>
+    <p>DreamVLA 并不预测稠密光流，也不合成整帧未来图像，而是利用 CoTracker 提取"动态区域"——即随机器人末端执行器或其他可移动物体运动的像素集合，仅在这些区域上进行重建训练。这一设计大幅降低了无关背景像素的干扰：<em>"predicting dynamic regions alone delivers the greatest gains."</em></p>
+    <figure>
+      <img src="img/dynamic_regions.webp" alt="动态区域可视化">
+      <figcaption><strong>图 3：动态区域随时间的变化可视化。</strong>左列为固定视角相机，右列为腕部相机。蓝色掩码标出在操作过程中发生运动的区域，随任务进程而动态更新。</figcaption>
+    </figure>
+
+    <h3>深度预测与语义特征预测</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Depth Forecasting</h3>
+        <p>使用 Depth-Anything 生成深度监督信号，损失函数为尺度归一化 MSE（scale-normalized MSE loss）。预测未来深度场告知机器人下一步应移向何处、远离哪些潜在障碍物，为规划提供显式 3D 知识。</p>
+      </div>
+      <div class="card">
+        <h3>Semantic Features（DINOv2 + SAM）</h3>
+        <p>结合 DINOv2 和 SAM 的特征，通过对比学习 InfoNCE loss 进行监督。语义预测教会模型"哪些物体/区域对任务最重要"，提供目标物体身份与可操作性等高层上下文，引导目标选择与抓取决策。</p>
+      </div>
+    </div>
+
+    <h3>Block-wise Structured Attention</h3>
+    <p>为防止不同查询类型之间的信息泄露，DreamVLA 在自注意力层中引入分块掩码机制（block-wise structured attention）。如图 4 所示，<code>&lt;dream&gt;</code> 查询与 <code>&lt;action&gt;</code> 查询各自只能与上下文 token 及同类查询交互，而不能相互"窥视"，从而确保每个预测头的训练信号干净且信息不对称。消融实验显示，去除该机制使平均长度从 4.44 降至 3.75（下降 0.69）。</p>
+    <figure>
+      <img src="img/attention.webp" alt="分块结构化注意力掩码">
+      <figcaption><strong>图 4：Block-wise Structured Attention。</strong>注意力掩码将 context tokens、dream queries 和 action queries 三类 token 的交互严格隔离，防止跨模态信息提前泄露，保证各分支梯度信号独立清晰。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在三个基准上评估：<strong>CALVIN ABC-D</strong>（语言条件多任务操作，5 步连续评估）、<strong>LIBERO</strong>（Spatial / Object / Goal / Long 四个子集）以及<strong>真实 Franka Panda 机器人</strong>（pick、place、drawer 三类任务）。</p>
+
+    <h3>CALVIN ABC-D 对比结果</h3>
+    <table>
+      <tr><th>方法</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Avg. Len.</th></tr>
+      <tr><td>Roboflamingo</td><td>82.4</td><td>61.9</td><td>46.6</td><td>33.1</td><td>23.5</td><td>2.47</td></tr>
+      <tr><td>Susie</td><td>87.0</td><td>69.0</td><td>49.0</td><td>38.0</td><td>26.0</td><td>2.69</td></tr>
+      <tr><td>GR-1</td><td>85.4</td><td>71.2</td><td>59.6</td><td>49.7</td><td>40.1</td><td>3.06</td></tr>
+      <tr><td>3D Diffusor Actor</td><td>92.2</td><td>78.7</td><td>63.9</td><td>51.2</td><td>41.2</td><td>3.27</td></tr>
+      <tr><td>OpenVLA</td><td>91.3</td><td>77.8</td><td>62.0</td><td>52.1</td><td>43.5</td><td>3.27</td></tr>
+      <tr><td>RoboDual</td><td>94.4</td><td>82.7</td><td>72.1</td><td>62.4</td><td>54.4</td><td>3.66</td></tr>
+      <tr><td>UNIVLA</td><td>95.5</td><td>85.8</td><td>75.4</td><td>66.9</td><td>56.5</td><td>3.80</td></tr>
+      <tr><td>Pi0</td><td>93.8</td><td>85.0</td><td>76.7</td><td>68.1</td><td>59.9</td><td>3.92</td></tr>
+      <tr><td>UP-VLA</td><td>92.8</td><td>86.5</td><td>81.5</td><td>76.9</td><td>69.9</td><td>4.08</td></tr>
+      <tr><td>Robovlm</td><td>98.0</td><td>93.6</td><td>85.4</td><td>77.8</td><td>70.4</td><td>4.25</td></tr>
+      <tr><td>Seer</td><td>96.3</td><td>91.6</td><td>86.1</td><td>80.3</td><td>74.0</td><td>4.28</td></tr>
+      <tr><td>VPP</td><td>95.7</td><td>91.2</td><td>86.3</td><td>81.0</td><td>75.0</td><td>4.29</td></tr>
+      <tr><td class="good"><strong>DreamVLA（本文）</strong></td><td class="good">98.2</td><td class="good">94.6</td><td class="good">89.5</td><td class="good">83.4</td><td class="good">78.1</td><td class="good">4.44</td></tr>
+    </table>
+
+    <h3>LIBERO 对比结果</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Average</th></tr>
+      <tr><td>Diffusion Policy</td><td>78.3</td><td>92.5</td><td>68.3</td><td>50.5</td><td>72.4</td></tr>
+      <tr><td>Octo</td><td>78.9</td><td>85.7</td><td>84.6</td><td>51.1</td><td>75.1</td></tr>
+      <tr><td>OpenVLA</td><td>84.7</td><td>88.4</td><td>79.2</td><td>53.7</td><td>76.5</td></tr>
+      <tr><td>SpatialVLA</td><td>88.2</td><td>89.9</td><td>78.6</td><td>55.5</td><td>78.1</td></tr>
+      <tr><td>CoT-VLA</td><td>81.1</td><td>87.5</td><td>91.6</td><td>87.6</td><td>69.0</td></tr>
+      <tr><td class="good"><strong>DreamVLA（本文）</strong></td><td class="good">97.5</td><td class="good">94.0</td><td class="good">89.5</td><td class="good">89.5</td><td class="good">92.6</td></tr>
+    </table>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="知识组合消融实验结果">
+      <figcaption><strong>图 6：不同世界知识组合下的 CALVIN ABC-D 性能。</strong>All = 全部五种模型组合；All-X = 从 All 中去掉 X。可见各类知识均有贡献，其中动态区域贡献最大，深度与语义贡献相近且互补。</figcaption>
+    </figure>
+    <p>关键消融结论（均在 CALVIN ABC-D 上测量 Avg. Len.）：</p>
+    <ul>
+      <li><strong>预测 vs. 重建：</strong>预测未来状态（4.44）显著优于仅做辅助重建（4.14），说明前瞻性监督是核心。</li>
+      <li><strong>动态区域 vs. 光流：</strong>动态区域掩码（4.44）优于稠密光流（4.23），更聚焦、噪声更少。</li>
+      <li><strong>Structured Attention vs. 普通因果注意力：</strong>结构化掩码（4.44）vs. 普通 causal attention（3.75），差距最大，防止信息泄露至关重要。</li>
+      <li><strong>分离查询 vs. 共享查询：</strong>分离的 dream/action 查询（4.44）优于共享查询（4.17）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文中明确陈述（stated by authors）。</div>
+    <details class="lim" open>
+      <summary>操作类型受限：仅平行夹爪（parallel-gripper）</summary>
+      <p>当前框架主要针对平行夹爪机器人手臂设计，尚不支持灵巧手（dexterous hand）等更复杂的末端执行器。作者计划"add dexterous-hand demonstrations with rich contact annotations"以扩展适用范围。</p>
+    </details>
+    <details class="lim">
+      <summary>感知模态单一：仅依赖 RGB 图像（RGB-centric）</summary>
+      <p>模型的世界知识（动态区域、深度、语义）均基于 RGB 图像衍生，缺乏原生的 3D 点云或触觉信号。作者提出"introduce 3D point clouds and spatial information—and fuse them into volumetric world states"作为改进方向。</p>
+    </details>
+    <details class="lim">
+      <summary>训练场景多样性有限</summary>
+      <p>训练数据涵盖的几何形状和材质种类有限（"trained on scenes with limited geometric and material diversity"），可能导致模型在分布外的真实环境中泛化能力不足。作者计划通过扩展数据采集与在线微调（on-policy fine-tuning）来增强长程鲁棒性。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DreamVLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2507.04447">https://arxiv.org/abs/2507.04447</a>
+  </div>
+</footer>
+
+</body>
+</html>

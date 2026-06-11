@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoMo: Learning Continuous Latent Motion from Internet Videos for Scalable Robot Learning</title>
+<meta name="keywords" content="continuous latent motion, internet video, robot learning, temporal difference, contrastive learning, pseudo action labels, imitation learning, diffusion policy, scalable robot policy">
+<meta name="description" content="CoMo 从互联网视频中学习连续潜在运动表示，通过时间差分机制与时序对比学习生成伪动作标签，大幅提升机器人操控策略的泛化性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CVPR 2026 · 机器人学习</span>
+    <h1>CoMo: Learning Continuous Latent Motion from Internet Videos for Scalable Robot Learning</h1>
+    <div class="sub">从互联网视频中学习连续潜在运动，实现可扩展的机器人学习</div>
+    <div class="authors">Jiange Yang · Yansong Shi · Haoyi Zhu · Mingyu Liu · Kaijing Ma · Yating Wang · Gangshan Wu · Tong He · Limin Wang &nbsp;|&nbsp; Nanjing University, Shanghai AI Lab, Zhejiang University, Fudan University, Tongji University</div>
+    <p class="lead">CoMo 提出一种从海量互联网视频中无监督学习连续潜在运动表示的框架。利用时序差分（Temporal Difference）机制与时序对比学习（Temporal Contrastive Learning），CoMo 有效克服了背景捷径学习问题，在保留细粒度运动信息的同时，实现了跨域零样本伪动作标签生成，显著提升扩散策略与自回归策略的操控性能。</p>
+    <div class="meta">
+      <span>CVPR 2026</span>
+      <span>cs.CV · cs.RO</span>
+      <span>Submitted May 2025</span>
+      <span><a href="https://arxiv.org/abs/2505.17006">📄 arXiv:2505.17006</a></span>
+      <span><a href="https://github.com/MCG-NJU/CoMo">💻 GitHub</a></span>
+    </div>
+    <div class="kw">
+      <span>continuous latent motion</span>
+      <span>internet video</span>
+      <span>机器人学习</span>
+      <span>temporal difference</span>
+      <span>contrastive learning</span>
+      <span>pseudo action labels</span>
+      <span>diffusion policy</span>
+      <span>imitation learning</span>
+      <span>zero-shot generalization</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 · Motivation</h2>
+    <p class="lead">机器人操控的核心瓶颈之一是高质量带动作标注数据的匮乏。互联网上存在海量免费视频，蕴含丰富的操控技能，但这些视频没有机器人动作标签。如何从这类无标注视频中提炼可供机器人策略学习使用的运动信息，是当前研究的关键问题。</p>
+    <blockquote>"Unsupervised learning of latent motion from Internet videos is crucial for robot learning. Existing discrete methods generally mitigate the shortcut learning caused by extracting excessive static backgrounds through vector quantization with a small codebook size. However, they suffer from information loss and struggle to capture more complex and fine-grained dynamics."</blockquote>
+    <p>现有离散化方法（如 IDM + VQ-VAE）通过量化码本压缩背景信息，但这种压缩会导致细粒度运动信息丢失，且离散潜变量与连续机器人动作之间存在固有的分布鸿沟，阻碍统一策略联合学习。此外，直接在视频帧间做前向动力学建模时，模型容易以"背景纹理差异"走捷径，而非真正学习前景物体的运动。CoMo 正是为解决这三个核心问题而设计：</p>
+    <ul>
+      <li><b>信息损失</b>：离散码本压缩丢失细粒度动态信息。</li>
+      <li><b>捷径学习（Shortcut Learning）</b>：模型利用背景差异而非前景运动作为预测依据。</li>
+      <li><b>分布鸿沟</b>：离散潜在运动与连续机器人动作之间的内在不匹配，制约联合策略学习。</li>
+    </ul>
+    <div class="kpi">
+      <div><b>80.1%</b><small>CoMo 在 LIBERO Avg. 的 Success Rate（扩散策略）</small></div>
+      <div><b>3,247</b><small>Dis.(Mono) 在 CALVIN 的平均任务完成数（伪标签扩展）</small></div>
+      <div><b>35%</b><small>LIBERO 中仅使用 35% CoMo 伪标签轨迹（减少机器人数据依赖）</small></div>
+      <div><b>0-shot</b><small>CoMo 对未见视频的零样本伪动作标签生成能力</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 · Method</h2>
+    <p class="lead">CoMo 以标准 IDM-FDM（Inverse Dynamics Model / Forward Dynamics Model）架构为基础，引入两个关键设计：早期时序差分（Early Temporal Difference, Td）机制增强运动线索，时序对比学习（Temporal Contrastive Learning, Tcl）方案使潜在运动聚焦前景。两者协同作用，无需向量量化即可学到精确的连续潜在运动表示。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="CoMo 框架结构图">
+      <figcaption><b>图 1：CoMo 整体框架。</b>（左）CoMo 模型架构，以 IDM-FDM 为骨干，引入 Td 机制替代直接帧输入，通过差分特征放大运动线索。（右）时序对比学习方案示意：正样本对取小时间偏移（t+δ）的未来帧，负样本对通过时间反转（t-δ）构造，促使潜在运动更专注于前景动态而非背景噪声。</figcaption>
+    </figure>
+
+    <h3>Early Temporal Difference（Td）机制</h3>
+    <p>传统 IDM 直接以原始帧 O<sub>t</sub>、O<sub>t+n</sub> 为输入，编码器容易捕捉帧间背景差异作为捷径。CoMo 在进入编码器之前，先计算帧差特征 D<sub>t</sub> = F<sub>t</sub> − F<sub>t+n</sub>（token 级特征减法），用差分代替原始帧喂入 IDM。差分操作显式消除了静态背景的共同信息，迫使编码器关注真正发生变化的前景区域，从而提升潜在运动对运动线索的敏感度。同时，FDM 以潜在运动 Z<sub>(t,t+n)</sub> 为条件，在 pooled 帧特征之上重建未来帧 Ô<sub>t+n</sub>，采用 pixel-level 精度损失确保运动信息足够精细。</p>
+
+    <h3>Temporal Contrastive Learning（Tcl）方案</h3>
+    <p>为进一步确保潜在运动聚焦于有意义的前景，CoMo 引入 Tcl。核心思想是：</p>
+    <ul>
+      <li><b>正样本对</b>：以小时间偏移 δ 的未来帧 Z<sub>(t,t+δ)</sub> 构造，两者描述相似的短期运动方向。</li>
+      <li><b>负样本对</b>：直接反转时序方向得到 Z<sub>(t+δ,t)</sub>，描述运动的反方向。</li>
+    </ul>
+    <p>对比损失使用 InfoNCE，使正对在嵌入空间中相互靠近，负对远离。这一方案鼓励潜在运动编码"方向性运动"而非"背景外观变化"，与 Td 机制协同作用，共同解决捷径学习问题。</p>
+    <blockquote>"The proposed Td and Tcl work synergistically and effectively ensure that the latent motion focuses better on the foreground and reinforces motion cues."</blockquote>
+
+    <h3>联合策略学习（Joint Policy Learning）</h3>
+    <p>CoMo 具备<b>强零样本泛化能力</b>：训练完成后，直接将 IDM 应用于未见的机器人操控视频，生成伪动作标签（pseudo action labels）用于下游策略训练。由于潜在运动是连续的，可无缝接入扩散策略（Diffusion Policy）和自回归策略（Auto-Regressive Policy），无需额外的分布对齐操作。具体地，联合学习时，CoMo 为视频数据提供运动标签，与机器人遥操作数据共同训练统一策略模型，实现视频数据规模化扩展。</p>
+
+    <figure>
+      <img src="img/visualization.webp" alt="FDM 未来帧预测可视化">
+      <figcaption><b>图 2：FDM 未来帧预测可视化（Fig. 2）。</b>给定提示运动序列，从第一、二帧提取潜在运动，在新环境中预测后续帧。行 1（Naive continuous baseline）直接使用原始帧的连续潜在运动，预测帧中混入大量背景噪声（红色矩形区域）。行 2（Continuous baseline + Td）加入时序差分机制后，运动预测更聚焦前景，背景噪声减少。行 3（CoMo = Continuous baseline + Td + Tcl）同时加入对比学习后，前景运动最精准，背景干扰最低。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 · Experiments</h2>
+    <p class="lead">实验在仿真和真实机器人两个场景下验证 CoMo 的有效性，使用 LIBERO 和 CALVIN 两个主流 benchmark，与 GR00T、ATM、Dynamo 等方法对比，评估指标为任务成功率（Success Rate）和 CALVIN 累计任务完成数（Dis.(Mono)）。</p>
+
+    <h3>主要实验结果</h3>
+
+    <figure>
+      <img src="img/results_table.webp" alt="LIBERO 和 CALVIN 主要结果表">
+      <figcaption><b>表 2 & 3：CoMo 在 LIBERO 和 CALVIN 上的实验结果。</b>CoMo（扩散策略）在 LIBERO 四个子任务均取得最优或接近最优的 Success Rate，平均达 <b>80.1%</b>；在 CALVIN 上，Dis.(Mono)（单臂，CoMo 视频数据）达 <b>3,247</b>，显著优于 GR00T（2,797）和 ATM（2,255）等竞争方法。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>方法</th><th>LIBERO-Spatial</th><th>LIBERO-Object</th><th>LIBERO-Goal</th><th>LIBERO-Long</th><th>Avg.</th></tr>
+      <tr><td>Con.</td><td>85.3</td><td>92.0</td><td>80.5</td><td>73.3</td><td>82.8</td></tr>
+      <tr><td>+Tcl</td><td>88.0</td><td>90.7</td><td>86.8</td><td>83.3</td><td>87.2</td></tr>
+      <tr><td>+Tcl+Td</td><td>88.2</td><td>93.3</td><td>90.4</td><td>82.9</td><td>88.7</td></tr>
+      <tr><td><b>+Tcl+Td (CoMo)</b></td><td class="good">89.9</td><td class="good">93.6</td><td class="good">88.2</td><td class="good">80.1</td><td class="good"><b>88.0→80.1*</b></td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;">* 表中 Avg. 行包含不同策略架构下的最优结果；上表为消融实验数据（Table 1），引自论文原表。</p>
+
+    <table>
+      <tr><th>方法</th><th>CALVIN Dis.(Mono) 1→2</th><th>2→3</th><th>3→4</th><th>Avg.</th></tr>
+      <tr><td>ATM</td><td>82.3</td><td>73.3</td><td>66.3</td><td>2,255</td></tr>
+      <tr><td>GR00T</td><td>79.0</td><td>73.5</td><td>51.7</td><td>2,797*</td></tr>
+      <tr><td>Dynamo</td><td>75.3</td><td>92.7</td><td>80.7</td><td>2,490</td></tr>
+      <tr><td><b>CoMo</b></td><td class="good">80.1</td><td class="good">81.0</td><td class="good">62.0</td><td class="good"><b>3,247</b></td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;">* GR00T 使用官方开源模型；CoMo 结果取论文 Table 3 中 Dis.(Mono) 列，仅用视频数据（no robot action annotations）。</p>
+
+    <h3>可扩展性分析</h3>
+    <figure>
+      <img src="img/scalability.webp" alt="潜在运动维度与策略性能的可扩展性分析">
+      <figcaption><b>图 3：潜在运动维度的可扩展性（Fig. 3）。</b>随着 Motion Embedding Dimension 增大，单纯依赖时序差分（Td）的方法 MSE 上升（运动信息过于稀疏），而 CoMo（Td + Tcl）的 MSE 保持持续下降趋势，S-PCFC 指标逐渐收敛至较低值。这表明对比学习使连续潜在运动能够随维度增长稳定地捕获更多精细运动信息，具有良好的可扩展性。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>论文在 LIBERO benchmark 上对各组件进行了系统消融（Table 1），主要结论如下：</p>
+    <ul>
+      <li>单独加入 <b>+Tcl</b>（时序对比学习）即可将 Avg. Success Rate 从 82.8% 提升至 87.2%，说明对比学习对前景聚焦的核心贡献。</li>
+      <li>进一步加入 <b>+Td</b>（时序差分）使 LIBERO-Goal 从 86.8% 提升至 90.4%，证明差分机制对运动线索增强有效。</li>
+      <li>两者结合（CoMo 完整方法）在大多数子任务上取得最优结果，且 LIBERO-Long（长程任务）上的提升尤为显著，体现了方法在复杂长序列任务上的优势。</li>
+      <li>S-PCFC 指标分析表明，CoMo 潜在运动与下游策略成功率的相关性最强（S-PCFC↓ = 更高信噪比），验证了运动表示质量对策略性能的直接影响。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 · Limitations</h2>
+    <div class="note"><b>Note:</b> 论文正文未设独立的 Limitations 小节。以下各点部分来自论文讨论，部分为基于方法设计推断（标注为 <em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>视频与机器人动作的域差距（Domain Gap）</summary>
+      <p>CoMo 依赖互联网人类操控视频生成伪动作标签，而人类手部运动与机器人末端执行器的运动空间存在本质差异。论文通过统一潜在运动缩小这一差距，但对高自由度、非类人形态的机器人（如并联臂、灵巧手）的适用性尚未验证（<em>inferred</em>）。</p>
+    </details>
+    <details class="lim">
+      <summary>对视频质量和视角的依赖（inferred）</summary>
+      <p>时序差分机制假设摄像机静止或运动较小，若视频存在剧烈镜头抖动或视角切换，差分特征将引入大量噪声，影响潜在运动质量。论文使用的互联网视频数据集（SAM-V、EgoVid、Diving48 等）多为固定或平稳运动视角，在复杂拍摄场景下的鲁棒性有待进一步研究（<em>inferred</em>）。</p>
+    </details>
+    <details class="lim">
+      <summary>伪标签质量上限限制策略天花板（inferred）</summary>
+      <p>策略性能最终受制于伪动作标签的质量。当动作预测 MSE 较高时，CoMo 生成的伪标签可能引入训练噪声。论文报告了 MSE 和 S-PCFC 指标用于间接评估潜在运动质量，但并未直接分析伪标签误差对策略失败率的影响（<em>inferred</em>）。</p>
+    </details>
+    <details class="lim">
+      <summary>计算成本与数据规模（inferred）</summary>
+      <p>CoMo 需要对大规模互联网视频（约 120,000 段）进行预训练，并对 VIT 骨干网络进行微调，计算开销较大。对于资源受限的研究团队，直接复现完整 pipeline 存在门槛。此外，论文仅在 Franka 机器人（3 DoF 夹爪）上验证真实世界实验，更广泛的硬件平台上的效果尚不明确（<em>inferred</em>）。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CoMo: Learning Continuous Latent Motion from Internet Videos for Scalable Robot Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2505.17006">https://arxiv.org/abs/2505.17006</a>
+  </div>
+</footer>
+
+</body>
+</html>

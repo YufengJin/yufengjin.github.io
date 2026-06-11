@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  arXiv:2511.05936
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Open Challenges Steering the Future of Vision-Language-Action Models</title>
+<meta name="keywords" content="Vision-Language-Action, VLA模型, 体化AI, 机器人操作, 跨机器人泛化, 多模态感知, 安全对齐, 世界模型">
+<meta name="description" content="系统梳理 VLA 模型面临的十大开放性挑战，涵盖多模态感知、推理、数据、评估、跨机器人泛化、效率、全身协调、安全、智能体框架与人机协作，并提出新兴解决路径。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#f59e0b; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(245,158,11,.15),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:left} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  .challenge-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+  @media(max-width:760px){.challenge-grid{grid-template-columns:1fr}}
+  .challenge-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
+  .challenge-card .num{font-size:12px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+  .challenge-card h4{margin:0 0 8px;font-size:16px;color:#cdd9e5}
+  .challenge-card p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>10 Open Challenges Steering the Future of Vision-Language-Action Models</h1>
+    <div class="sub">系统梳理 VLA 模型十大核心挑战与新兴解决路径</div>
+    <div class="authors">Soujanya Poria, Navonil Majumder, Chia-Yu Hung, Amir Ali Bagherzadeh, Chuan Li, Kenneth Kwok, Ziwei Wang, Cheston Tan, Jiajun Wu, David Hsu &nbsp;·&nbsp; 2025</div>
+    <p class="lead">本文系统识别 Vision-Language-Action (VLA) 模型走向广泛部署前必须解决的十大开放性挑战，涵盖多模态感知、推理、数据质量、评估体系、跨机器人泛化、计算效率、全身协调、安全保障、智能体框架与人机协作，并探讨空间理解、世界模型、合成数据和后训练等新兴解决路径。</p>
+    <div class="meta">
+      <span>综述 / Position Paper</span>
+      <span>Embodied AI · Robotics</span>
+      <span>arXiv Nov 2025</span>
+      <span><a href="https://arxiv.org/abs/2511.05936">📄 arXiv:2511.05936</a></span>
+    </div>
+    <div class="kw">
+      <span>Vision-Language-Action</span>
+      <span>VLA模型</span>
+      <span>体化AI</span>
+      <span>跨机器人泛化</span>
+      <span>多模态感知</span>
+      <span>安全对齐</span>
+      <span>世界模型</span>
+      <span>机器人操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法（十大挑战）</a>
+  <a href="#exp">3 · 新兴解决路径</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">VLA 模型将视觉感知、语言理解与具身动作统一到单一架构中，被视为 Embodied AI 的核心基础。然而，从实验室演示到真实世界大规模部署，这类模型仍面临多维度的系统性挑战。现有工作分散在各个子领域，缺乏对全局挑战的整合视角。</p>
+    <blockquote>"VLA models are central to the development of Embodied AI" — 这一判断驱动作者系统梳理十大开放问题，以期为未来研究指明方向。</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="VLA challenges overview">
+      <figcaption>论文概览图：VLA 模型的十大开放性挑战分布，涵盖感知、推理、数据、评估、泛化、效率、协调、安全、智能体与人机交互等维度。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>10</b><small>开放性核心挑战</small></div>
+      <div><b>70+</b><small>Open-X-Embodiment 数据集数量</small></div>
+      <div><b>1M+</b><small>Open-X-Embodiment 机器人演示集数</small></div>
+      <div><b>4</b><small>新兴解决路径类别</small></div>
+    </div>
+
+    <p>VLA 模型分为两类：<strong>离散动作模型</strong>（将动作 token 化后通过 autoregressive 解码）与<strong>连续动作模型</strong>（直接回归连续控制信号）。前者推理速度慢，"making it unsuitable for" 高频控制场景；后者与大语言模型的推理能力结合难度更大。两类路径各有权衡，共同面临以下十大挑战。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD (Ten Challenges) ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法：十大开放性挑战</h2>
+    <p class="lead">作者逐一剖析每项挑战的技术本质、当前瓶颈与代表性工作，提供了一个系统性的问题地图。</p>
+
+    <figure>
+      <img src="img/vla-framework.webp" alt="Emerging VLA framework architecture">
+      <figcaption>Figure 1（论文原图）: "A high-level emerging VLA framework" — 分层规划架构示意：高层 LLM/VLM 规划器生成子目标，低层动作专家负责具体控制，辅以安全护栏与多智能体协调模块。</figcaption>
+    </figure>
+
+    <div class="challenge-grid">
+
+      <div class="challenge-card">
+        <div class="num">Challenge 01</div>
+        <h4>多模态感知 Multimodal Sensing &amp; Perception</h4>
+        <p>主流 VLA 缺乏显式深度信息；仅靠帧差估计深度对物体大小、相机距离高度敏感。环境噪声（反射、镜头光晕、水尘遮挡）严重影响感知质量。触觉模态缺失导致精细力控任务无法完成：<em>"touch modality would allow VLA to perform delicate tasks that require careful application of force"</em>。代表方法：MolmoAct、SpatialVLA（引入深度学习）；SimplerEval（分布漂移测试）。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 02</div>
+        <h4>鲁棒推理 Robust Reasoning</h4>
+        <p>LLM 的推理能力迁移到 VLA 后显著衰减——即便是抓取、放置、开抽屉等简单任务也存在较高错误率。长时程任务中错误率随 horizon 增加而累积：<em>"error rate on such simpler tasks must approach near perfection"</em> 才能支撑复杂场景部署。工具理解与选择能力依然缺失。代表方法：Emma-X、CoT-VLA、MolmoAct；评估基准：LIBERO、SimplerEnv。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 03</div>
+        <h4>训练数据质量 Quality Training Data</h4>
+        <p>Open-X-Embodiment 整合了约 70 个数据集、超过 100 万条演示，但模型对分布外环境依然脆弱：<em>"VLA models are often brittle to out-of-distribution environments and robot setups"</em>。Sim2Real 差距、具身差异、摄像头位置变化以及人工采集者的不一致性共同引入大量方差与噪声，新场景通常需要额外微调数据。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 04</div>
+        <h4>评估体系 Evaluation</h4>
+        <p>真实机器人、环境与物体资源稀缺，仿真评估与真实性能相关性差：<em>"environments simulated in such tools often fail to capture enough details of their real-life counterparts"</em>。光照、反射、纹理、PD 参数（stiffness/damping）的失真都会导致"poor correlation between in-simulation and real-life performance"。SimplerEnv 通过随机化纹理、光照、相机位姿等改善评估可靠性，但 sim-to-real gap 根本问题仍未解决。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 05</div>
+        <h4>跨机器人泛化 Cross-Robot Action Generalization</h4>
+        <p>不同机器人平台的动作空间异质性使零样本迁移极为困难：<em>"training on action data from a fixed set of embodiments often fails to generalize to others"</em>。自由度数量、结构差异（机械臂 vs. 四足机器人 vs. 自动驾驶车辆）以及控制接口多样性，使统一动作表征成为关键难题。Zheng 等（2025）对通用动作泛化问题进行了系统研究。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 06</div>
+        <h4>资源效率 Resource Efficiency</h4>
+        <p>机器人平台存在空间与能量约束；灾难现场等断网环境无法依赖云推理：<em>"disaster zones are often cutoff from the internet and telecommunication services"</em>。小模型性能显著落后于大模型，但大模型的在端部署成本难以承受。<em>"striking the right balance between VLA model capacity and resource efficiency remains key"</em>。代表系统：OCTO (2023)、OpenVLA、RT-2、MolmoAct。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 07</div>
+        <h4>全身协调 Whole-Body Coordination</h4>
+        <p>移动操作要求在运动中同步控制底盘与末端执行器，动作空间高维耦合是核心难题：<em>"dominant challenge is the high-dimensional search space of coupled actions"</em>。基于模型的控制（MPC）面临实时性瓶颈；基于学习的控制存在探索难度大、credit assignment 困难、以及安全保障弱的问题。代表系统：Mobile ALOHA、UMI on Legs、ACDIT、WBMPC。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 08</div>
+        <h4>安全保障 Safety Assurances</h4>
+        <p>具身 AI 的错误动作可能直接造成人身或财产伤害：<em>"robot equipped with embodied AI may harm the victims while saving them due to imperfect actions"</em>。在无人监督的复杂场景（如灾难救援）中，安全护栏的设计尤为关键。当前代表工作 SafeVLA 采用 RL-based 安全对齐，但在性能与安全之间的权衡仍是开放问题。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 09</div>
+        <h4>智能体框架 Agentic Frameworks</h4>
+        <p>VLA 模型嵌入多智能体系统的研究尚处早期：如何分配自主级别、如何通过智能体间通信实现分布式决策、以及如何生成可信赖且可验证的工作流程，均是未解问题。Yang 等（2025）提出了包含 LLM 规划器 + VLM 验证器 + VLA 执行器的异构智能体框架作为初步探索。</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="num">Challenge 10</div>
+        <h4>人机协作 Human-Robot Coordination</h4>
+        <p>当前 VLA 模型的人机通信是单向的（人 → 机器人），机器人无法向人类传达意图或请求缺失信息。CoT-VLA 通过在动作解码前生成意图状态可视化输出，Emma-X 通过高层自然语言 rationale 作出初步探索。真正的双向交互——<em>"reasoning traces and questions for the user seeking missing information"</em>——仍是开放目标。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS / Emerging Solutions ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 新兴解决路径</h2>
+    <p class="lead">论文（作为综述/位置论文）不提供实验对比表格，而是系统梳理针对上述挑战的四类新兴技术路径，为未来研究提供参考。</p>
+
+    <div class="note"><b>注：</b>本文为 Position Paper，不包含可量化对比实验结果；以下内容为论文对新兴方法的分析与展望，均来源于原文论述。</div>
+
+    <h3>路径一：空间理解增强 Spatial Understanding</h3>
+    <p>针对多模态感知挑战，作者建议在 RGB-D 数据上微调 VLM backbone，以发展深度感知能力。具体方案包括：利用 Locate 3D 框架从 RGB 帧合成 RGB-D 数据；当真实深度不可用时，保留独立的深度估计专家网络；借助 Veo3 等视频生成平台构建多样化场景训练数据。</p>
+
+    <h3>路径二：世界动力学建模 World Dynamics Modeling</h3>
+    <p>两类主要方法应对长时程推理挑战：<br>
+    • <strong>生成式建模</strong>：以当前状态与动作为条件预测下一状态，通过对比性"self-consistency"目标从预训练 VLM 初始化训练。<br>
+    • <strong>嵌入预测</strong>：V-JEPA-2 方法预测"latent embedding of the future frame"而非像素级重建，实现高效的长时程预测，同时避免像素生成的计算代价。</p>
+
+    <h3>路径三：通用动作表征 Universal Action Representation</h3>
+    <p>针对跨机器人泛化挑战，作者提议学习"unified atomic representations of actions"——通过 codebook 建立原子动作库，配合机器人专属 decoder 实现适配。进一步的愿景是通过 prompting 教会 VLA 模型新动作空间，类比 few-shot prompting 在 LLM 中的能力，从而突破固定动作空间的限制。</p>
+
+    <h3>路径四：数据合成与后训练 Data Synthesis &amp; Post-Training</h3>
+    <p>• <strong>数据合成</strong>：从视频中提取 latent action 实现无监督数据扩增；联合训练合成视频与真实机器人数据；将世界模型作为模拟器生成大规模合成数据集，并用专门评估器过滤低质量样本。<br>
+    • <strong>后训练</strong>：将 LLM 后训练技术移植到 VLA——以动作条件化世界模型的预测与子目标状态的对比作为奖励信号，结合 DPO、GRPO 等偏好优化方法；安全评估通过"action-conditioned world models or specialized evaluators"充当"virtual guardrails"。</p>
+
+    <h3>挑战与新兴路径对应关系</h3>
+    <table>
+      <tr><th>挑战</th><th>主要新兴解决路径</th><th>代表方法</th></tr>
+      <tr><td>多模态感知</td><td>RGB-D 微调、深度专家</td><td>Locate 3D, SpatialVLA, MolmoAct</td></tr>
+      <tr><td>鲁棒推理</td><td>Chain-of-Thought、世界模型奖励</td><td>CoT-VLA, Emma-X, V-JEPA-2</td></tr>
+      <tr><td>数据质量</td><td>视频 latent action 提取、合成数据</td><td>Veo3, Open-X-Embodiment</td></tr>
+      <tr><td>跨机器人泛化</td><td>通用动作 Codebook + 专属 Decoder</td><td>Zheng et al. (2025)</td></tr>
+      <tr><td>资源效率</td><td>分层规划（大模型规划 + 小模型执行）</td><td>OCTO, OpenVLA, RT-2</td></tr>
+      <tr><td>全身协调</td><td>耦合奖励设计、MPC+学习混合</td><td>Mobile ALOHA, WBMPC, ACDIT</td></tr>
+      <tr><td>安全</td><td>RL 安全对齐、世界模型虚拟护栏</td><td>SafeVLA</td></tr>
+      <tr><td>智能体框架</td><td>异构多智能体（规划+验证+执行）</td><td>Yang et al. (2025)</td></tr>
+      <tr><td>人机协作</td><td>双向通信、推理轨迹可视化</td><td>CoT-VLA, Emma-X</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>本文为综述 / Position Paper，未设独立"Limitations"章节。以下局限性部分来自论文正文中的明确陈述（<em>stated</em>），部分来自论文结构与方法论的推断（<em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>仿真评估与真实世界的相关性不足（stated）</summary>
+      <p>论文明确指出，当前仿真评估环境"often fail to capture enough details of their real-life counterparts"，sim-to-real gap 导致评估结论的可靠性存疑。SimplerEnv 等工具通过随机化改善了部分问题，但根本性 gap 仍未弥合。</p>
+    </details>
+
+    <details class="lim">
+      <summary>挑战分析缺乏定量基准支撑（inferred）</summary>
+      <p>作为 Position Paper，论文对十大挑战的描述主要依赖定性分析与引文综述，缺乏统一的定量实验验证。各挑战的严重程度难以横向比较，优先级排序带有主观判断成分。</p>
+    </details>
+
+    <details class="lim">
+      <summary>提出路径的可行性尚待验证（inferred）</summary>
+      <p>文中提出的四类新兴解决路径（空间理解、世界动力学建模、通用动作表征、数据合成与后训练）多处于概念或早期探索阶段，部分方法（如基于 prompting 的动作空间扩展）尚无充分实证支持，实际效果有待后续工作检验。</p>
+    </details>
+
+    <details class="lim">
+      <summary>覆盖范围的选择性（inferred）</summary>
+      <p>"10 大挑战"的选取不可避免地带有作者视角的局限。例如，标定误差、感知延迟、硬件可靠性等工程层面挑战，以及多语言/跨文化人机交互等社会技术挑战，在论文中未得到充分讨论。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures &nbsp;·&nbsp; 10 Open Challenges Steering the Future of Vision-Language-Action Models &nbsp;·&nbsp; for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2511.05936">https://arxiv.org/abs/2511.05936</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "slug": "moto-latent-motion-token",
+  "title": "Moto: Latent Motion Token as the Bridging Language for Robot Manipulation from Videos",
+  "arxiv_id": "2412.04445",
+  "url": "https://arxiv.org/abs/2412.04445",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "latent motion token",
+    "robot manipulation",
+    "视频预训练",
+    "VQ-VAE",
+    "autoregressive prediction",
+    "imitation learning",
+    "cross-embodiment",
+    "运动先验",
+    "co-fine-tuning",
+    "GPT"
+  ],
+  "summary_zh": "Moto 将视频帧对压缩为离散隐运动 token，以自回归预训练方式在无标注视频上学习动作先验，再通过 co-fine-tuning 迁移到机器人操控，仅 98M 参数即在 SIMPLER 基准上达到 61.4% 成功率，媲美 55B 的 RT-2-X（60.7%）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

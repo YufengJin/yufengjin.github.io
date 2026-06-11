@@ -1,0 +1,11 @@
+{
+  "slug": "cogact",
+  "title": "CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation",
+  "arxiv_id": "2411.19650",
+  "url": "https://arxiv.org/abs/2411.19650",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "diffusion transformer", "robotic manipulation", "机器人操作", "策略学习", "imitation learning", "具身智能", "action ensemble", "扩散变换器"],
+  "summary_zh": "CogACT 提出组件化 VLA 架构，将视觉语言认知（LLaMA-2）与专用扩散 Transformer 动作模块解耦，在 5 种机器人平台上成功率比 OpenVLA 高出 35%–55%，并超越 RT-2-X 18%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

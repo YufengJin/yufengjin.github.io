@@ -1,0 +1,22 @@
+{
+  "slug": "dreamvla",
+  "title": "DreamVLA: A Vision-Language-Action Model Dreamed with Comprehensive World Knowledge",
+  "arxiv_id": "2507.04447",
+  "url": "https://arxiv.org/abs/2507.04447",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "VLA",
+    "vision-language-action",
+    "机器人操作",
+    "world knowledge prediction",
+    "dynamic regions",
+    "depth forecasting",
+    "semantic features",
+    "diffusion transformer",
+    "CALVIN",
+    "具身智能"
+  ],
+  "summary_zh": "DreamVLA 通过在动作生成前显式预测动态区域、深度图与语义特征（DINOv2+SAM）作为”世界知识”，并采用 block-wise structured attention 防止信息泄露，在 CALVIN ABC-D 上取得 4.44 平均长度的最优性能，真实机器人成功率达 76.7%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

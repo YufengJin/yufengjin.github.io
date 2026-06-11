@@ -1,0 +1,11 @@
+{
+  "slug": "up-vla",
+  "title": "UP-VLA: A Unified Understanding and Prediction Model for Embodied Agent",
+  "arxiv_id": "2501.18867",
+  "url": "https://arxiv.org/abs/2501.18867",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "vision-language-action", "具身智能", "future prediction", "机器人操作", "multi-modal understanding", "embodied agent", "Calvin benchmark", "robotic manipulation", "Phi-1.5"],
+  "summary_zh": "UP-VLA 将多模态理解（MMU）与未来视觉预测（PRE）统一训练，弥补 VLM 在低层空间感知上的不足，在 Calvin ABC-D 基准上以 Avg. Length 4.08 超越上一最优 GR-1 达 33%，真实 Franka 机械臂已见任务成功率 80%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

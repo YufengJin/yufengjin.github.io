@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIBERO-Plus: VLA 模型鲁棒性深度分析</title>
+<meta name="keywords" content="VLA robustness, Vision-Language-Action, robotic manipulation, perturbation benchmark, LIBERO-Plus, 视觉-语言-动作模型, 机器人操作, 鲁棒性评估, 扰动测试">
+<meta name="description" content="LIBERO-Plus 对主流 VLA 模型在7个扰动维度（摄像头视角、机器人初始状态、语言指令等）下的鲁棒性进行系统评估，发现成功率从 95% 骤降至 30% 以下。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; arXiv 2025</span>
+    <h1>LIBERO-Plus</h1>
+    <div class="sub">VLA 模型的鲁棒性深度分析</div>
+    <div class="authors">Senyu Fei, Siyin Wang, Junhao Shi, Zihao Dai, Jikun Cai, Pengfang Qian, Li Ji, Xinzhe He, Shiduo Zhang, Zhaoye Fei, Jinlan Fu, Jingjing Gong, Xipeng Qiu</div>
+    <p class="lead">
+      当前 VLA（Vision-Language-Action）模型在机器人操作基准上报告了令人印象深刻的成功率，但这些高分可能掩盖了模型在真实部署场景中的脆弱性。本文系统构建了 LIBERO-Plus 基准，覆盖 7 个扰动维度、21 个子维度，共 10,030 个任务，对 10 款主流 VLA 模型进行深度评估，发现成功率可从 95% 骤降至 30% 以下。
+    </p>
+    <div class="meta">
+      <span>cs.RO / cs.CL / cs.CV</span>
+      <span>10 VLA 模型评估</span>
+      <span>10,030 测试任务</span>
+      <span><a href="https://arxiv.org/abs/2510.13626">📄 arXiv:2510.13626</a></span>
+      <span><a href="https://arxiv.org/pdf/2510.13626">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA robustness</span>
+      <span>Vision-Language-Action</span>
+      <span>robotic manipulation</span>
+      <span>perturbation benchmark</span>
+      <span>鲁棒性评估</span>
+      <span>LIBERO-Plus</span>
+      <span>language grounding</span>
+      <span>compositional generalization</span>
+      <span>sensor noise</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      VLA 模型在标准机器人操作基准上屡创新高，然而这些基准场景高度受控，难以反映真实部署环境中的变化。当摄像头视角、场景光照、背景纹理或语言描述稍作调整，模型性能会如何变化？现有研究缺乏对多维度扰动的系统性探索。
+    </p>
+    <blockquote>
+      "Visual–Language–Action (VLA) models report impressive success rates on robotic manipulation benchmarks, yet these results may mask fundamental weaknesses in robustness."
+    </blockquote>
+
+    <figure>
+      <img src="img/framework.webp" alt="LIBERO-Plus framework overview">
+      <figcaption>
+        <b>图1：LIBERO-Plus 基准框架。</b>共包含 7 个一级扰动维度（对象布局 O、背景纹理 B、光照条件 L、摄像头视角 C、机器人初始状态、语言指令 R、传感器噪声 N）和 21 个子维度，并按 5 个难度级别（Level-1 最易至 Level-5 最难）分层构建测试集，共生成 10,030 个任务。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>95%→&lt;30%</b><small>典型模型在摄像头视角扰动下的性能骤降范围</small></div>
+      <div><b>10</b><small>参与评估的最新 VLA 模型数量</small></div>
+      <div><b>10,030</b><small>LIBERO-Plus 基准任务总数</small></div>
+      <div><b>7</b><small>扰动维度（含 21 个子维度）</small></div>
+    </div>
+
+    <p>
+      现有机器人操作基准（如 LIBERO、AGNOSTOS、COLOSSEUM 等）在扰动维度覆盖、细粒度分析和自动化生成等方面存在明显不足。LIBERO-Plus 正是为弥补这一空白而设计：在标准 LIBERO 场景基础上，自动化地注入 7 类扰动并按难度分级，从而构建可重复、可扩展的鲁棒性评估框架。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      LIBERO-Plus 在 LIBERO 模拟环境基础上，系统设计了 7 个扰动维度的注入机制，并引入 5 级难度分层和组合扰动分析框架，用于评估模型的单维度鲁棒性与跨维度泛化能力。
+    </p>
+
+    <h3>7 个扰动维度设计</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>视觉类扰动</h3>
+        <ul>
+          <li><b>Objects Layout (O1-O2)：</b>在场景中随机添加 1–5 个干扰物体（从 416 个物体库中采样），或对目标物体施加位姿扰动（x/y/z 位移 + pitch/yaw/roll 旋转）</li>
+          <li><b>Background Textures (B1-B2)：</b>替换整体场景主题（950 种纹理库）或桌面/地面材质</li>
+          <li><b>Light Conditions (L1-L4)：</b>调整漫反射颜色（RGB 通道）、平行光源方向、镜面高光强度及阴影开关</li>
+          <li><b>Camera Viewpoints (C1-C3)：</b>摄像头距离缩放（1.01×–2.00×）、球坐标位置偏移（方位角/仰角 15°–75°）及朝向旋转（yaw/pitch/roll 2°–10°）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>控制与语义类扰动</h3>
+        <ul>
+          <li><b>Robot Initial States：</b>对机器人关节角度施加 0.1–0.5 幅度的随机扰动，测试运动初始化的鲁棒性</li>
+          <li><b>Language Instructions (R1-R3)：</b>将原始指令改写为更长的对话形式（R1）、常识替换（R2）或推理链变体（R3），保留语义意图但改变表达形式</li>
+          <li><b>Sensor Noise (N1-N5)：</b>向图像注入 5 类噪声（运动模糊、高斯模糊、缩放模糊、雾化、玻璃模糊），每类 5 个强度级别（L1–L5）</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>5 级难度分层</h3>
+    <p>
+      每个扰动维度按扰动强度由弱到强划分为 5 个难度等级（Level-1 至 Level-5）。Level-1 代表最小可感知扰动，所有参考模型均可通过；Level-5 代表最强扰动，所有模型均失败。难度分级保证了基准的区分度，同时便于分析各模型的"鲁棒性边界"。
+    </p>
+
+    <figure>
+      <img src="img/difficulty.webp" alt="Difficulty level distribution">
+      <figcaption>
+        <b>图2：各扰动维度的难度级别（L1–L5）任务比例分布。</b>饼图展示了 7 个维度下不同难度任务的占比。从中可以看出，摄像头视角（Camera）和机器人初始状态（Robot）维度的高难度任务比例更高，而光照（Light）和背景（Background）维度相对容易。
+      </figcaption>
+    </figure>
+
+    <h3>组合扰动分析框架</h3>
+    <p>
+      为量化不同扰动间的交互效应，本文引入组合泛化差距（Compositional Generalization Gap）指标：
+    </p>
+    <blockquote>
+      Δᵢⱼ = Cov(Dᵢ, Dⱼ | Y=1)
+    </blockquote>
+    <p>
+      通过对 2,000 次双维度扰动的试验进行协方差分析，发现一致性负差距（negative gap），说明扰动并非独立叠加，而是存在耦合交互效应，共同暴露了模型表征中的纠缠问题（entanglement in the learned representations）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验评估了 10 款主流 VLA 模型：OpenVLA、OpenVLA-OFT（3个变体）、π₀、π₀-fast、Nora、WorldVLA、UniVLA、RIPT-VLA，涵盖自回归、扩散、世界模型和强化学习等不同训练范式。每个模型在各扰动维度的多个子任务上运行 100 次。
+    </p>
+
+    <h3>主要性能对比（单维度扰动，成功率变化 Δ%）</h3>
+    <table>
+      <tr><th>模型</th><th>原始成功率</th><th>Camera ↓</th><th>Robot ↓</th><th>Language ↓</th><th>Light ↓</th><th>Background ↓</th><th>Noise ↓</th><th>Layout ↓</th></tr>
+      <tr><td>OpenVLA</td><td>76.5%</td><td>-75.4</td><td>-72.4</td><td>-49.7</td><td>-72.1</td><td>-51.2</td><td>-57.2</td><td>-44.9</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>97.1%</td><td>-37.4</td><td>-59.9</td><td>-15.6</td><td>-11.3</td><td>-4.7</td><td>-20.4</td><td>-20.0</td></tr>
+      <tr><td>π₀</td><td>94.2%</td><td>-78.4</td><td>-87.6</td><td>-33.2</td><td>-14.6</td><td>-15.7</td><td>-14.8</td><td>-23.8</td></tr>
+    </table>
+
+    <h3>关键发现一：视觉扰动是最大威胁</h3>
+    <figure>
+      <img src="img/layout.webp" alt="Object layout robustness">
+      <figcaption>
+        <b>图3：对象布局鲁棒性分析（Figure 1）。</b>左侧为添加干扰物体（confounding objects）时各模型性能，π₀、π₀-fast、RIPT-VLA 等高性能模型降幅有限；右侧为目标物体位移（target displacement）时的性能，几乎所有模型均大幅下降。这表明模型依赖记忆的位置先验，而非真正理解物体语义。
+      </figcaption>
+    </figure>
+    <p>
+      摄像头视角变化和机器人初始状态扰动导致成功率大幅下降，平均降幅远超其他维度。π₀ 在摄像头扰动下降幅高达 -78.4%，在机器人初始状态扰动下降幅达 -87.6%。相比之下，配备腕部摄像头的 OpenVLA-OFT 在摄像头扰动下仅下降 -37.4%，说明多视角输入可显著提升视觉鲁棒性。
+    </p>
+
+    <h3>关键发现二：模型几乎忽视语言指令</h3>
+    <figure>
+      <img src="img/language.webp" alt="Language instruction analysis">
+      <figcaption>
+        <b>图4：语言指令分析实验（Figure 3）。</b>(a) 将语言输入置空（blank instruction）：OpenVLA-OFT 成功率几乎无变化，证明其实际上是一个 VA（视觉-动作）模型而非 VLA 模型。(b) 目标对象替换实验：将指令中的目标从"alphabet soup"改为"tomato sauce"后，模型仍继续执行原始动作，成功率接近零，说明模型不具备跨对象指令跟随能力。
+      </figcaption>
+    </figure>
+    <blockquote>
+      "VLA models do not possess strong cross-object instruction-following generalization… they rely on fixed vision–action mappings rather than fully exploiting language signals in task decision-making."
+    </blockquote>
+    <p>
+      语言扰动平均仅导致 -25.3% 的下降（各维度中最小），但这并非因为模型具有语义鲁棒性——空指令实验证明模型根本未有效利用语言输入。语言维度的"低敏感性"实为语言信号被忽视的体现。
+    </p>
+
+    <h3>关键发现三：光照鲁棒性差异揭示腕部摄像头的作用</h3>
+    <figure>
+      <img src="img/light.webp" alt="Illumination robustness analysis">
+      <figcaption>
+        <b>图5：光照鲁棒性分析（Figure 2）。</b>极端消融实验：全黑输入（all-black）下所有模型性能趋近于零；而仅将第三人称视角图像置黑（3rd-black）时，OpenVLA-OFT、RIPT-VLA、π₀ 仍分别维持 43.6%–67.3% 的成功率，证明腕部摄像头提供了对光照变化鲁棒的近距离几何线索。
+      </figcaption>
+    </figure>
+
+    <h3>微调实验：数据增强显著提升鲁棒性</h3>
+    <p>
+      在 20,000+ 条覆盖多种扰动的轨迹数据上对 OpenVLA-OFT 进行微调后（8× A100，100,000 步，学习率 5×10⁻⁴），LIBERO-Plus 总成功率从 67.9% 提升至 79.5%（+11.6pp）。摄像头维度改善最显著（55.6% → 92.8%，+37.2pp），机器人状态维度改善相对有限（21.7% → 30.3%，+8.6pp）。
+    </p>
+
+    <figure>
+      <img src="img/difficulty_levels.webp" alt="Performance across difficulty levels">
+      <figcaption>
+        <b>图6：各难度级别（Level-1 至 Level-5）的模型性能曲线（Figure 5）。</b>展示了 4 款代表性模型在不同扰动维度下随难度增加的成功率变化趋势，体现出各模型鲁棒性边界的差异。
+      </figcaption>
+    </figure>
+
+    <h3>组合扰动分析</h3>
+    <p>
+      在双维度组合扰动实验（2,000 次试验）中，实际联合成功率始终低于独立假设下的预期值（Δᵢⱼ &lt; 0），证明不同类型的扰动存在负向交互效应。这意味着模型泛化能力具有内在不可分解性（intrinsically non-decomposable），单维度评估无法预测真实场景中的综合性能。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性部分来自论文明确说明，部分为从方法设计中推断（已标注）。</div>
+
+    <details class="lim" open>
+      <summary>局限于模拟环境，真实世界迁移性待验证</summary>
+      <p>
+        LIBERO-Plus 完全在 LIBERO 模拟环境中构建，所有扰动（光照、背景、传感器噪声等）均通过仿真生成。真实机器人场景中的物理噪声、光学畸变和未见物体的多样性远超仿真范畴，模拟结论能否迁移至实物部署仍需进一步验证。（<i>论文明确指出为未来工作方向</i>）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>评估范围限于 LIBERO 任务集，泛化性受限</summary>
+      <p>
+        所有测试任务均基于 LIBERO 原有的桌面操作场景，场景多样性（物体类别、任务结构、桌面配置）相对有限。对于更复杂的双臂操作、移动机器人或开放世界任务，本基准的结论未必适用。（<i>从任务设计推断</i>）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>微调数据分布与测试分布高度重叠</summary>
+      <p>
+        提升鲁棒性的微调实验使用了与测试集同源的 20,000+ 条扰动轨迹。在分布外（out-of-distribution）场景下，这种数据驱动的鲁棒性提升效果可能大幅缩水，且不能说明模型习得了真正可组合的泛化能力。（<i>从训练设置推断</i>）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>语言维度评估未触及细粒度语义理解</summary>
+      <p>
+        现有的语言扰动（改写/替换/推理链）主要测试句式层面的鲁棒性，对更复杂的语义组合（新颖物体-动作组合、空间关系理解、多步骤指令）覆盖不足。模型究竟在何种语义粒度上失败仍不明确。（<i>从实验设计推断</i>）
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2510.13626">https://arxiv.org/abs/2510.13626</a>
+  </div>
+</footer>
+
+</body>
+</html>

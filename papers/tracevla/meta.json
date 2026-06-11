@@ -1,0 +1,11 @@
+{
+  "slug": "tracevla",
+  "title": "TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness for Generalist Robotic Policies",
+  "arxiv_id": "2412.10345",
+  "url": "https://arxiv.org/abs/2412.10345",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "visual trace prompting", "机器人操作", "Co-Tracker", "OpenVLA", "空间时序感知", "视觉语言动作模型", "manipulation policy"],
+  "summary_zh": "TraceVLA 通过将 Co-Tracker 提取的历史点轨迹叠加到当前观测图像上（visual trace prompting），在不改变模型结构的前提下增强 VLA 的空间时序感知，在 SimplerEnv 提升约 10%，真实机器人任务成功率提升 3.5×。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

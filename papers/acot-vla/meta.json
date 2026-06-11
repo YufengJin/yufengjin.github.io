@@ -1,0 +1,11 @@
+{
+  "slug": "acot-vla",
+  "title": "ACoT-VLA: Action Chain-of-Thought for Vision-Language-Action Models",
+  "arxiv_id": "2601.11404",
+  "url": "https://arxiv.org/abs/2601.11404",
+  "category": "机器人 · Robotics",
+  "keywords": ["Action Chain-of-Thought", "VLA", "机器人操作", "扩散策略", "链式推理", "显式轨迹推理", "隐式动作先验", "trajectory reasoning"],
+  "summary_zh": "ACoT-VLA 提出在动作空间中直接进行链式推理，通过 Explicit Action Reasoner 合成粗粒度参考轨迹、Implicit Action Reasoner 提取隐式动作先验，协同引导最终策略解码，在 LIBERO benchmark 上达到 98.5% 平均成功率，超越前 SOTA π0.5 的 1.6%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

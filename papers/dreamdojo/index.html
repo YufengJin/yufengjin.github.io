@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamDojo: A Generalist Robot World Model from Large-Scale Human Videos</title>
+<meta name="keywords" content="world model, 机器人操作, egocentric video, latent action, 策略评估, model-based planning, video generation, 扩散模型, dexterous control, foundation model">
+<meta name="description" content="DreamDojo 是一个基于 44k 小时以自我为中心的人类视频训练的通用机器人世界模型，通过连续潜在动作解决无标注视频的动作建模问题，支持实时遥操作、策略评估和基于模型的规划。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>DreamDojo</h1>
+    <div class="sub">A Generalist Robot World Model from Large-Scale Human Videos</div>
+    <div class="authors">Shenyuan Gao, William Liang, Kaiyuan Zheng, Ayaan Malik, Seonghyeon Ye, Sihyun Yu, Wei-Cheng Tseng, Yuzhu Dong, Kaichun Mo, Chen-Hsuan Lin, Qianli Ma, Seungjun Nah, Loic Magne, Jiannan Xiang, Yuqi Xie, Ruijie Zheng, Dantong Niu, You Liang Tan, K.R. Zentner, George Kurian, Suneel Indupuru, Pooya Jannaty, Jinwei Gu, Jun Zhang, Jitendra Malik, Pieter Abbeel, Ming-Yu Liu, Yuke Zhu, Joel Jang, Linxi "Jim" Fan<br>
+    NVIDIA · HKUST · UC Berkeley · UW · Stanford · KAIST · UofT · UCSD · UT Austin</div>
+    <p class="lead">DreamDojo 是首个从 44k 小时以自我为中心（egocentric）人类视频中学习的通用机器人世界模型。通过引入连续潜在动作（continuous latent actions）作为统一的代理标签，解决了机器人操作任务中动作标注稀缺的核心瓶颈，在无需大量机器人数据的情况下实现了精确的动作可控性与物理推理。</p>
+    <div class="meta">
+      <span>arXiv 2602.06949</span>
+      <span>Feb 2026</span>
+      <span>44k 小时人类视频</span>
+      <!-- REQUIRED: link back to the source paper. Prefer arXiv abs. Keep the footer link too. -->
+      <span><a href="https://arxiv.org/abs/2602.06949">📄 arXiv:2602.06949</a></span>
+      <span><a href="https://dreamdojo-world.github.io">Project Page</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords (mixed 中英 academic terms); mirror in <meta name=keywords> -->
+    <div class="kw">
+      <span>world model</span>
+      <span>机器人操作</span>
+      <span>egocentric video</span>
+      <span>latent action</span>
+      <span>策略评估</span>
+      <span>model-based planning</span>
+      <span>video generation</span>
+      <span>扩散模型蒸馏</span>
+      <span>dexterous control</span>
+      <span>foundation model</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">机器人操作任务面临两大核心瓶颈：现有世界模型训练数据极度匮乏，而视频中动作标注又极为稀缺。如何从海量无标注的人类日常视频中高效提取交互知识，是构建通用机器人世界模型的关键难题。</p>
+    <blockquote>"Being able to simulate the outcomes of actions in varied environments will revolutionize the development of generalist agents at scale. However, modeling these world dynamics, especially for dexterous robotics tasks, poses significant challenges due to limited data coverage and scarce action labels."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DreamDojo overview">
+      <figcaption>图 1：DreamDojo 通过连续潜在动作作为统一标签，从大规模人类数据集中获取全面的物理知识，并支持遥操作、策略评估和基于模型的规划等下游应用。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>44k</b><small>小时 egocentric 人类视频（史上最大世界模型预训练数据集）</small></div>
+      <div><b>1,179k</b><small>轨迹数量</small></div>
+      <div><b>≥6,015</b><small>unique 技能种类</small></div>
+      <div><b>10.81 FPS</b><small>蒸馏后实时推理速度（较 teacher 提升近 4×）</small></div>
+    </div>
+    <p>与已有机器人世界模型数据相比，DreamDojo 数据集在规模上具有压倒性优势：视频时长长 <strong>15×</strong>，技能种类多 <strong>96×</strong>，场景数量多 <strong>2,000×</strong>。</p>
+    <figure>
+      <img src="img/dataset.webp" alt="Dataset distribution">
+      <figcaption>图 2：数据集分布分析——场景频次、每段视频的子任务数量、技能分布及语言标注可视化（技能动词与物体名称）。DreamDojo 的数据混合方案涵盖日常场景中最广泛的交互类型。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">DreamDojo 以 WAN2.2 视频生成模型为骨干，在其上引入三个关键设计：连续潜在动作（解决无标注问题）、相对动作变换 + 分块注入（提升条件精度），以及时序一致性损失（增强帧间连贯性）。后处理阶段通过两阶段蒸馏管线实现实时推理。</p>
+
+    <h3>1. 连续潜在动作（Continuous Latent Actions）</h3>
+    <p>核心挑战：大量以自我为中心的人类视频没有动作标注。DreamDojo 采用基于 VAE 的信息瓶颈设计，从相邻帧对中提取紧凑的潜在动作向量，作为代理标签用于条件视频生成。其训练目标同时最大化下一帧预测的似然并最小化潜在动作的 KL 散度：</p>
+    <blockquote>ℒ<sup>pred</sup> = 𝔼[log p<sub>θ</sub>(f<sup>t+1</sup>|â, f<sup>t</sup>)] − β · D<sub>KL</sub>(q<sub>φ</sub>(â|f<sup>t:t+1</sup>) ‖ p(â))</blockquote>
+    <p>该设计还通过跨具身（cross-embodiment）相似帧对检索验证：不同机器人（或人手）执行相似动作时，其潜在动作向量在空间上高度对齐，表明 latent action 捕捉了真正的运动语义，具备具身无关的迁移能力。</p>
+
+    <figure>
+      <img src="img/latent_action.webp" alt="Latent action model architecture">
+      <figcaption>图 3：潜在动作模型采用信息瓶颈设计，产生连续潜在向量。右侧展示跨具身相似帧对检索结果——不同具身执行相似动作时，对应的 latent action 彼此对齐，验证了其语义一致性。</figcaption>
+    </figure>
+
+    <h3>2. 相对动作变换（Relative Action Transformation）与分块注入（Chunked Action Injection）</h3>
+    <p>直接将动作轨迹全局注入会导致分布宽广、建模困难。DreamDojo 引入两项架构改进：
+    <ul>
+      <li><strong>相对动作变换：</strong>将动作向量重参数化为相对于每段 latent frame 起始点的偏移量，使动作分布更集中，降低建模复杂度。</li>
+      <li><strong>分块动作注入（Chunked Action Injection）：</strong>与 WAN2.2 tokenizer 的时序压缩比对齐，将动作以 4 帧为单位分块注入，并严格遵循因果顺序，避免未来动作信息泄漏。</li>
+    </ul>
+    消融实验证明，单独加入分块注入可将 Counterfactual Eval 上的 PSNR 从 19.482 提升至 20.783（+1.3 dB）。</p>
+
+    <h3>3. 时序一致性损失（Temporal Consistency Loss）与蒸馏管线（Distillation Pipeline）</h3>
+    <p>在标准 flow-matching 目标之外，DreamDojo 额外引入时序一致性损失以匹配帧间过渡：</p>
+    <blockquote>ℒ<sub>temporal</sub> = 𝔼[∑ ‖(z<sup>i+1</sup> − z<sup>i</sup>) − (v<sup>i+1</sup> − v<sup>i</sup>)‖²]</blockquote>
+    <p>蒸馏管线分两阶段（warmup + distribution matching），将 teacher 模型（35 步，2.72 FPS）压缩为 student 模型（4 步，<strong>10.81 FPS</strong>），实现约 4× 加速，并通过更长的 context 窗口（1 → 12 帧）大幅提升长程一致性。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在多个具有挑战性的 OOD（out-of-distribution）基准上评估，包括 In-lab Eval、Counterfactual Eval 和 GR-1 Long Eval，以及三类下游应用：策略评估、基于模型的规划和实时遥操作。</p>
+
+    <h3>架构消融（Table 5 · Counterfactual Eval）</h3>
+    <table>
+      <tr><th>设计组合</th><th>PSNR↑</th><th>SSIM↑</th><th>LPIPS↓</th></tr>
+      <tr><td>Baseline（无任何改进）</td><td>19.448</td><td>0.768</td><td>0.211</td></tr>
+      <tr><td>+ Relative actions</td><td>19.482</td><td>0.772</td><td>0.212</td></tr>
+      <tr><td>+ Chunked injection</td><td>20.783</td><td>0.790</td><td>0.193</td></tr>
+      <tr><td>+ Temporal loss（完整模型）</td><td class="good">20.980</td><td class="good">0.796</td><td class="good">0.189</td></tr>
+    </table>
+
+    <h3>蒸馏效果（Table 6 · GR-1 Long Eval）</h3>
+    <table>
+      <tr><th>方法</th><th>PSNR↑</th><th>SSIM↑</th><th>LPIPS↓</th><th>FPS↑</th><th>预测长度</th><th>Context 长度</th></tr>
+      <tr><td>Teacher（35 步）</td><td>14.086</td><td>0.442</td><td>0.412</td><td>2.72</td><td>12 帧</td><td>1 帧</td></tr>
+      <tr><td>Student（4 步）</td><td class="good">13.146</td><td>0.379</td><td>0.485</td><td class="good">10.81</td><td>4 帧</td><td class="good">12 帧</td></tr>
+    </table>
+    <p>Student 在速度和 context 长度上大幅领先 teacher，代价是 PSNR 小幅下降（14.086 → 13.146），在长程生成任务中表现出更好的一致性。</p>
+
+    <figure>
+      <img src="img/ablation.webp" alt="Qualitative ablation results">
+      <figcaption>图 9：消融对比——应用全部技术（相对动作 + 分块注入 + 时序损失）后，模型在物体建模和动作跟随上均达到最佳效果，定性质量显著优于各消融变体。</figcaption>
+    </figure>
+
+    <h3>下游应用</h3>
+    <figure>
+      <img src="img/applications.webp" alt="Downstream applications">
+      <figcaption>图 5：下游应用结果。左：真实与模拟成功率高度线性相关（Pearson r = 0.995，MMRV = 0.003），表明 DreamDojo 可作为可靠的策略评估器。右：基于模型的规划在高方差策略组上带来 17% 成功率提升，~2× 于 uniform sampling。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>策略评估（Policy Evaluation）</h3>
+        <ul>
+          <li>Pearson 相关系数：r = <strong>0.995</strong></li>
+          <li>Mean Maximum Rank Violation：MMRV = <strong>0.003</strong></li>
+          <li>DreamDojo 模拟成功率与真实成功率高度线性一致，可替代真实环境进行策略排序</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>基于模型的规划（Model-Based Planning）</h3>
+        <ul>
+          <li>使用 5 个 checkpoint 组成 ensemble</li>
+          <li>高方差策略组：成功率提升 <strong>17%</strong></li>
+          <li>跨策略提案：~<strong>2×</strong> 优于 uniform sampling</li>
+          <li>支持 PICO VR 控制器输入的实时遥操作（G1 机器人）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <!-- If the paper has NO explicit limitations section, keep this note and label each item. -->
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文中明确陈述（stated by the authors）。</div>
+    <details class="lim" open><summary>非常见动作仿真不足</summary><p>"While DreamDojo demonstrates significant improvements over the baseline, it is by no means perfect when simulating uncommon actions, such as slapping and fast waving."——对于不常见或快速运动，模型生成质量明显下降，反映了训练数据分布对罕见动作的覆盖不足。</p></details>
+    <details class="lim"><summary>策略评估中成功率偏高（失败建模不准确）</summary><p>"When conducting policy evaluation, the absolute success rates in DreamDojo are often higher than their real counterparts, indicating a limitation in accurately generating nuanced failures."——世界模型倾向于高估策略成功率，对细微失败模式的建模能力有限，影响其作为绝对成功率指标的可靠性。</p></details>
+    <details class="lim"><summary>不支持多视角仿真，缺乏后训练知识保留研究</summary><p>"Our model does not naturally support multi-view simulation, which is crucial for state-of-the-art policies. Moreover, how to retain the pretrained knowledge as much as possible has not been studied in depth."——单视角输出限制了对依赖多摄像头的先进策略的支持；后训练（post-training）阶段如何保留预训练通用知识亦有待系统研究。未来方向包括更宽泛的动作分布覆盖（如 policy rollouts）以及进一步的推理速度工程优化。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DreamDojo: A Generalist Robot World Model from Large-Scale Human Videos · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.06949">https://arxiv.org/abs/2602.06949</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "slug": "pion-optimizer",
+  "title": "Rethinking Muon Beyond Pretraining: Spectral Failures and High-Pass Remedies for VLA and RLVR",
+  "arxiv_id": "2605.19282",
+  "url": "https://arxiv.org/abs/2605.19282",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": [
+    "Muon optimizer",
+    "Pion",
+    "spectral whitening",
+    "high-pass filtering",
+    "VLA training",
+    "RLVR",
+    "Newton-Schulz iteration",
+    "奇异值滤波",
+    "机器人操作",
+    "大模型后训练"
+  ],
+  "summary_zh": "Pion 以两阶段 Promotion+Suppression 高通谱滤波替代 Muon 的均匀谱白化，解决了 Muon 在 VLA 跨模态训练（低秩梯度噪声放大）和 RLVR 后训练（低 SNR 导致模型崩塌）中的根本缺陷，在保持相同计算代价的同时实现全面性能提升。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "action-conditional-video-prediction",
+  "title": "Action-Conditional Video Prediction using Deep Networks in Atari Games",
+  "arxiv_id": "1507.08750",
+  "url": "https://arxiv.org/abs/1507.08750",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "action-conditional prediction",
+    "video prediction",
+    "Atari games",
+    "DQN",
+    "reinforcement learning",
+    "LSTM",
+    "multiplicative interaction",
+    "informed exploration",
+    "动作条件预测",
+    "model-based RL"
+  ],
+  "summary_zh": "提出 feedforward 和 recurrent 两种深度编码-变换-解码架构，通过乘性动作条件变换层将动作变量融入视频预测，在 5 个 Atari 游戏中实现超 100 步逼真帧预测，并将预测模型用于知情探索策略以改善 DQN 训练效率。",
+  "date": "2026-06-10",
+  "source": "arxiv-eprint"
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CronusVLA: Towards Efficient and Robust Manipulation via Multi-Frame Vision-Language-Action Modeling</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 多帧建模, 机器人操作, multi-frame, cross-frame decoder, feature chunking, observational robustness, SimplerEnv-OR">
+<meta name="description" content="CronusVLA 将单帧 VLA 扩展至多帧范式，通过两阶段训练与跨帧解码器实现高效、鲁棒的机器人操作，在 SimplerEnv 达到 70.9% 成功率，LIBERO 较 OpenVLA 提升 26.8%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; cs.RO · arXiv 2025</span>
+    <h1>CronusVLA</h1>
+    <div class="sub">Towards Efficient and Robust Manipulation via Multi-Frame Vision-Language-Action Modeling</div>
+    <div class="authors">Hao Li, Shuai Yang, Yilun Chen, Xinyi Chen, Xiaoda Yang, Yang Tian, Hanqing Wang, Tai Wang, Dahua Lin, Feng Zhao, Jiangmiao Pang</div>
+    <p class="lead">CronusVLA 将单帧 VLA 模型扩展至多帧范式：先在大规模具身数据集上进行单帧预训练，再通过 feature chunking 与跨帧解码器（cross-frame decoder）汇聚历史帧信息进行后训练，同时大幅提升推理速度与观测鲁棒性。</p>
+    <div class="meta">
+      <span>arXiv 2506.19816</span>
+      <span>June 2025</span>
+      <span>3 embodiments · simulation + real-world</span>
+      <!-- REQUIRED: link back to the source paper -->
+      <span><a href="https://arxiv.org/abs/2506.19816">📄 arXiv:2506.19816</a></span>
+      <span><a href="https://arxiv.org/pdf/2506.19816">PDF</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords -->
+    <div class="kw">
+      <span>VLA</span>
+      <span>多帧建模</span>
+      <span>机器人操作</span>
+      <span>cross-frame decoder</span>
+      <span>feature chunking</span>
+      <span>observational robustness</span>
+      <span>SimplerEnv-OR</span>
+      <span>diffusion transformer</span>
+      <span>具身智能</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有基于预训练视觉-语言模型（VLM）的 VLA 模型仍受限于单帧图像范式，无法充分利用多帧历史提供的时序信息。
+      直接将多帧图像输入 VLM backbone 会因 self-attention 的二次方计算复杂度带来巨大的计算开销和推理延迟。
+      低级策略（low-level policies）的研究已表明多帧历史观测可提升性能与鲁棒性，但如何将其高效地引入大型 VLA 模型仍是未解难题。
+    </p>
+    <blockquote>"these models remain constrained by the single-frame image paradigm and fail to fully leverage the temporal information offered by multi-frame histories, as directly feeding multiple frames into VLM backbones incurs substantial computational overhead and inference latency."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="CronusVLA teaser">
+      <figcaption>图1：CronusVLA 整体框架概览。系统包含在大规模操作数据集上的单帧预训练（single-frame pretraining）阶段，以及在跨体态数据集上的多帧后训练（multi-frame post-training）阶段。CronusVLA 在仿真 benchmark 与真实环境中均展现出快速推理、高成功率与优越观测鲁棒性。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>70.9%</b><small>SimplerEnv 平均成功率</small></div>
+      <div><b>+26.8%</b><small>LIBERO 较 OpenVLA 的提升</small></div>
+      <div><b>8.73 Hz</b><small>推理速度（基线 3.09 Hz）</small></div>
+      <div><b>24 类</b><small>SimplerEnv-OR 干扰类型</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      CronusVLA 采用两阶段训练策略：第一阶段在大规模具身数据集上进行单帧 VLA 预训练，建立有效的具身视觉-语言基础；
+      第二阶段通过 feature chunking 将 VLM backbone 的输出从离散 token 替换为可学习特征（learnable features），
+      并经由跨帧解码器（cross-frame decoder）汇聚历史多帧信息，同时利用队列机制（queue mechanism）实现快速推理。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="CronusVLA architecture">
+      <figcaption>图2：CronusVLA 框架详解。(a) 单帧预训练：使用自回归方式预测离散动作 token（256 bins）；(b) 多帧后训练：复制模型权重后，通过跨帧解码器汇聚历史帧的可学习特征；(c) 队列机制（queue mechanism）用于 feature chunking 以加速推理；(d) 跨帧解码器（cross-frame decoder）内部结构，包含 cross-attention 与 DiT-based 扩散预测。</figcaption>
+    </figure>
+
+    <h3>单帧预训练（Single-Frame Pretraining）</h3>
+    <p>
+      第一阶段在大规模异构具身数据集上训练基础单帧 VLA 模型，采用自回归方式预测离散动作 token（量化为 256 bins）。
+      该阶段保留了 VLM backbone 的视觉感知能力，为后续多帧扩展奠定强基础。
+      模型配置包括：<strong>CronusVLA-7B</strong>（Llama 2 7B backbone，DINOv2 + SigLIP 视觉编码器）
+      与 <strong>CronusVLA-0.5B</strong>（Qwen2.5 0.5B backbone）。
+    </p>
+
+    <h3>多帧后训练与跨帧解码器（Multi-Frame Post-Training & Cross-Frame Decoder）</h3>
+    <p>
+      后训练阶段将 VLM backbone 的预测目标从离散 token 切换为连续的可学习特征，并通过 feature chunking 将 M 步历史帧的特征组织为结构化序列送入跨帧解码器。
+      跨帧解码器基于 DiT（Diffusion Transformer）设计，包含：
+    </p>
+    <ul>
+      <li><strong>Cross-attention 机制</strong>：计算复杂度与帧数线性增长（区别于直接输入多帧图像的二次方复杂度）</li>
+      <li><strong>Feature modulator</strong>：动态平衡当前帧与历史帧特征的贡献</li>
+      <li><strong>扩散损失（Diffusion loss）</strong>：用于动作序列预测</li>
+    </ul>
+    <p>
+      历史帧特征采用 stop-gradient 操作，防止梯度更新 VLM backbone，从而在保留单帧感知能力的同时实现解码器层面的时序建模（multi-frame regularization）。
+      推理时利用 feature 缓存（feature caching）消除重复的视觉-语言计算，实现 <strong>8.73 Hz</strong> 的高速推理（基线仅 3.09 Hz，提升 184%）。
+      后训练数据集为 Bridge-v2 + Fractal（148k 轨迹，5M 多帧片段）。
+    </p>
+
+    <h3>SimplerEnv-OR 鲁棒性基准</h3>
+    <p>
+      为评估时序与空间干扰下的鲁棒性，论文提出 SimplerEnv-OR benchmark，包含 24 种观测干扰类型（模糊、抖动、丢帧、遮挡、噪声等）与 120+ 严重程度等级，覆盖 Global、Local、Discrete 三大类别，支持空间维度与时序维度的独立评估。
+    </p>
+    <figure>
+      <img src="img/simpler_or.webp" alt="SimplerEnv-OR benchmark">
+      <figcaption>图3：SimplerEnv-OR benchmark 示例。包含 Global（全局）、Local（局部）、Discrete（离散）三大干扰类别，以及 Constant（1:0）、Cyclic（1:1）、Sparse（1:3 或 1:5）三种干扰-清洁帧比例，支持时序与空间双维度评估。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在三种具身平台（Google Robot VM/VA、WidowX、Franka）上进行，涵盖 SimplerEnv 仿真 benchmark、LIBERO benchmark、SimplerEnv-OR 鲁棒性评测及真实世界 Franka 机器人实验。
+      基线包括 OpenVLA、TraceVLA、RoboVLMs、SpatialVLA、DP3 等。
+    </p>
+
+    <h3>SimplerEnv 仿真性能（Table 1）</h3>
+    <table>
+      <tr><th>方法</th><th>Google VM</th><th>Google VA</th><th>WidowX</th><th>平均</th></tr>
+      <tr><td>OpenVLA</td><td>17.9%</td><td>26.0%</td><td>30.1%</td><td>24.7%</td></tr>
+      <tr><td>TraceVLA</td><td>45.8%</td><td>49.8%</td><td>—</td><td>—</td></tr>
+      <tr><td>SpatialVLA-7B</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>CronusVLA-7B</strong></td><td class="good">78.6%</td><td class="good">73.8%</td><td class="good">60.4%</td><td class="good">70.9%</td></tr>
+    </table>
+    <p>相较 TraceVLA，CronusVLA-7B 在 Google VM 上取得 <strong>+71.6%</strong> 的相对提升，Google VA 上提升 <strong>+48.2%</strong>。</p>
+
+    <h3>LIBERO 基准测试（Table 2）</h3>
+    <table>
+      <tr><th>方法</th><th>LIBERO-Spatial</th><th>LIBERO-Object</th><th>LIBERO-Goal</th><th>LIBERO-Long</th><th>平均</th></tr>
+      <tr><td>OpenVLA</td><td>84.7%</td><td>88.4%</td><td>79.2%</td><td>53.7%</td><td>76.5%</td></tr>
+      <tr><td><strong>CronusVLA-7B</strong></td><td class="good">99.0%</td><td class="good">99.3%</td><td class="good">95.8%</td><td class="good">94.0%</td><td class="good">97.0%</td></tr>
+    </table>
+    <p>长时序任务（LIBERO-Long）成功率从 OpenVLA 的 53.7% 提升至 94.0%（<strong>+40.3%</strong>）；整体平均成功率较 OpenVLA 提升 <strong>+26.8%</strong>（论文摘要原文数据）。</p>
+
+    <h3>SimplerEnv-OR 鲁棒性评测（Table 3）</h3>
+    <table>
+      <tr><th>方法</th><th>时序鲁棒性（Sparse）</th><th>空间鲁棒性（平均）</th></tr>
+      <tr><td>RoboVLMs</td><td>—</td><td>78.7%</td></tr>
+      <tr><td>SpatialVLA</td><td>—</td><td>63.1%</td></tr>
+      <tr><td><strong>CronusVLA-7B</strong></td><td class="good">96.2% R-Score</td><td class="good">86.9% R-Score</td></tr>
+    </table>
+
+    <h3>真实世界 Franka 实验</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="Real-world Franka experiments">
+      <figcaption>图4：真实世界实验。(a) 基础抓放能力（precise manipulation：block/cup stacking）；(b) 长时序任务（long-horizon tasks），多帧建模在处理时序依赖操作中优势显著；(c) 泛化与鲁棒性测试，相机遮挡（camera occlusion）与各类干扰下成功率达 <strong>72.6%</strong>，持续优于 OpenVLA 与 DP3。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <figure>
+      <img src="img/ablation_frames.webp" alt="Frame number ablation">
+      <figcaption>图5：帧数影响分析。随着输入帧数增加，成功率提升但推理速度下降；feature caching + cross-frame decoder 的组合方案在保持高成功率的同时恢复推理速度至 8.73 Hz。</figcaption>
+    </figure>
+    <p>消融实验关键结论：</p>
+    <ul>
+      <li>仅加入多帧建模（+M.F.）：成功率 <strong>+4.5%</strong>，速度 <strong>-40.3%</strong></li>
+      <li>加入 decoder 与连续特征（+M.F. +Dec.）：成功率 <strong>+48.2%</strong>，速度提升 <strong>2.8×</strong></li>
+      <li>多帧正则化（multi-frame regularization，stop-gradient）：加速收敛并提升整体性能</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均来自论文 Appendix I 中作者明确陈述的内容（stated by the authors）。</div>
+    <details class="lim" open>
+      <summary>SimplerEnv-OR 覆盖的干扰类型有限</summary>
+      <p>SimplerEnv-OR 当前涵盖 24 种干扰类型，尚不包含针对关键帧（keyframe）的定向扰动，无法全面模拟真实部署场景中的所有干扰形式，需进一步扩充。</p>
+    </details>
+    <details class="lim">
+      <summary>固定频率干扰未能捕获最坏情况</summary>
+      <p>现有评估使用固定频率的干扰模式（Constant / Cyclic / Sparse），可能无法覆盖最恶劣的连续干扰场景（worst-case scenarios）。</p>
+    </details>
+    <details class="lim">
+      <summary>基线对比与仿真环境支持有待扩充</summary>
+      <p>论文指出未来工作需扩展基线方法的对比范围，并增加对更多仿真环境的支持，以更全面地评估方法的泛化能力。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CronusVLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.19816">https://arxiv.org/abs/2506.19816</a>
+  </div>
+</footer>
+
+</body>
+</html>

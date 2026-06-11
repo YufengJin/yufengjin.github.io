@@ -1,0 +1,22 @@
+{
+  "slug": "rekep",
+  "title": "ReKep: Spatio-Temporal Reasoning of Relational Keypoint Constraints for Robotic Manipulation",
+  "arxiv_id": "2409.01652",
+  "url": "https://arxiv.org/abs/2409.01652",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "relational keypoint constraints",
+    "robotic manipulation",
+    "spatio-temporal reasoning",
+    "optimization-based control",
+    "GPT-4o",
+    "DINOv2",
+    "bimanual manipulation",
+    "关键点约束",
+    "无训练操控",
+    "分层优化"
+  ],
+  "summary_zh": "ReKep 将机器人操作任务表示为作用于三维语义关键点的关系约束函数，由 GPT-4o 自动生成，经分层优化求解机器人动作，无需任务专属训练数据即可完成多阶段单臂与双臂操作，总体成功率 68.6%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "agnostos-xcross-task-vla",
+  "title": "Exploring the Limits of Vision-Language-Action Manipulations in Cross-task Generalization",
+  "arxiv_id": "2505.15660",
+  "url": "https://arxiv.org/abs/2505.15660",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "cross-task generalization", "X-ICM", "AGNOSTOS benchmark", "dynamics-guided selection", "zero-shot manipulation", "in-context learning", "机器人操作", "RLBench", "LLM"],
+  "summary_zh": "提出 AGNOSTOS 基准（23 个未见操作任务，双难度级别）与 X-ICM 方法，通过动态引导示例选择和 LLM 上下文预测，实现 VLA 模型的零样本跨任务机器人操作泛化，Overall 成功率达 30.1%，超越 π0 等基线约 6–8%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

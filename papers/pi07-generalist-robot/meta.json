@@ -1,0 +1,20 @@
+{
+  "slug": "pi07-generalist-robot",
+  "title": "π₀.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities",
+  "arxiv_id": "2604.15483",
+  "url": "https://arxiv.org/abs/2604.15483",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "robotic foundation model",
+    "VLA",
+    "flow matching",
+    "cross-embodiment",
+    "组合泛化",
+    "diverse context conditioning",
+    "机器人操作",
+    "vision-language-action"
+  ],
+  "summary_zh": "π₀.7 通过多样化上下文条件训练（子任务指令、子目标图像、episode 元数据），使 ~50亿参数的 VLA 模型在灵巧操作、指令跟随、跨形态迁移和组合泛化上全面超越 π₀.5/π₀.6，部分任务匹配 RL 专家模型和人类遥操作基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

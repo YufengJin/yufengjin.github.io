@@ -1,0 +1,20 @@
+{
+  "slug": "gamegen-x",
+  "title": "GameGen-X: Interactive Open-world Game Video Generation",
+  "arxiv_id": "2411.00769",
+  "url": "https://arxiv.org/abs/2411.00769",
+  "category": "生成模型 · Generative Models",
+  "keywords": [
+    "game video generation",
+    "diffusion transformer",
+    "open-world game",
+    "interactive control",
+    "InstructNet",
+    "OGameData",
+    "游戏视频生成",
+    "指令微调"
+  ],
+  "summary_zh": "GameGen-X 是首个专为开放世界游戏视频生成与交互控制设计的 Diffusion Transformer 模型，通过两阶段训练（基础模型预训练 + InstructNet 指令微调）和百万级 OGameData 数据集，实现高质量游戏内容生成与多模态实时控制。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

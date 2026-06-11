@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--
+  GR-1: Unleashing Large-Scale Video Generative Pre-training for Visual Robot Manipulation
+  arXiv: 2312.13139 | 中文海报，无 EN 版本。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GR-1: 大规模视频生成预训练用于视觉机器人操作</title>
+<meta name="keywords" content="robot manipulation, video prediction, generative pre-training, GPT transformer, CALVIN benchmark, imitation learning, 视觉机器人操作, 泛化">
+<meta name="description" content="GR-1 利用大规模视频生成预训练，在 CALVIN 基准测试中将成功率从 88.9% 提升至 94.9%，并在未见场景的零样本泛化中达到 85.4%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:40px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · ICLR 2024</span>
+    <h1>GR-1: 大规模视频生成预训练用于视觉机器人操作</h1>
+    <div class="sub">Unleashing Large-Scale Video Generative Pre-training for Visual Robot Manipulation</div>
+    <div class="authors">Hongtao Wu, Ya Jing, Chilam Cheang, Guangzeng Chen, Jiafeng Xu, Xinghang Li, Minghuan Liu, Hang Li, Tao Kong · ByteDance Research</div>
+    <p class="lead">GR-1 是一个 GPT 风格的 Transformer 模型，通过在 Ego4D 大规模视频数据上预训练视频预测任务，再迁移至机器人操作微调，实现了远超先前方法的操作成功率和零样本场景泛化能力。</p>
+    <div class="meta">
+      <span>arXiv · 2023-12-20</span>
+      <span>CALVIN Benchmark</span>
+      <span>195M 参数（46M 可训练）</span>
+      <span><a href="https://arxiv.org/abs/2312.13139">📄 arXiv:2312.13139</a></span>
+      <span><a href="https://gr1-manipulation.github.io/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>robot manipulation</span>
+      <span>video prediction</span>
+      <span>generative pre-training</span>
+      <span>GPT transformer</span>
+      <span>CALVIN benchmark</span>
+      <span>imitation learning</span>
+      <span>零样本泛化</span>
+      <span>视觉机器人操作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      大规模生成预训练模型（GPT、DALL-E 等）在语言和视觉领域表现出卓越的效果，但视觉机器人操作领域尚未从中受益。核心障碍在于：<strong>机器人数据量稀少、且包含图像、状态、动作、语言等多模态信息</strong>，难以直接套用通用预训练范式。
+    </p>
+    <blockquote>
+      "Inspired by video prediction models that generate future images conditioned on a sequence of video frames and languages, we observe that a robot trajectory itself contains a video sequence. Therefore, video prediction models could potentially learn from internet videos and leverage the learned knowledge to predict future images and generate robot actions."
+    </blockquote>
+    <p>
+      机器人轨迹本身就是一段视频序列——这一洞察使得互联网视频预训练与机器人控制形成天然对齐：预测未来帧的能力可以直接迁移为"预测未来动作"的能力。GR-1 将视频预测作为预训练代理任务，填补了大规模预训练与机器人操作之间的鸿沟。
+    </p>
+    <figure>
+      <img src="img/x1.webp" alt="GR-1 概览：视频预训练后微调">
+      <figcaption><strong>图 1：GR-1 系统概览。</strong>左：在 Ego4D 等大规模视频数据上预训练视频预测（给定语言和历史帧，预测未来帧）。右：在机器人演示数据上微调，同时预测机器人动作和未来图像。预训练阶段积累的视觉-时序知识被高效迁移至操作任务。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>94.9%</b><small>CALVIN ABCD→D 单任务成功率（前最优 88.9%）</small></div>
+      <div><b>4.21</b><small>CALVIN 平均连续完成任务数（前最优 3.06）</small></div>
+      <div><b>85.4%</b><small>零样本未见场景（ABC→D）成功率（前最优 53.3%）</small></div>
+      <div><b>79%</b><small>真实机器人已见物体搬运成功率（RT-1 仅 27%）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      GR-1 以 GPT-2 为基础，设计了统一的 token 序列格式，支持"纯视频预训练"和"机器人操作微调"两阶段。模型接受语言指令、历史观测图像和机器人状态作为输入，输出机器人动作和未来图像预测。
+    </p>
+    <figure>
+      <img src="img/x2.webp" alt="GR-1 编码器/解码器架构">
+      <figcaption><strong>图 2：GR-1 编码器与解码器结构。</strong>语言编码器（CLIP，冻结）、图像编码器（MAE ViT，冻结）、机器人状态编码器（线性层）分别对各模态进行编码，送入 GPT Transformer。[OBS] token 解码为下一帧图像，[ACT] token 解码为机器人动作（手臂连续动作 + 夹爪二值动作）。</figcaption>
+    </figure>
+
+    <h3>Token 序列设计与 Causal Attention Masking</h3>
+    <p>
+      <strong>预训练阶段</strong>，输入序列格式为：<code>(l, o<sub>t-h</sub>, [OBS], l, o<sub>t-h+1</sub>, [OBS], ..., l, o<sub>t</sub>, [OBS])</code>，其中 <code>l</code> 为语言 token，<code>o</code> 为图像 token，<code>[OBS]</code> 为预测未来帧的特殊 token。
+    </p>
+    <p>
+      <strong>微调阶段</strong>，在每个时间步额外插入机器人状态和 <code>[ACT]</code> token：<code>(l, s<sub>t-h</sub>, o<sub>t-h</sub>, [OBS], [ACT], ...)</code>。所有 <code>[ACT]</code> 和 <code>[OBS]</code> token 均被 masked，使得其他 token 无法在注意力中看到它们，保持自回归预测的因果性。
+    </p>
+
+    <h3>两阶段训练流程</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Stage 1：视频生成预训练</h3>
+        <ul>
+          <li>数据：Ego4D 数据集 <strong>800,000 段视频片段</strong>（约 800 万帧）</li>
+          <li>目标：给定语言描述和历史帧序列，预测 t+Δt 时刻的图像</li>
+          <li>损失：像素空间 MSE（参考 MAE 方法）</li>
+          <li>编码器（CLIP 文字、MAE 图像）在全程保持冻结</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Stage 2：机器人操作微调</h3>
+        <ul>
+          <li>联合优化三个损失：<code>L<sub>finetune</sub> = L<sub>arm</sub> + L<sub>gripper</sub> + L<sub>video</sub></code></li>
+          <li>手臂连续动作：Smooth-L1 损失</li>
+          <li>夹爪动作（开/关）：Binary Cross Entropy</li>
+          <li>视频预测：MSE（保持预训练能力，防止灾难性遗忘）</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>模型规模</h3>
+    <p>
+      GPT Transformer 共 <strong>12 层、12 个注意力头、384 隐藏维度</strong>，总参数量 195M，其中仅 46M 可训练（编码器冻结）。相比语言预训练模型，GR-1 的预训练计算成本大幅降低，同时获得了强大的视觉-时序表征。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在模拟环境 CALVIN 基准（多任务长程操作）和真实机器人（物体搬运 + 铰接体操作）上进行评测，与 RT-1、HULC、MT-R3M、MCIL 等基线对比。
+    </p>
+
+    <h3>CALVIN 基准测试（模拟环境）</h3>
+    <table>
+      <tr><th>方法</th><th>单任务成功率 (%)</th><th>平均连续任务数</th><th>设定</th></tr>
+      <tr><td>MCIL</td><td>13.3</td><td>0.40</td><td>ABCD→D</td></tr>
+      <tr><td>MT-R3M</td><td>62.9</td><td>2.08</td><td>ABCD→D</td></tr>
+      <tr><td>RT-1</td><td>73.8</td><td>2.45</td><td>ABCD→D</td></tr>
+      <tr><td>HULC</td><td>88.9</td><td>3.06</td><td>ABCD→D</td></tr>
+      <tr><td class="good">GR-1（本文）</td><td class="good">94.9</td><td class="good">4.21</td><td>ABCD→D</td></tr>
+    </table>
+
+    <h3>零样本未见场景泛化（ABC→D）</h3>
+    <table>
+      <tr><th>方法</th><th>单任务成功率 (%)</th><th>平均连续任务数</th></tr>
+      <tr><td>HULC</td><td>53.3</td><td>0.67</td></tr>
+      <tr><td class="good">GR-1（本文）</td><td class="good">85.4</td><td class="good">3.06</td></tr>
+    </table>
+    <p>在未见过的场景（桌面颜色、物体位置均不同）中，GR-1 的成功率是 HULC 的 <strong>1.6 倍</strong>，平均连续任务数提升 <strong>4.6 倍</strong>，充分验证了视频预训练带来的泛化能力。</p>
+
+    <h3>数据效率与语言泛化</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>仅使用 10% 训练数据</h3>
+        <ul>
+          <li>GR-1：<strong>77.8%</strong> 成功率，平均 2.00 任务</li>
+          <li>HULC：66.8% 成功率，平均 1.11 任务</li>
+        </ul>
+        <p style="color:var(--muted);font-size:14px">预训练积累的先验知识在数据稀缺场景下尤为关键。</p>
+      </div>
+      <div class="card">
+        <h3>未见语言指令（GPT-4 生成同义表达）</h3>
+        <ul>
+          <li>GR-1：<strong>76.4%</strong> 成功率</li>
+          <li>HULC：71.5% 成功率</li>
+        </ul>
+        <p style="color:var(--muted);font-size:14px">每个任务生成 50 条同义语言指令，CLIP 的语言泛化能力发挥关键作用。</p>
+      </div>
+    </div>
+
+    <h3>真实机器人实验</h3>
+    <figure>
+      <img src="img/x5.webp" alt="真实机器人实验场景">
+      <figcaption><strong>图 3：真实机器人实验。</strong>左：物体搬运任务（已见物体、未见实例、未见类别）。右：铰接体操作任务（抽屉开合）。GR-1 在所有设定下均大幅超越 RT-1 基线。</figcaption>
+    </figure>
+    <table>
+      <tr><th>任务设定</th><th>RT-1 (%)</th><th>GR-1 (%)</th></tr>
+      <tr><td>物体搬运（已见物体）</td><td>27</td><td class="good">79</td></tr>
+      <tr><td>物体搬运（未见实例）</td><td>13</td><td class="good">73</td></tr>
+      <tr><td>物体搬运（未见类别）</td><td>0</td><td class="good">30</td></tr>
+      <tr><td>铰接体操作（抽屉）</td><td>35</td><td class="good">75</td></tr>
+    </table>
+
+    <h3>视频预测可视化</h3>
+    <figure>
+      <img src="img/x6.webp" alt="视频预测结果对比">
+      <figcaption><strong>图 4：GR-1 视频预测效果。</strong>绿框：真实帧（ground truth）；蓝框：GR-1 预测帧。模型能够准确预测机械臂运动轨迹和场景变化，验证了其时序理解能力。注意：对于部分被遮挡的物体，预测细节存在缺失。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>
+      消融实验验证了预训练数据量和微调策略的重要性：移除视频预训练（从头训练）在 ABCD→D 上性能显著下降；仅使用部分 Ego4D 数据预训练同样使成功率降低。联合损失函数（<code>L<sub>arm</sub> + L<sub>gripper</sub> + L<sub>video</sub></code>）的设计防止了微调时的灾难性遗忘，确保视频预测能力在操作任务中持续发挥作用。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性部分由作者在论文中直接说明，部分为从设计中合理推断（标注为 <em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>未见类别泛化能力有限（stated）</summary>
+      <p>在真实机器人实验中，面对完全未见过类别的物体搬运任务，GR-1 成功率仅为 30%（RT-1 为 0%）。尽管相对提升显著，但绝对成功率仍较低，表明跨类别泛化仍是核心挑战。</p>
+    </details>
+
+    <details class="lim">
+      <summary>视频预测对遮挡物体的细节缺失（stated）</summary>
+      <p>论文明确指出："video prediction details may be missing (e.g., occluded objects)"。当物体被机械臂或其他物体遮挡时，未来帧预测出现细节不准确的问题，可能影响依赖精细视觉反馈的操作任务。</p>
+    </details>
+
+    <details class="lim">
+      <summary>机器人数据量与多模态复杂性（stated）</summary>
+      <p>作者在引言中指出，机器人领域面临"robot data sparsity compared to vision-language data"以及"multi-modal nature of robot data (images, states, actions, language)"两大固有挑战。GR-1 的 Ego4D 预训练方案缓解了第一个问题，但两者仍是领域级别的长期挑战。</p>
+    </details>
+
+    <details class="lim">
+      <summary>编码器全程冻结的限制（inferred）</summary>
+      <p>CLIP 文字编码器和 MAE 图像编码器在预训练和微调过程中始终保持冻结，以节省计算成本。这意味着模型无法通过端到端优化进一步适配特定机器人任务的视觉表征，对细粒度操作场景可能存在表达瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>仅在 CALVIN 及有限真实场景验证（inferred）</summary>
+      <p>实验主要在 CALVIN 模拟器和单一真实机器人平台（物体搬运 + 抽屉）上开展。能否推广到更复杂的双臂操作、多步接触任务或高动态场景，尚未经过系统验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · GR-1: Unleashing Large-Scale Video Generative Pre-training for Visual Robot Manipulation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2312.13139">https://arxiv.org/abs/2312.13139</a>
+  </div>
+</footer>
+
+</body>
+</html>

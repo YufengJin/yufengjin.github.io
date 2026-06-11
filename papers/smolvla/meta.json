@@ -1,0 +1,11 @@
+{
+  "slug": "smolvla",
+  "title": "SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics",
+  "arxiv_id": "2506.01844",
+  "url": "https://arxiv.org/abs/2506.01844",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "vision-language-action", "机器人操作", "异步推理", "flow matching", "SmolVLM", "轻量化模型", "社区数据集"],
+  "summary_zh": "SmolVLA 是一个仅 0.45B 参数的紧凑型 VLA 模型，通过 layer skipping、flow matching action expert 和异步推理三项设计，在单卡 GPU 上可训练、CPU 上可部署，LIBERO 基准上以 87.3% 成功率超越 10 倍体量的 π₀（86.0%）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

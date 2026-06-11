@@ -1,0 +1,11 @@
+{
+  "slug": "srpo",
+  "title": "SRPO: Self-Referential Policy Optimization for Vision-Language-Action Models",
+  "arxiv_id": "2511.15605",
+  "url": "https://arxiv.org/abs/2511.15605",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "reinforcement learning", "机器人操作", "world model", "进度奖励", "LIBERO", "self-referential", "policy optimization"],
+  "summary_zh": "SRPO 利用模型自身 batch 内成功轨迹作为自参照基准，结合 V-JEPA 2 潜在世界表征计算细粒度进度奖励，仅需 200 步 RL 训练即可将 VLA 成功率从 48.9% 提升至 99.2%，无需人工奖励设计或额外专家演示。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

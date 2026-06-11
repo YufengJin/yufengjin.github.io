@@ -1,0 +1,11 @@
+{
+  "slug": "abot-m0",
+  "title": "ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning",
+  "arxiv_id": "2602.11236",
+  "url": "https://arxiv.org/abs/2602.11236",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "机器人操作", "Action Manifold Learning", "具身智能", "扩散策略", "多形态机器人", "UniACT 数据集", "LIBERO", "前馈推理", "diffusion transformer"],
+  "summary_zh": "ABot-M0 提出 Action Manifold Learning 将机器人动作预测约束在低维流形上以提升速度与稳定性，并构建 UniACT（600 万轨迹、9500+ 小时、20+ 形态）大规模统一数据集，在 LIBERO（98.6%）、RoboTwin 2.0（86.06%）等主流基准上达到最先进性能。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

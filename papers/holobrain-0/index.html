@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HoloBrain-0 Technical Report</title>
+<meta name="keywords" content="具身智能, VLA, 机器人操作, 多视角感知, 运动控制, cross-embodiment, imitation learning, 策略学习">
+<meta name="description" content="HoloBrain-0 是一个融合视觉、语言与动作的通用机器人基础模型，通过具身感知架构与测试驱动数据策略，在真实世界操作任务和多个仿真基准上达到最优性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · 2026</span>
+    <h1>HoloBrain-0 Technical Report</h1>
+    <div class="sub">具身感知驱动的通用机器人基础模型</div>
+    <div class="authors">Xuewu Lin, Tianwei Lin, Yun Du, Hongyu Xie, Yiwei Jin, Jiawei Li, Shijie Wu, Qingze Wang, Mengdi Li, Mengao Zhao, Ziang Li, Chaodong Huang, Hongzhe Bi, Lichao Huang, Zhizhong Su · CAMSENSE</div>
+    <p class="lead">HoloBrain-0 是一个视觉-语言-动作（VLA）基础模型，将多视角相机参数与机器人运动学信息融入架构设计，并结合测试驱动的迭代数据采集策略，大幅提升了机器人在真实世界与跨仿真基准上的操作性能。提供 0.2B 和 1.1B 两个规模的开源预训练模型及完整的 RoboOrchard 基础设施。</p>
+    <div class="meta">
+      <span>2026 年 2 月提交</span>
+      <span>开源预训练权重</span>
+      <span>双臂 Piper + 多具身训练</span>
+      <span><a href="https://arxiv.org/abs/2602.12062">📄 arXiv:2602.12062</a></span>
+      <span><a href="https://arxiv.org/pdf/2602.12062">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>具身智能</span>
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>cross-embodiment</span>
+      <span>imitation learning</span>
+      <span>策略学习</span>
+      <span>多视角感知</span>
+      <span>测试驱动数据</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      通用机器人智能体的研发面临三大核心挑战：真实部署时出现的分布外状态（out-of-distribution states）、大规模收集高质量专家示范的高昂成本，以及在低延迟控制中部署大型模型的困难。现有 VLA 方法通常忽略相机内外参、机器人运动学等具身信息，导致在跨场景、跨具身迁移时表现下降。
+    </p>
+    <blockquote>
+      "developing a truly general robotic agent remains a significant challenge" — 原文动机陈述，指出现有方法在现实部署的鲁棒性与泛化性方面仍存在显著差距。
+    </blockquote>
+    <figure>
+      <img src="img/overview.webp" alt="HoloBrain-0 系统概览">
+      <figcaption>图 1：HoloBrain-0 系统总览。模型将多视角 RGB 图像、机器人关节状态与 6D 姿态作为输入，通过 Perspective-aware Spatial Enhancer 将 2D 特征投影到统一 3D 坐标系，再经 Embodiment-Aware Action Expert 输出关节角残差与末端位姿位移，支持双臂 Piper 等多种具身形态。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>92.3%</b><small>RoboTwin 2.0 随机化基准成功率（HB-QW 1.1B）</small></div>
+      <div><b>97.4%</b><small>LIBERO 基准平均成功率（HB-QW）</small></div>
+      <div><b>74.0%</b><small>LIBERO-Plus 零样本鲁棒性 SOTA（HB-GD）</small></div>
+      <div><b>77.2%</b><small>真实世界任务成功率（HB-QW，10 任务均值）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      HoloBrain-0 由三个核心部分构成：① Perspective-aware Spatial Enhancer（PSE）将多视角图像特征统一投影至 3D 空间；② Embodiment-Aware Action Expert 编码具身运动学状态并生成混合动作输出；③ 迭代测试驱动数据策略（Test-Driven Data Strategy），在测试中自动发现失败模式并针对性采集恢复轨迹。
+    </p>
+    <figure>
+      <img src="img/action_space.webp" alt="输入状态表征与输出动作空间">
+      <figcaption>图 2：HoloBrain-0 的输入状态表征与输出动作空间。输入包含多视角图像和机器人关节角（对夹爪关节角做掩码，仅保留 6D 姿态），输出为每个关节的残差增量：关节角残差（弧度）与末端连杆姿态位移（平移单位为米，旋转以四元数表示）。</figcaption>
+    </figure>
+
+    <h3>Perspective-aware Spatial Enhancer（PSE）</h3>
+    <p>
+      PSE 利用相机内外参与深度图，将多视角 2D 图像特征投影到统一的 3D 坐标系。关键设计是将 3D 投影坐标系从机器人本体基座坐标系切换至固定中心相机坐标系，从而支持跨具身（cross-embodiment）训练——不同机器人的传感器布局不同，但统一到相机帧后可共享特征空间。
+    </p>
+
+    <h3>Embodiment-Aware Action Expert</h3>
+    <p>
+      动作专家模块对机器人状态进行编码：对夹爪关节角做掩码（masked），仅保留 6D 姿态信息，以实现跨具身兼容。输出动作为：<em>"a concatenation of joint angle residuals (in radians) and link pose displacements (in meters and quaternions)"</em>，即同时预测关节角增量和连杆末端位姿增量，格式为 [Δθ, Δx, Δy, Δz, Δqw, Δqx, Δqy, Δqz]。训练损失包含关节位置损失、末端姿态损失、正向运动学姿态损失和深度损失四项，均采用 smooth L1 距离以缓解极端误差带来的训练不稳定。
+    </p>
+
+    <figure>
+      <img src="img/model_detail.webp" alt="模型架构细节">
+      <figcaption>图 3：HoloBrain-0 模型架构细节，展示了 Action Expert 中关节状态编码、multi-head attention 与输出预测头的具体连接方式。HB-GD（0.2B）与 HB-QW（1.1B）共享相同的 Action Expert（20.79M 参数），主要区别在于视觉编码器与语言模型的规模。</figcaption>
+    </figure>
+
+    <h3>SimpleRTC 与 Teacher-forcing 训练</h3>
+    <p>
+      推理阶段采用 <strong>SimpleRTC</strong>：一种无梯度的软掩码（soft-masking）推理策略，将上一时刻未执行完毕的动作预测与新预测加权融合，实现异步、低延迟控制，相比同步基线可降低约 30–40% 的执行时间。训练阶段引入 <strong>Teacher Forcing</strong>：动态地将前 N 步输入噪声替换为真实动作，N 服从泊松分布采样，该比例从 0% 升至 50% 时成功率从约 70% 持续提升至约 87%。
+    </p>
+
+    <h3>迭代测试驱动数据策略</h3>
+    <p>
+      后训练数据采集分两个阶段：① <strong>主动状态扩展（Proactive State Expansion）</strong>：系统化改变光照、背景、物体实例，并将全任务采集拆解为子任务；② <strong>测试驱动失败恢复（Test-Driven Failure Recovery）</strong>：在每轮测试中分析失败模式，针对性采集 2–3 秒的恢复轨迹，形成闭环迭代。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      评测覆盖真实世界双臂 Piper 机器人（10 项任务，每项 20 次试验）和三个仿真基准：RoboTwin 2.0（50 任务，每任务 100 次）、LIBERO（40 任务，每任务 50 次）、GenieSim 2.2（10 人形机器人任务）。主要对比基线为 π0 和 π0.5。提供 HoloBrain-0-GD（0.2B，适合端侧部署）和 HoloBrain-0-QW（1.1B）两个变体。
+    </p>
+
+    <h3>仿真基准结果</h3>
+    <table>
+      <tr><th>Benchmark</th><th>π0.5</th><th>X-VLA</th><th>Motus</th><th>HB-GD (0.2B)</th><th>HB-QW (1.1B)</th></tr>
+      <tr>
+        <td>RoboTwin 2.0 Clean</td>
+        <td>82.74%</td>
+        <td>72.80%</td>
+        <td>88.66%</td>
+        <td>91.30%</td>
+        <td class="good">91.90%</td>
+      </tr>
+      <tr>
+        <td>RoboTwin 2.0 Randomized</td>
+        <td>76.76%</td>
+        <td>72.84%</td>
+        <td>87.02%</td>
+        <td>90.80%</td>
+        <td class="good">92.30%</td>
+      </tr>
+      <tr>
+        <td>LIBERO (40 tasks)</td>
+        <td>—</td>
+        <td>98.1%</td>
+        <td>—</td>
+        <td>—</td>
+        <td>97.4%</td>
+      </tr>
+      <tr>
+        <td>LIBERO-Plus（零样本鲁棒）</td>
+        <td>—</td>
+        <td>69.7%</td>
+        <td>—</td>
+        <td class="good">74.0%</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <h3>真实世界结果（双臂 Piper）</h3>
+    <p>
+      HoloBrain-0-GD 平均进度得分 88.07%、成功率 74.81%；HoloBrain-0-QW 平均进度得分 87.32%、成功率 77.18%，相比 π0.5 分别提升 +5.65% 和 +8.02%。代表性任务结果（成功率）：
+    </p>
+    <table>
+      <tr><th>任务</th><th>π0</th><th>π0.5</th><th>HoloBrain-0</th></tr>
+      <tr><td>Fold towel（折叠毛巾）</td><td>31.58%</td><td>63.16%</td><td class="good">84.21%</td></tr>
+      <tr><td>Place shoe（放置鞋子）</td><td>48.39%</td><td>54.84%</td><td class="good">96.77%</td></tr>
+      <tr><td>Fold clothes（折衣服，长时程）</td><td>15%</td><td>50%</td><td class="good">75%</td></tr>
+      <tr><td>Fold paper box（折纸盒，长时程）</td><td>80%</td><td>65%</td><td class="good">95%</td></tr>
+      <tr><td>Grasp anything（泛化抓取）</td><td>87.5%</td><td>98.4%</td><td>95%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/real_tasks.webp" alt="真实世界任务场景">
+      <figcaption>图 4：真实世界评测任务套件，包含 7 项基础操作任务（fold towel、place empty cup、place shoe、stack blocks/bowls three、put bottles basket）、2 项长时程任务（fold clothes、fold paper box）和 1 项泛化抓取任务（Grasp Anything，测试未见物体的抓取泛化能力，未见物体成功率 97.5%，高于已见物体的 93.5%）。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>
+      <strong>与 Grasp Anything 任务协同训练的效果</strong>（7 项任务均值）：不加入协同训练时平均成功率为 72.40%，加入后提升至 75.00%（+2.6 points），各任务提升幅度 0–13.33 个百分点。
+    </p>
+    <figure>
+      <img src="img/rtc_performance.webp" alt="SimpleRTC 与 Teacher Forcing 消融">
+      <figcaption>图 5：SimpleRTC 与 Teacher Forcing 比例的消融实验（布料折叠任务）。同步基线约 60% 成功率；加入 SimpleRTC 且 Teacher Forcing 比例为 0% 时升至约 70%；比例 25% 时约 85%；50% 时约 87%。异步 SimpleRTC 相比同步基线减少约 30–40% 执行时间。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b> 论文未设专门 Limitations 章节；以下各点均由论文原文陈述（stated）整理，并在括号中注明出处章节。</div>
+
+    <details class="lim" open>
+      <summary>仿真到真实的迁移差距依然存在（Sim-to-Real Gap）</summary>
+      <p>
+        论文原文承认："Although the sim-to-real gap persists, simulation benchmarks remain essential"（Section Experiments）。尽管 RoboTwin 2.0 等仿真基准上表现出色，真实世界部署中仍会出现新的分布外状态，需持续迭代数据采集加以弥补。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>真实数据采集成本高（Data Collection Cost）</summary>
+      <p>
+        论文指出："The efficacy of post-training is often bottlenecked by the high cost of collecting high-quality, real-world data"。测试驱动策略虽有效降低采集需求，但每轮仍需人工遥操作录制恢复轨迹（约 2–3 秒/次），规模化时成本仍然显著。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>精确指令跟随能力尚待评估（Instruction Following）</summary>
+      <p>
+        论文原文指出："We observe that precise instruction following is still an under-evaluated ability in current VLA research"，并将开发更严格的语言指令跟随基准列为未来工作方向，当前模型在区分语义相近指令时仍有提升空间。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>未集成离线强化学习（Off-Policy RL）</summary>
+      <p>
+        当前 HoloBrain-0 仅采用模仿学习（imitation learning），论文在 Future Work 中明确提到将集成 off-policy 强化学习与价值模型（value models），以进一步突破专家示范的性能上限。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · HoloBrain-0 Technical Report · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.12062">https://arxiv.org/abs/2602.12062</a>
+  </div>
+</footer>
+
+</body>
+</html>

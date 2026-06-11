@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generators are Robot Policies</title>
+<meta name="keywords" content="视频生成, 机器人策略, visuomotor policy, video diffusion, imitation learning, sample efficiency, generalization, Stable Video Diffusion">
+<meta name="description" content="Video Policy：将视频生成作为机器人策略学习的代理任务，通过联合扩散视频帧与机器人动作，用极少演示数据实现强泛化能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>Video Generators are Robot Policies</h1>
+    <div class="sub">将视频生成用作机器人策略学习的代理任务</div>
+    <div class="authors">Junbang Liang, Pavel Tokmakov, Ruoshi Liu, Sruthi Sudhakar, Paarth Shah, Rares Ambrus, Carl Vondrick &nbsp;·&nbsp; Columbia University &amp; Toyota Research Institute</div>
+    <p class="lead">Video Policy 提出一个模块化框架，将视频生成与动作生成联合训练——通过学习"生成机器人执行任务的视频"作为代理目标，用极少的演示数据即可习得高度泛化的操作策略，在仿真与真实环境中均显著超越传统 behavior cloning 方法。</p>
+    <div class="meta">
+      <span>2025 · arXiv</span>
+      <span>Stable Video Diffusion (SVD)</span>
+      <span>RoboCasa · Libero10</span>
+      <a href="https://arxiv.org/abs/2508.00795"><span>📄 arXiv:2508.00795</span></a>
+    </div>
+    <div class="kw">
+      <span>视频生成</span>
+      <span>机器人策略</span>
+      <span>visuomotor policy</span>
+      <span>video diffusion</span>
+      <span>imitation learning</span>
+      <span>sample efficiency</span>
+      <span>generalization</span>
+      <span>Stable Video Diffusion</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">当前 visuomotor policy 面临两大核心挑战：（1）在感知或行为分布偏移下泛化能力差；（2）性能高度依赖大规模人类演示数据集。这两点制约了机器人策略在真实场景中的可扩展性与鲁棒性。</p>
+    <blockquote>"Despite tremendous progress in dexterous manipulation, current visuomotor policies remain fundamentally limited by two challenges: they struggle to generalize under perceptual or behavioral distribution shifts, and their performance is constrained by the size of human demonstration data."</blockquote>
+    <p>作者的核心观察是：<strong>视频生成是比动作生成更通用的目标</strong>。学会预测机器人执行任务的视频，可以从无动作标注的视频数据中学习环境动力学，进而以极少有动作标注的演示数据完成策略提取。这一思路将互联网规模的视频生成预训练引入机器人学习，提供近乎无限的动作无关数据来源。</p>
+    <figure>
+      <img src="img/teaser.webp" alt="Video Policy teaser">
+      <figcaption><strong>图 1：视频生成作为机器人策略学习的代理任务。</strong>给定初始观测图像与自然语言任务描述，模型同时生成机器人执行任务的视频（上）与机器人动作序列（中），通过独立的扩散网络实现。模块化设计支持从无动作视频数据中学习，提升对未见场景的泛化能力，是传统 behavior cloning 的可扩展替代方案。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>0.66</b><small>RoboCasa avg. success (300 demos)</small></div>
+      <div><b>0.94</b><small>Libero10 avg. success rate</small></div>
+      <div><b>50</b><small>demos 即可超越多数 baseline</small></div>
+      <div><b>3×</b><small>优于 GR00T (0.50 → 0.66)</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">Video Policy 由两个模块化扩散网络组成：Video U-Net（μ<sub>θ</sub>）负责生成未来帧序列，Action U-Net（α<sub>θ</sub>）以视频特征为条件解码机器人动作。两者联合训练，视频生成网络的中间特征直接为动作预测提供丰富的时空表征。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="Video Policy architecture">
+      <figcaption><strong>图 2：Video Policy 整体架构。</strong>模型以初始环境状态图像与未来帧/动作的噪声向量作为输入，联合扩散视频帧与动作序列。帧的表征通过五个等间距的 decoder 层（layers 9, 14, 17, 20, 23）提取，经 CNN adapter 处理后作为条件信号输入 Action U-Net，引导动作去噪。模块化设计使两个网络可以分阶段训练，支持无动作视频数据的利用。</figcaption>
+    </figure>
+
+    <h3>视频生成模块（Video U-Net μ<sub>θ</sub>）</h3>
+    <p>基于 Stable Video Diffusion (SVD) 构建，通过 cross-attention 接受两类条件输入：（1）自然语言任务描述的 CLIP embedding；（2）连结并经 VAE 编码的初始观测图像。在机器人演示数据上 fine-tune 后，模型学会生成符合任务语义的执行视频序列，并在此过程中隐式编码环境动力学。</p>
+
+    <h3>动作解码模块（Action U-Net α<sub>θ</sub>）</h3>
+    <p>1D CNN U-Net，从视频解码器五个等间距层抽取时空特征，经 CNN adapter 后输入动作 U-Net，对动作噪声进行去噪以预测连续控制量。训练时对视频网络采用梯度截断（gradient stopping），防止动作损失反向传播影响视频模型，保持视频生成质量。</p>
+
+    <h3>两阶段训练策略</h3>
+    <p>Stage 1：在全量视频数据（含无动作标注视频）上 fine-tune 视频扩散模型，学习丰富的环境动力学表征。Stage 2：冻结视频网络权重，仅训练动作解码头，从少量有标注演示中提取策略。消融实验（Table 3）证明此两阶段策略相比联合训练（joint）提升 success rate 从 0.57 → 0.63，而完全跳过视频 fine-tuning 则性能崩溃至 0.09。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在 RoboCasa（24 个任务，涵盖 Pick&amp;Place、Doors、Drawers、Knobs、Buttons 等多类别）与 Libero10 两个 benchmark 上评测；真实环境测试 5 项操作任务，评估对物体位置、外观与背景的泛化能力。主要 baseline 包括 DP-ResNet、DP-CLIP、GR00T、DP-VLA、UVA 等。</p>
+
+    <h3>RoboCasa 量化结果（Table 1，平均任务成功率）</h3>
+    <table>
+      <tr><th>方法</th><th>3DA</th><th>DP3</th><th>DP-ResNet</th><th>GR00T</th><th>FPV</th><th>DP-VLA</th><th>UVA</th><th><strong>Ours (50)</strong></th><th><strong>Ours (300)</strong></th></tr>
+      <tr><td>Avg. Success Rate</td><td>0.06</td><td>0.23</td><td>0.41</td><td>0.50</td><td>0.51</td><td>0.57</td><td>0.50</td><td class="good">0.63</td><td class="good">0.66</td></tr>
+    </table>
+    <p>使用 50 个演示的 Video Policy 即超越了所有使用更多数据的 baseline；300 个演示版本进一步达到 0.66，高于最强 baseline DP-VLA（0.57）约 16%。</p>
+
+    <h3>Libero10 量化结果（Table 2）</h3>
+    <table>
+      <tr><th>方法</th><th>DP-C</th><th>DP-T</th><th>OpenVLA</th><th>UniPi</th><th>π₀</th><th>π₀-FAST</th><th>UVA</th><th><strong>Ours</strong></th></tr>
+      <tr><td>Avg. Success Rate</td><td>0.53</td><td>0.58</td><td>0.54</td><td>0.00</td><td>0.85</td><td>0.60</td><td>0.90</td><td class="good">0.94</td></tr>
+    </table>
+
+    <h3>消融实验（Table 3，RoboCasa）</h3>
+    <table>
+      <tr><th>变体</th><th>Avg. Success Rate</th></tr>
+      <tr><td>No Video Tuning</td><td>0.09</td></tr>
+      <tr><td>Joint（联合训练）</td><td>0.57</td></tr>
+      <tr><td><strong>2-Stage（本文方法）</strong></td><td class="good"><strong>0.63</strong></td></tr>
+    </table>
+    <p>作者指出："learning to generate policy-execution videos is both necessary and sufficient"——无视频 fine-tuning 时成功率仅 0.09，说明视频生成目标是提取有效策略的核心。</p>
+
+    <h3>视频预测 horizon 的影响</h3>
+    <figure>
+      <img src="img/generalization.webp" alt="generalization to unseen tasks">
+      <figcaption><strong>图 4：基于无动作视频数据的任务泛化。</strong>Video Policy 与 baseline DP-ResNet 均仅在 24 个 RoboCasa 任务中的 12 个上训练动作监督，但 Video Policy 的视频生成模型额外使用全部 24 个任务的无动作视频。结果表明 Video Policy 在未见任务（图右侧）上实现了显著的泛化，而无法利用无动作数据的 DP-ResNet 几乎无法泛化到未见任务。</figcaption>
+    </figure>
+
+    <h3>真实环境结果（Table 4，5 项任务 × 3 类泛化条件）</h3>
+    <table>
+      <tr><th>任务</th><th>物体位置变化</th><th>未见物体外观</th><th>未见背景颜色</th></tr>
+      <tr><td>Open Drawer</td><td>0.8</td><td>1.0</td><td>0.9</td></tr>
+      <tr><td>Pick and Place</td><td>1.0</td><td>0.9</td><td>0.8</td></tr>
+      <tr><td>M&amp;Ms to Cup</td><td>0.8</td><td>0.9</td><td>0.2</td></tr>
+      <tr><td>Upright Object</td><td>0.3</td><td>0.7</td><td>0.8</td></tr>
+      <tr><td>Stack Cups</td><td>0.3</td><td>0.2</td><td>0.2</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="real-world qualitative results">
+      <figcaption><strong>图 5：Pick and Place 真实环境定性结果。</strong>Video Policy 在物体位置、外观与背景颜色三类分布偏移下均展现出强鲁棒性。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为作者在论文中明确陈述（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>规模受限：仅单一真实机器人平台与有限仿真 benchmark</summary>
+      <p>"Our study has several limitations. First, it is restricted in the scale of simulation benchmarks and a single real-world embodiment." 当前验证仅覆盖 RoboCasa 和 Libero10 两个仿真 benchmark 以及一种真实机器人平台，结论能否推广到更广泛的任务场景仍有待验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>仅探索了 Stable Video Diffusion 一种视频生成模型</summary>
+      <p>"Additionally, we explore only one instantiation of video generation models — Stable Video Diffusion (SVD). While our analysis is more extensive than prior works, broader validation across tasks, environments, and model families would further strengthen the findings." 不同视频生成模型架构（如 DiT-based 模型）是否同样有效尚未验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理速度慢，当前不适合实时部署</summary>
+      <p>"The computational cost of video diffusion models remains a major practical bottleneck, particularly for real-world deployment." 当前实现在 256×256 分辨率下生成 25 帧约需 9 秒，远无法满足实时控制需求。作者指出扩散推理加速方向（如 consistency distillation）有望缓解此问题，但尚未集成。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Video Generators are Robot Policies · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2508.00795">https://arxiv.org/abs/2508.00795</a>
+  </div>
+</footer>
+
+</body>
+</html>

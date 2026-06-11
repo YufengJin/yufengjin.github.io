@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>π₀.₅: a Vision-Language-Action Model with Open-World Generalization</title>
+<meta name="keywords" content="vision-language-action model, VLA, open-world generalization, mobile manipulation, co-training, flow matching, robot learning, 家务机器人">
+<meta name="description" content="π₀.₅ 通过异构数据联合训练实现广泛开放世界泛化，首次在全新家庭环境中完成长时域灵巧操作任务（如清洁厨房、整理卧室）。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · cs.LG · Physical Intelligence · arXiv 2025</span>
+    <h1>π₀.₅: a Vision-Language-Action Model with Open-World Generalization</h1>
+    <div class="sub">首个在全新家庭中完成长时域灵巧操作的端到端机器人学习系统</div>
+    <div class="authors">Kevin Black, Noah Brown, Danny Driess, Chelsea Finn, Karol Hausman, Brian Ichter, Sergey Levine 等 36 位作者 · Physical Intelligence</div>
+    <p class="lead">π₀.₅ 通过在异构数据源（多机器人、网页数据、语义预测等）上进行联合训练（co-training），赋予机器人广泛的开放世界泛化能力，首次在训练数据中从未出现过的全新家庭中，完成清洁厨房、整理卧室等长时域、灵巧的操作任务。</p>
+    <div class="meta">
+      <span>arXiv: 2025-04-22</span>
+      <span>两阶段训练：280k + 80k steps</span>
+      <span>Mobile Manipulator · 18-19 DoF</span>
+      <span><a href="https://arxiv.org/abs/2504.16054">📄 arXiv:2504.16054</a></span>
+      <span><a href="https://arxiv.org/pdf/2504.16054">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>vision-language-action model</span>
+      <span>open-world generalization</span>
+      <span>mobile manipulation</span>
+      <span>co-training</span>
+      <span>flow matching</span>
+      <span>long-horizon tasks</span>
+      <span>家务机器人</span>
+      <span>高低层级推理</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前 VLA 模型在实验室受控场景中表现亮眼，但如何在真实的、从未见过的家庭环境中可靠执行长时域任务，仍是开放性挑战。简单堆砌机器人数据规模是不够的——泛化需要来自多个抽象层次的知识。</p>
+    <blockquote>"In order for robots to be useful, they must perform practically relevant tasks in the real world, outside of the lab... achieving broad coverage of plausible scenarios via brute-force scaling of robot data collection is infeasible."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="teaser">
+      <figcaption>图 2：π₀.₅ 在从未出现于训练数据的全新厨房中执行清洁任务。系统接收高层指令（关闭橱柜、将物品放入抽屉、擦拭污渍、将餐具放入水槽），通过预测子任务序列和输出低层动作来完成整个流程。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>3</b><small>全新真实家庭中完成测试</small></div>
+      <div><b>~400h</b><small>移动操作机器人训练数据</small></div>
+      <div><b>~100</b><small>训练环境（家庭数量）</small></div>
+      <div><b>+71%</b><small>相对 π₀ 基线的任务进度提升</small></div>
+    </div>
+
+    <h3>问题背景</h3>
+    <p>Vision-Language-Action (VLA) 模型将大语言模型的语义理解能力与机器人控制相结合，展现了强大的指令跟随能力。然而，现有方法的评测大多在与训练数据分布相近的环境中进行，真正的"野外"泛化能力尚未被验证。</p>
+    <p>π₀.₅ 的核心主张是：有效的开放世界泛化需要来自多个信息源的知识迁移，包括多机器人平台的数据、网页视觉数据，以及对任务语义结构的显式建模。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">π₀.₅ 采用两阶段训练框架：首先在异构数据上进行大规模预训练，学习多抽象层次的知识；然后通过后训练阶段专门化为移动操作能力，同时引入 flow matching 实现连续动作的精细控制。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="architecture">
+      <figcaption>图 3：模型整体架构与训练流程。第一阶段（预训练）融合来自移动操作机器人（MM）、多场景非移动机器人（ME）、跨平台实验室数据（CE）、高层语义子任务标注（HL）以及网页多模态数据（WD）的五类异构数据，使用 FAST 动作分词器将动作表示为离散 token。第二阶段（后训练）在最相关数据上专门化，加入 action expert 支持 flow matching 连续动作生成，并引入专家语言指令（VI）。</figcaption>
+    </figure>
+
+    <h3>模型架构：高低层级分解推理</h3>
+    <p>π₀.₅ 将联合分布分解为两个子问题：</p>
+    <ul>
+      <li><b>高层推理（High-level inference）：</b> π_θ(ℓ̂ | <b>o</b><sub>t</sub>, ℓ) — 给定当前观测和高层指令，预测当前应执行的语义子任务（如"pick up the plate"）</li>
+      <li><b>低层推理（Low-level inference）：</b> π_θ(<b>a</b><sub>t:t+H</sub> | <b>o</b><sub>t</sub>, ℓ̂) — 以预测到的子任务为条件，生成机器人的具体动作序列</li>
+    </ul>
+    <p>底层架构为多模态 Transformer：图像 patch、文本 token 和连续动作值统一输入；图像/提示词使用双向注意力，动作输出使用因果注意力；本征状态（proprioceptive state）被离散化为文本 token 输入。</p>
+
+    <h3>混合动作表示与训练目标</h3>
+    <p>为了同时支持大规模预训练的效率与推理时动作精度，π₀.₅ 引入混合损失：</p>
+    <blockquote>Loss = Cross-entropy(text tokens) + α · ‖ω − <b>a</b><sub>t</sub> − f<sup>a</sup><sub>θ</sub>(...)‖²</blockquote>
+    <p>其中第一项为 FAST 离散动作 token 的交叉熵损失，第二项为 flow matching 连续动作的 L2 损失（后训练阶段 α=10.0）。这种设计使模型"既能进行快速可扩展的离散 token 预训练，又能通过 flow matching 实现高效精细的动作推理"。</p>
+
+    <h3>五类异构训练数据</h3>
+    <figure>
+      <img src="img/training_data.webp" alt="training_data">
+      <figcaption>图 4：预训练与后训练数据示例。五类数据来源：MM（移动操作机器人，~400小时，约100个家庭）、ME（多样家庭场景的非移动机器人）、CE（实验室跨平台数据，含 OXE 数据集）、HL（高层子任务语义标注）、WD（图像描述、VQA、物体定位等网页数据）。后训练阶段额外引入 VI（专家语言指令），并去除 CE 以聚焦移动操作。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>第一阶段：预训练（280k steps）</h3>
+        <ul>
+          <li><b>MM</b>：移动操作机器人，~400h，~100个家庭</li>
+          <li><b>ME</b>：多样家庭环境中的非移动机器人数据</li>
+          <li><b>CE</b>：实验室跨平台数据（含 OXE）</li>
+          <li><b>HL</b>：高层子任务语义预测标注</li>
+          <li><b>WD</b>：网页视觉语言数据（VQA、图像描述等）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>第二阶段：后训练（80k steps）</h3>
+        <ul>
+          <li>仅使用 MM + ME 数据，聚焦移动操作</li>
+          <li>加入 <b>action expert</b>，启用 flow matching 连续动作（10步去噪）</li>
+          <li>引入 <b>VI（verbal instructions）</b>：人类专家对子任务序列的语言演示</li>
+          <li>控制频率：50 Hz；状态/动作空间：18-19 DoF</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">评测分为两类：受控的"模拟房间"（mock homes）用于可复现的定量比较，以及全新真实家庭（real homes）进行最终验证。核心指标为任务完成进度（task progress）和语言跟随成功率。</p>
+
+    <figure>
+      <img src="img/real_home_eval.webp" alt="real_home_eval">
+      <figcaption>图 7：真实家庭评测。在三个从未出现于训练数据的全新家庭中测试，包含新奇的厨房和卧室，每个任务进行 10 次 trial。展示了机器人执行过程的关键帧和定量成功率。</figcaption>
+    </figure>
+
+    <h3>与基线的对比</h3>
+    <table>
+      <tr><th>模型</th><th>平均任务进度</th><th>相对提升</th></tr>
+      <tr><td>π₀（基线）</td><td>~35%</td><td>—</td></tr>
+      <tr><td>π₀-FAST+Flow</td><td>~42%</td><td>+20%</td></tr>
+      <tr><td class="good"><b>π₀.₅（本文）</b></td><td class="good"><b>~60%</b></td><td class="good"><b>+71%</b></td></tr>
+      <tr><td>在测试环境上训练的模型（上限参考）</td><td>~62%</td><td>—</td></tr>
+    </table>
+
+    <h3>训练环境数量的影响（Scaling）</h3>
+    <figure>
+      <img src="img/env_scaling.webp" alt="env_scaling">
+      <figcaption>图 8：随训练场景数量的性能变化曲线。随着训练位置从 3 增加到 104 个，模型平均任务进度从 ~25% 稳步提升到 ~60%，接近在测试环境上直接训练的上限性能（~62%），表明训练环境的多样性是实现泛化的关键。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>训练环境数量</th><th>平均任务进度</th></tr>
+      <tr><td>3 个</td><td>~25%</td></tr>
+      <tr><td>53 个</td><td>~45%</td></tr>
+      <tr><td>104 个</td><td>~60%</td></tr>
+      <tr><td>在测试家庭中训练（参考上限）</td><td>~62%</td></tr>
+    </table>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="ablation">
+      <figcaption>图 10-11：训练配方消融实验（mock homes）。分别去除不同数据源后，整体任务完成度和语言跟随性能的变化。ME 和 CE 对整体任务性能至关重要，而 WD 对分布外物体的语言跟随泛化能力有显著影响。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>配置</th><th>平均任务进度</th><th>说明</th></tr>
+      <tr><td>完整模型</td><td>~60%</td><td>所有数据源</td></tr>
+      <tr><td>去除 WD（网页数据）</td><td>~58%</td><td>对整体任务影响较小</td></tr>
+      <tr><td>去除 ME</td><td>~45%</td><td>性能显著下降</td></tr>
+      <tr><td>去除 CE（跨平台数据）</td><td>~40%</td><td>性能大幅下降</td></tr>
+      <tr><td>去除 ME + CE</td><td>~25%</td><td>严重退化</td></tr>
+    </table>
+
+    <h3>高层推理的重要性</h3>
+    <p>实验进一步验证了显式高层推理的价值：</p>
+    <ul>
+      <li><b>完整 π₀.₅（显式高层推理）：</b> ~63% 任务进度</li>
+      <li><b>隐式高层（有 HL 训练数据但不做显式推理）：</b> ~58%</li>
+      <li><b>无高层（无推理，无 HL 训练数据）：</b> ~40%</li>
+      <li><b>GPT-4 作为高层策略（oracle）：</b> ~30%（低于预期，说明仅有语义推理不够）</li>
+      <li><b>人类 oracle 高层策略：</b> ~55%</li>
+    </ul>
+    <p>此外，移除 VI（语言指令，仅占训练数据 11%）会使性能下降到 ~50%，说明少量的专家语言指令对强性能"至关重要"。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b> 以下局限性均为论文作者在 Discussion and Future Work 章节中明确陈述的内容（stated）。</div>
+
+    <details class="lim" open>
+      <summary>特定场景中的持续性错误</summary>
+      <p>作者指出："Some environments present persistent challenges (e.g., unfamiliar handles on drawers, or cabinets that are physically hard for the robot to open)." 陌生的物理结构（如特殊把手、难以打开的橱柜）仍会造成机器人持续失败，说明低层操作技能的泛化仍有瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>部分可观测性（Partial Observability）</summary>
+      <p>"Some behaviors present challenges with partial observability (e.g., the robot arm occluding a spill that should be wiped)." 当机械臂遮挡了需要处理的区域时，模型难以感知和规划，揭示了视觉输入受限时的决策盲区。</p>
+    </details>
+
+    <details class="lim">
+      <summary>高层子任务推理容易被干扰</summary>
+      <p>"In some cases the high-level sub-task inference is easily distracted (e.g., closing and opening a drawer multiple times while putting away items)." 高层语义推理模块在复杂场景下可能出现循环或无效行为，说明长时域规划的稳定性仍需提升。</p>
+    </details>
+
+    <details class="lim">
+      <summary>提示词复杂度和上下文窗口受限</summary>
+      <p>模型"can accommodate relatively simple prompts"，且使用"relatively modest context"，限制了其在需要复杂多步骤规划或跨房间任务中的表现。未来工作需要探索更丰富的上下文建模能力。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · π₀.₅: a Vision-Language-Action Model with Open-World Generalization · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2504.16054">https://arxiv.org/abs/2504.16054</a>
+  </div>
+</footer>
+
+</body>
+</html>

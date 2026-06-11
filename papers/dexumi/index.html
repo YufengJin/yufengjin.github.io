@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DexUMI: Using Human Hand as the Universal Manipulation Interface for Dexterous Manipulation</title>
+<meta name="keywords" content="dexterous manipulation, universal manipulation interface, exoskeleton, 灵巧手, inpainting, 遥操作, robot learning, 具身智能">
+<meta name="description" content="DexUMI 利用人类手部作为通用操作接口，通过可穿戴外骨骼和视觉适应技术，将人类灵巧操作技能高效迁移到机器人手，平均任务成功率达 86%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · 2025</span>
+    <h1>DexUMI: Using Human Hand as the Universal Manipulation Interface for Dexterous Manipulation</h1>
+    <div class="sub">以人类手部为通用操作接口，高效迁移灵巧操作技能至机器人手</div>
+    <div class="authors">Mengda Xu, Han Zhang, Yifan Hou, Zhenjia Xu, Linxi Fan, Manuela Veloso, Shuran Song</div>
+    <p class="lead">DexUMI 提出一套软硬件协同框架，通过可穿戴外骨骼采集人类灵巧操作数据，并利用视觉域适应（robot hand inpainting）消除视觉外观差异，从而将人类手部技能高效、通用地迁移至不同构型的机器人手，在两款机器人平台上实现平均 86% 的任务成功率。</p>
+    <div class="meta">
+      <span>arXiv 2025-05-28</span>
+      <span>Inspire Hand + XHand</span>
+      <span>平均成功率 86%</span>
+      <span><a href="https://arxiv.org/abs/2505.21864">📄 arXiv:2505.21864</a></span>
+      <span><a href="https://arxiv.org/abs/2505.21864">Project / PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>dexterous manipulation</span>
+      <span>universal manipulation interface</span>
+      <span>exoskeleton</span>
+      <span>灵巧手</span>
+      <span>robot hand inpainting</span>
+      <span>遥操作效率</span>
+      <span>具身智能</span>
+      <span>embodiment gap</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人灵巧操作的数据采集极为困难：遥操作（teleoperation）因缺乏直接触觉反馈且存在空间观测不匹配，导致效率低下；而人类演示又因运动学结构、接触面形状、触觉信息和视觉外观的差异，无法直接迁移到机器人手——这一差异被称为 embodiment gap。</p>
+    <blockquote>"How can we minimize the embodiment gap, so that we can use the human hand as the universal manipulation interface for diverse robot hands?"</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DexUMI framework teaser">
+      <figcaption>图1：DexUMI 框架总览。人类佩戴针对目标机器人手定制优化的外骨骼，通过与机器人手同款相机同步采集演示数据；软件流水线将外骨骼/人手视觉替换为机器人手图像，消除视觉域差距，最终用于策略训练。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>86%</b><small>两平台平均任务成功率</small></div>
+      <div><b>3.2×</b><small>相对遥操作的数据采集效率提升</small></div>
+      <div><b>2</b><small>支持的机器人手平台（Inspire + XHand）</small></div>
+      <div><b>5</b><small>独立评测任务数量</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DexUMI 通过两条并行路径弥合 embodiment gap：<strong>硬件适应</strong>——设计针对目标机器人手双层优化的可穿戴外骨骼，使运动学工作空间高度匹配；<strong>软件适应</strong>——构建视觉流水线，将演示视频中的外骨骼/人手无缝替换为机器人手图像，消除视觉分布差异。</p>
+
+    <h3>硬件适应：外骨骼设计与双层优化</h3>
+    <figure>
+      <img src="img/hardware.webp" alt="Exoskeleton hardware design">
+      <figcaption>图2：外骨骼硬件设计。关节编码器（joint encoders）捕获手指弯曲角度，腕部通过 iPhone ARKit 追踪 6-DoF 位姿，同步相机（150° DFoV）与机器人手相机位置完全对应，FSR 传感器提供触觉反馈。</figcaption>
+    </figure>
+    <p>外骨骼并非通用设计，而是针对每款目标机器人手通过 <strong>bi-level workspace matching</strong> 优化参数。优化目标为最大化外骨骼与机器人手工作空间的双向相似度：第一项鼓励外骨骼覆盖机器人手的可达工作空间；第二项约束外骨骼生成的动作落在机器人手能力范围之内（⊆ 约束），防止产生不可复现的姿态。拇指采用专项机制设计以避免碰撞同时保留指尖映射精度。</p>
+
+    <h3>软件适应：Robot Hand Inpainting 视觉流水线</h3>
+    <figure>
+      <img src="img/software.webp" alt="Software visual adaptation pipeline">
+      <figcaption>图4：软件视觉适应流水线。依次经过 SAM2 分割（segmentation）提取外骨骼/人手掩码，ProPainter 基于光流的 inpainting 恢复背景，再将预先录制的机器人手图像与原始背景通过 occlusion-aware compositing 合成，最终生成视觉上与真实机器人演示一致的训练视频。</figcaption>
+    </figure>
+    <p>视觉流水线分四步：① 使用 SAM2 对每帧进行手部分割；② 使用 ProPainter 进行光流引导的背景修复（inpainting）；③ 使用真实机器人手按照采集动作序列录制对应视角视频；④ 采用 occlusion-aware compositing 将机器人手自然融合到恢复背景中，保留物体被遮挡的自然关系。策略动作采用 <strong>relative trajectory</strong>（相对轨迹）而非绝对坐标，以提升对硬件噪声的鲁棒性。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>触觉集成</h3>
+        <p>外骨骼集成 FSR（力敏电阻）传感器，其布局与目标机器人手的触觉传感器对应，直接采集接触力信号，用于需精细力控的任务策略学习。实验表明触觉反馈对采用 relative action 的策略有显著帮助。</p>
+      </div>
+      <div class="card">
+        <h3>数据采集效率</h3>
+        <p>在 15 分钟的采集会话中，DexUMI 达到传统遥操作方法 <strong>3.2 倍</strong>的采集效率（以 tea picking using tool 任务为基准）。采集的轨迹数量：Cube Picking 310 条，Egg Carton 175 条，Tea Picking 400 条，Kitchen 370+100 条。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在两款商用灵巧手（Inspire Hand 和 XHand）上评测，涵盖 5 个任务：Cube Picking、Egg Carton Opening、Tea Picking（工具/散叶）、厨房综合任务（Knob/Pan/Salt）。策略基于 Diffusion Policy，评估指标为任务成功率（success rate）。</p>
+
+    <h3>任务成功率汇总</h3>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th>平台</th>
+        <th>成功率</th>
+      </tr>
+      <tr><td>Cube Picking</td><td>Inspire Hand</td><td class="good">1.00</td></tr>
+      <tr><td>Egg Carton Opening</td><td>Inspire Hand</td><td class="good">0.85</td></tr>
+      <tr><td>Tea Picking (tool)</td><td>Inspire Hand</td><td class="good">1.00</td></tr>
+      <tr><td>Tea Picking (leaf)</td><td>Inspire Hand</td><td class="good">0.85</td></tr>
+      <tr><td>Tea Picking (tool)</td><td>XHand</td><td class="good">1.00</td></tr>
+      <tr><td>Tea Picking (leaf)</td><td>XHand</td><td class="good">0.85</td></tr>
+      <tr><td>Kitchen — Knob</td><td>XHand</td><td class="good">0.95</td></tr>
+      <tr><td>Kitchen — Pan</td><td>XHand</td><td class="good">0.75</td></tr>
+      <tr><td>Kitchen — Salt</td><td>XHand</td><td>0.75</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="Policy evaluation results across tasks">
+      <figcaption>图5：各任务策略评测结果。覆盖 Cube Picking、Egg Carton Opening、Tea Picking（工具与散叶）和厨房综合任务（Knob、Pan、Salt），在 Inspire Hand 和 XHand 两平台上均验证了 DexUMI 的有效性。</figcaption>
+    </figure>
+
+    <h3>视觉适应消融：Inpainting 的关键作用</h3>
+    <table>
+      <tr>
+        <th>视觉输入方式</th>
+        <th>Cube Picking</th>
+        <th>Egg Carton</th>
+        <th>Tea (tool)</th>
+      </tr>
+      <tr><td>Raw image（原始图像）</td><td>0.20</td><td>0.05</td><td>0.85</td></tr>
+      <tr><td>Masked image（掩码图像）</td><td>0.60</td><td>0.10</td><td>0.90</td></tr>
+      <tr><td>DexUMI Inpainting</td><td class="good">1.00</td><td class="good">0.85</td><td class="good">1.00</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/ablation.webp" alt="Ablation study: relative vs absolute actions and tactile">
+      <figcaption>图6：消融实验。Relative action（相对轨迹）在所有任务上均优于 absolute action；触觉反馈仅对 relative action 策略有提升效果，对 absolute action 策略反而降低性能——表明触觉信号的有效利用依赖于鲁棒的动作表示。</figcaption>
+    </figure>
+
+    <h3>关键消融结论</h3>
+    <ul>
+      <li><strong>Relative vs. Absolute Action：</strong>相对轨迹表示在所有任务上均优于绝对坐标，对硬件噪声具有更强鲁棒性。</li>
+      <li><strong>触觉感知：</strong>仅 relative action 策略从触觉反馈中受益；absolute action 策略加入触觉后性能下降，说明有噪声的触觉信号对动作鲁棒性有要求。</li>
+      <li><strong>视觉 Inpainting：</strong>Inpainting 相比 masked 和 raw 基线有显著提升（Cube：1.00 vs. 0.60 vs. 0.20），是视觉域适应的关键组件。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为作者在论文中明确陈述（stated）的已知问题。</div>
+
+    <details class="lim" open>
+      <summary>外骨骼需针对每款机器人手定制</summary>
+      <p>尽管提出了双层优化框架，外骨骼的机械设计仍需针对每款目标机器人手进行适配，无法做到完全通用。3D 打印材料在人手力的作用下可能发生形变，影响关节编码器的测量精度。</p>
+    </details>
+
+    <details class="lim">
+      <summary>工作空间覆盖局限于指尖，忽略掌心接触</summary>
+      <p>当前的工作空间匹配优化专注于指尖轨迹，未考虑掌心（palm）接触几何，限制了需要整手接触的操作任务的适用范围。</p>
+    </details>
+
+    <details class="lim">
+      <summary>传感器可靠性问题</summary>
+      <p>FSR 触觉传感器对贴附方式敏感，高压下电磁传感器存在漂移（drift）问题。机器人关节的间隙（backlash）和摩擦导致编码器精度仅在单方向上可靠。</p>
+    </details>
+
+    <details class="lim">
+      <summary>软件流水线依赖真实硬件且存在光照不一致问题</summary>
+      <p>生成机器人手图像需要真实机器人硬件配合录制，无法完全离线生成。Inpainting 在光照条件差异较大时存在伪影（artifacts）。相机固定于手部，不支持移动相机视角。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DexUMI: Using Human Hand as the Universal Manipulation Interface for Dexterous Manipulation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2505.21864">https://arxiv.org/abs/2505.21864</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "slug": "human2robot-vla",
+  "title": "Emergence of Human to Robot Transfer in Vision-Language-Action Models",
+  "arxiv_id": "2512.22414",
+  "url": "https://arxiv.org/abs/2512.22414",
+  "category": "机器人 · Robotics",
+  "keywords": ["human-to-robot transfer", "vision-language-action model", "co-training", "embodiment-agnostic representation", "cross-embodiment", "涌现能力", "π0.5", "imitation learning", "机器人操作", "pretraining diversity"],
+  "summary_zh": "研究发现当 VLA 模型在多样化机器人数据上进行预训练后，利用人类视频数据迁移技能到机器人的能力会自然涌现，无需显式对齐机制，co-training 人类数据可将泛化任务成功率最高提升 39%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "motus-world-model",
+  "title": "Motus: A Unified Latent Action World Model",
+  "arxiv_id": "2512.13030",
+  "url": "https://arxiv.org/abs/2512.13030",
+  "category": "机器人 · Robotics",
+  "keywords": ["世界模型", "VLA", "latent action", "optical flow", "Mixture-of-Transformers", "video generation", "机器人操作", "具身智能"],
+  "summary_zh": "Motus 通过 Mixture-of-Transformers 架构将视频生成、动作预测与视觉语言理解统一为单一世界模型，以 optical flow 为跨具身运动先验，在 RoboTwin 2.0 仿真中成功率 88.66%，超越 X-VLA +15%、超越 π₀.₅ +45%，并在真实机器人任务中提升 11~48%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  ReconVLA: Reconstructive Vision-Language-Action Model as Effective Robot Perceiver
+  arXiv: 2508.10333
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReconVLA: Reconstructive Vision-Language-Action Model as Effective Robot Perceiver</title>
+<meta name="keywords" content="VLA, 机器人操作, implicit grounding, 视觉注意力, diffusion transformer, 重建式感知, manipulation, CALVIN benchmark">
+<meta name="description" content="ReconVLA 通过隐式重建凝视区域来提升 VLA 模型的视觉注意力精度，在 CALVIN 等多个基准上超越现有方法，并在真实机器人操作中展现出强大的泛化能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>ReconVLA: Reconstructive Vision-Language-Action Model as Effective Robot Perceiver</h1>
+    <div class="sub">通过隐式重建凝视区域，让 VLA 模型真正"看见"目标物体</div>
+    <div class="authors">Wenxuan Song, Ziyang Zhou, Han Zhao, Jiayi Chen, Pengxiang Ding, Haodong Yan, Yuxin Huang, Feilong Tang, Donglin Wang, Haoang Li</div>
+    <p class="lead">现有 Vision-Language-Action 模型的视觉注意力往往分散，无法聚焦于目标操作区域。ReconVLA 提出隐式 grounding 范式，借助 diffusion transformer 重建图像中的"凝视区域"，引导 LLM 骨干将注意力对准目标物体，从而大幅提升精细操作和未见目标的泛化能力。</p>
+    <div class="meta">
+      <span>arXiv 2025-08-14</span>
+      <span>CALVIN benchmark</span>
+      <span>Real-robot AgileX PiPer</span>
+      <span><a href="https://arxiv.org/abs/2508.10333">📄 arXiv:2508.10333</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>implicit grounding</span>
+      <span>视觉注意力</span>
+      <span>diffusion transformer</span>
+      <span>重建式感知</span>
+      <span>CALVIN benchmark</span>
+      <span>manipulation generalization</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有 VLA 模型在视觉感知上存在根本性缺陷——注意力分散，难以精准定位目标操作物体，导致在杂乱场景和精细任务中表现不佳。</p>
+
+    <blockquote>"visual attention is always dispersed" rather than focusing on target objects. Existing visual grounding methods either explicitly input cropped images or output bounding boxes in chain-of-thought fashion, but "do not fundamentally refine the attention allocation."</blockquote>
+
+    <p>作者观察到，人眼感知的本质是：<em>眼睛对焦的小区域清晰，周围区域模糊</em>。现有 explicit grounding（输入裁剪图像）和 chain-of-thought grounding（输出 bounding box 坐标）两类方法都无法从根本上改变 LLM 内部的注意力分配。ReconVLA 通过隐式重建凝视区域，让模型<strong>在特征层面</strong>聚焦目标，而非依赖外部后处理。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="ReconVLA teaser — 凝视区域高亮与注意力热图">
+      <figcaption><b>图 1：ReconVLA teaser。</b>左侧：多物体桌面场景（"stack blocks" 任务）；中间：模型自动定位的"凝视区域"高亮；右侧：ReconVLA 的注意力热图明显集中于目标积木，而 baseline 的注意力则分散在整张图像上。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>3.95</b><small>CALVIN ABC→D 平均完成序列长度（最优）</small></div>
+      <div><b>64.1%</b><small>CALVIN ABC→D 5/5 子任务成功率（最优）</small></div>
+      <div><b>+20.2%</b><small>精细 "stack block" 任务 vs. baseline</small></div>
+      <div><b>2M+</b><small>预训练数据量（轨迹样本）</small></div>
+    </div>
+
+    <figure>
+      <img src="img/comparison.webp" alt="三种 grounding 范式对比">
+      <figcaption><b>图 2：三种 grounding 范式对比。</b>(a) Explicit Grounding (EG)：将裁剪后的目标区域图像与原图一并输入；(b) Chain-of-Thought Grounding (CG)：在动作序列之前先输出 bounding box 坐标；(c) Implicit Grounding (IG，即 ReconVLA)：输出 reconstructive tokens，驱动 diffusion transformer 重建凝视区域——无需显式坐标，注意力改变发生在特征空间内部。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">ReconVLA 在标准 VLA 骨干（LLaVA-7b，Qwen2-7B LLM + siglip-so400m-patch14-384 视觉编码器）的基础上，新增一个与动作输出<em>并行</em>的重建分支：LLM 同时输出 action tokens 和 reconstructive tokens，后者驱动一个 diffusion transformer denoiser 从噪声中恢复凝视区域的 latent 特征。</p>
+
+    <figure>
+      <img src="img/arch.webp" alt="ReconVLA 架构图">
+      <figcaption><b>图 3：ReconVLA 整体架构。</b>输入为多视角图像与文本指令；视觉编码器提取图像特征，LLM 同时自回归生成 action tokens（动作）和 reconstructive tokens（重建引导）；diffusion denoiser 以 reconstructive tokens 为条件，从噪声 z_t 恢复凝视区域的 latent z_0；连续 VAE 解码为实际图像像素用于监督。整体损失 = 动作交叉熵损失 + 扩散重建损失。</figcaption>
+    </figure>
+
+    <h3>核心损失函数</h3>
+    <p>总损失同时优化动作预测与视觉重建：</p>
+    <blockquote>ℒ_ReconVLA = ℒ_VLA^action + ℒ_VLA^visual</blockquote>
+    <p>其中动作损失为 cross-entropy 监督离散动作 token；视觉重建损失为扩散目标：</p>
+    <blockquote>ℒ_VLA^visual(𝒉_R, I′) = 𝔼_{t,ϵ}[||𝒟(𝒛_t; 𝒉_R, t) − ϵ||²]</blockquote>
+    <p>𝒉_R 为 LLM 输出的 reconstructive tokens，I′ 为凝视区域图像，𝒟 为由 Transformer encoder blocks 构成的 denoiser。通过对重建损失和动作损失同时反向传播，两个分支共享并强化相同的特征空间。</p>
+
+    <h3>凝视区域（Gaze Region）的含义与作用</h3>
+    <p>凝视区域并非简单的 bounding box 裁剪，而是"the target manipulated region"，其作用有三：(1) 在多物体杂乱场景中聚焦正确目标；(2) 增强对目标物体的细节感知；(3) 在长时序任务中辅助子任务规划。</p>
+
+    <h3>大规模预训练数据集</h3>
+    <p>作者通过在 BridgeData V2、LIBERO 和 CALVIN 数据集上微调 Grounding DINO 获取凝视区域标注，构建了包含<strong>超过 100k 条轨迹、200万个样本</strong>的配对数据集（原图 + 凝视区域裁剪图），用于预训练重建能力。预训练后再进行任务特定微调。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 CALVIN 模拟基准（Franka Panda 机器人，34 种任务，4 个场景）和真实机器人平台（AgileX PiPer 6-DoF 机械臂）上进行评测，指标为 500 次 rollout 的逐子任务成功率及平均完成序列长度。</p>
+
+    <h3>Paradigm 对比（CALVIN ABC→D，Table 1）</h3>
+    <table>
+      <tr><th>方法</th><th>1/5</th><th>2/5</th><th>3/5</th><th>4/5</th><th>5/5</th><th>Avg. Len.</th></tr>
+      <tr><td>Baseline（标准 VLA）</td><td>88.8%</td><td>76.1%</td><td>63.7%</td><td>57.0%</td><td>49.0%</td><td>3.36</td></tr>
+      <tr><td>Explicit Grounding (EG)</td><td>94.4%</td><td>82.5%</td><td>70.9%</td><td>62.2%</td><td>50.2%</td><td>3.61</td></tr>
+      <tr><td>CoT Grounding (CG)</td><td>47.0%</td><td>14.3%</td><td>1.6%</td><td>0.0%</td><td>0.0%</td><td>0.63</td></tr>
+      <tr><td><b>ReconVLA (IG, Ours)</b></td><td class="good">95.6%</td><td class="good">87.6%</td><td class="good">76.9%</td><td class="good">69.3%</td><td class="good">64.1%</td><td class="good">3.95</td></tr>
+    </table>
+    <p>CoT Grounding "performance is even worse" 因为仅输出 bounding box 坐标不足以提供精细操作所需的精度。ReconVLA 在所有子任务长度上均取得最高成功率。</p>
+
+    <h3>与 State-of-the-Art 对比（CALVIN ABC→D，Table 3）</h3>
+    <table>
+      <tr><th>方法</th><th>类别</th><th>1/5</th><th>2/5</th><th>3/5</th><th>4/5</th><th>5/5</th><th>Avg. Len.</th></tr>
+      <tr><td>GR-1</td><td>生成式</td><td>85.4%</td><td>71.2%</td><td>59.6%</td><td>49.7%</td><td>40.1%</td><td>3.06</td></tr>
+      <tr><td>CLOVER</td><td>生成式</td><td>96.0%</td><td>83.5%</td><td>70.8%</td><td>57.5%</td><td>45.4%</td><td>3.53</td></tr>
+      <tr><td>OpenVLA</td><td>大型 VLA</td><td>91.3%</td><td>77.8%</td><td>62.0%</td><td>52.1%</td><td>43.5%</td><td>3.27</td></tr>
+      <tr><td>UniVLA</td><td>大型 VLA</td><td>95.5%</td><td>85.8%</td><td>75.4%</td><td>66.9%</td><td>56.5%</td><td>3.80</td></tr>
+      <tr><td><b>ReconVLA (Ours)</b></td><td>重建式 VLA</td><td class="good">95.6%</td><td class="good">87.6%</td><td class="good">76.9%</td><td class="good">69.3%</td><td class="good">64.1%</td><td class="good">3.95</td></tr>
+    </table>
+    <p>ReconVLA 在 5/5 子任务上超越 GR-1 超过 20%、超越 OpenVLA 20.6%、超越 UniVLA 7.6%。在 CALVIN ABCD→D 上也取得平均序列长度 4.23，与 GR-1 的 4.21 相当，超越 RoboFlamingo（4.08）和 VLAS（3.70）。</p>
+
+    <figure>
+      <img src="img/attention.webp" alt="注意力可视化对比">
+      <figcaption><b>图 4：视觉注意力对比（CALVIN + 真实场景）。</b>上行：baseline 模型注意力"dispersed attention patterns or predominantly attends to incorrect region"；下行：ReconVLA 注意力显著集中于目标物体，"forcing the model to focus on specific image contents with higher attention values"。</figcaption>
+    </figure>
+
+    <h3>消融实验（Table 2）</h3>
+    <table>
+      <tr><th>配置</th><th>1/5</th><th>2/5</th><th>3/5</th><th>4/5</th><th>5/5</th><th>Avg. Len.</th></tr>
+      <tr><td>完整 ReconVLA</td><td class="good">95.6%</td><td class="good">87.6%</td><td class="good">76.9%</td><td class="good">69.3%</td><td class="good">64.1%</td><td class="good">3.95</td></tr>
+      <tr><td>无预训练</td><td>96.8%</td><td>86.9%</td><td>76.9%</td><td>64.9%</td><td>58.2%</td><td>3.85</td></tr>
+      <tr><td>无凝视区域（全图重建）</td><td>89.8%</td><td>80.3%</td><td>67.7%</td><td>56.6%</td><td>46.5%</td><td>3.42</td></tr>
+      <tr><td>仅 Baseline</td><td>88.8%</td><td>76.1%</td><td>63.7%</td><td>57.0%</td><td>49.0%</td><td>3.36</td></tr>
+    </table>
+    <p>消融显示：凝视区域（gaze region）是核心贡献，"proves to be more effective" 于全图重建；预训练"substantially enhances generalization"尤其在长序列任务上。精细操作任务 "stack block" 中，ReconVLA 以 79.5% 胜过 baseline 的 59.3%，提升 20.2%。</p>
+
+    <h3>真实机器人实验</h3>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实机器人实验平台与任务">
+      <figcaption><b>图 5：真实机器人实验平台与四项任务。</b>6-DoF AgileX PiPer 机械臂 + 1-DoF 平行夹爪；RealSense D515（Eye-on-Base）+ ORBBEC Dabai（Eye-on-Hand）双摄像头。四项任务：叠碗（Stack bowls）、将水果放入碗（Put fruit into bowl）、翻杯（Flip cups）、收拾桌面（Bus table），每任务约 150 条训练轨迹，测试 20 次。</figcaption>
+    </figure>
+
+    <p>在四项已知任务上，ReconVLA 的成功率均明显优于 OpenVLA 和 PD-VLA（Put Fruit 和 Stack Bowls 约 90%，Flip Cups 约 75%，Bus Table 约 70%）。在<strong>未见物体泛化</strong>测试中，OpenVLA 和 PD-VLA 成功率接近 0%，而 ReconVLA 仍维持较高成功率，展现出强大的视觉泛化能力。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文正文未设独立 Limitations 章节。以下各点来源说明：标注为 <em>stated</em> 表示论文有明确陈述；标注为 <em>inferred</em> 表示由方法设计推断。</div>
+
+    <details class="lim" open>
+      <summary>凝视区域标注依赖 Grounding DINO（inferred）</summary>
+      <p>预训练数据的凝视区域标注来自对 Grounding DINO 的微调。若目标物体描述模糊或视觉特征相近，检测器的准确性将影响重建质量，进而影响 VLA 的注意力引导效果。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理阶段增加 diffusion denoiser 开销（inferred）</summary>
+      <p>相比标准 VLA，ReconVLA 在推理时需要额外运行 diffusion denoiser 来重建凝视区域 latent，增加了计算量和延迟。论文未报告推理速度指标。</p>
+    </details>
+
+    <details class="lim">
+      <summary>真实机器人实验规模有限（inferred）</summary>
+      <p>真实机器人测试仅限于 4 种任务、每任务 20 次 trial，硬件平台也仅为单一型号（AgileX PiPer）。跨平台、跨任务的泛化性有待进一步验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>对高速精细操作的适用性未验证（inferred）</summary>
+      <p>论文实验主要集中在桌面抓取与摆放等较低速任务。对于需要高频闭环控制的精细操作（如插销、螺丝拧紧），重建分支能否保持实时性尚未评估。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · ReconVLA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2508.10333">https://arxiv.org/abs/2508.10333</a>
+  </div>
+</footer>
+
+</body>
+</html>

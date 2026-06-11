@@ -1,0 +1,22 @@
+{
+  "slug": "rpt-sensorimotor-pretraining",
+  "title": "Robot Learning with Sensorimotor Pre-training",
+  "arxiv_id": "2306.10007",
+  "url": "https://arxiv.org/abs/2306.10007",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "sensorimotor pre-training",
+    "robot learning",
+    "masked prediction",
+    "Transformer",
+    "机器人操作",
+    "behavior cloning",
+    "迁移学习",
+    "scaling laws",
+    "self-supervised learning",
+    "RPT"
+  ],
+  "summary_zh": "RPT 是一种基于 Transformer 的感知运动预训练框架，通过掩码预测在 20,000 条真实机器人轨迹上自监督学习，再以 behavior cloning fine-tune 到下游操作任务，在所有任务上持续优于从零训练并展现良好的跨任务、跨机器人迁移能力。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

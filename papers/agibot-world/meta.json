@@ -1,0 +1,22 @@
+{
+  "slug": "agibot-world",
+  "title": "AgiBot World Colosseo: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems",
+  "arxiv_id": "2503.06669",
+  "url": "https://arxiv.org/abs/2503.06669",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "机器人操作",
+    "大规模数据集",
+    "latent action model",
+    "diffusion policy",
+    "VLA",
+    "embodied AI",
+    "策略泛化",
+    "scaling law",
+    "人在环路数据",
+    "长时序任务"
+  ],
+  "summary_zh": "AgiBot World 提供超过 100 万条轨迹、217 项任务的大规模操作数据集，并推出三阶段 GO-1（ViLLA）泛化策略，在域内与分布外评估中均比 Open X-Embodiment 基线平均提升 30%，验证了机器人操作领域的 scaling law。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

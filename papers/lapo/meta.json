@@ -1,0 +1,11 @@
+{
+  "slug": "lapo",
+  "title": "LAPO: Learning to Act without Actions",
+  "arxiv_id": "2312.10812",
+  "url": "https://arxiv.org/abs/2312.10812",
+  "category": "机器人 · Robotics",
+  "keywords": ["latent action", "无标注视频学习", "inverse dynamics model", "vector quantization", "策略预训练", "Procgen", "world model", "reinforcement learning", "无监督动作表征", "video pre-training"],
+  "summary_zh": "LAPO 从纯视频（无动作标签）中通过联合训练 IDM 与 FDM 并以 VQ 作为信息瓶颈，自动恢复结构化隐动作空间，再以少量标注数据或在线 RL 微调即可在 Procgen 16 个游戏中快速达到专家水平。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

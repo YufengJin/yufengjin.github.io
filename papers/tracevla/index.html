@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness
+  for Generalist Robotic Policies · arXiv:2412.10345
+  中文海报，无 EN 版本。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness for Generalist Robotic Policies</title>
+<meta name="keywords" content="VLA, visual trace prompting, 机器人操作, Co-Tracker, OpenVLA, 空间时序感知, 视觉语言动作模型, manipulation policy">
+<meta name="description" content="TraceVLA 通过视觉轨迹提示将历史运动轨迹叠加到机器人观测图像上，显著提升 VLA 模型的空间时序感知能力，在 SimplerEnv 提升 ~10%，真实机器人任务提升 3.5×。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · cs.AI · arXiv 2412.10345</span>
+    <h1>TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness for Generalist Robotic Policies</h1>
+    <div class="sub">将历史运动轨迹"画"进图像，让 VLA 机器人真正理解过去的动作</div>
+    <div class="authors">Ruijie Zheng, Yongyuan Liang, Shuaiyi Huang, Jianfeng Gao, Hal Daumé III, Andrey Kolobov, Furong Huang, Jianwei Yang &nbsp;·&nbsp; University of Maryland · Microsoft Research · Capital One</div>
+    <p class="lead">TraceVLA 提出 visual trace prompting（视觉轨迹提示）——利用 Co-Tracker 提取历史帧中的点轨迹，并将其叠加到当前观测图像上，再输入给 VLA 模型。与仅依赖当前帧的基线相比，TraceVLA (7B) 在 SimplerEnv 137 项配置上平均提升约 10%，在真实 WidowX-250 机器人任务上成功率提升 3.5×。</p>
+    <div class="meta">
+      <span>模型规模：7B / 4B 参数</span>
+      <span>训练数据：150K 机器人操作轨迹</span>
+      <span>v3 · 2025-06-05</span>
+      <span><a href="https://arxiv.org/abs/2412.10345">📄 arXiv:2412.10345</a></span>
+      <span><a href="https://arxiv.org/pdf/2412.10345">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>visual trace prompting</span>
+      <span>机器人操作</span>
+      <span>Co-Tracker</span>
+      <span>OpenVLA</span>
+      <span>空间时序感知</span>
+      <span>视觉语言动作模型</span>
+      <span>manipulation policy</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">大型视觉-语言-动作（VLA）模型在机器人操控领域展现出强大的泛化能力，但它们往往只"看当下"——忽视了机器人自身的历史运动轨迹，导致决策更多是对当前帧的被动反应，而非对空间历史的主动推理。</p>
+    <blockquote>"VLA-powered robots often struggle to maintain awareness of their past movements, leading to decisions that are more reactive to current inputs rather than informed by spatial history."</blockquote>
+    <p>已有方法尝试将历史帧拼接输入或用文本坐标描述轨迹，但效果有限：拼接六帧历史图像反而使性能下降 6%；文本轨迹描述仅带来约 2.4% 的提升。根本原因在于 VLA 的 backbone（视觉编码器）并未针对时序感知专门训练，无法从原始图像差异中有效提取运动信息。</p>
+    <figure>
+      <img src="img/teaser.webp" alt="TraceVLA teaser：视觉轨迹叠加示意">
+      <figcaption>TraceVLA 的核心思路：将 Co-Tracker 提取的历史点轨迹（彩色曲线）直接叠加在当前机器人观测图像上，形成"视觉轨迹提示"，随后连同原始图像一起输入给 VLA 模型（中间插入 separator token）。此方法无需修改模型结构，仅在输入层面增强了空间时序信息。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>~10%</b><small>SimplerEnv 137 项平均提升<br>（vs. OpenVLA 7B）</small></div>
+      <div><b>3.5×</b><small>真实机器人任务成功率提升<br>（WidowX-250）</small></div>
+      <div><b>+4.2%</b><small>LIBERO 四套基准平均提升<br>（74.8% vs. 70.6%）</small></div>
+      <div><b>8/10</b><small>非训练任务 pick-place corn<br>（OpenVLA 仅 1/10）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">TraceVLA 在不改变 VLA 模型结构的前提下，通过"输入层视觉增强"注入历史运动信息：用 Co-Tracker 从历史帧中提取稠密点轨迹，过滤出活跃轨迹后叠加到当前观测帧，再将原始帧与叠加帧组成双图像序列输入模型。</p>
+    <figure>
+      <img src="img/trace_gen.webp" alt="视觉轨迹生成流程">
+      <figcaption>视觉轨迹生成流程（Figure 2）：① Co-Tracker 对历史图像序列进行稠密点跟踪，生成每个点在各帧的位置轨迹；② 以像素位移超过阈值 κ 为准则，过滤出"活跃"轨迹（排除静态背景点）；③ 将选中的轨迹以彩色曲线渲染叠加在当前观测帧上。模型输入由 [原始帧 + separator token + 轨迹叠加帧] 构成。</figcaption>
+    </figure>
+
+    <h3>三步生成 Visual Trace</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Step 1：点轨迹提取</h3>
+        <p>使用 <strong>Co-Tracker</strong> 对过去 N 帧（默认 N=6）进行稠密点跟踪，输出每个采样点在各历史帧的 2D 位置序列。Co-Tracker 是专门针对视频跟踪优化的模型，能可靠地跨帧定位物体与末端执行器。</p>
+      </div>
+      <div class="card">
+        <h3>Step 2：活跃轨迹过滤</h3>
+        <p>计算每个点在历史帧中的总像素位移；仅保留位移超过阈值 <em>κ</em> 的点轨迹。此步骤排除静态背景，聚焦于末端执行器及与任务相关的运动对象。</p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3>Step 3：视觉叠加与双图输入</h3>
+        <p>将过滤后的轨迹以彩色线段渲染在当前观测帧上，生成"轨迹叠加帧"。模型接收 <strong>[原始帧 | separator token | 轨迹叠加帧]</strong> 的双图像序列，其中 separator token 帮助模型区分两种信息来源。</p>
+      </div>
+      <div class="card">
+        <h3>训练 Dropout 机制</h3>
+        <p>以概率 <em>α</em> 随机丢弃训练样本中的视觉轨迹（仅输入原始帧），使模型在推理时 Co-Tracker 跟踪失败或轨迹缺失的情况下仍能正常工作，增强鲁棒性。</p>
+      </div>
+    </div>
+
+    <h3>模型基座与训练</h3>
+    <p>TraceVLA 在 <strong>OpenVLA</strong>（基于 Prismatic 7B VLM）基础上 fine-tune，训练数据为来自 Open X-Embodiment 数据集的 <strong>150K 机器人操作轨迹</strong>。同时提供轻量版 <strong>TraceVLA-Phi3</strong>（4B），基于 OpenVLA-OFT 框架，具有更低推理延迟。视觉编码器与语言模型权重均参与微调。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在三个评测维度上全面验证：仿真 SimplerEnv（137 配置）、LIBERO 四套基准（细粒度 fine-tune 场景），以及真实 WidowX-250 机械臂（8 项操作任务，含训练内与训练外任务）。</p>
+
+    <h3>SimplerEnv 仿真基准</h3>
+    <table>
+      <tr><th>任务</th><th>OpenVLA (7B)</th><th>TraceVLA (7B)</th><th>Δ</th></tr>
+      <tr><td>Move Near</td><td>47.1%</td><td class="good">53.7%</td><td>+6.6%</td></tr>
+      <tr><td>Pick Coke Can</td><td>15.3%</td><td class="good">28.0%</td><td>+12.7%</td></tr>
+      <tr><td>Open/Close Drawer</td><td>49.5%</td><td class="good">57.0%</td><td>+7.5%</td></tr>
+      <tr><td><strong>Overall</strong></td><td>40.2%</td><td class="good">47.7%</td><td><strong>+7.5%</strong></td></tr>
+    </table>
+
+    <table>
+      <tr><th>任务</th><th>OpenVLA-Phi3 (4B)</th><th>TraceVLA-Phi3 (4B)</th><th>Δ</th></tr>
+      <tr><td>Move Near</td><td>46.1%</td><td class="good">50.4%</td><td>+4.3%</td></tr>
+      <tr><td>Pick Coke Can</td><td>46.7%</td><td class="good">52.2%</td><td>+5.5%</td></tr>
+      <tr><td>Open/Close Drawer</td><td>22.5%</td><td class="good">31.0%</td><td>+8.5%</td></tr>
+      <tr><td><strong>Overall</strong></td><td>39.9%</td><td class="good">44.0%</td><td><strong>+4.1%</strong></td></tr>
+    </table>
+
+    <h3>LIBERO 基准（fine-tune 场景）</h3>
+    <table>
+      <tr><th>Suite</th><th>OpenVLA</th><th>TraceVLA</th><th>Δ</th></tr>
+      <tr><td>Spatial</td><td>82.6%</td><td class="good">84.6%</td><td>+2.0%</td></tr>
+      <tr><td>Object</td><td>83.8%</td><td class="good">85.2%</td><td>+1.4%</td></tr>
+      <tr><td>Goal</td><td>70.4%</td><td class="good">75.1%</td><td>+4.7%</td></tr>
+      <tr><td>Long</td><td>45.7%</td><td class="good">54.1%</td><td>+8.4%</td></tr>
+      <tr><td><strong>Average</strong></td><td>70.6%</td><td class="good">74.8%</td><td><strong>+4.2%</strong></td></tr>
+    </table>
+
+    <h3>真实机器人实验（WidowX-250）</h3>
+    <figure>
+      <img src="img/real_robot.webp" alt="真实机器人实验结果">
+      <figcaption>TraceVLA 在 WidowX-250 真实机器人上的实验结果（Figure 6）：左侧为训练内 seen 任务，右侧为训练外 unseen 任务。Pick-place corn（unseen）：TraceVLA 8/10 成功，OpenVLA 仅 1/10。TraceVLA 能根据语言指令正确定位空间目标，而 OpenVLA 在空间语义理解上频繁失败。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/results.webp" alt="SimplerEnv 各任务性能对比">
+      <figcaption>SimplerEnv 137 配置下各任务类别的性能对比图（Figure 3）：TraceVLA (7B) 与 TraceVLA-Phi3 (4B) 在所有任务上均优于对应基线。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Further fine-tuning alone</strong>（仅进一步微调，无轨迹）：仅带来 1.1% 提升，说明性能增益主要来自视觉轨迹，而非微调本身。</li>
+      <li><strong>历史帧拼接</strong>（6 帧原始图像输入）：性能反而下降 6%，冗余视觉信息对 VLA 产生干扰。</li>
+      <li><strong>Text trace vs. visual trace</strong>：文字坐标描述 +2.4%；视觉叠加方式 +6.4%（在文字基础上再增），视觉编码方式更有效。</li>
+      <li><strong>轨迹长度 N</strong>：N=6 最优；N=3 仅得 3.2% 提升；N=12 因视觉杂乱略有下降。</li>
+      <li><strong>可视化参数</strong>（线宽、透明度、颜色）：在合理范围内对性能影响可忽略不计。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性均由作者在论文中明确陈述（stated）。</div>
+    <details class="lim" open>
+      <summary>训练显存开销增加（~10 GB）</summary>
+      <p>双图像输入使每个样本的视觉 token 数量翻倍，在 batch size 32、8 张 H100 的配置下，显存消耗额外增加约 <strong>10 GB</strong>。对于显存受限的训练环境，需适当减小 batch size 或使用梯度检查点。</p>
+    </details>
+    <details class="lim">
+      <summary>Co-Tracker 推理延迟（每步约 0.034 秒）</summary>
+      <p>每个时间步需额外运行 Co-Tracker 进行点跟踪，引入约 <strong>0.034 秒</strong>的推理开销。对于要求毫秒级响应的高频控制任务，该延迟可能成为瓶颈。</p>
+    </details>
+    <details class="lim">
+      <summary>Co-Tracker 长轨迹跟踪失效</summary>
+      <p>Co-Tracker 在连续 <strong>30–40 步</strong>后可能丢失部分追踪点，需要定期重新初始化（recalibration）。在需要极长操作序列的任务中，跟踪失效率会上升，影响轨迹质量。</p>
+    </details>
+    <details class="lim">
+      <summary>轨迹遮挡关键视觉信息</summary>
+      <p>叠加的彩色轨迹线有时会遮挡末端执行器或任务关键物体（如待抓取的小型物体），在视觉密集的场景中可能造成干扰。尽管可视化参数对整体性能影响较小，但极端遮挡情况尚未充分评估。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · TraceVLA: Visual Trace Prompting Enhances Spatial-Temporal Awareness for Generalist Robotic Policies · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2412.10345">https://arxiv.org/abs/2412.10345</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "slug": "qwen-vla",
+  "title": "Qwen-VLA: Unifying Vision-Language-Action Modeling across Tasks, Environments, and Robot Embodiments",
+  "arxiv_id": "2605.30280",
+  "url": "https://arxiv.org/abs/2605.30280",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "VLA",
+    "具身智能",
+    "机器人操作",
+    "视觉语言导航",
+    "DiT flow matching",
+    "跨形态迁移",
+    "embodiment-aware prompt",
+    "大规模联合预训练",
+    "强化学习后训练",
+    "零样本泛化"
+  ],
+  "summary_zh": "Qwen-VLA 将操作、导航与轨迹预测统一到单一 VLA 模型，基于 Qwen3.5-4B 骨干和 DiT 流匹配动作解码器，通过形态感知提示和四阶段训练（T2A→CPT→SFT→RL），作为通才策略在 LIBERO（97.9%）、Simpler-WidowX（73.7%）、RoboTwin（86.1/87.2%）等多基准上超越专家模型。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

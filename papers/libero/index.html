@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning</title>
+<meta name="keywords" content="lifelong learning, robot manipulation, knowledge transfer, benchmark, continual learning, policy learning, task suite, procedural generation, 终身学习, 机器人操作">
+<meta name="description" content="LIBERO 是一个专为机器人操作中终身学习设计的基准，涵盖 130 个任务，研究陈述性知识与程序性知识的迁移效率、策略架构、算法与预训练影响。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">NeurIPS 2023 · Datasets and Benchmarks</span>
+    <h1>LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning</h1>
+    <div class="sub">机器人终身学习中知识迁移的系统性基准</div>
+    <div class="authors">Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, Peter Stone &nbsp;·&nbsp; UT Austin / PKU</div>
+    <p class="lead">LIBERO 是首个专注于机器人操作领域终身学习的综合性基准，包含 130 个跨越四个任务套件的操作任务，系统研究陈述性知识（概念）与程序性知识（动作）的迁移效率，并附有高质量人类遥操作演示数据。</p>
+    <div class="meta">
+      <span>NeurIPS 2023</span>
+      <span>130 Tasks · 4 Suites</span>
+      <span>50 Demonstrations/Task</span>
+      <span><a href="https://arxiv.org/abs/2306.03310">📄 arXiv:2306.03310</a></span>
+      <span><a href="https://libero-project.github.io">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>lifelong learning</span>
+      <span>robot manipulation</span>
+      <span>knowledge transfer</span>
+      <span>continual learning</span>
+      <span>benchmark</span>
+      <span>policy learning</span>
+      <span>procedural generation</span>
+      <span>终身学习</span>
+      <span>机器人操作</span>
+      <span>任务套件</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">终身学习（Lifelong Learning）的目标是构建一个能够随时间持续学习、不断从新任务中积累并迁移知识的智能体。然而，现有研究几乎全部集中在视觉和语言领域，对机器人决策场景的专注极度缺乏，导致缺少系统性评测手段来衡量不同知识类型的迁移效率与算法性能。</p>
+    <blockquote>"How can a robot agent effectively transfer knowledge across its lifespan in decision-making tasks?"</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="LIBERO论文首页">
+      <figcaption>LIBERO 提出了机器人操作终身学习基准，针对陈述性知识、程序性知识及混合知识迁移设计了四个任务套件，研究五个核心问题：迁移效率、策略架构、算法有效性、任务顺序鲁棒性与预训练影响。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>130</b><small>操作任务总数（4 个套件）</small></div>
+      <div><b>50</b><small>每个任务的人类遥操作演示</small></div>
+      <div><b>5</b><small>核心研究问题（Knowledge Transfer / Architecture / Algorithm / Task Ordering / Pretraining）</small></div>
+      <div><b>∞</b><small>程序化生成流程可创建无限任务</small></div>
+    </div>
+
+    <h3>为什么需要 LIBERO？</h3>
+    <p>机器人终身学习面临独特挑战：与视觉分类不同，操作任务需要同时处理<strong>陈述性知识</strong>（识别物体、场景等概念）和<strong>程序性知识</strong>（如何操作、抓取等动作序列）。例如，一个机器人曾学会"把苹果放进篮子"，在学习新任务时，它既要记住物体概念（陈述性），又要保留操作技能（程序性）。现有终身学习基准均无法捕捉这一二元知识结构。</p>
+
+    <figure>
+      <img src="img/task_suites.webp" alt="LIBERO四个任务套件">
+      <figcaption>LIBERO 的四个任务套件（Figure 1）。从左至右：LIBERO-Spatial（空间关系变化，考察陈述性知识）、LIBERO-Object（物体种类变化）、LIBERO-Goal（目标变化，混合知识）、LIBERO-Long（长序列任务，考察程序性知识）。底部展示了不同分布偏移类型及 LIBERO-GOAL 的任务顺序变化实验。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">LIBERO 提供了完整的基准框架：程序化任务生成流程（保证任务多样性与可扩展性）、高质量演示数据、统一的评测指标体系（FWT / NBT / AUC），以及三种主流神经网络架构的全面对比。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="LIBERO程序化生成流程">
+      <figcaption>Figure 2：LIBERO 的程序化生成流程。① 从大型行为数据集（EgoMimic）提取 Behavioral Template，② 基于 PDDL 语言描述的任务说明（task predicates、goal specifications），③ 利用模板生成无限行为变体，④ MuJoCo 仿真环境渲染，⑤ 人工遥操作录制高质量演示数据。</figcaption>
+    </figure>
+
+    <h3>四个任务套件（Task Suites）</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>LIBERO-Spatial</h3>
+        <p>10 个任务，固定物体种类，改变<strong>空间关系</strong>（如"碗在架子的左/右侧"）。主要挑战：陈述性知识迁移——智能体需记住物体位置概念。</p>
+      </div>
+      <div class="card">
+        <h3>LIBERO-Object</h3>
+        <p>10 个任务，固定空间布局，改变<strong>物体种类</strong>（如不同食物）。主要挑战：陈述性知识迁移——智能体需识别新物体而不遗忘旧物体。</p>
+      </div>
+      <div class="card">
+        <h3>LIBERO-Goal</h3>
+        <p>10 个任务，同一场景执行<strong>不同目标动作</strong>（如打开/关闭抽屉）。主要挑战：混合知识迁移——既需更新目标概念，又需习得新动作策略。</p>
+      </div>
+      <div class="card">
+        <h3>LIBERO-Long</h3>
+        <p>10 个任务，每个任务包含多个<strong>子目标的长序列操作</strong>（平均约 90 步）。主要挑战：程序性知识迁移——习得并保留复杂动作序列。</p>
+      </div>
+    </div>
+
+    <h3>评测指标体系</h3>
+    <figure>
+      <img src="img/metrics.webp" alt="LIBERO评测指标可视化">
+      <figcaption>Figure 3：LIBERO 的三个核心评测指标定义示意图。FWT（Forward Transfer）= 前向迁移效率，衡量学习新任务的速度；NBT（Negative Backward Transfer）= 负向后向迁移，衡量遗忘程度（越低越好）；AUC@k = 学习曲线面积，综合衡量整体终身学习性能。</figcaption>
+    </figure>
+
+    <h3>神经网络架构（Policy Architectures）</h3>
+    <figure>
+      <img src="img/architecture.webp" alt="LIBERO策略网络架构">
+      <figcaption>LIBERO 基准中对比的三种策略网络架构：RNN（循环神经网络，使用隐藏状态建模时序依赖）、ResNet+RNN（图像编码器 + 循环解码器）、ViT-T（Vision Transformer，使用 self-attention 处理视觉-时序信息）。语言任务描述通过 BERT 或 GPT-2 编码后注入策略网络。</figcaption>
+    </figure>
+
+    <h3>Task Identifier 嵌入</h3>
+    <p>实验系统性对比了四种 Task Identifier 嵌入方式：<strong>BERT</strong>（通用预训练语言模型）、<strong>GPT-2</strong>（自回归语言模型）、<strong>Task ID</strong>（one-hot 任务编号）、以及 <strong>Sentence Transformer</strong>。这些嵌入被用于将任务语义信息注入策略，帮助网络区分不同任务。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 LIBERO 的四个任务套件上，对比 Sequential Finetuning（ER / 无回放）、PackNet、以及多任务学习（MTL）等算法，结合 ResNet+RNN 与 PackNet 两种主要架构，系统评估 FWT、NBT 和 AUC@7 三项指标。</p>
+
+    <h3>Q1：策略架构对不同知识迁移类型的影响</h3>
+    <p>主要发现：<strong>"No single visual encoder architecture excels across all knowledge transfer types."</strong> ResNet 在大多数任务套件中优于 ViT-T，但对于以程序性知识迁移为主的 LIBERO-Long，ViT-T 表现更佳，体现了其对长序列时序建模的优势。</p>
+
+    <table>
+      <tr><th>Policy Arch.</th><th>LIBERO-Spatial (AUC@7)</th><th>LIBERO-Object (AUC@7)</th><th>LIBERO-Goal (AUC@7)</th><th>LIBERO-Long (AUC@7)</th></tr>
+      <tr><td>ResNet+RNN (ER)</td><td class="good">0.84 ± 0.01</td><td class="good">0.60 ± 0.02</td><td class="good">0.41 ± 0.02</td><td>0.15 ± 0.01</td></tr>
+      <tr><td>ViT-T (ER)</td><td>0.78 ± 0.01</td><td>0.48 ± 0.02</td><td>0.29 ± 0.01</td><td class="good">0.29 ± 0.02</td></tr>
+      <tr><td>ResNet+RNN (MTL)</td><td class="good">0.88 ± 0.00</td><td class="good">0.66 ± 0.01</td><td class="good">0.52 ± 0.02</td><td>0.16 ± 0.01</td></tr>
+      <tr><td>ViT-T (MTL)</td><td>0.80 ± 0.01</td><td>0.54 ± 0.02</td><td>0.36 ± 0.02</td><td class="good">0.38 ± 0.03</td></tr>
+    </table>
+
+    <h3>Q2：终身学习算法对比</h3>
+    <p>核心发现：<strong>"Sequential finetuning outperforms existing lifelong learning methods in forward transfer."</strong> 在 FWT 指标上，简单的 Sequential Finetuning（顺序微调）普遍优于 PackNet 等专门的终身学习算法，而 PackNet 通过网络二值化压缩有效抑制了遗忘（较低的 NBT），但以牺牲前向迁移能力为代价。</p>
+
+    <h3>Q4：任务顺序的鲁棒性</h3>
+    <figure>
+      <img src="img/task_ordering.webp" alt="任务顺序鲁棒性实验">
+      <figcaption>Figure 4（左）：ER 与 PackNet 在 LIBERO-LONG 的 50 种随机任务顺序下的 AUC@7 分布。ER 在不同顺序下波动显著大于 PackNet，说明 ER 对任务顺序更为敏感。（右）：LIBERO-GOAL 下两种算法的成功率随任务序号 k 的变化，PackNet 维持相对稳定而 ER 振荡更大。</figcaption>
+    </figure>
+
+    <h3>Q5：预训练对终身学习的影响</h3>
+    <p>实验表明：<strong>"Naive supervised pretraining can hinder agents' performance in the subsequent LLDM."</strong> 在大规模离线数据集上进行监督式预训练后，智能体在后续 LLDM（Lifelong Learning for Decision-Making）阶段的表现反而下降，说明纯监督预训练会干扰策略在终身学习场景下的适应能力，这是一个出人意料的负面迁移现象。</p>
+
+    <h3>Task Identifier 嵌入对比</h3>
+    <p>实验对比了四种任务标识符嵌入方式（BERT / GPT-2 / Task ID / Sentence Transformer）。结果表明 BERT 和 Task ID 嵌入在大多数任务套件上表现相当甚至更优，而 Sentence Transformer 嵌入表现出对语义任务描述的更好利用，尤其是在 LIBERO-Goal 中。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性部分来自论文第 7 章的明确陈述（<em>stated</em>），部分为基于设计分析的推断（<em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>仿真与真实世界的差距（Sim-to-Real Gap）【inferred】</summary>
+      <p>LIBERO 完全基于 MuJoCo 仿真环境，所有任务和演示均在仿真中完成。尽管提供了高质量的视觉渲染，但仿真物理特性与真实机器人操作存在显著差距（接触力学、物体材质变形等），所得结论是否可直接迁移到真实硬件仍是未解问题。</p>
+    </details>
+
+    <details class="lim">
+      <summary>任务套件规模相对有限（Task Scale Limitation）【stated】</summary>
+      <p>当前每个套件仅包含 10 个任务，总计 130 个任务。尽管程序化生成流程理论上可创建无限任务，但实际基准中的任务多样性和规模与真实终身学习场景（可能涉及数百至数千个任务）仍有差距。论文指出可通过扩展模板库来缓解此问题。</p>
+    </details>
+
+    <details class="lim">
+      <summary>预训练负迁移的机制尚未明确【stated】</summary>
+      <p>实验发现监督式预训练会<em>降低</em>后续终身学习性能，这一反直觉现象论文仅记录了结果（"naive supervised pretraining can hinder agents' performance"），但未深入分析其内在机制——究竟是特征分布偏移、优化景观改变还是其他原因导致了这一负迁移，有待进一步研究。</p>
+    </details>
+
+    <details class="lim">
+      <summary>算法评测范围局限于确定性策略【inferred】</summary>
+      <p>LIBERO 当前评测的算法（ER、EWC、PackNet、AGEM 等）主要为判别式确定性策略，未涵盖基于扩散模型（Diffusion Policy）或能量模型的概率性策略，也未评测近年兴起的 VLA（Vision-Language-Action）大模型在终身学习设定下的表现。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2306.03310">https://arxiv.org/abs/2306.03310</a>
+  </div>
+</footer>
+
+</body>
+</html>

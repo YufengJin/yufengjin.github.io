@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision-Language Foundation Models as Effective Robot Imitators</title>
+<meta name="keywords" content="RoboFlamingo, VLM, 机器人操作, imitation learning, CALVIN, policy head, OpenFlamingo, language-conditioned manipulation">
+<meta name="description" content="RoboFlamingo：将开源视觉-语言大模型通过少量模仿学习微调，实现高效的语言条件机器人操作，在 CALVIN 基准上大幅超越先前最优方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2024 · 机器人操作 · Robotics</span>
+    <h1>Vision-Language Foundation Models as Effective Robot Imitators</h1>
+    <div class="sub">RoboFlamingo：用开源 VLM 直接构建语言条件操作策略</div>
+    <div class="authors">Xinghang Li, Minghuan Liu, Hanbo Zhang, Cunjun Yu, Jie Xu, Hongtao Wu, Chilam Cheang, Ya Jing, Weinan Zhang, Huaping Liu, Hang Li, Tao Kong · ByteDance Research / Tsinghua University / SJTU / NUS</div>
+    <p class="lead">RoboFlamingo 在开源视觉-语言模型 OpenFlamingo 之上，通过解耦感知与决策、添加轻量 policy head，仅用语言标注的机器人演示数据进行模仿学习微调，便在 CALVIN 长视野操作基准上以 <strong>Avg Len 4.09</strong> 的成绩大幅超越此前最优方法（HULC，3.06），同时支持单卡 GPU 训练与推理。</p>
+    <div class="meta">
+      <span>ICLR 2024</span>
+      <span>CALVIN benchmark</span>
+      <span>单卡 GPU 可训练</span>
+      <span><a href="https://arxiv.org/abs/2311.01378">📄 arXiv:2311.01378</a></span>
+      <span><a href="https://roboflamingo.github.io">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>RoboFlamingo</span>
+      <span>VLM for Robotics</span>
+      <span>imitation learning</span>
+      <span>language-conditioned manipulation</span>
+      <span>CALVIN benchmark</span>
+      <span>policy head</span>
+      <span>OpenFlamingo</span>
+      <span>zero-shot generalization</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · Motivation</a>
+  <a href="#method">2 · Method</a>
+  <a href="#exp">3 · Experiments</a>
+  <a href="#limit">4 · Limitations</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> Motivation</h2>
+    <p class="lead">视觉-语言大模型（VLM）已展现出强大的多模态理解能力，但将其直接用于机器人低层控制仍面临三大挑战：① VLM 在静态图像-文本对上预训练，难以处理视频时序观测；② VLM 输出语言 token，而机器人需要连续动作信号；③ 现有高性能方案（如 RT-2）依赖私有模型与海量数据，无法被普通研究者复用。本文提出 RoboFlamingo，探索一种<strong>低成本、开源、可单卡运行</strong>的 VLM 机器人操作方案。</p>
+    <blockquote>"We seek a straightforward way of making use of existing vision-language models (VLMs) with simple fine-tuning on robotics data. ... RoboFlamingo can be an effective and competitive alternative to adapt VLMs to robot control."</blockquote>
+    <figure>
+      <img src="img/comparison.webp" alt="RoboFlamingo 与现有方案对比示意图">
+      <figcaption><strong>图1：</strong>RoboFlamingo 与现有视觉-语言机器人操作方案的对比。左侧方案（如 SayCan、PaLM-E）将 VLM 用作高层规划器，输出语言技能指令；中间的 RT-2 将 VLM 与低层动作联合微调，但依赖私有模型。RoboFlamingo（右）则解耦感知与决策：Flamingo 主干负责单步视觉-语言理解，显式 policy head 负责时序历史建模与动作输出，仅在机器人演示数据上微调。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4.09</b><small>Avg Len（ABCD→D，RoboFlamingo）</small></div>
+      <div><b>3.06</b><small>Avg Len（ABCD→D，HULC 最优基线）</small></div>
+      <div><b>2×</b><small>相对先前 SOTA 的性能提升</small></div>
+      <div><b>单张 GPU</b><small>可完成训练与评估</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> Method</h2>
+    <p class="lead">RoboFlamingo 的核心设计是<strong>感知与决策解耦</strong>：以 OpenFlamingo 作为视觉-语言主干（perception），负责在每一决策步对当前图像观测与语言指令进行单步理解；再附加一个轻量 policy head（decision-making），对历史特征进行建模并输出机器人动作。整个框架仅微调 resampler、gated cross-attention 模块与 policy head，其余参数冻结。</p>
+    <figure>
+      <img src="img/framework.webp" alt="RoboFlamingo 框架示意图">
+      <figcaption><strong>图2：</strong>RoboFlamingo 框架总览。Flamingo backbone 由视觉编码器（ViT + perceiver resampler）和特征融合解码器（gated cross-attention + frozen LLM layers）组成，在每步将双视角图像 I<sub>t</sub>、G<sub>t</sub> 与语言指令 l 融合为视觉-语言联合嵌入 X<sub>t</sub>。Policy head（默认为 LSTM + MLP）接收 X<sub>t</sub> 并维护隐状态 h<sub>t</sub>，输出 7-DoF 末端位姿增量与夹爪状态。</figcaption>
+    </figure>
+
+    <h3>Flamingo Backbone：视觉-语言单步理解</h3>
+    <p>视觉编码器由 ViT 和 perceiver resampler 组成：ViT 将双视角图像编码为视觉 token 序列，resampler 通过可学习查询向量将 token 数从 N 压缩到 N<sub>r</sub>，大幅降低后续计算量。特征融合解码器含 L 层交叉注意力（cross-attention）层与冻结 LLM（LLaMA / GPT-Neox / MPT）层：LLM 层参数全程冻结，仅微调 cross-attention 与 resampler 参数。每层解码器输出为视觉-语言联合嵌入，通过带可学习门控参数 α 的 gated cross-attention 控制视觉信息混入比例，保证训练稳定性。</p>
+
+    <h3>Policy Head：历史建模与动作输出</h3>
+    <p>论文测试了四种 policy head 变体：MLP w/o hist（仅当前帧）、MLP w hist（将历史帧送入视觉编码器）、GPT（显式 token 序列）和 LSTM（隐式记忆）。消融实验表明 GPT 与 LSTM 性能相近，最终选择 LSTM 作为默认配置（简洁高效）。以 LSTM 为例，policy head 对 X<sub>t</sub><sup>L</sup> 进行 max-pooling 聚合后输入 LSTM，并通过 MLP 分别预测末端位姿增量（MSE 损失回归）与夹爪状态（BCE 分类损失）。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>训练策略</h3>
+        <ul>
+          <li>仅使用 CALVIN 中带语言标注的演示数据（约 2.4 万步，占全量数据的 1%）</li>
+          <li>冻结 LLM 层；微调 resampler、gated cross-attention 与 policy head</li>
+          <li>联合优化 MSE 末端位姿损失 + BCE 夹爪状态损失（权重 λ<sub>gripper</sub>）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>部署灵活性（Open-loop Control）</h3>
+        <ul>
+          <li>感知与决策解耦使得可以预测动作序列（stacked actions），而无需每步重新推理 VLM</li>
+          <li>直接开环控制性能会下降；以跳步演示（jump step demonstration）重训后可显著缓解</li>
+          <li>支持低算力平台部署，单张 GPU 即可完成训练与评估</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/policy_head.webp" alt="Policy head 变体对比">
+      <figcaption><strong>图3：</strong>四种 policy head 变体的架构示意（出自论文附录）：(a) MLP w/o hist，(b) MLP w hist，(c) GPT，(d) LSTM。GPT 与 LSTM 均将 Flamingo backbone 用于单帧感知，在 policy head 中独立建模时序历史信息，性能显著优于将历史送入 VLM 的 MLP w hist 方案。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> Experiments</h2>
+    <p class="lead">实验基准为 CALVIN（Composing Actions from Language and Vision）：包含 34 个操作任务，评估 1000 条指令链，每条链要求机器人连续完成最多 5 步语言指令，仅当前任务成功才进入下一步。训练数据为带语言标注的演示（仅 Lang 分割，约 1% 全量数据）。主要对比基线：MCIL、HULC、RT-1。</p>
+
+    <h3>主要结果：Avg Len（ABCD→D，5步序列）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>训练数据</th>
+        <th>步骤1</th>
+        <th>步骤2</th>
+        <th>步骤3</th>
+        <th>步骤4</th>
+        <th>步骤5</th>
+        <th>Avg Len</th>
+      </tr>
+      <tr>
+        <td>MCIL</td>
+        <td>ABCD (Full)</td>
+        <td>0.373</td><td>0.027</td><td>0.002</td><td>0.000</td><td>0.000</td><td>0.40</td>
+      </tr>
+      <tr>
+        <td>HULC</td>
+        <td>ABCD (Full)</td>
+        <td>0.889</td><td>0.733</td><td>0.587</td><td>0.475</td><td>0.383</td><td>3.06</td>
+      </tr>
+      <tr>
+        <td>HULC</td>
+        <td>ABCD (Lang)</td>
+        <td>0.892</td><td>0.701</td><td>0.548</td><td>0.420</td><td>0.335</td><td>2.90</td>
+      </tr>
+      <tr>
+        <td>RT-1</td>
+        <td>ABCD (Lang)</td>
+        <td>0.844</td><td>0.617</td><td>0.438</td><td>0.323</td><td>0.227</td><td>2.45</td>
+      </tr>
+      <tr>
+        <td class="good">RoboFlamingo (Ours)</td>
+        <td>ABCD (Lang)</td>
+        <td class="good">0.964</td><td class="good">0.896</td><td class="good">0.824</td><td class="good">0.740</td><td class="good">0.660</td><td class="good">4.09</td>
+      </tr>
+    </table>
+
+    <h3>零样本视觉泛化（ABC→D，跨环境）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>训练数据</th>
+        <th>步骤1</th>
+        <th>步骤2</th>
+        <th>步骤3</th>
+        <th>步骤4</th>
+        <th>步骤5</th>
+        <th>Avg Len</th>
+      </tr>
+      <tr>
+        <td>HULC</td>
+        <td>ABC (Full)</td>
+        <td>0.418</td><td>0.165</td><td>0.057</td><td>0.019</td><td>0.011</td><td>0.67</td>
+      </tr>
+      <tr>
+        <td>RT-1</td>
+        <td>ABC (Lang)</td>
+        <td>0.533</td><td>0.222</td><td>0.094</td><td>0.038</td><td>0.013</td><td>0.90</td>
+      </tr>
+      <tr>
+        <td class="good">RoboFlamingo (Ours)</td>
+        <td>ABC (Lang)</td>
+        <td class="good">0.824</td><td class="good">0.619</td><td class="good">0.466</td><td class="good">0.331</td><td class="good">0.235</td><td class="good">2.48</td>
+      </tr>
+    </table>
+
+    <h3>不同 VLM backbone 对比（ABCD→D，Best Avg Len）</h3>
+    <table>
+      <tr>
+        <th>Backbone</th>
+        <th>LLM 架构</th>
+        <th>总参数</th>
+        <th>指令微调</th>
+        <th>COCO CIDEr (4-shot)</th>
+        <th>VQAv2 Acc (4-shot)</th>
+        <th>Best Avg Len</th>
+        <th>Mean Avg Len</th>
+      </tr>
+      <tr><td>M-3B</td><td>MPT</td><td>3B</td><td>否</td><td>77.3</td><td>45.8</td><td>3.94</td><td>3.81</td></tr>
+      <tr><td class="good">M-3B-IFT</td><td>MPT</td><td>3B</td><td>是</td><td>82.7</td><td>45.7</td><td class="good">4.09</td><td class="good">4.02</td></tr>
+      <tr><td>G-4B</td><td>GPT-Neox</td><td>4B</td><td>否</td><td>81.8</td><td>49.0</td><td>3.67</td><td>3.53</td></tr>
+      <tr><td>G-4B-IFT</td><td>GPT-Neox</td><td>4B</td><td>是</td><td>85.8</td><td>49.0</td><td>3.79</td><td>3.72</td></tr>
+      <tr><td>L-9B</td><td>LLaMA</td><td>9B</td><td>否</td><td>74.3</td><td>44.0</td><td>2.79</td><td>2.71</td></tr>
+      <tr><td>M-9B</td><td>MPT</td><td>9B</td><td>否</td><td>89.0</td><td>54.8</td><td>3.97</td><td>3.87</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="质量分析示例">
+      <figcaption><strong>图4：</strong>定性分析示例（出自论文 quality_ana 图）：展示 RoboFlamingo 在成功与失败案例中的视觉-语言对齐情况，帮助理解模型在不同对象位置和指令措辞下的行为差异。</figcaption>
+    </figure>
+
+    <h3>消融研究</h3>
+    <p>消融实验主要揭示以下结论：</p>
+    <ul>
+      <li><strong>Policy head 设计：</strong>MLP w/o hist 性能最差，说明历史信息至关重要。GPT 与 LSTM 性能相近，选 LSTM 作为默认（简洁）。MLP w hist 虽引入历史帧但仍明显弱于 GPT/LSTM，推测是 OpenFlamingo 预训练时未见过连续帧序列。</li>
+      <li><strong>VL 预训练的必要性：</strong>去除 OpenFlamingo 预训练权重（No VL Pre-train）或冻结 VLM 只训练 policy head（No VL Finetune）均导致性能大幅下降，证明 VL 预训练与在机器人数据上微调缺一不可。</li>
+      <li><strong>指令微调（Instruction Fine-tuning）：</strong>M-3B-IFT 相比 M-3B、G-4B-IFT 相比 G-4B 均有明显提升，说明 IFT 有助于将 VLM 的语言泛化能力迁移至机器人指令跟随。</li>
+      <li><strong>模型规模与数据效率：</strong>在仅 10% 训练数据场景下，更大模型（M-9B: Avg Len 0.83）显著优于小模型（M-3B-IFT: 0.13），说明更大的 VLM 具有更强的数据效率。</li>
+      <li><strong>语言泛化（enriched instructions）：</strong>使用 GPT-4 生成的 50 条同义指令测试时，冻结 embedding 层（freeze-emb）可缓解性能下降（Avg Len 从 1.85 提升至 2.12）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> Limitations</h2>
+    <div class="note"><b>注：</b>论文结论部分明确指出第一点局限（作者原话）；其余两点为从设计出发的推断（inferred）。</div>
+    <details class="lim" open>
+      <summary>缺乏真实机器人部署验证（作者明确指出）</summary>
+      <p>"Due to the lack of real-robot data, this paper does not deploy on real-world robotics." 所有实验均在 CALVIN 仿真环境中进行。作者也指出，近期大规模真实机器人数据（如 Open X-Embodiment）的出现有望解决这一问题。</p>
+    </details>
+    <details class="lim">
+      <summary>语言泛化能力受 VLM 微调影响（inferred）</summary>
+      <p>实验显示，在 enriched instructions（同义替换）设置下，RoboFlamingo 后续任务成功率的相对下降比 HULC 更明显。论文推断这是因为 RoboFlamingo 直接以 word token 作为输入，对同义表述更敏感；冻结 embedding 层（freeze-emb）可部分缓解，但整体语言泛化与未微调的 VLM 相比仍有差距。</p>
+    </details>
+    <details class="lim">
+      <summary>开环控制性能下降问题（inferred）</summary>
+      <p>直接对已训练模型执行 open-loop control（预测动作序列而不每步重新推理）会导致性能明显下降；需要用跳步演示数据（jump step demonstration）重新训练才能恢复性能，增加了部署灵活性的使用门槛。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Vision-Language Foundation Models as Effective Robot Imitators · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2311.01378">https://arxiv.org/abs/2311.01378</a>
+  </div>
+</footer>
+
+</body>
+</html>

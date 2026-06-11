@@ -1,0 +1,11 @@
+{
+  "slug": "vla-reasoner",
+  "title": "VLA-Reasoner: Empowering Vision-Language-Action Models with Reasoning via Online Monte Carlo Tree Search",
+  "arxiv_id": "2509.22643",
+  "url": "https://arxiv.org/abs/2509.22643",
+  "category": "机器人 · Robotics",
+  "keywords": ["Vision-Language-Action", "Monte Carlo Tree Search", "test-time compute", "world model", "KDE sampling", "value estimation", "robot manipulation", "VLA", "机器人操作", "测试时推理"],
+  "summary_zh": "VLA-Reasoner 是一个即插即用框架，通过在线蒙特卡洛树搜索与学习型世界模型，赋予 VLA 模型测试时长视野规划能力，在真实机器人任务上将 OpenVLA 成功率从 22% 提升至 41%，将 π0-FAST 从 64% 提升至 74%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

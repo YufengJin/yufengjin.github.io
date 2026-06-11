@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: MolmoAct2: Action Reasoning Models for Real-World Deployment
+  arXiv: 2605.02881
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MolmoAct2：面向真实世界部署的动作推理模型</title>
+<meta name="keywords" content="Vision-Language-Action, VLA, 机器人操作, action reasoning, flow matching, embodied reasoning, 双臂操作, MolmoAct2">
+<meta name="description" content="MolmoAct2 是一个完全开源的具身动作推理模型，在7个仿真和真实世界基准上全面超越 π₀.₅ 等强基线，支持多平台开箱即用部署。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · VLA · 2026</span>
+    <h1>MolmoAct2</h1>
+    <div class="sub">面向真实世界部署的动作推理模型</div>
+    <div class="authors">Haoquan Fang, Jiafei Duan, Donovan Clay, Sam Wang, Shuo Liu, Weikai Huang, Xiang Fan 等 · Allen Institute for AI &amp; University of Washington</div>
+    <p class="lead">MolmoAct2 是一个完全开源的 Vision-Language-Action (VLA) 模型，围绕五个维度全面超越前作 MolmoAct：更强的具身推理 VLM 骨干 Molmo2-ER、三个新的机器人数据集（含迄今最大的开源双臂数据集 720 小时）、开源 action tokenizer、全新 VLA 架构（per-layer KV conditioning），以及自适应深度推理变体 MolmoAct2-Think，在 7 个仿真与真实世界基准上全面领先 π₀.₅ 等强基线。</p>
+    <div class="meta">
+      <span>arXiv 2025年5月</span>
+      <span>Allen Institute for AI</span>
+      <span>完全开源：权重 + 数据 + 代码</span>
+      <span><a href="https://arxiv.org/abs/2605.02881">📄 arXiv:2605.02881</a></span>
+      <span><a href="https://github.com/allenai/molmoact2">GitHub: allenai/molmoact2</a></span>
+    </div>
+    <div class="kw">
+      <span>Vision-Language-Action</span>
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>action reasoning</span>
+      <span>flow matching</span>
+      <span>embodied reasoning</span>
+      <span>双臂操作</span>
+      <span>MolmoAct2</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前的机器人基础模型距离真实部署仍有差距：顶级模型是闭源的；开源替代方案受限于昂贵硬件；引入推理的策略推理延迟过高；微调后的成功率仍低于可靠使用的阈值。
+    </p>
+    <blockquote>
+      "Frontier models are closed; open-weight alternatives are tied to expensive hardware; reasoning-augmented policies pay prohibitive latency for their grounding; and fine-tuned success rates remain below the threshold for dependable use."
+    </blockquote>
+    <p>
+      现有推理增强 VLA（如 MolmoAct、TraceVLA）通过预测深度 token、目标图像或轨迹来提升动作质量，但每步生成大量 token 导致推理延迟过高，无法支持闭环控制。同时，开源机器人数据集分散、质量参差不齐，难以支撑跨具身的多任务学习。
+    </p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="MolmoAct2 系统总览">
+      <figcaption>
+        <strong>MolmoAct2 系统总览。</strong>左：从低到中价位三类平台收集、过滤和整理的高质量机器人数据集；中：MolmoAct2 及其自适应深度推理变体 MolmoAct2-Think，通过 per-layer KV conditioning 将 VLM 骨干与 flow-matching 动作专家耦合；右：模型开箱即用地部署于双臂 YAM、SO-100/101 以及 DROID Franka，并适应洗碗、整理、湿实验室自动化、倒茶等现实任务。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>7</b><small>仿真 + 真实世界基准（最广泛的开源 VLA 评估）</small></div>
+      <div><b>720h</b><small>MolmoAct2-BimanualYAM 双臂遥操作数据（迄今最大开源双臂数据集）</small></div>
+      <div><b>63.8%</b><small>Molmo2-ER 在 13 个具身推理基准上的平均分（超越 GPT-5 和 Gemini Robotics ER-1.5）</small></div>
+      <div><b>98.1%</b><small>MolmoAct2-Think 在 LIBERO 全套上的平均成功率（当前最优）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      MolmoAct2 在五个维度上推进了前作 MolmoAct：（1）具身推理 VLM 骨干 Molmo2-ER；（2）三个新的开源机器人数据集；（3）开源多具身 action tokenizer OpenFAST；（4）基于 per-layer KV conditioning 的新 VLA 架构；（5）自适应深度推理变体 MolmoAct2-Think。训练分为三个阶段：预训练、后训练（post-training）和部署微调。
+    </p>
+
+    <h3>Molmo2-ER：具身推理 VLM 骨干</h3>
+    <p>
+      通用 VLM 很少训练机器人策略所需的技能——度量距离、自由空间、跨视角物体跟踪、场景几何。为此，MolmoAct2 基于 Molmo2-4B 进行 <strong>specialize-then-rehearse</strong> 两阶段训练：
+    </p>
+    <ul>
+      <li><strong>Stage 1（具身专项化）</strong>：在 3.3M 样本的空间-具身语料上微调 20K 步，数据涵盖单图具身 QA、图像 Pointing、视频具身 QA、多图 Ego-Exo 对应推理等六个维度，辅以 8% Tulu-3 文本数据保留语言能力。</li>
+      <li><strong>Stage 2（联合精化）</strong>：继续训练 1.5K 步，将具身语料与 Molmo2 原始多模态中训数据以 p=0.5 的比例混合，序列长度从 4,200 扩展至 16,384。</li>
+    </ul>
+    <p>Molmo2-ER 在 13 个具身推理基准上平均得分 <strong>63.8%</strong>，超越其基础模型 Molmo2 <strong>17 个百分点</strong>，并在 9/13 个基准上超越 Gemini Robotics ER-1.5 Thinking 和 GPT-5。</p>
+
+    <h3>MolmoAct2-OpenFAST：开源 Action Tokenizer</h3>
+    <p>
+      现有 action tokenizer 要么闭源，要么与特定动作空间绑定。MolmoAct2-OpenFAST 是遵循 FAST 方案的开源实现，在五类具身平台的数百万条轨迹上训练，可将 1 秒钟的 32 维连续动作压缩为紧凑的离散序列，支持跨具身的统一 next-token 训练目标。
+    </p>
+
+    <h3>VLA 架构：Per-layer KV Conditioning</h3>
+    <p>
+      MolmoAct2 采用三阶段流水线：<strong>预训练</strong>阶段将 Molmo2-ER 适配为离散自回归机器人策略；<strong>后训练</strong>阶段接入 flow-matching 连续动作专家（DiT 风格 transformer），并通过 per-layer KV conditioning 将 VLM 与动作专家耦合——即动作专家的每一层从对应的 VLM 层获取 Key-Value 状态，而非仅使用隐状态。消融实验表明，per-layer KV conditioning 在 LIBERO 全套平均得分 <strong>95.9%</strong>，优于隐状态条件化（94.0%）和 per-head KV 变体（94.8%）。<strong>部署微调</strong>阶段在具体具身平台、环境和任务上高效适配。
+    </p>
+
+    <h3>MolmoAct2-Think：自适应深度推理</h3>
+
+    <figure>
+      <img src="img/think_overview.webp" alt="MolmoAct2-Think 自适应深度推理概览">
+      <figcaption>
+        <strong>MolmoAct2-Think 概览。</strong>在动作生成前，模型预测紧凑的离散深度表示（10×10 网格，128 个深度码值），并通过 per-layer KV conditioning 将其输入动作专家。自适应深度推理：对静态区域复用缓存的深度码，仅对 RGB 发生变化的区域重新预测深度 token，使推理代价与场景变化量成正比而非固定 100 token 的全量预测。
+      </figcaption>
+    </figure>
+
+    <p>
+      MolmoAct2-Think 在推理时维护 10×10 深度码缓冲区，通过余弦相似度（阈值 0.996）逐 patch 比较相邻帧，标记变化区域并选择性重新解码深度 token。这利用了机器人轨迹的时序冗余性，在保留几何空间感知的同时大幅降低延迟。精调时额外引入：10% 深度 token 噪声注入（应对推理时深度不完美预测）和可学习的 per-layer depth gate（从 bias=-4 初始化，逐步学习各层对深度前缀的权重）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 7 个仿真和真实世界基准上开展了迄今最广泛的开源 VLA 评估，涵盖 Molmo2-ER 具身推理能力评估、开箱即用部署、高效微调三个维度。
+    </p>
+
+    <h3>LIBERO 基准（微调后）</h3>
+    <table>
+      <tr><th>模型</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>平均</th></tr>
+      <tr><td>TraceVLA</td><td>84.6%</td><td>85.2%</td><td>75.1%</td><td>54.1%</td><td>74.8%</td></tr>
+      <tr><td>π₀</td><td>96.8%</td><td>98.8%</td><td>95.8%</td><td>85.2%</td><td>94.2%</td></tr>
+      <tr><td>GR00T N1.7</td><td>97.7%</td><td>97.5%</td><td>98.5%</td><td>94.4%</td><td>97.0%</td></tr>
+      <tr><td>π₀.₅</td><td>98.8%</td><td>98.2%</td><td>98.0%</td><td>92.4%</td><td>96.9%</td></tr>
+      <tr><td class="good">MolmoAct2</td><td>97.8%</td><td class="good">100.0%</td><td>97.8%</td><td>93.2%</td><td class="good">97.2%</td></tr>
+      <tr><td class="good">MolmoAct2-Think</td><td class="good">98.8%</td><td>99.8%</td><td class="good">98.5%</td><td class="good">95.4%</td><td class="good">98.1%</td></tr>
+    </table>
+
+    <h3>MolmoSpaces 开箱即用评估（Franka DROID）</h3>
+    <table>
+      <tr><th>模型</th><th>Pick</th><th>Pick &amp; Place</th><th>Open</th><th>Close</th><th>平均</th></tr>
+      <tr><td>π₀-DROID</td><td>16.2</td><td>12.5</td><td>11.0</td><td>53.1</td><td>23.2</td></tr>
+      <tr><td>π₀.₅-DROID</td><td>36.4</td><td>13.6</td><td class="good">22.7</td><td>65.1</td><td>34.5</td></tr>
+      <tr><td class="good">MolmoAct2-DROID</td><td class="good">43.7</td><td class="good">26.7</td><td>9.5</td><td class="good">70.8</td><td class="good">37.7</td></tr>
+    </table>
+
+    <h3>真实世界开箱即用评估（DROID 平台，5 项任务，各 15 次试验）</h3>
+    <table>
+      <tr><th>模型</th><th>Apple on plate</th><th>Pipette in tray</th><th>Red cube in tape</th><th>Knife in box</th><th>Objects in bowl</th><th>平均</th></tr>
+      <tr><td>π₀.₅-DROID</td><td>66.7%</td><td>33.3%</td><td>53.3%</td><td>26.7%</td><td>46.2%</td><td>45.2%</td></tr>
+      <tr><td>MolmoBot</td><td>86.7%</td><td>53.3%</td><td>33.3%</td><td>40.0%</td><td>28.6%</td><td>48.4%</td></tr>
+      <tr><td class="good">MolmoAct2-DROID</td><td class="good">100.0%</td><td class="good">86.7%</td><td class="good">93.3%</td><td class="good">93.3%</td><td class="good">62.0%</td><td class="good">87.1%</td></tr>
+    </table>
+
+    <h3>真实世界微调评估（双臂 YAM，8 项任务，各 50 次试验）</h3>
+    <p>MolmoAct2 平均成功率 <strong>50.1%</strong>，超越第二名 OpenVLA-OFT <strong>15 个百分点</strong>，在 8 项任务中 7 项排名第一，覆盖静态实验室、厨房、湿实验室、移动操作等场景。</p>
+
+    <figure>
+      <img src="img/finetuning_eval.webp" alt="MolmoAct2 微调评估">
+      <figcaption>
+        <strong>MolmoAct2 高效微调综合评估。</strong>在 8 项真实世界任务（从化学家准备移液管到将玩具放回货架）上进行系统评估。MolmoAct2 以超出第二名 15% 的大幅优势领先 4 个强基线。
+      </figcaption>
+    </figure>
+
+    <h3>RoboEval 基准（轨迹质量）</h3>
+
+    <figure>
+      <img src="img/benchmark_results.webp" alt="RoboEval 基准结果">
+      <figcaption>
+        <strong>RoboEval 基准性能对比。</strong>（A）8 项操作任务的逐任务成功率（%），MolmoAct2 在大多数任务上领先，在 Pack Box、Rotate Valve 等长时程任务上尤为突出。（B）跨行为和结果指标的归一化性能雷达图（CT=完成时间，TL=轨迹长度，JPL=关节路径长度，CPL=笛卡尔路径长度，CJ=笛卡尔抖动，JJ=关节抖动，SC=自碰撞，SL=滑移次数）。MolmoAct2 全面领先，成功率 44.3%（超越 π₀.₅ 的 3.8%），且轨迹更短、更稳定。
+      </figcaption>
+    </figure>
+
+    <h3>鲁棒性评估（分布外扰动）</h3>
+    <table>
+      <tr><th>模型</th><th>Spatial Var.</th><th>Lighting</th><th>Language</th><th>Distractor</th><th>总体</th></tr>
+      <tr><td>π₀.₅</td><td>15.00</td><td>33.70</td><td>26.15</td><td>33.20</td><td>27.01</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>13.75</td><td>46.25</td><td>51.25</td><td>48.30</td><td>39.89</td></tr>
+      <tr><td class="good">MolmoAct2-Think</td><td class="good">26.25</td><td class="good">62.05</td><td class="good">60.35</td><td class="good">54.10</td><td class="good">50.69</td></tr>
+    </table>
+    <p>MolmoAct2-Think 在空间变化、光照、语言措辞变体和视觉干扰四类 OOD 扰动下，总体成功率 <strong>50.69%</strong>，超越第二名 OpenVLA-OFT <strong>10.80 个百分点</strong>。</p>
+
+    <h3>推理速度</h3>
+
+    <figure>
+      <img src="img/speedup.webp" alt="推理控制率优化">
+      <figcaption>
+        <strong>缓存与 CUDA Graph 优化后的推理控制率。</strong>控制率 = 动作 horizon / 端到端延迟；使用 horizon=10，在单张 H100 上于 LIBERO 测量。MolmoAct2 经 CUDA Graph 优化达到 55.79 Hz（原始的 2.42×），MolmoAct2-Think 达到 12.71 Hz（1.58×）。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <ul>
+      <li><strong>具身推理骨干</strong>：以相同离散动作架构微调，Molmo2-ER 骨干在 LIBERO-Long 上达 83.6%，超越 Molmo2 骨干的 77.6%（+6.0 点）。</li>
+      <li><strong>VLM-to-expert 条件化方式</strong>：per-layer KV conditioning（95.9%）优于隐状态条件化（94.0%）和 per-head KV（94.8%）。</li>
+      <li><strong>flow 采样数 K</strong>：K=8 时平均最优（95.90%），K=1 最弱（94.15%）。</li>
+      <li><strong>精调设计</strong>：全量微调 + 离散动作 co-training（无知识隔离）效果最佳（97.20%）；仅微调动作专家为明显失败项（93.05%）。</li>
+      <li><strong>MolmoAct2-Think 深度精调</strong>：混合训练 + 噪声注入 + depth gate 三者组合最优（98.10%），相比无任何增强的基线（97.50%）提升 0.6 点。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性部分为论文正文中明确陈述（labeled: <em>stated</em>），部分从模型设计中推断（labeled: <em>inferred</em>）。论文未设独立局限性章节。</div>
+
+    <details class="lim" open><summary>Open 类任务性能较弱（stated）</summary>
+      <p>在 MolmoSpaces 基准的 Open（关节体交互）类别上，MolmoAct2-DROID 得分仅 9.5，明显低于 π₀.₅-DROID 的 22.7，表明<em>"articulated-object interaction remains a direction for further improvement"</em>（论文原文）。</p>
+    </details>
+
+    <details class="lim"><summary>空间泛化仍是薄弱项（stated）</summary>
+      <p>在 OOD 鲁棒性评估中，MolmoAct2 在 Spatial Variance（空间位置超出训练分布）类别下的绝对成功率仅 26.25%，是四类扰动中最低的，表明细粒度空间泛化仍有提升空间（论文指出 <em>"room for improvement on fine-grained spatial generalization"</em>）。</p>
+    </details>
+
+    <details class="lim"><summary>MolmoAct2-Think 的 CUDA Graph 加速收益有限（stated）</summary>
+      <p>MolmoAct2-Think 的自适应深度解码阶段因其自回归特性（序列依赖、变长执行），CUDA Graph 加速仅带来 1.58× 提升，远低于 MolmoAct2 的 2.42×。高延迟（约 12.71 Hz）相对于高频控制需求仍有差距。</p>
+    </details>
+
+    <details class="lim"><summary>评估平台多样性仍有限（inferred）</summary>
+      <p>尽管评估覆盖 DROID Franka、SO-100/101、双臂 YAM 三类平台，但均为桌面操作类任务，对移动底盘、人形机器人等更多具身形式的泛化能力尚未验证（从论文范围推断）。</p>
+    </details>
+
+    <details class="lim"><summary>深度估计依赖 Depth Anything V2（inferred）</summary>
+      <p>MolmoAct2-Think 的深度 token 由 Depth Anything V2 单目估计生成，在反光表面、透明物体或极端光照等场景下深度估计可能失准，进而影响自适应深度推理质量（从数据处理流程推断）。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    整理自论文原文及图表 · MolmoAct2: Action Reasoning Models for Real-World Deployment · 仅供学术参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2605.02881">https://arxiv.org/abs/2605.02881</a>
+  </div>
+</footer>
+
+</body>
+</html>

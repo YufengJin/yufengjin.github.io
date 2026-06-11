@@ -1,0 +1,11 @@
+{
+  "slug": "dreamdojo",
+  "title": "DreamDojo: A Generalist Robot World Model from Large-Scale Human Videos",
+  "arxiv_id": "2602.06949",
+  "url": "https://arxiv.org/abs/2602.06949",
+  "category": "机器人 · Robotics",
+  "keywords": ["world model", "机器人操作", "egocentric video", "latent action", "策略评估", "model-based planning", "video generation", "扩散模型蒸馏", "dexterous control", "foundation model"],
+  "summary_zh": "DreamDojo 从 44k 小时以自我为中心的人类视频中训练通用机器人世界模型，通过连续潜在动作解决动作标注稀缺问题，经蒸馏后实现 10.81 FPS 实时推理，支持策略评估（r=0.995）、基于模型的规划和实时遥操作。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

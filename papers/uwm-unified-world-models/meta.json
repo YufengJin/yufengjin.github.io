@@ -1,0 +1,11 @@
+{
+  "slug": "uwm-unified-world-models",
+  "title": "Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets",
+  "arxiv_id": "2504.02792",
+  "url": "https://arxiv.org/abs/2504.02792",
+  "category": "机器人 · Robotics",
+  "keywords": ["world model", "video diffusion", "action diffusion", "机器人预训练", "策略学习", "imitation learning", "diffusion policy", "多模态扩散", "robot manipulation", "inverse dynamics"],
+  "summary_zh": "将 action diffusion 与 video diffusion 融合在同一 Transformer 架构中，通过对每个模态独立采样扩散时间步实现策略、前向动力学、逆向动力学与视频预测四种推断，在真实机器人操作中显著超越 Diffusion Policy 基线，对视觉扰动的鲁棒性提升尤为突出。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

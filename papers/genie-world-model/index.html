@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Genie: Generative Interactive Environments (arXiv 2402.15391)
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genie: Generative Interactive Environments</title>
+<meta name="keywords" content="world model, generative interactive environment, latent action model, video tokenizer, spatiotemporal transformer, MaskGIT, 无监督动作学习, foundation model">
+<meta name="description" content="Genie 是一个 110 亿参数的基础世界模型，无监督地从互联网视频中训练，能够从单张图片或文字提示生成可交互的虚拟环境。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">生成模型 · Generative Models · ICML 2024</span>
+    <h1>Genie: Generative Interactive Environments</h1>
+    <div class="sub">首个从无标注网络视频无监督训练的生成式交互环境基础模型</div>
+    <div class="authors">Jake Bruce, Michael Dennis, Ashley Edwards, Jack Parker-Holder, Yuge Shi, Edward Hughes, Matthew Lai, Aditi Mavalankar, Richie Steigerwald &amp; 等 (Google DeepMind)</div>
+    <p class="lead">
+      Genie 是一个 110 亿参数的基础世界模型（foundation world model），仅凭未标注的互联网视频训练，即可从单张图片、文字描述或手绘草图生成可逐帧交互的虚拟环境。模型无需任何动作标注，自行学习离散的潜在动作空间（latent action space），使智能体能够在生成的环境中通过模仿学习来训练。
+    </p>
+    <div class="meta">
+      <span>arXiv 2402.15391 · 2024-02</span>
+      <span>11B 参数</span>
+      <span>256 TPUv5p · 125k steps</span>
+      <span><a href="https://arxiv.org/abs/2402.15391">📄 arXiv:2402.15391</a></span>
+      <span><a href="https://sites.google.com/view/genie-2024">🌐 Project page</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>generative interactive environment</span>
+      <span>latent action model</span>
+      <span>spatiotemporal transformer</span>
+      <span>MaskGIT</span>
+      <span>无监督动作学习</span>
+      <span>video tokenizer</span>
+      <span>foundation world model</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      生成式 AI 已能生成高质量的文本、图像和视频，但真正可交互的虚拟环境仍高度依赖人工设计或带标注的数据。能否从海量无标注的网络视频中，自动学习出一个可供智能体"玩耍"的交互世界？
+    </p>
+    <blockquote>
+      "We introduce Genie, the first generative interactive environment trained in an unsupervised manner from unlabelled Internet videos."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="Genie 生成的多样轨迹">
+      <figcaption>
+        图 1：Genie 从文字提示、手绘草图或真实照片生成 2D 平台游戏场景，并通过学到的潜在动作逐帧控制游戏进程。同一个提示下可产生风格各异的可玩环境。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>11B</b><small>总参数量</small></div>
+      <div><b>6.8M</b><small>训练视频（30k 小时，2D 游戏）</small></div>
+      <div><b>8</b><small>离散潜在动作数（无人工标注）</small></div>
+      <div><b>~1 FPS</b><small>当前推理速度</small></div>
+    </div>
+    <p>
+      现有方法要么依赖真实动作标注（如环境模拟器日志），要么只能生成被动视频，无法响应用户交互。Genie 的核心洞见在于：<strong>动作信息隐含在视频帧的时序变化之中</strong>——只要能从相邻帧中推断出潜在动作，便可在完全无标注的条件下学习一个可控的动态模型。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Genie 由三个协同训练的模块构成：<strong>时空视频 tokenizer</strong>（将视频帧压缩为离散 token）、<strong>潜在动作模型（LAM）</strong>（无监督推断帧间动作）、以及<strong>自回归动态模型</strong>（依据动作预测下一帧）。推理时，LAM 被丢弃，用户直接输入 codebook 索引来控制生成。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="Genie 整体训练流程">
+      <figcaption>
+        图 2：Genie 训练流程。视频帧先经 ST-ViViT tokenizer 编码为离散 token；LAM 从像素级帧对中推断潜在动作；动态模型（MaskGIT）以 token + 动作 embedding 为输入，预测下一帧 token；最终用 VQ-VAE decoder 重建像素图像。
+      </figcaption>
+    </figure>
+
+    <h3>① 时空视频 Tokenizer（ST-ViViT）</h3>
+    <p>
+      tokenizer 采用改进的 VQ-VAE 架构，将视频建模为二维 token 网格（空间 × 时间）。空间 attention 在每一帧内处理 O(H×W) 个 token，时间 attention 则跨帧处理 O(T) 个 token，相比 C-ViViT 的全时空 attention 大幅降低显存。因果遮罩（causal masking）保证编码时不泄露未来信息，使 tokenizer 可在流式场景中使用。
+    </p>
+    <figure>
+      <img src="img/sttransformer.webp" alt="ST-Transformer 结构">
+      <figcaption>
+        图 3：ST-Transformer 交错执行空间 attention 与时间 attention，同时使用因果遮罩。相比 C-ViViT，在同等性能下显存仅需 0.9 GB（C-ViViT 需 1.6 GB）。
+      </figcaption>
+    </figure>
+
+    <h3>② 潜在动作模型（Latent Action Model, LAM）</h3>
+    <p>
+      LAM 以<strong>像素</strong>级别的前若干帧和当前帧为输入，通过 VQ-VAE 编码器推断出离散潜在动作（codebook 大小为 8），再由解码器以前几帧 + 潜在动作重建当前帧。VQ-VAE 的信息瓶颈迫使 codebook 只保留决定帧间差异的最关键信号——即动作。论文特别指出，像素输入比 token 输入更好地保留了运动信息，在可控性指标 ΔtPSNR 上提升明显（1.91 vs 1.33）。
+    </p>
+    <figure>
+      <img src="img/lam.webp" alt="LAM 架构">
+      <figcaption>
+        图 4：Latent Action Model 结构。编码器输入前帧 + 当前帧，解码器输入前帧 + 潜在动作，VQ 瓶颈约束 codebook 仅存储动作相关信息。推理时 LAM 被丢弃，用户直接操控 codebook 索引。
+      </figcaption>
+    </figure>
+
+    <h3>③ 自回归动态模型（MaskGIT Dynamics Model）</h3>
+    <p>
+      动态模型基于 MaskGIT 架构，输入为历史帧的视频 token 序列加上对应的潜在动作 embedding（加性注入，效果优于拼接），预测下一帧的 token 分布。训练时随机遮罩 50%–100% 的目标 token 并用交叉熵损失优化；推理时经 25 步迭代采样还原完整帧。动态模型占整体参数量的 10.1B（LAM 300M + tokenizer 200M）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      主要实验在两个域进行：<strong>Platformers</strong>（6.8M 视频，约 30k 小时，2D 平台游戏）和<strong>Robotics</strong>（~130k 机器人演示 + 209k 真实场景片段）。评估指标包括视频质量 FVD（Fréchet Video Distance，越低越好）和可控性 ΔtPSNR（越高越好）。
+    </p>
+
+    <h3>Tokenizer 架构消融</h3>
+    <table>
+      <tr><th>架构</th><th>显存</th><th>FVD ↓</th><th>ΔtPSNR ↑</th></tr>
+      <tr><td>ViT（仅空间 attention）</td><td>0.3 GB</td><td>114.5</td><td>1.39</td></tr>
+      <tr><td>C-ViViT</td><td>1.6 GB</td><td>272.7</td><td>1.37</td></tr>
+      <tr><td><strong>ST-ViViT（本文）</strong></td><td>0.9 GB</td><td class="good">81.4</td><td class="good">1.66</td></tr>
+    </table>
+
+    <h3>LAM 输入方式消融</h3>
+    <table>
+      <tr><th>LAM 输入</th><th>FVD ↓</th><th>ΔtPSNR ↑</th></tr>
+      <tr><td>Token 输入</td><td class="good">38.8</td><td>1.33</td></tr>
+      <tr><td><strong>像素输入（本文）</strong></td><td>40.1</td><td class="good">1.91</td></tr>
+    </table>
+    <p>像素输入在 FVD 上略差，但显著提升了可控性（ΔtPSNR +0.58），实验选择像素输入以优先保证可交互性。</p>
+
+    <h3>缩放实验</h3>
+    <figure>
+      <img src="img/scaling.webp" alt="模型大小与 batch size 缩放曲线">
+      <figcaption>
+        图 8：从 40M 到 2.7B 参数规模，token 预测 loss 持续下降，验证 Genie 具备良好的缩放性质（scaling law）。增大 batch size（128→448）同样带来性能提升。
+      </figcaption>
+    </figure>
+
+    <h3>泛化到分布外提示（OOD Prompts）</h3>
+    <figure>
+      <img src="img/ood_prompts.webp" alt="OOD 提示图">
+      <figcaption>
+        图 9：Genie 能够接受 Imagen 2 生成图、手绘草图、真实照片作为提示，生成风格迥异但可交互的场景，展示了跨域泛化能力。
+      </figcaption>
+    </figure>
+
+    <h3>智能体训练（Agent Training）</h3>
+    <figure>
+      <img src="img/agent_training.webp" alt="智能体训练结果">
+      <figcaption>
+        图 14：在 Genie 生成的 CoinRun 环境中，仅用行为克隆（BC）训练的智能体在 200 个专家样本下即可匹配"oracle BC"基线（即在真实环境中训练），验证了 Genie 作为训练环境的可行性。
+      </figcaption>
+    </figure>
+
+    <h3>机器人域结果</h3>
+    <p>
+      在机器人演示数据上（Robotics 域），2.5B 参数版本 FVD 达到 82.7。模型在无任何物理先验的情况下自发学会了<strong>可形变物体的物理规律</strong>（如布料折叠、软体运动）以及平台游戏中的<strong>视差效果</strong>（parallax）——前景运动快于背景，体现出对 3D 深度的隐式理解。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为作者在论文中明确陈述（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>长时生成的幻觉（Hallucinations over Long Horizons）</summary>
+      <p>自回归生成存在误差累积问题：模型记忆窗口仅为 16 帧，超出此范围后场景一致性明显下降，出现物体消失、背景突变等幻觉现象。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理速度慢（~1 FPS）</summary>
+      <p>当前推理速度约 1 FPS，远低于真实游戏交互所需的帧率（30+ FPS）。每帧需执行 25 步 MaskGIT 采样，计算代价高昂，实时交互尚不可行，论文将提速列为未来工作。</p>
+    </details>
+
+    <details class="lim">
+      <summary>模型未开源（Model Not Released）</summary>
+      <p>受多种因素限制，完整模型权重未对外发布。作者提供了可复现的 CoinRun 案例研究（case study）作为替代，但社区无法直接在此基础上进行下游研究或微调。</p>
+    </details>
+
+    <details class="lim">
+      <summary>训练域偏窄（Limited to 2D Platformers / Robotics）</summary>
+      <p>当前模型主要在 2D 游戏和机器人演示上验证，尚未扩展至 3D 场景、第一人称视角或真实世界复杂环境。潜在动作空间的语义是否能迁移到更复杂的动作空间（如连续动作）仍有待探索。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Genie: Generative Interactive Environments · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2402.15391">https://arxiv.org/abs/2402.15391</a>
+  </div>
+</footer>
+
+</body>
+</html>

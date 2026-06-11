@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  DreamerV3: Mastering Diverse Domains through World Models
+  arXiv: 2301.04104
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamerV3：用世界模型掌控多样领域</title>
+<meta name="keywords" content="world model, DreamerV3, reinforcement learning, RSSM, symlog, 强化学习, Minecraft, model-based RL">
+<meta name="description" content="DreamerV3 是首个用固定超参数在 150+ 多样任务上超越专用算法的通用强化学习方法，也是首个从零收集 Minecraft 钻石的 AI。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">arXiv 2301.04104 · 强化学习 · Google DeepMind</span>
+    <h1>DreamerV3：用世界模型掌控多样领域</h1>
+    <div class="sub">Mastering Diverse Domains through World Models</div>
+    <div class="authors">Danijar Hafner, Jurgis Pasukonis, Jimmy Ba, Timothy Lillicrap &nbsp;·&nbsp; Google DeepMind &amp; University of Toronto</div>
+    <p class="lead">DreamerV3 是首个用<strong>单一固定超参数配置</strong>在 150+ 个不同领域任务上全面超越专用调参算法的通用强化学习方法。通过学习一个紧凑的世界模型，在想象空间中训练 actor-critic，并引入 symlog 压缩与收益归一化等鲁棒性技术，DreamerV3 实现了跨域泛化——并成为<strong>首个从零（无人类数据）在 Minecraft 中收集到钻石</strong>的算法。</p>
+    <div class="meta">
+      <span>arXiv 2023-01</span>
+      <span>150+ 任务</span>
+      <span>单卡 A100</span>
+      <span><a href="https://arxiv.org/abs/2301.04104">📄 arXiv:2301.04104</a></span>
+      <span><a href="https://danijar.com/project/dreamerv3/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>DreamerV3</span>
+      <span>model-based RL</span>
+      <span>RSSM</span>
+      <span>symlog 压缩</span>
+      <span>强化学习</span>
+      <span>Minecraft</span>
+      <span>跨域泛化</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">强化学习已在围棋、电子游戏等单一领域取得突破，但每换一个新任务就需要重新调参——这严重限制了 RL 的实用价值。作者提出的核心问题是：</p>
+    <blockquote>"Developing a general algorithm that learns to solve tasks across a wide range of applications has been a fundamental challenge in artificial intelligence."</blockquote>
+    <p>现有专用算法（MuZero、PPG、IMPALA 等）在各自领域表现优异，却无法直接迁移：不同任务的奖励量纲、观测模态（图像/本体感知/向量）、回报范围差异极大，导致相同的损失函数和归一化假设在跨域时崩溃。DreamerV3 的目标是用<strong>一套固定超参数</strong>覆盖连续控制、离散游戏、3D 导航、开放世界等所有场景。</p>
+
+    <figure>
+      <img src="img/benchmark.webp" alt="benchmark summary">
+      <figcaption><strong>Figure 1：基准汇总。</strong> (a) 固定超参数下，Dreamer 在所有基准和数据预算上超越专用调参算法，同时大幅超过广泛适用的 PPO 高质量实现。(b) 开箱即用，Dreamer 学会从零在 Minecraft 中获取钻石——此前方法均需人类数据或领域特定启发式。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>150+</b><small>评测任务总数</small></div>
+      <div><b>1×</b><small>超参数配置（无调参）</small></div>
+      <div><b>1 GPU</b><small>Minecraft 训练仅需 1 张 A100 × 9 天</small></div>
+      <div><b>100%</b><small>Dreamer 代理均发现 Minecraft 钻石</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DreamerV3 由三个模块组成：<strong>世界模型（World Model）</strong>将真实轨迹压缩为紧凑表征；<strong>Actor</strong> 在想象轨迹中学习策略；<strong>Critic</strong> 估计状态价值。三者联合训练，但 actor 与 critic 仅在想象空间更新，大幅提升样本效率。</p>
+
+    <figure>
+      <img src="img/world_model.webp" alt="training process">
+      <figcaption><strong>Figure 3：DreamerV3 训练流程。</strong> (a) World Model Learning：编码器将感知输入 x_t 映射到离散表征 z_t，序列模型（GRU）维护循环状态 h_t，并在给定动作 a_t 的条件下预测下一表征；解码器重建输入以塑造表征质量。(b) Actor-Critic Learning：actor 和 critic 在世界模型想象的抽象表征轨迹上更新，预测动作 a_t 和价值 v_t。</figcaption>
+    </figure>
+
+    <h3>世界模型：RSSM 架构</h3>
+    <p>世界模型基于 <strong>Recurrent State Space Model (RSSM)</strong>，包含以下组件：</p>
+    <ul>
+      <li><strong>Encoder</strong>：图像输入用 CNN，向量输入用 MLP，输出随机表征 z_t（32 类别 × 32 维 one-hot）。</li>
+      <li><strong>Sequence Model（GRU）</strong>：维护确定性循环状态 h_t，接收上一动作 a_{t-1} 预测下一表征。</li>
+      <li><strong>Dynamics Predictor</strong>：从 h_t 预测 z_t（用于 imagination 阶段）。</li>
+      <li><strong>Reward / Continue Predictors</strong>：预测奖励 r_t 和 episode 终止标志 c_t。</li>
+      <li><strong>Decoder</strong>：重建输入 x_t，监督表征学习。</li>
+    </ul>
+    <p>世界模型损失：<em>L(φ) = β_pred · L_pred + β_dyn · L_dyn + β_rep · L_rep</em>，权重分别为 1、1、0.1。动态损失和表征损失均通过 KL 散度（free bits 剪裁至 1 nat）相互约束，让序列模型与编码器共同进步。</p>
+
+    <h3>鲁棒性关键技术：SymLog 压缩与收益归一化</h3>
+    <p>跨域适用性的核心在于对不同量纲目标的统一处理：</p>
+    <ul>
+      <li><strong>SymLog Transformation</strong>：<code>symlog(x) = sign(x) · ln(|x|+1)</code>，对大正负值对称压缩，用于重建损失和 critic 目标；避免了截断大目标、引入非平稳性等替代方案的缺陷。</li>
+      <li><strong>SymExp TwoHot 分类损失</strong>：Critic 输出对数量化 bin 上的 softmax 分布（指数间距），用软标签分类交叉熵替代回归，梯度尺度与目标量级解耦。</li>
+      <li><strong>收益归一化（Return Normalization）</strong>：Actor 目标用 5th-95th 百分位范围 S = EMA(Per(R, 95) − Per(R, 5), 0.99) 归一化，固定熵系数 η = 3×10⁻⁴，消除不同任务绝对奖励量纲的影响。</li>
+      <li><strong>Unimix 分类分布</strong>：所有分类分布混合 1% 均匀分布，防止确定性塌陷。</li>
+      <li><strong>零初始化输出层</strong>：奖励预测器和 critic 的输出层权重初始化为零，稳定早期训练。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">DreamerV3 在 7 大基准、150+ 任务上用<strong>同一套固定超参数</strong>进行评测，对比方法包括各基准的专用 SOTA 算法及高质量 PPO 实现。所有实验均在单张 A100 GPU 上完成。</p>
+
+    <table>
+      <tr><th>基准</th><th>数据量</th><th>主要对比方法</th><th>结果</th></tr>
+      <tr><td>Atari 57（200M frames）</td><td>200M 帧</td><td>MuZero, Rainbow, IQN</td><td class="good">超越 MuZero（使用更少算力）</td></tr>
+      <tr><td>Atari 100k（26 games, 400K frames）</td><td>400K 帧</td><td>IRIS, TWM, SPR, SimPLe</td><td class="good">超越所有方法（EfficientZero 用重置不公平）</td></tr>
+      <tr><td>ProcGen（16 games, 50M frames）</td><td>50M 帧</td><td>PPG（调参专用）, Rainbow</td><td class="good">匹敌调参 PPG，超越 Rainbow</td></tr>
+      <tr><td>DMLab（30 tasks, 100M frames）</td><td>100M 帧</td><td>IMPALA, R2D2+（1B 步）</td><td class="good">数据效率提升超过 1000%</td></tr>
+      <tr><td>本体感知控制（18 tasks, 500K steps）</td><td>500K 步</td><td>D4PG, DMPO, MPO</td><td class="good">新 SOTA</td></tr>
+      <tr><td>视觉控制（20 tasks, 1M steps）</td><td>1M 步</td><td>DrQ-v2, CURL</td><td class="good">新 SOTA</td></tr>
+      <tr><td>BSuite（468 configurations）</td><td>—</td><td>Boot DQN</td><td class="good">新 SOTA</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/minecraft.webp" alt="minecraft diamond progress">
+      <figcaption><strong>Figure 5：Minecraft 钻石任务中各代理发现关键物品的比例。</strong> 对比算法（IMPALA、Rainbow）最多到达铁镐阶段，从未发现钻石。<em>"All the Dreamer agents we trained on Minecraft discover diamonds in 100M environment steps."</em> Dreamer 是唯一可靠获得钻石的算法，且无需人类数据或课程学习。</figcaption>
+    </figure>
+
+    <h3>消融实验与规模扩展</h3>
+    <figure>
+      <img src="img/ablations.webp" alt="ablations and scaling">
+      <figcaption><strong>Figure 6：消融与规模扩展。</strong> (a) 所有鲁棒性技术均对平均性能有贡献，但每项技术仅影响部分任务的子集。(b) Dreamer 主要依赖世界模型的无监督重建损失，而非奖励/价值梯度（这与大多数先前算法相反）。(c) 模型规模从 12M 增大到 400M 参数时，任务性能单调提升，且更大模型所需的环境交互次数更少。(d) 更高的 replay ratio 可预期地提升性能，与模型规模结合可通过增加算力系统性地改善结果。</figcaption>
+    </figure>
+
+    <p>消融实验表明：<em>"The performance of Dreamer predominantly rests on the unsupervised reconstruction loss of its world model, unlike most prior algorithms that rely predominantly on reward and value prediction gradients."</em> 其中 KL 目标（世界模型动态损失与表征损失）是最关键的学习信号；收益归一化和 symexp twohot 损失次之。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文未设专门的 Limitations 章节。以下条目来源：前两项为作者在正文中明确提及的约束条件，后两项为从方法设计推断（标注为<em>inferred</em>）。</div>
+    <details class="lim" open><summary>计算资源需求较高（stated）</summary><p>Minecraft 实验需要单张 A100 GPU 训练 9 天。尽管与 VPT 的 720 GPU × 9 天相比已大幅降低，但对于普通研究者仍是不小的成本。模型规模从 12M 到 400M 参数的实验也需要相应算力支撑。</p></details>
+    <details class="lim"><summary>超参数仍需人工选定（stated）</summary><p>论文声称"固定超参数"跨域使用，但这套超参数本身是在广泛实验后选定的。作者在附录中指出，某些超参数（如折扣因子 γ = 0.997）在一些任务上并非最优，只是在所有任务上"足够好"。</p></details>
+    <details class="lim"><summary>离散动作空间与连续动作空间的统一处理（inferred）</summary><p>DreamerV3 在两种动作空间均有评测，但 actor 的梯度估计方式不同（连续用重参数化，离散用 straight-through estimator），可能在某些任务上引入额外方差。论文未针对这一差异做专项分析。</p></details>
+    <details class="lim"><summary>世界模型的表征能力瓶颈（inferred）</summary><p>RSSM 的离散表征（32×32 one-hot）和固定预测 horizon（T=16 步）在极长时序依赖或高度随机环境中可能成为瓶颈。论文在 DMLab（需要空间+时序推理）上已体现出世界模型的优势，但更长期规划的场景未被深入分析。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DreamerV3: Mastering Diverse Domains through World Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2301.04104">https://arxiv.org/abs/2301.04104</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLA-0: Building State-of-the-Art VLAs with Zero Modification</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 机器人操作, text action representation, LIBERO, action ensembling, Qwen-VL, 零修改">
+<meta name="description" content="VLA-0 将机器人动作表示为纯文本整数序列，无需任何架构修改，即可在 LIBERO 基准测试中超越所有现有方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>VLA-0: Building State-of-the-Art VLAs with Zero Modification</h1>
+    <div class="sub">无需架构改动，用纯文本动作表示打造顶级 Vision-Language-Action 模型</div>
+    <div class="authors">Ankit Goyal, Hugo Hadfield, Xuning Yang, Valts Blukis, Fabio Ramos &nbsp;·&nbsp; NVIDIA</div>
+    <p class="lead">VLA-0 提出了一个出人意料的简单思路：将机器人连续动作归一化为整数并以空格分隔的文本输出，完全不修改 VLM 的词表、架构或解码器，即可在 LIBERO 仿真基准上超越所有同等训练数据量的方法（包括 π₀.₅-KI、OpenVLA-OFT、SmolVLA），并在真实机器人上胜过 SmolVLA 12.5 个百分点。</p>
+    <div class="meta">
+      <span>arXiv · 2025-10-15</span>
+      <span>LIBERO 平均成功率 94.7%（Rank 1）</span>
+      <span>真实机器人 SO-100 测试</span>
+      <span><a href="https://arxiv.org/abs/2510.13054">📄 arXiv:2510.13054</a></span>
+      <span><a href="https://arxiv.org/pdf/2510.13054">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>机器人操作</span>
+      <span>text action representation</span>
+      <span>action ensembling</span>
+      <span>LIBERO benchmark</span>
+      <span>Qwen-VL-2.5</span>
+      <span>零修改微调</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前主流的 VLA（Vision-Language-Action）构建思路普遍需要对预训练 VLM 进行非平凡的架构改动：要么新增离散 action token（discrete token VLA），要么在 VLM 之上叠加专用 generative head，要么完全重设计网络结构。这些修改不仅复杂，还会破坏 VLM 原有的语言理解与 grounding 能力。</p>
+    <blockquote>"It restricts the resolution of the action space, since fine-grained control can require thousands of bins, which conflicts with sharing the text vocabulary; and it compromises the pretrained language understanding of the VLM by repurposing its vocabulary for actions."</blockquote>
+    <p>作者的核心问题是：<strong>能否在完全不修改模型架构的前提下，仅通过标准的 text generation fine-tuning，构建出性能领先的 VLA？</strong>VLA-0 给出了肯定答案。</p>
+    <figure>
+      <img src="img/teaser.webp" alt="VLA-0 teaser">
+      <figcaption>图 1：VLA-0 将 VLM 转化为 VLA 的核心思路示意图。通过将连续机器人动作归一化为整数并以文本形式输出，完全复用 VLM 的文本生成能力，无需任何架构修改。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>94.7%</b><small>LIBERO 平均成功率（无大规模预训练，Rank 1）</small></div>
+      <div><b>+12.5pts</b><small>真实机器人 SO-100 上超越 SmolVLA</small></div>
+      <div><b>0</b><small>架构修改数量（Zero Modification）</small></div>
+      <div><b>3B</b><small>基础模型参数量（Qwen-VL-2.5-3B）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">VLA-0 的核心方法极为简洁：将 7-DOF 末端执行器的连续动作归一化到整数区间（默认 [0, 1000]），以空格分隔后作为纯文本目标，用标准的因果语言建模损失（causal language modeling）对现有 VLM 进行微调。推理时，模型自回归地输出动作整数序列，再反归一化为连续控制指令。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="VLA-0 architecture">
+      <figcaption>图 2（上）：现有 VLA 方法分类——离散 token、generative head、自定义架构。图 3（下）：VLA-0 整体架构，接收系统提示、图像与任务指令，输出以空格分隔的整数动作序列。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/architecture.webp" alt="VLA-0 pipeline" style="display:none"><!-- placeholder for arch detail -->
+    </figure>
+
+    <h3>动作文本化（Action as Text）</h3>
+    <p>给定连续动作 <em>a ∈ ℝ<sup>7</sup></em>，VLA-0 将每个维度线性映射至整数区间 [0, R]（resolution R，默认 R=1000），并拼接成形如 <code>"512 398 621 500 501 499 1"</code> 的字符串作为 target token 序列。整个流程完全复用 VLM 原有词表，无需新增特殊 token 或修改 embedding。消融实验表明 R=1000 为最优精度-稳定性折衷（R=250 时性能下降 1.5%，R=4000 时下降 0.5%）。</p>
+
+    <h3>Action Ensembling</h3>
+    <p>受 diffusion policy 启发，VLA-0 在推理时维护一个滑动窗口，对多个时间步的预测动作取平均，以消除自回归模型的单步抖动。消融实验显示，关闭 ensembling 后平均成功率从 94.7% 降至 92.0%（Δ = −2.0），是全部消融因素中影响最大的一项。</p>
+
+    <h3>Masked Action Augmentation</h3>
+    <p>训练时以一定概率随机遮蔽动作文本，迫使模型学会从视觉与语言语境中<em>预测</em>动作，而非单纯地依赖前序动作文本做 auto-completion。去除该增强后成功率下降 1.2%（93.5%）。</p>
+
+    <h3>多图输入（Tiled Images）</h3>
+    <p>将来自多个摄像头（腕部 + 俯视）的图像拼贴为单张大图输入 VLM，无需修改 vision encoder。消融显示该策略影响较小（−0.2%），但对真实场景的泛化有帮助。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">主要在 LIBERO 仿真基准（4 个任务套件：Spatial、Object、Goal、Long）和真实机器人平台 SO-100 上评估。基础模型选用 Qwen-VL-2.5-3B（轻量高效），与 π₀.₅-KI、OpenVLA-OFT、SmolVLA、GR00T-N1 等多个 baseline 对比。评估指标为成功率（success rate）与平均排名（Avg. Rank）。</p>
+
+    <h3>LIBERO 仿真基准（无大规模动作预训练）</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Average</th><th>Avg. Rank</th></tr>
+      <tr><td>Diffusion Policy</td><td>78.3</td><td>92.5</td><td>68.3</td><td>50.5</td><td>72.4</td><td>6.5</td></tr>
+      <tr><td>π₀-FAST (Paligemma)</td><td>87.0</td><td>63.0</td><td>89.0</td><td>48.0</td><td>71.8</td><td>6.0</td></tr>
+      <tr><td>SmolVLA (0.24B)</td><td>87.0</td><td>93.0</td><td>88.0</td><td>63.0</td><td>82.8</td><td>5.3</td></tr>
+      <tr><td>SmolVLA (2.25B)</td><td>93.0</td><td>94.0</td><td>91.0</td><td>77.0</td><td>88.8</td><td>4.0</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>94.3</td><td>95.2</td><td>91.7</td><td>86.5</td><td>91.9</td><td>2.8</td></tr>
+      <tr><td>π₀.₅-KI</td><td>96.6</td><td>97.2</td><td>94.6</td><td>85.8</td><td>93.3</td><td>2.3</td></tr>
+      <tr><td class="good"><strong>VLA-0（本文）</strong></td><td class="good"><strong>97.0</strong></td><td class="good"><strong>97.8</strong></td><td class="good"><strong>96.2</strong></td><td class="good"><strong>87.6</strong></td><td class="good"><strong>94.7</strong></td><td class="good"><strong>1.0</strong></td></tr>
+    </table>
+
+    <h3>与大规模预训练方法对比</h3>
+    <p>即使与使用了大规模机器人动作预训练数据的方法相比，VLA-0（无预训练，Avg. Rank 2.8）依然超越了 Octo（8.8）、OpenVLA（8.0）、π₀-FAST（6.5）、GR00T-N1（4.5）和 π₀（3.3），仅次于 OpenVLA-OFT（1.5）。</p>
+
+    <figure>
+      <img src="img/results.webp" alt="LIBERO benchmark results">
+      <figcaption>图 3：LIBERO 各任务成功率对比（TABLE I）。VLA-0 在无大规模预训练的方法中排名第一，在全部方法中排名第二。</figcaption>
+    </figure>
+
+    <h3>真实机器人评估（SO-100）</h3>
+    <p>在四项真实机器人操作任务上，VLA-0 超越 SmolVLA 12.5 个百分点，尽管 SmolVLA 拥有专门的 SO-100 大规模预训练数据优势。这表明纯文本动作表示的泛化能力在真实场景中同样有效。</p>
+
+    <h3>消融分析</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="Ablation study">
+      <figcaption>图 4：消融实验结果（TABLE II）。Action Ensembling 影响最大（−2.0%），其次是 Masked Action Augmentation（−1.2%）和 Action Resolution（−1.5% at R=250）。</figcaption>
+    </figure>
+    <table>
+      <tr><th>配置</th><th>Ensemble</th><th>Masked Aug.</th><th>Resolution</th><th>平均成功率</th><th>Δ</th></tr>
+      <tr><td class="good">完整 VLA-0</td><td>✓</td><td>✓</td><td>1000</td><td class="good">94.7</td><td>0.0</td></tr>
+      <tr><td>去掉 Ensemble</td><td>✗</td><td>✓</td><td>1000</td><td>92.0</td><td>−2.0</td></tr>
+      <tr><td>去掉 Masked Aug.</td><td>✓</td><td>✗</td><td>1000</td><td>93.5</td><td>−1.2</td></tr>
+      <tr><td>降低 Resolution</td><td>✓</td><td>✓</td><td>250</td><td>93.2</td><td>−1.5</td></tr>
+      <tr><td>提高 Resolution</td><td>✓</td><td>✓</td><td>4000</td><td>94.2</td><td>−0.5</td></tr>
+      <tr><td>去掉 Tiled Images</td><td>✓</td><td>✓</td><td>1000</td><td>94.5</td><td>−0.2</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为论文作者明确指出的内容（stated），部分附有 inferred 标注。</div>
+
+    <details class="lim" open>
+      <summary>推理速度偏低（stated）</summary>
+      <p>VLA-0 当前在 RTX 5090 GPU 上的推理频率仅为约 <strong>4 Hz</strong>，低于部分专用 VLA 方法。作者指出未来可通过量化（quantization）和蒸馏（distillation）等优化手段提升推理速度，但目前尚未完成。</p>
+    </details>
+
+    <details class="lim">
+      <summary>未探索大规模动作预训练（stated）</summary>
+      <p>论文仅评估了在 LIBERO 同等数据量下的性能，未实验 VLA-0 结合大规模跨实体机器人数据集（如 OpenX-Embodiment）预训练后的效果。作者将此列为重要的未来研究方向："A key area to explore is how VLA-0 would perform when trained with large-scale action data."</p>
+    </details>
+
+    <details class="lim">
+      <summary>Long-Horizon 任务仍有差距（inferred）</summary>
+      <p>在 LIBERO-Long 子集（最长任务序列）上，VLA-0 成功率为 87.6%，低于其他三个子集（Spatial 97.0%、Object 97.8%、Goal 96.2%），且与使用大规模预训练的 OpenVLA-OFT（94.5%）相比仍有差距。这可能反映文本自回归方式在长序列动作累积误差上的固有挑战（inferred）。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · VLA-0: Building State-of-the-Art VLAs with Zero Modification · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2510.13054">https://arxiv.org/abs/2510.13054</a>
+  </div>
+</footer>
+
+</body>
+</html>

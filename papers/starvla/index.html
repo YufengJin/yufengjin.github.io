@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报。
+  Body text in 中文; academic terms / names / metrics / quoted phrases in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 模块化框架, embodied AI, 机器人操作, LIBERO, SimplerEnv, RoboTwin, flow matching, behavior cloning">
+<meta name="description" content="StarVLA 是面向具身智能的开源模块化 VLA 研究框架，支持多种骨干网络与动作头的自由组合，统一接入五大主流评测基准。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; arXiv 2026</span>
+    <h1>StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing</h1>
+    <div class="sub">像搭积木一样构建 VLA 模型的开源统一研究框架</div>
+    <div class="authors">StarVLA Community &nbsp;·&nbsp; Von Neumann Institute, HKUST</div>
+    <p class="lead">
+      具身智能研究中 VLA 方法繁多、框架各异、评测不统一，导致比较和复现极为困难。
+      StarVLA 提出一套模块化的 backbone–action head 架构，将骨干网络（VLM 或世界模型）与动作解码头解耦，
+      并通过统一 I/O 接口接入 LIBERO、SimplerEnv、RoboTwin 2.0、RoboCasa-GR1、BEHAVIOR-1K 五大评测基准，
+      实现了"换 backbone、换动作头"均无需改动训练/推理主干代码的灵活组合。
+    </p>
+    <div class="meta">
+      <span>arXiv · April 2026</span>
+      <span>9 pages</span>
+      <span>开源框架 / Open-source</span>
+      <span><a href="https://arxiv.org/abs/2604.05014">📄 arXiv:2604.05014</a></span>
+      <span><a href="https://github.com/starVLA/starVLA">GitHub: starVLA/starVLA</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>模块化框架</span>
+      <span>embodied AI</span>
+      <span>机器人操作</span>
+      <span>LIBERO</span>
+      <span>flow matching</span>
+      <span>behavior cloning</span>
+      <span>cross-embodiment</span>
+      <span>benchmark integration</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前 VLA 研究面临严重的"碎片化"问题：现有方法在模型结构、训练流程和推理假设上差异显著，
+      导致跨方法的系统比较几乎不可能，使得"究竟是数据、架构还是训练技巧带来的提升"难以厘清。
+    </p>
+    <blockquote>
+      "We attribute this fragmentation to the lack of a unified abstraction for VLA systems. Existing codebases
+      are largely method-specific and do not support (i) modular composition across action-decoding paradigms,
+      (ii) reusable training approaches across heterogeneous data sources, or (iii) standardized evaluation
+      and deployment across benchmarks and embodiments."
+    </blockquote>
+
+    <figure>
+      <img src="img/fig1_conceptual.webp" alt="Figure 1: Unified VLA Policy Conceptual Diagram">
+      <figcaption>
+        <strong>图 1：StarVLA 统一 VLA 策略示意。</strong>
+        策略 π 以多模态观测历史 <em>x≤t</em> 和语言指令 <em>ℓ</em> 为输入，输出动作序列
+        <em>a<sub>t:t+k</sub></em> 及辅助输出 <em>y<sub>aux</sub></em>。
+        训练目标分解为 <em>ℒ = ℒ<sub>action</sub> + ℒ<sub>aux</sub></em>，
+        将动作预测损失与语言/视觉辅助监督解耦，使不同范式的 VLA 方法均可在同一接口下实例化。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>5</b><small>集成主流评测基准数量</small></div>
+      <div><b>4</b><small>支持的动作解码范式</small></div>
+      <div><b>30K</b><small>训练步数即可媲美竞品 175K+ 步</small></div>
+      <div><b>2,200</b><small>256 GPU 下最大样本吞吐量（samples/s）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      StarVLA 的核心是 <strong>backbone–action head 双向模块化</strong>：骨干网络（VLM 或世界模型）与动作解码头
+      各自遵守统一的 I/O 协议，可独立替换而不影响另一侧。训练、推理与部署共用同一套代码，
+      配置通过 YAML 声明式指定。
+    </p>
+
+    <h3>统一抽象：Unified VLA Policy</h3>
+    <p>
+      策略被形式化为 <em>π(a<sub>t:t+k</sub>, y<sub>aux</sub> | x<sub>≤t</sub>, ℓ)</em>，
+      将多模态观测历史映射到 k 步动作序列。训练损失为 <em>ℒ = ℒ<sub>action</sub> + ℒ<sub>aux</sub></em>，
+      其中 <em>ℒ<sub>aux</sub></em> 作为归纳偏置，可为零（纯行为克隆）或语言对齐/空间感知损失。
+      不同 VLA 范式均可理解为该公式在不同归纳偏置下的实例化。
+    </p>
+
+    <figure>
+      <img src="img/fig2_variants.webp" alt="Figure 2: Four Action-Decoding Variants">
+      <figcaption>
+        <strong>图 2：四种代表性动作解码范式。</strong>
+        <em>StarVLA-FAST</em>：自回归生成离散动作 token（基于 FAST tokenizer）；
+        <em>StarVLA-OFT</em>：通过轻量 MLP 直接回归连续动作；
+        <em>StarVLA-π (π₀)</em>：flow matching 迭代去噪；
+        <em>StarVLA-GR00T</em>：双系统推理（System 1 快速反应 + System 2 慢速规划）。
+        四种变体共享相同的训练/推理接口，仅动作头实现不同。
+      </figcaption>
+    </figure>
+
+    <h3>统一 I/O 接口与 Server-Client 评测</h3>
+    <p>
+      StarVLA 为所有框架组件定义了两个核心方法：<code>forward(raw_images, str, ...)</code> 作为训练入口，
+      <code>predict_action(raw_images, str, ...)</code> 作为推理入口。
+      推理接口接受"归一化动作（均值=0，标准差=1）"并返回预测动作块（minus ground-truth 均值后的预测）。
+      这一设计与真实机器人传感器流镜像对应，使同一 checkpoint 可直接用于仿真评测和真实部署，
+      无需修改代码。评测基准代码通过 server-client 模式与模型推理解耦，benchmark 代码无需感知模型内部。
+    </p>
+
+    <figure>
+      <img src="img/fig3_pipeline.webp" alt="Figure 3: Unified System Pipeline">
+      <figcaption>
+        <strong>图 3：StarVLA 统一系统流水线。</strong>
+        左侧：统一数据流，连接异构机器人数据集、pluggable dataloader 与标准化数据表示；
+        右侧：模型前向传播路径，VL Foundation Model 骨干网络经 action head 输出动作，
+        再经 Server-Client 接口用于仿真评测（LIBERO、SimplerEnv、RoboTwin 等）和真实机器人部署。
+        整个流水线由 YAML 配置驱动，支持 Unified Hamiltonians、Co-train 和 Multi-Bench 训练策略。
+      </figcaption>
+    </figure>
+
+    <h3>灵活训练范式</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>监督行为克隆（SFT）</h3>
+        <p>最直接的训练方式，<em>ℒ<sub>aux</sub> = 0</em>，仅优化动作预测损失。
+        StarVLA 将此作为建立单基准可复现基线的标准起点，
+        并提供了 benchmark 特定的训练/评测脚本。</p>
+      </div>
+      <div class="card">
+        <h3>多目标协同训练（Co-training）</h3>
+        <p>在动作预测的同时引入 VLM 辅助目标（如空间感知 grounding 损失），
+        保留模型的语言/视觉推理能力。
+        实验表明，空间引导协同训练可将 Google Robot 成功率从 66.1% 提升至 86.2%，
+        同时维持 RefCOCO-g 上 71.2 IoU@0.5 的空间感知精度。</p>
+      </div>
+      <div class="card">
+        <h3>跨体态训练（Cross-embodiment）</h3>
+        <p>通过 mixture dataloader 混合来自不同机器人平台的数据，
+        训练单一泛化模型，实现跨 LIBERO、SimplerEnv、RoboTwin、RoboCasa-GR1 的联合训练。</p>
+      </div>
+      <div class="card">
+        <h3>强化学习微调（RL fine-tuning）</h3>
+        <p>计划中的功能，目前仍在持续集成中（"an ongoing integration effort"，论文明确说明）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      StarVLA 在五大主流仿真评测基准上报告了单基准专家模型（Specialist）和跨基准泛化模型（Generalist）的性能，
+      所有结果均基于官方评测协议，以最终任务成功率为主要指标。
+    </p>
+
+    <h3>单基准专家模型（Specialist）性能</h3>
+    <table>
+      <tr><th>Benchmark</th><th>最佳变体</th><th>StarVLA 得分</th><th>说明</th></tr>
+      <tr>
+        <td>LIBERO（4 suites 平均）</td>
+        <td>StarVLA-OFT</td>
+        <td class="good">96.6%</td>
+        <td>仅 30K 训练步，媲美竞品 175K+ 步</td>
+      </tr>
+      <tr>
+        <td>SimplerEnv WidowX</td>
+        <td>StarVLA-GR00T</td>
+        <td class="good">65.3%</td>
+        <td>success rate</td>
+      </tr>
+      <tr>
+        <td>RoboCasa-GR1（平均）</td>
+        <td>StarVLA-OFT</td>
+        <td class="good">48.8%</td>
+        <td>average success rate</td>
+      </tr>
+      <tr>
+        <td>RoboTwin 2.0 clean</td>
+        <td>StarVLA-GR00T</td>
+        <td class="good">88.0%</td>
+        <td>clean setting</td>
+      </tr>
+      <tr>
+        <td>RoboTwin 2.0 random</td>
+        <td>StarVLA-GR00T</td>
+        <td class="good">88.5%</td>
+        <td>random setting</td>
+      </tr>
+    </table>
+
+    <h3>泛化模型（Generalist）vs 专家模型对比</h3>
+    <p>跨 LIBERO、SimplerEnv、RoboTwin 和 RoboCasa-GR1 联合训练的单一泛化模型：</p>
+    <table>
+      <tr><th>Benchmark</th><th>Specialist</th><th>Generalist</th><th>差距</th></tr>
+      <tr>
+        <td>LIBERO（平均）</td>
+        <td>98.8%</td>
+        <td class="good">97.8%</td>
+        <td>-1.0%</td>
+      </tr>
+      <tr>
+        <td>RoboCasa-GR1（平均）</td>
+        <td>48.8%</td>
+        <td class="good">57.3%</td>
+        <td>+8.5%（泛化反超！）</td>
+      </tr>
+    </table>
+
+    <figure>
+      <img src="img/table2_libero.webp" alt="Table 2: LIBERO Results">
+      <figcaption>
+        <strong>表 2：LIBERO 基准各变体详细结果。</strong>
+        StarVLA 各变体（FAST、OFT、π、GR00T）在 LIBERO-Spatial、LIBERO-Object、LIBERO-Goal、LIBERO-Long 四个子集上的成功率，
+        与已发布的强基线进行对比。StarVLA-OFT 在平均成功率上达到 96.6%，
+        训练开销显著低于竞争对手（30K 步 vs. 175K+ 步）。
+      </figcaption>
+    </figure>
+
+    <h3>计算效率与多节点扩展</h3>
+    <p>
+      单节点（8×A100）测试：batch size 16 时每步 0.703 秒（72.2 samples/s）；
+      batch size 192 时每步 2.404 秒（79.9 samples/s）；GPU 利用率 74–96%。
+      多节点扩展（最高 256 GPU）：单步延迟在 32 GPU 以上趋于饱和（约 0.93 秒/步）；
+      样本吞吐量从 87 samples/s 线性扩展至 2,200 samples/s；
+      并行效率在 32 GPU 以上稳定于约 79–80%。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下局限性部分为作者在论文中明确陈述（标注"stated"），
+      部分为从系统设计中推断（标注"inferred"）。
+    </div>
+
+    <details class="lim" open>
+      <summary>RL 微调尚未完成集成（stated）</summary>
+      <p>论文明确指出强化学习微调是"an ongoing integration effort"，当前版本不支持端到端 RL 训练。
+      这意味着在需要在线环境交互优化的任务上，StarVLA 目前仍仅限于离线行为克隆范式。</p>
+    </details>
+
+    <details class="lim">
+      <summary>跨基准泛化模型在部分任务上略弱于专家模型（stated）</summary>
+      <p>Generalist 模型在 LIBERO 上比 Specialist 低约 1.0%（97.8% vs 98.8%），
+      表明"all-in-one 多基准训练"可行但仍存在小幅性能折损，
+      尤其在各基准数据分布差异较大时。</p>
+    </details>
+
+    <details class="lim">
+      <summary>多节点扩展存在通信开销（stated）</summary>
+      <p>在 8–32 GPU 区间，多节点通信开销显著，导致扩展效率低于线性。
+      32 GPU 以上每步延迟趋于平稳，但并行效率稳定在 79–80%，
+      意味着约 20% 的计算资源消耗在通信同步上。</p>
+    </details>
+
+    <details class="lim">
+      <summary>真实机器人验证有限（inferred）</summary>
+      <p>论文的实验结果均来自仿真环境（LIBERO、SimplerEnv、RoboTwin 等），
+      对真实机器人的验证仅限于部署接口设计层面的讨论，
+      缺乏大规模真实场景的定量评测。sim-to-real 转移能力尚未系统验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>评测基准覆盖以操作任务为主（inferred）</summary>
+      <p>当前集成的五大基准（LIBERO、SimplerEnv、RoboTwin 2.0、RoboCasa-GR1、BEHAVIOR-1K）
+      侧重桌面操作和室内场景，移动操作、户外导航等任务尚未纳入统一评测框架。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    从论文原文及图表整理 · 仅供学习参考<br>
+    StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2604.05014">https://arxiv.org/abs/2604.05014</a>
+  </div>
+</footer>
+
+</body>
+</html>

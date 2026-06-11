@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Paper: RoboMIND 2.0 (arXiv:2512.24653)
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboMIND 2.0：面向通用具身智能的多模态双臂移动操作数据集</title>
+<meta name="keywords" content="机器人操作数据集, bimanual manipulation, VLA, imitation learning, mobile manipulation, tactile sensing, sim-to-real, 具身智能">
+<meta name="description" content="RoboMIND 2.0 收录超过 310K 条双臂操作轨迹，覆盖六种机器人本体与 759 项任务，并配套 MIND-2 层级化双系统控制框架，实现长时域移动操作。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:17px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:28px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; arXiv 2025</span>
+    <h1>RoboMIND 2.0：面向通用具身智能的多模态双臂移动操作数据集</h1>
+    <div class="sub">RoboMIND 2.0: A Multimodal, Bimanual Mobile Manipulation Dataset for Generalizable Embodied Intelligence</div>
+    <div class="authors">Chengkai Hou*, Kun Wu*, Jiaming Liu*, Zhengping Che* 等 &nbsp;·&nbsp; 北京人形机器人创新中心 &amp; 北京大学</div>
+    <p class="lead">
+      RoboMIND 2.0 是迄今规模最大的开源双臂机器人操作数据集，收录超过 310K 条真实轨迹，
+      覆盖六种异构机器人本体、759 项复杂任务与 1,139 种操作对象。
+      配套提出的 MIND-2 层级化双系统框架（慢速 VLM 规划 + 快速 VLA 执行）在长时域移动操作任务上
+      显著超越现有 imitation learning 与 VLA 基线。
+    </p>
+    <div class="meta">
+      <span>310K+ 双臂轨迹</span>
+      <span>6 种机器人本体</span>
+      <span>759 项任务 / 129 项技能</span>
+      <span><a href="https://arxiv.org/abs/2512.24653">📄 arXiv:2512.24653</a></span>
+      <span><a href="https://modelscope.cn/collections/X-Humanoid/RoboMIND20">数据集主页 (ModelScope)</a></span>
+    </div>
+    <div class="kw">
+      <span>机器人操作数据集</span>
+      <span>bimanual manipulation</span>
+      <span>VLA</span>
+      <span>imitation learning</span>
+      <span>mobile manipulation</span>
+      <span>tactile sensing</span>
+      <span>sim-to-real</span>
+      <span>具身智能</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      数据驱动的 imitation learning 已深刻改变机器人操作领域，但现有方法受制于大规模、多样化真实演示数据的匮乏，
+      在长时域双臂任务与陌生环境移动操作中泛化能力依然不足。
+    </p>
+    <blockquote>
+      "Data-driven imitation learning has revolutionized robotic manipulation, but existing approaches remain limited by
+      the scarcity of large-scale, diverse real-world demonstration data, leading to insufficient generalization in
+      long-horizon bimanual tasks and mobile manipulation in strange environments."
+    </blockquote>
+
+    <p>
+      现有代表性数据集存在明显的单一维度局限：BridgeData V2（60K 轨迹，仅 13 项技能）、DROID（76K 轨迹，仅含单臂 Franka）、
+      Open X-Embodiment（数据聚合，无触觉）。即便是最新的 AgiBot World（1M 轨迹）和 Galaxea Open-World（50K），
+      也均依赖单一机器人本体，严重制约跨本体泛化研究。RoboCOIN 虽含 15 种本体，但每种本体的任务覆盖稀疏。
+      RoboMIND 2.0 是首个同时支持双臂协调、移动操作、灵巧手与高保真触觉传感的开放数据集。
+    </p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="RoboMIND 2.0 总览">
+      <figcaption>
+        <b>图 1：RoboMIND 2.0 总览。</b>数据集包含来自六种异构机器人本体（Franka、UR5e、AgileX、ARX、Tien Kung、Tian Yi）
+        的 310K 双臂轨迹，总时长逾 1,000 小时，含 12K 触觉增强序列与 20K 移动操作轨迹。
+        所有数据均通过统一的遥操作与质量保障流程采集，并配备精细化自然语言标注。
+        配套发布的数字孪生 USD 资产与 20K 仿真轨迹支持 sim-to-real 迁移研究。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>310K+</b><small>双臂操作轨迹</small></div>
+      <div><b>759</b><small>复杂任务 / 129 项技能</small></div>
+      <div><b>6</b><small>异构机器人本体</small></div>
+      <div><b>1,139</b><small>操作对象种类</small></div>
+    </div>
+
+    <p>
+      在任务类型上，"Grasp and Place" 占比最高（31.5%，97,423 条轨迹），其次为 "Special"（19.8%）、
+      "Interactive"（19.3%）；场景覆盖家庭（客厅、厨房、儿童房）与工业（物流分拣、生物实验室、工业装配线）
+      各约 50%，真正实现了机器人研究所需的多维度多样性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      RoboMIND 2.0 在数据层面构建了统一化的多模态采集与质量保障体系；
+      在模型层面提出 MIND-2——一个通过 offline reinforcement learning 优化的层级化双系统框架，
+      将高层语义规划与低层精准动作执行有机结合。
+    </p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>数据采集与质量保障</h3>
+        <p>
+          六种双臂平台各有专属遥操作方案：Franka/UR5e 采用平行布局与 master 手臂映射；
+          AgileX/ARX 使用 VR 头显实现全身沉浸式操控；Tien Kung/Tian Yi 人形机器人通过外骨骼捕获精细灵巧手动作。
+          所有轨迹经过 12 类人工数据检查，涵盖完成度、轨迹异常、过快速度、视觉伪影等，
+          确保本体感受与视觉观测的高度一致性。
+        </p>
+      </div>
+      <div class="card">
+        <h3>语言标注体系</h3>
+        <p>
+          每条轨迹均附有细粒度自然语言描述，支持 language-conditioned policy learning。
+          标注流程将视频分割为语义子任务片段，通过 VLM 生成初稿后经人工审校，
+          形成层级化时序指令（全局任务描述 → 子目标序列），
+          直接服务于 MIND-2-VLM 的任务分解推理。
+        </p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/mind2_prompt.webp" alt="MIND-2 系统设计">
+      <figcaption>
+        <b>图：MIND-2 任务定位与 Prompt 设计。</b>MIND-2-VLM（慢速系统）以全局指令为输入，
+        通过时序定位将长任务分解为可执行子目标（Task Index），再由 MIND-2-VLA（快速系统）
+        依据当前视觉观测与本体感受生成精准电机动作。
+        MIND-2-VLA 通过 Implicit Q-Learning (IQL) 进行 offline RL 后训练，
+        利用 advantage-weighted regression 过滤失败行为、强化成功执行。
+      </figcaption>
+    </figure>
+
+    <h3>MIND-2-VLM：慢速高层规划器</h3>
+    <p>
+      MIND-2-VLM 是基于云端部署的"机器人大脑"，能够同时协调不同形态的多台机器人。
+      它接受自然语言指令，将复杂的长时域任务分解为一系列有序的、具体的子目标（grounded subgoals），
+      并实时判断当前任务阶段，输出对应的 Task Index 供快速系统执行。
+      其设计允许单一 VLM 控制异构双机器人协作（如 Tian Yi + AgileX 联合完成超市结账场景）。
+    </p>
+
+    <h3>MIND-2-VLA：快速低层执行器</h3>
+    <p>
+      MIND-2-VLA 接收子目标指令、自中心视觉观测与本体感受信息，输出精准、proprioception-aware 的电机动作序列。
+      训练分为两阶段：首先在全量移动操作数据上进行全规模预训练（fast-slow 架构），
+      建立跨任务的通用操作先验；其次在协作任务数据上进行 post-training 微调；
+      最后施以 Implicit Q-Learning (IQL) offline RL——利用成功与失败轨迹的混合训练，
+      以 advantage-weighted regression 强化优质行为，显著提升鲁棒性与长时域成功率。
+    </p>
+
+    <h3>数字孪生与仿真数据</h3>
+    <p>
+      团队开源了所有物理资产的高保真数字孪生（URDF 模型、场景布局、传感器配置），
+      并发布 20K 条仿真轨迹（Franka 双臂抓夹 + Tien Kung 双臂灵巧手），
+      任务结构、物体配置与语言指令均与真实数据精确对齐，
+      为低成本、可扩展的 sim-to-real 迁移研究奠定基础。
+    </p>
+
+    <figure>
+      <img src="img/data_dist.webp" alt="数据集多维度分布">
+      <figcaption>
+        <b>图 7：RoboMIND 2.0 多维度分布。</b>技能数量：覆盖 7 类核心操作技能，"Grasp and Place" 占比最高（31.5%，97,423 条）；
+        机器人本体分布：Franka 贡献最多（37.9%），其次为 UR5e（28.3%）；
+        场景分布：含 7 类代表性场景，工业与家庭场景各占约 50%。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      评测在六种真实机器人本体上进行，涵盖固定基座双臂、移动双臂与人形机器人。
+      每个任务测试 10 次，以 task success rate 为主要指标。
+      单任务 imitation learning 基线：ACT、Dense Policy、DP3、UVA；
+      多任务 VLA 基线：π0、π0.5、HybridVLA、XR-1。
+    </p>
+
+    <figure>
+      <img src="img/tasks.webp" alt="多平台双臂操作任务可视化">
+      <figcaption>
+        <b>图 12 + 13：多平台双臂操作任务可视化。</b>涵盖 Franka、UR5e、AgileX、ARX、Tien Kung、Tian Yi
+        六种平台的 38 项评测任务，包括杯具传递、毛巾挂载、开关操作、字母分拣等固定基座任务，
+        以及移动取放、多场景导航操作等移动操作任务。
+      </figcaption>
+    </figure>
+
+    <h3>单任务 Imitation Learning</h3>
+    <p>
+      3D 感知方法（DP3、Dense Policy）在双臂协调任务上整体优于 2D 方法（ACT、UVA），
+      因其更丰富的空间建模能力能更准确地表示双臂交互的视觉动态。
+      Dense Policy 在不同机器人本体与任务类型间表现最为一致，适合开放世界多机器人场景；
+      DP3 在结构化、视觉丰富的固定臂环境中表现突出，但在 AgileX-MV 等移动平台上性能下降明显。
+    </p>
+
+    <h3>VLA 模型评测</h3>
+    <table>
+      <tr><th>模型</th><th>AgileX-MV-Task1</th><th>AgileX-MV-Task2</th><th>AgileX-MV-Task3</th><th>AgileX-MV-Task4</th></tr>
+      <tr><td>π0</td><td>0.1</td><td>0.0</td><td>0.0</td><td>0.1</td></tr>
+      <tr><td>π0.5</td><td>0.3</td><td>0.0</td><td>0.3</td><td>0.1</td></tr>
+      <tr><td>XR-1</td><td>0.4</td><td>0.2</td><td>0.4</td><td>0.3</td></tr>
+      <tr><td class="good">MIND-2</td><td class="good">0.5</td><td class="good">0.8</td><td class="good">0.4</td><td class="good">0.7</td></tr>
+    </table>
+    <p>
+      π0 因训练以互联网数据为主、缺乏 grounded motor prior，在双臂与移动场景几乎全部失败（近零成功率）。
+      XR-1 展现出最强的跨本体泛化能力，在固定双臂、移动机械臂与全身人形机器人上均取得较高成功率。
+      MIND-2 在全部 AgileX 移动操作任务上均超越所有 VLA 基线，最大优势达 +0.6（Task2）。
+    </p>
+
+    <h3>多机器人协作长时域任务</h3>
+    <table>
+      <tr><th>变体</th><th>超市结账</th><th>工业分拣</th><th>化学实验室</th></tr>
+      <tr><td>MIND-2（Post Training）</td><td>0.6</td><td>0.6</td><td>0.4</td></tr>
+      <tr><td>MIND-2（Full-scale Training）</td><td>0.8</td><td>0.7</td><td>0.4</td></tr>
+      <tr><td class="good">MIND-2（Offline RL）</td><td class="good">0.9</td><td class="good">0.8</td><td class="good">0.6</td></tr>
+    </table>
+    <p>
+      在 Tian Yi + AgileX 协同的三个长时域场景（超市结账、工业开关分拣、化学实验室配液）中，
+      主流 imitation learning 与 VLA 模型均表现不佳。
+      MIND-2（Offline RL）——施加 IQL 后训练——在全部三项任务上取得最高成功率（0.9 / 0.8 / 0.6），
+      且当成功与失败轨迹 1:1 混合训练时效果最优（三项分别达 1.0 / 1.0 / 0.8）。
+    </p>
+
+    <h3>触觉传感消融</h3>
+    <p>
+      在 AgileX 四项移动操作任务上，将触觉信号融入本体感受输入后：
+      π0.5 成功率平均提升约 0.1；XR-1 提升更为显著（如 Task1: 0.4 → 0.6，Task2: 0.2 → 0.4）。
+      结论为："incorporating tactile information consistently improves the success rates across multiple mobile
+      manipulation tasks, with particularly pronounced gains in scenarios requiring fine manipulation or physical interaction"。
+    </p>
+
+    <h3>Sim-to-Real 迁移与仿真 Benchmark</h3>
+    <p>
+      在 Tien Kung 仿真任务中，XR-1 在四项任务上分别达 48/50、39/50、46/50、31/50，
+      验证了仿真数据的高保真度。混合真实与仿真数据训练时，所有模型均受益；
+      进一步将仿真数据比例从 1:1 提升至 1:5 仍可改善真实机器人性能，
+      XR-1 在 Task3 上从 0.8 提升至 0.9，Task4 从 0.5 提升至 0.7。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>本文 Discussion 章节明确讨论了未来扩展方向，以下局限性综合论文明确陈述（标注"stated"）
+      与设计层面推断（标注"inferred"）。
+    </div>
+
+    <details class="lim" open>
+      <summary>单一触觉传感器类型（stated）</summary>
+      <p>
+        当前触觉数据仅源自特定型号的压力传感器，未涵盖力矩传感器、音频等其他物理交互信号。
+        论文明确指出将在后续工作中扩展更多模态（"e.g., force-torque and audio"）。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>本体种类与每种本体的任务覆盖（stated + inferred）</summary>
+      <p>
+        尽管已覆盖六种双臂平台，但论文明确表示会"continue expanding RoboMIND 2.0 with new embodiments, skills, and modalities"。
+        部分稀有本体（如 ARX、Tien Kung）的任务数量相对有限，可能制约跨本体泛化研究的深度（inferred）。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>MIND-2 对大规模预训练数据的强依赖（inferred）</summary>
+      <p>
+        MIND-2（Post Training）直接微调现有 VLA 模型（InternVL3 + π0.5）在协作任务上成功率偏低（0.6/0.6/0.4），
+        而 Full-scale Training 版本需要在全量移动操作数据上预训练，计算成本显著更高。
+        对于计算资源受限的研究者，低成本快速部署能力仍存在挑战（inferred）。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>化学实验室等复杂序列任务的上限（stated）</summary>
+      <p>
+        即便是 MIND-2（Offline RL）在最复杂的化学实验室协作任务中成功率仅为 0.6，
+        说明长序列、强时序依赖的多机器人任务仍是当前方法的重要瓶颈（inferred from Table 4 results）。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本海报根据论文内容整理，仅供学术参考 · RoboMIND 2.0 · arXiv 2025<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2512.24653">https://arxiv.org/abs/2512.24653</a>
+    &nbsp;·&nbsp;
+    数据集: <a href="https://modelscope.cn/datasets/X-Humanoid/RoboMIND2.0">ModelScope</a>
+  </div>
+</footer>
+
+</body>
+</html>

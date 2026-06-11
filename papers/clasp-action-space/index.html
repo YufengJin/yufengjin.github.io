@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — Learning What You Can Do Before Doing Anything (CLASP)
+  arXiv: 1806.09655  |  ICLR 2019
+  中文海报，学术术语保留英文。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning What You Can Do Before Doing Anything — CLASP</title>
+<meta name="keywords" content="无监督动作表征, action space learning, 随机视频预测, composability, information bottleneck, 视觉伺服, disentanglement, imitation learning">
+<meta name="description" content="CLASP 通过纯视觉观察学习智能体的动作空间，无需任何动作标注，即可用于动作条件视频预测与规划。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2019 · 无监督动作空间学习</span>
+    <h1>Learning What You Can Do Before Doing Anything</h1>
+    <div class="sub">从被动视觉观察中学习智能体的动作表征空间</div>
+    <div class="authors">Oleh Rybkin · Karl Pertsch · Konstantinos G. Derpanis · Kostas Daniilidis · Andrew Jaegle &nbsp;|&nbsp; UPenn · USC · Ryerson University · Samsung AI</div>
+    <p class="lead">CLASP（Composable Learned Action Space Predictor）利用随机视频预测在<strong>无任何动作标注</strong>的情况下，从视频中学习智能体的隐空间动作表征。该表征同时满足 <em>minimality</em>（最小性）和 <em>composability</em>（可组合性），仅需极少量带标注数据即可用于动作条件视频预测与视觉规划，效果媲美全监督方法。</p>
+    <div class="meta">
+      <span>ICLR 2019</span>
+      <span>Stochastic Video Prediction</span>
+      <span>Semi-supervised</span>
+      <span><a href="https://arxiv.org/abs/1806.09655">arXiv:1806.09655</a></span>
+      <span><a href="https://daniilidis-group.github.io/learned_action_spaces">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>无监督动作表征</span>
+      <span>action space learning</span>
+      <span>随机视频预测</span>
+      <span>composability</span>
+      <span>information bottleneck</span>
+      <span>视觉伺服</span>
+      <span>disentanglement</span>
+      <span>imitation learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">智能体在真实世界中行动时需要通过感知来判断自己可以做什么、以及这些动作会带来什么后果。现有的强化学习方法需要<strong>主动交互</strong>才能获取动作空间信息，而这在很多场景下代价高昂甚至不可行（例如使用互联网视频进行模仿学习）。</p>
+    <blockquote>
+      "Intelligent agents can learn to represent the action spaces of other agents simply by observing them act. Such representations help agents quickly learn to predict the effects of their own actions on the environment and to plan complex action sequences."
+    </blockquote>
+    <p>作者受婴儿学步的启发：婴儿在能够自主行走之前，已通过大量<em>被动感知</em>成年人行走积累了动作空间的先验知识。类比地，本文提出：纯从<strong>被动视频观察</strong>中学习动作表征，可以让后续学习更加高效——无论是动作条件视频预测还是规划任务，都只需极少量标注数据。</p>
+    <figure>
+      <img src="img/latent-space.webp" alt="Learned action space visualization">
+      <figcaption>
+        <strong>图1：CLASP 学到的动作表征空间可视化（reacher 数据集）。</strong>每个点代表一帧对的隐变量 z，颜色对应真实旋转角度（radians）。<br>
+        <em>左（baseline Denton &amp; Fergus 2018）：</em>隐空间与真实动作无对应关系，学习失败。<br>
+        <em>右（CLASP）：</em>第一主成分解释了 99% 方差，学到的 z 与真实动作高度一致。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>100K</b><small>reacher 无标注训练序列</small></div>
+      <div><b>~orders of magnitude</b><small>所需标注数据更少</small></div>
+      <div><b>1.6°</b><small>CLASP 视觉伺服距离误差（10K 标注）</small></div>
+      <div><b>30%</b><small>BAIR 数据集上监督基线差距缩短比例</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">CLASP 在随机视频预测模型的隐变量上施加两个关键约束：<strong>minimality（最小性）</strong>与 <strong>composability（可组合性）</strong>，从而迫使隐变量聚焦于动作相关的动态信息，同时与静态场景内容解耦。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="CLASP architecture">
+      <figcaption>
+        <strong>图2：CLASP 架构。</strong><br>
+        <em>左：</em>随机视频预测模型（一个时间步）。训练时，推断网络（MLPinfer, CNNe）从当前帧与前一帧估计隐变量 z；测试时 z 从先验 N(0,I) 采样。生成网络（LSTM, CNNd）将 z 与 xt−1 解码为下一帧预测。<br>
+        <em>右：</em>可组合性训练。隐变量 z 两两拼接后经过 MLPcomp 得到轨迹表征 ν，再通过同一生成网络解码并与实际图像对比。
+      </figcaption>
+    </figure>
+
+    <h3>1. 最小性（Minimality）via Information Bottleneck</h3>
+    <p>
+      为使 z 仅捕捉动态信息而尽量丢弃静态内容，作者采用 <strong>variational Information Bottleneck (VIB)</strong> 目标函数：
+    </p>
+    <blockquote>
+      max I((z<sub>t</sub>, x<sub>t−1</sub>), x<sub>t</sub>) − β<sub>z</sub> I(z<sub>t</sub>, x<sub>t−1:t</sub>)
+    </blockquote>
+    <p>
+      视频预测目标为标准 VAE 损失加权版本（β-VAE 风格）：最大化重建质量的同时，最小化 z 与输入帧之间的互信息。β<sub>z</sub> 越大，z 的信息量越少，越趋于"最小化"。
+    </p>
+
+    <h3>2. 可组合性（Composability）via 轨迹表征</h3>
+    <p>
+      为学到可组合的动作表征，CLASP 引入轨迹随机变量 ν，它由若干连续的 z 组合而得（通过 MLPcomp）。同样用 IB 目标训练：ν 应足以预测对应的末帧图像，同时对单个 z 的信息量最小化。总目标为两个 loss 之和：
+    </p>
+    <blockquote>
+      L<sup>total</sup> = L<sup>comp</sup> + L<sup>pred</sup>
+    </blockquote>
+    <p>
+      可组合性隐式地促进了解耦：因为 ν 无法看到中间帧的静态内容，仅当每个 z 已与静态内容解耦时，组合才得以高效进行。
+    </p>
+
+    <h3>3. 控制映射接地（Grounding the Control Mapping）</h3>
+    <p>
+      训练完视频预测模型后，只需少量带动作标注序列（如 100~10000 条）训练两个轻量 MLP（MLPlat 和 MLPact），即可在 z 与真实控制指令 u 之间建立可逆的双射映射。这一步<strong>不反向传播至视频预测模型</strong>，数据量需求极低。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在两个数据集上进行：（1）<strong>reacher 数据集</strong>——模拟单自由度旋转机械臂（OpenAI Roboschool），包含 100,000 训练序列、4,000 测试序列；（2）<strong>BAIR robot pushing 数据集</strong>（Ebert et al. 2017）——44,374 训练序列，真实世界机械臂推物。基线包括 Denton &amp; Fergus (2018)（无 composability 目标），以及完全监督方法 Oh et al. (2015)（reacher）和 Finn &amp; Levine (2017)（BAIR）。</p>
+
+    <h3>动作条件视频预测（Action-conditioned Video Prediction）</h3>
+    <table>
+      <tr><th>方法</th><th>Reacher 绝对角度误差 [deg]</th><th>BAIR 末端位置误差 [px]</th></tr>
+      <tr><td>随机猜测 (Start State)</td><td>90.1 ± 51.8</td><td>26.6 ± 21.5</td></tr>
+      <tr><td>Denton &amp; Fergus (2018)</td><td>22.6 ± 17.7</td><td>3.6 ± 4.0</td></tr>
+      <tr><td class="good">CLASP（本文）</td><td class="good">2.9 ± 2.1</td><td class="good">3.0 ± 2.1</td></tr>
+      <tr><td>Supervised（全监督上界）</td><td>2.6 ± 1.8</td><td>2.0 ± 1.3</td></tr>
+    </table>
+    <p>CLASP 在 reacher 上达到与全监督方法几乎相同的性能，而 baseline 性能接近随机。在 BAIR 上，CLASP 较 baseline 将与监督方法的差距缩小约 <strong>30%</strong>。</p>
+
+    <h3>视觉伺服规划（Visual Servoing）</h3>
+    <table>
+      <tr><th>方法</th><th>Reacher 终点距离 [deg]</th></tr>
+      <tr><td>Start Position</td><td>97.8 ± 23.7</td></tr>
+      <tr><td>Random</td><td>27.0 ± 26.8</td></tr>
+      <tr><td>Denton &amp; Fergus (2018)</td><td>14.1 ± 10.7</td></tr>
+      <tr><td class="good">CLASP（本文）</td><td class="good">1.6 ± 1.0</td></tr>
+      <tr><td>Agrawal et al. (2016)（全监督）</td><td>2.0 ± 1.5</td></tr>
+      <tr><td>Oh et al. (2015)（全监督）</td><td>1.8 ± 1.5</td></tr>
+      <tr><td>CLASP（变化背景）</td><td>3.0 ± 2.2</td></tr>
+      <tr><td>CLASP（变化机器人外形）</td><td>2.8 ± 2.9</td></tr>
+    </table>
+    <p>规划算法采用 Model Predictive Control (MPC) + Cross Entropy Method (CEM)，在隐空间 z 中规划轨迹，用 VGG16 余弦距离衡量与目标帧的差异。CLASP 在视觉伺服上超越全监督方法，达到最优性能。</p>
+
+    <figure>
+      <img src="img/servoing.webp" alt="Visual servoing results">
+      <figcaption>
+        <strong>图3：视觉伺服结果。</strong><br>
+        <em>左：</em>每一行为一个时间步重新规划的轨迹；首帧为当前状态，后续帧为模型以最低代价预测的路径，目标状态（机械臂指向左上）叠加显示在每张图上。<br>
+        <em>右：</em>数据效率——以不同数量的带标注训练序列衡量最终伺服误差；CLASP 在极少标注下即超过监督基线。
+      </figcaption>
+    </figure>
+
+    <h3>轨迹迁移（Trajectory Transplantation）</h3>
+    <figure>
+      <img src="img/transplantation.webp" alt="Trajectory transplantation">
+      <figcaption>
+        <strong>图4：轨迹迁移实验。</strong>从 donor 序列提取动作表征 z，将其施加于不同初始状态的 recipient 序列。实验涵盖：(a) reacher 标准数据集，(b) BAIR 数据集，(c) 变化背景的 reacher，(d) 变化机器人外形的 reacher。运动的同步性表明 CLASP 学到的表征与静态场景内容解耦。
+      </figcaption>
+    </figure>
+
+    <h3>数据效率与鲁棒性</h3>
+    <p>
+      CLASP 用<strong>无标注数据预训练</strong>后，仅需 100~1000 条带动作标注序列即可达到与 10,000 条全监督数据相当的规划精度。在变化背景（CIFAR-10 随机图像）和变化机器人外形（72 种宽度×长度组合）条件下，CLASP 性能基本保持不变，说明学到的表征对视觉特征变化具有鲁棒性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文未设独立局限性章节；以下各点结合论文实验范围与方法设计推断，已标注来源。</div>
+
+    <details class="lim" open>
+      <summary>实验局限于低维度 / 低分辨率设置（推断自设计）</summary>
+      <p>所有实验使用 64×64 像素图像，隐变量维度 dim(z) = dim(ν) = 10，模拟的 reacher 仅有一个自由度。方法在更复杂的操作场景（多自由度、高分辨率、遮挡）下的泛化性尚未验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>BAIR 数据集上与监督方法仍存在差距（论文明确指出）</summary>
+      <p>论文在 BAIR 末端位置误差上：CLASP 为 3.0 ± 2.1 px，全监督方法为 2.0 ± 1.3 px。作者承认："our model performs better than the baseline … reducing the difference … by 30 %"，但并未完全闭合差距，并指出 baseline 仍产生模糊与鬼影伪影。</p>
+    </details>
+
+    <details class="lim">
+      <summary>需要场景动态主要由被观察智能体主导（推断自方法设计）</summary>
+      <p>CLASP 依赖"视频中变化最大来源是智能体自身动作"的假设。若场景中有大量无关运动（行人、风吹树叶等），隐变量可能无法有效分离动作信息，使 composability 损失失效。</p>
+    </details>
+
+    <details class="lim">
+      <summary>β 超参数选取需要人工调参（论文明确指出）</summary>
+      <p>论文指出："the problem of determining β is not unique to this work and occurs in all stochastic video prediction methods, as well as VIB and β-VAE"。β<sub>z</sub> 和 β<sub>ν</sub> 需设为"样本仍能生成高质量图像的最大值"，缺乏自动化准则。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Learning What You Can Do Before Doing Anything · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1806.09655">https://arxiv.org/abs/1806.09655</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<!--
+  SimPLe: Model-Based Reinforcement Learning for Atari
+  arXiv: 1903.00374 | ICLR 2020
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model-Based Reinforcement Learning for Atari (SimPLe)</title>
+<meta name="keywords" content="model-based reinforcement learning, Atari, video prediction, world model, sample efficiency, SimPLe, 离散潜变量, policy learning">
+<meta name="description" content="SimPLe：基于视频预测模型的 model-based RL，仅用 100K 次环境交互学会多款 Atari 游戏，在大多数游戏上超越 state-of-the-art model-free 算法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#f59e0b; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(245,158,11,.15),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICLR 2020 · Model-Based RL</span>
+    <h1>Model-Based Reinforcement Learning for Atari</h1>
+    <div class="sub">SimPLe：用 video prediction world model 以极低样本量学会 Atari 游戏</div>
+    <div class="authors">Łukasz Kaiser · Mohammad Babaeizadeh · Piotr Miłos · Błażej Osiński · Roy H. Campbell · Konrad Czechowski · Dumitru Erhan · Chelsea Finn · Piotr Kozakowski · Sergey Levine · Afroz Mohiuddin · Ryan Sepassi · George Tucker · Henryk Michalewski<br>Google Brain · deepsense.ai · University of Warsaw · UIUC · Stanford</div>
+    <p class="lead">SimPLe（Simulated Policy Learning）是首个在 Atari Learning Environment (ALE) 上通过 video prediction 模型实现竞争力的 model-based deep RL 系统。仅用 <strong>100K 次环境交互</strong>（约 2 小时真实游戏时长），在多数游戏上超越 state-of-the-art model-free 算法 Rainbow，部分游戏样本效率提升超过 <strong>10 倍</strong>。</p>
+    <div class="meta">
+      <span>ICLR 2020</span>
+      <span>26 Atari games</span>
+      <span>100K 交互预算</span>
+      <span><a href="https://arxiv.org/abs/1903.00374">📄 arXiv:1903.00374</a></span>
+      <span><a href="https://goo.gl/itykP8">Project Page / Videos</a></span>
+    </div>
+    <div class="kw">
+      <span>model-based RL</span>
+      <span>video prediction</span>
+      <span>world model</span>
+      <span>sample efficiency</span>
+      <span>Atari</span>
+      <span>离散潜变量</span>
+      <span>SimPLe</span>
+      <span>policy learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== 动机 ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">人类玩家可以在几分钟内学会 Atari 游戏，而最优秀的 model-free RL 算法需要数千万乃至数亿次交互才能达到相近水平——相当于数周的实时训练。这种巨大的样本效率差距是 model-based RL 研究的核心动机。</p>
+
+    <blockquote>"So far, there has been no clear demonstration of successful planning with a learned model in the ALE." — Machado et al. (2018) 对 Atari 基准上 model-based 控制的挑战性评述</blockquote>
+
+    <p>论文的核心假设：人类之所以能快速学会游戏，部分原因在于拥有对物理过程的直觉理解，能够预测动作的结果。SimPLe 通过学习视频预测模型来实现类似的能力，从而大幅降低与真实环境的交互次数。</p>
+
+    <figure>
+      <img src="img/fig1_main_loop.webp" alt="SimPLe 主循环">
+      <figcaption><strong>Figure 1（论文原图）</strong>：SimPLe 的主循环。① agent 按当前 policy 与真实环境交互，收集观测。② 用收集的数据更新 world model（对观测帧做自监督预测，对奖励做监督训练）。③ agent 在 world model 内部用 RL 更新 policy。新 policy 再次被送回真实环境评估和采样数据（回到①），循环迭代 15 次。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>100K</b><small>真实环境交互上限</small></div>
+      <div><b>&gt;10×</b><small>Freeway 游戏上的样本效率提升（对比 Rainbow）</small></div>
+      <div><b>26</b><small>评测的 Atari 游戏数</small></div>
+      <div><b>15</b><small>SimPLe 迭代训练轮次</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 方法 ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">SimPLe 的核心是将 world model 训练与 policy 训练交替进行（类似 Dyna-Q 框架）。world model 是一个视频预测网络，接收 4 帧 stacked 输入和 action，预测下一帧画面与奖励。policy 则在 world model 内部通过 PPO 训练，避免大量真实环境交互。</p>
+
+    <figure>
+      <img src="img/fig2_architecture.webp" alt="世界模型架构">
+      <figcaption><strong>Figure 2（论文原图）</strong>：提出的 stochastic model with discrete latent 的架构图。输入为 4 帧 stacked frames 及 agent 的 action，输出为下一帧预测及奖励预测。网络主体为 skip-connected 卷积 encoder-decoder；action 通过 embedding 与 decoder 各层输出相乘来条件化生成。推理网络（inference network）在训练时估计后验分布并将 latent 离散化为 bits；推理时由辅助 LSTM 自回归预测这些 bits（取代从先验采样）。整个模型约 74M 参数。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>World Model：随机离散 latent 模型</h3>
+        <p>论文提出三种 world model 架构，最优为 <strong>stochastic discrete (SD) model</strong>：</p>
+        <ul>
+          <li><strong>Deterministic model</strong>：基础 skip-connected conv encoder-decoder，action embedding 通过乘法注入 decoder 各层。</li>
+          <li><strong>Stochastic VAE model</strong>：引入 variational autoencoder 建模环境随机性，但 KL 权重调参困难，推理时 latent 分布外问题严重。</li>
+          <li><strong>Stochastic Discrete (SD) model</strong>（最优）：将 latent 值离散化为 bits（0/1），训练辅助 LSTM 自回归预测这些 bits，规避 VAE 的 OOD latent 问题。为提升鲁棒性，在离散化前加 uniform noise，离散化后加 dropout。</li>
+        </ul>
+        <p><strong>Loss 设计</strong>：视觉输出采用 per-pixel softmax（256 色空间）或 L2，并使用 <em>clipped loss</em> max(Loss, C)，其中对 L2 取 C=10，对 softmax 取 C=0.03（意味着置信度 &gt;97% 时不产生梯度，避免大面积背景主导优化）。</p>
+        <p><strong>Scheduled Sampling</strong>：为降低 compounding error，训练时按线性增长的概率将输入帧替换为模型自身的预测帧，到第一次迭代中期将混合率提升至 100%。</p>
+      </div>
+      <div class="card">
+        <h3>Policy Training：PPO in World Model</h3>
+        <p>采用 <strong>PPO</strong>（Proximal Policy Optimization，γ=0.95）在 world model 内训练 policy：</p>
+        <ul>
+          <li>每 <strong>N=50 步</strong>从真实数据 buffer D 中均匀采样起始状态重启模拟环境，避免长 rollout 带来的 compounding error。</li>
+          <li>rollout 末尾加入 value function 估值以弥补短 rollout 的远见不足。</li>
+          <li>每次 PPO epoch 使用 <strong>16 个并行 agent</strong>，收集 25/50/100 步（默认 50）。</li>
+          <li>SimPLe 在模拟环境内共执行约 <strong>15.2M 次交互</strong>，以 100K 真实步为代价换取大量模拟经验。</li>
+        </ul>
+        <p><strong>Algorithm 1（SimPLe 伪代码）</strong>：</p>
+        <ol>
+          <li>初始化 policy π 和 world model 参数 θ，初始化空数据集 D。</li>
+          <li>循环（15 轮）：①用 π 从真实环境 env 收集数据加入 D；②有监督地训练 world model：θ ← TRAIN_SUPERVISED(env', D)；③在 world model 内更新 policy：π ← TRAIN_RL(π, env')。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 实验 ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 Atari Learning Environment (ALE) 的 26 款游戏上评测，训练预算限定为 <strong>100K 次真实环境交互</strong>（= 400K 帧 = 约 114 分钟 @ 60 FPS）。基线方法为高度调优的 Rainbow（Q-learning SOTA）和 PPO（model-free policy gradient）。评测采用 5 次运行取平均，使用 softmax(logits(π)/T)（T=0.5）的确定性 policy 评测。</p>
+
+    <figure>
+      <img src="img/fig3_comparison.webp" alt="与 Rainbow 和 PPO 的比较">
+      <figcaption><strong>Figure 3（论文原图）</strong>：与 Rainbow 和 PPO 的样本效率比较。每根柱子表示 Rainbow（左）或 PPO（右）需要多少次与环境的交互才能达到 SimPLe 在 100K 步时的得分。红线标注 SimPLe 使用的 100K 阈值——柱高超过红线意味着该 model-free 方法需要更多样本。SimPLe 在几乎所有游戏上都更高效，Freeway 上超过 10 倍。</figcaption>
+    </figure>
+
+    <h3>主要结果（选取部分游戏的 SD 模型均值得分，来自论文 Table 2）</h3>
+    <table>
+      <tr><th>游戏</th><th>Ours, SD（均值）</th><th>Ours, det. recurrent（均值）</th><th>Ours, deterministic（均值）</th></tr>
+      <tr><td>Freeway</td><td class="good">20.3</td><td>23.7</td><td>5.9</td></tr>
+      <tr><td>Pong</td><td class="good">12.8</td><td>-11.6</td><td>-17.4</td></tr>
+      <tr><td>Boxing</td><td>9.1</td><td class="good">-3.1</td><td>-9.3</td></tr>
+      <tr><td>Breakout</td><td>12.7</td><td>10.2</td><td class="good">6.1</td></tr>
+      <tr><td>CrazyClimber</td><td class="good">39827.8</td><td>54700.3</td><td>19380.0</td></tr>
+      <tr><td>KungFuMaster</td><td class="good">17257.2</td><td>4086.6</td><td>10340.9</td></tr>
+      <tr><td>RoadRunner</td><td class="good">5169.4</td><td>1228.8</td><td>5724.4</td></tr>
+      <tr><td>Seaquest</td><td>370.9</td><td>289.6</td><td class="good">419.5</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;">注：数值来自论文 Table 2，为 5 次实验均值。SD = stochastic discrete（提出的最优模型）。</p>
+
+    <h3>整体比较（论文摘要引述）</h3>
+    <blockquote>"In most games SimPLe outperforms state-of-the-art model-free algorithms, in some games by over an order of magnitude."</blockquote>
+    <p>更新至 v5 版本的结论：经 van Hasselt et al. (2019) 和 Kielak (2020) 改进后的 Rainbow 在低数据量下与 SimPLe 持平——<strong>两种 model-free 方法各在 13 款游戏上胜出，SimPLe 在另外 13 款游戏上胜出</strong>（共 26 款）。</p>
+
+    <figure>
+      <img src="img/fig4_fractions.webp" alt="样本量 vs 得分分数图">
+      <figcaption><strong>Figure 4 &amp; 5（论文原图）</strong>：上方：以公式 (SimPLe_score@100K - random_score)/(baseline_score - random_score) 计算的得分比例，从左到右分别对比 Rainbow@100K、Rainbow@200K、PPO@100K、PPO@200K——SimPLe 在对手获得双倍交互时仍胜出。下方：随样本量增长，PPO 追上 SimPLe 所需帧数的变化曲线（a）及 SimPLe 预热后继续做 PPO 微调的效果（b）。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>论文对 7 种配置各跑 5 次，汇总于 Table 1：</p>
+    <table>
+      <tr><th>模型配置</th><th>最优（26 游戏中取最高的数量）</th><th>至少达中位数</th></tr>
+      <tr><td>deterministic</td><td>0</td><td>7</td></tr>
+      <tr><td>det. recurrent</td><td>3</td><td>13</td></tr>
+      <tr><td>SD（默认）</td><td class="good">10</td><td class="good">21</td></tr>
+      <tr><td>SD γ=0.9</td><td>1</td><td>14</td></tr>
+      <tr><td>SD 100 steps</td><td>0</td><td>14</td></tr>
+      <tr><td>SD 25 steps</td><td>4</td><td>19</td></tr>
+    </table>
+    <ul>
+      <li><strong>模型架构</strong>：SD 模型全面优于 deterministic 和 det. recurrent 版本，是"the most important single factor"（<em>inferred from ablation Table 1</em>）。</li>
+      <li><strong>Rollout 长度</strong>：N=50（默认）与 N=25 性能相近，N=100 略差（compounding error 更严重）。</li>
+      <li><strong>折扣因子 γ</strong>：γ=0.95 略好于 γ=0.9 和 γ=0.99，作者推测原因是对 model 不完美的更好容忍。</li>
+      <li><strong>迭代轮次</strong>：15 轮迭代优于 3 轮和 1 轮，且 random starts 对于避免 compounding error 至关重要。</li>
+      <li><strong>样本量扩展</strong>：SimPLe 在极低数据量（50K~100K）下优势明显，但随样本量增加至约 500K 时与 model-free PPO 持平，之后 PPO 反超——这与 model-based vs model-free 的经典规律吻合。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 局限性 ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下限制均为论文作者在 "Conclusions and Future Work" 及正文中明确陈述（<em>stated</em>），非推断。</div>
+
+    <details class="lim" open>
+      <summary>渐近性能低于 model-free SOTA（stated）</summary>
+      <p>"The final scores are on the whole lower than the best state-of-the-art model-free methods." 论文作者指出这在 model-based RL 中普遍存在，需要更好的 dynamics model 来弥补。在极高样本量时，PPO 等方法的最终得分仍超过 SimPLe。</p>
+    </details>
+
+    <details class="lim">
+      <summary>训练方差大、稳定性差（stated）</summary>
+      <p>"The performance of our method generally varied substantially between different runs on the same game." 多轮训练的互相影响（policy 训练、world model 训练和数据收集之间的耦合）以及 world model 与真实环境之间的 domain shift 是高方差的主因。作者建议未来使用 Bayesian 参数后验或 ensemble 方法提升鲁棒性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>计算代价高昂（stated）</summary>
+      <p>"The computational and time requirement of training inside world model are substantial." World model（约 74M 参数）的推理约 32ms/帧（batch size=16，NVIDIA Tesla P100），而真实 ALE 模拟器仅约 0.4ms/步——相差约 80 倍。这使得开发更轻量的 world model 成为重要研究方向。</p>
+    </details>
+
+    <details class="lim">
+      <summary>对小物体和全局变化场景预测失败（stated）</summary>
+      <p>在 Atlantis 和 Battle Zone 等游戏中，子弹等极小但重要的物体容易从模型预测帧中消失。在 Private Eye 等需要场景切换（大范围全局变化）的游戏中，模型同样难以捕捉。这类游戏上的最终得分接近随机。</p>
+    </details>
+
+    <details class="lim">
+      <summary>低数据量时优势显著，高数据量时消失（stated）</summary>
+      <p>"This demonstrates that SimPLe excels in a low data regime, but its advantage disappears with a bigger amount of data." 在约 500K 样本时 SimPLe 与 PPO 打平，之后 model-free 方法反超。作者将此归因于 SimPLe policy 熵过低导致的探索不足，制约了后续 PPO 微调的潜力。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Model-Based Reinforcement Learning for Atari (SimPLe) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1903.00374">https://arxiv.org/abs/1903.00374</a>
+  </div>
+</footer>
+
+</body>
+</html>

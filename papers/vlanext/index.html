@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLANeXt: Recipes for Building Strong VLA Models</title>
+<meta name="keywords" content="VLA, vision-language-action, robot manipulation, flow matching, 策略学习, LIBERO, action chunking, Qwen3-VL, 多视角感知, 机器人操控">
+<meta name="description" content="VLANeXt 系统梳理了构建强大 VLA 模型的 12 条关键设计准则，以 2.5B 参数规模超越了 7B 级别的 OpenVLA-OFT，在 LIBERO-plus 基准上领先约 14%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .finding-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  @media(max-width:700px){.finding-grid{grid-template-columns:1fr}}
+  .finding{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .finding .fnum{font-size:11px;color:var(--acc);letter-spacing:.1em;font-weight:700;margin-bottom:4px}
+  .finding .ftitle{font-weight:600;color:#cdd9e5;font-size:15px;margin-bottom:5px}
+  .finding .fdesc{color:var(--muted);font-size:13.5px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>VLANeXt: Recipes for Building Strong VLA Models</h1>
+    <div class="sub">系统提炼 12 条构建强大 Vision-Language-Action 模型的设计准则</div>
+    <div class="authors">Xiao-Ming Wu, Bin Fan, Kang Liao, Jian-jian Jiang, Runze Yang, Yihang Luo, Zhonghua Wu, Wei-Shi Zheng, Chen Change Loy</div>
+    <p class="lead">
+      VLA 模型设计空间碎片化严重，不同方法之间缺乏统一的比较基准。本文以 RT-2 为基线，系统考察了基础组件、感知设计与动作建模三个维度的关键设计选择，提炼出 12 条实用准则，构建出 VLANeXt。以 2.5B 参数规模，VLANeXt 在 LIBERO 和 LIBERO-plus 基准上超越了参数量达 7B 的 OpenVLA-OFT，并在真实机器人操作任务中展现出强泛化性能。
+    </p>
+    <div class="meta">
+      <span>arXiv 2026 (v2: May 20, 2026)</span>
+      <span>2.5B 参数</span>
+      <span>LIBERO · LIBERO-plus · 真实机器人</span>
+      <span><a href="https://arxiv.org/abs/2602.18532">📄 arXiv:2602.18532</a></span>
+      <span><a href="https://github.com/DravenALG/VLANeXt">💻 GitHub 代码</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>策略学习</span>
+      <span>flow matching</span>
+      <span>action chunking</span>
+      <span>Qwen3-VL</span>
+      <span>多视角感知</span>
+      <span>LIBERO</span>
+      <span>robot manipulation</span>
+      <span>机器人操控</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      当前 VLA（Vision-Language-Action）模型研究存在严重的设计碎片化问题：各方法在不同模型规模、不同数据集上独立提出各自的模块，缺乏公平的横向对比，导致社区难以判断哪些设计选择真正重要、如何系统地改进模型。
+    </p>
+    <blockquote>
+      "We distill 12 key findings that together form a practical recipe for building strong VLA models."
+    </blockquote>
+
+    <figure>
+      <img src="img/benchmark.webp" alt="LIBERO 和 LIBERO-plus 基准性能对比">
+      <figcaption>
+        <b>图 1：LIBERO 与 LIBERO-plus 基准性能对比。</b>VLANeXt（2.5B 参数）在多个基准上超越了参数量为 7B 的 OpenVLA-OFT 等代表性 VLA 模型，验证了设计准则的有效性，而非靠堆砌参数量取胜。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>97.4%</b><small>LIBERO 全套均值（vs. OpenVLA-OFT 97.1%）</small></div>
+      <div><b>83.9%</b><small>LIBERO-plus 均值（vs. OpenVLA-OFT 69.6%）</small></div>
+      <div><b>+14.3%</b><small>LIBERO-plus 上超越 OpenVLA-OFT</small></div>
+      <div><b>2.5B</b><small>参数规模（仅为 OpenVLA-OFT 的 35%）</small></div>
+    </div>
+
+    <p>
+      本文选取 RT-2/OpenVLA 范式（预训练 VLM + 策略头）作为统一基线，在相同实验设置下逐步改变一个设计维度，严格量化每项改动的收益。这种受控实验思路揭示了此前被忽视却影响显著的设计规律。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      VLANeXt 以 Qwen3-VL-2B 作为多模态语言主干，连接一个基于 16 个 meta-query token 的 12 层 Transformer 策略模块，通过 soft layer-wise 连接实现 VLM 与策略模块的信息交互，并采用 flow matching 目标对 chunk size=8 的连续动作序列进行预测，辅以频域 MSE 损失正则化。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="VLANeXt 整体架构图">
+      <figcaption>
+        <b>图 7：VLANeXt 整体架构。</b>第三视角相机与腕部相机的多视角视觉输入、语言指令及本体感知状态分别经过 tokenization 后进入多模态 LLM；meta-query token 通过层间 soft connection 从 VLM 各层提取特征，汇入 12 层 Transformer 策略模块；最终由 flow matching 生成 8 步动作块，并附有频域辅助损失。
+      </figcaption>
+    </figure>
+
+    <h3>12 条核心设计准则</h3>
+    <p>本文通过消融实验系统验证了以下 12 条关键设计发现（每次仅改变一个变量）：</p>
+
+    <div class="finding-grid">
+      <div class="finding">
+        <div class="fnum">FINDING 01</div>
+        <div class="ftitle">独立策略模块优于 token 复用</div>
+        <div class="fdesc">设置独立的 class token 策略头，而非复用文本 token，带来显著性能提升（19.8% → 30.2%）。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 02</div>
+        <div class="ftitle">更大策略模块带来显著增益</div>
+        <div class="fdesc">将 token 数从 1 扩展至 16、策略层数从 2 扩展至 12，性能从 30.2% 跃升至 64.4%。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 03</div>
+        <div class="ftitle">Action chunking 增强动作连贯性</div>
+        <div class="fdesc">预测未来 8 步动作块（chunk size=8）比单步预测稳定性更高（64.4% → 74.6%）。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 04</div>
+        <div class="ftitle">Flow matching 超越分类离散化</div>
+        <div class="fdesc">连续动作目标（flow matching）显著优于分箱分类方式（74.6% → 80.0%）。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 05</div>
+        <div class="ftitle">更强的 VLM 主干至关重要</div>
+        <div class="fdesc">从 LLaMA 切换至 Qwen3-VL-2B 后，性能从 80.0% 大幅提升至 90.0%。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 06</div>
+        <div class="ftitle">Soft VLM-Policy 连接微优于其他</div>
+        <div class="fdesc">层间 soft connection（含可学习 query buffer）略优于 loose 和 tight 两种连接方式（90.0% → 91.8%）。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 07</div>
+        <div class="ftitle">历史帧无益甚至有害</div>
+        <div class="fdesc">添加多帧历史输入并不改善性能，反而可能因主干视频预训练的不匹配而下降。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 08</div>
+        <div class="ftitle">多视角相机提供互补线索</div>
+        <div class="fdesc">结合第三视角与腕部相机，性能从 91.8% 跃升至 97.6%，是单一感知改动中增益最大的一项。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 09</div>
+        <div class="ftitle">本体感知注入 VLM 侧效果最优</div>
+        <div class="fdesc">将 proprioception 输入 VLM 而非策略模块，或两者均输入，在 LIBERO-plus 上表现最优（97.6% → 98.0%）。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 10</div>
+        <div class="ftitle">线性投影即可满足本体感知需求</div>
+        <div class="fdesc">Linear projector 与更复杂的 Transformer-based projector 性能相当，无需额外复杂度。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 11</div>
+        <div class="ftitle">频域损失提供有效正则化</div>
+        <div class="fdesc">DCT-based 频域 MSE 辅助损失带来可观的稳健性提升（98.0% → 99.0%），计算开销极小。</div>
+      </div>
+      <div class="finding">
+        <div class="fnum">FINDING 12</div>
+        <div class="ftitle">World modeling 有效但代价高昂</div>
+        <div class="fdesc">辅以未来帧预测的世界建模目标可改善性能，但 "substantially higher training cost makes it less practical"，故未纳入最终模型。</div>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/policy_module.webp" alt="策略模块设计选择示意">
+      <figcaption>
+        <b>图 3：策略模块设计选择。</b>(a) 基线：直接复用文本 token；(b) 独立 class token 策略头；(c) 16 个 meta-query token + 12 层 Transformer，类似 MetaQuery 结构，这是最终采用的方案。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在 LIBERO 基准（四个套件：Spatial / Object / Goal / Long）和更具挑战性的 LIBERO-plus（含摄像头位置、光照、背景等扰动）上评估，同时在真实单臂与双臂机器人操作任务上与 OpenVLA-OFT 及 π₀ 对比。训练采用 10,000 步，batch size 256，学习率 1×10⁻⁴。
+    </p>
+
+    <h3>消融轨迹（设计准则逐步累积效果）</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融轨迹：逐步应用各设计准则的性能变化">
+      <figcaption>
+        <b>图 2：设计空间消融轨迹。</b>从 RT-2 基线（19.8%）出发，逐步应用基础组件、感知与动作建模三类改动，LIBERO-spatial 最终达到 99.0%；右侧切换至 LIBERO-plus 指标后继续提升至最终 VLANeXt 结果。
+      </figcaption>
+    </figure>
+
+    <h3>LIBERO 全套基准（Table 2）</h3>
+    <table>
+      <tr><th>模型</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Average</th></tr>
+      <tr><td>OpenVLA-OFT (7B)</td><td>98.0%</td><td>99.6%</td><td>95.4%</td><td>95.4%</td><td>97.1%</td></tr>
+      <tr><td class="good">VLANeXt (2.5B)</td><td class="good">99.0%</td><td class="good">99.2%</td><td class="good">96.6%</td><td class="good">94.8%</td><td class="good">97.4%</td></tr>
+    </table>
+
+    <h3>LIBERO-plus 鲁棒性基准（Table 3）</h3>
+    <table>
+      <tr><th>模型</th><th>LIBERO-plus Average</th></tr>
+      <tr><td>OpenVLA-OFT (7B)</td><td>69.6%</td></tr>
+      <tr><td class="good">VLANeXt (2.5B)</td><td class="good">83.9%</td></tr>
+    </table>
+    <p>在包含摄像头位置、光照和背景扰动的 LIBERO-plus 上，VLANeXt 以更小的参数量实现约 14% 的鲁棒性提升，验证了多视角感知、频域正则化等设计对泛化性的贡献。</p>
+
+    <h3>真实机器人实验（Table 4）</h3>
+    <figure>
+      <img src="img/real_world.webp" alt="真实世界机器人操作任务">
+      <figcaption>
+        <b>图 8：真实机器人实验任务。</b>从左到右：单臂桌面清理（物品拾取放入容器）、单臂抽屉操作（开关+插入）、双臂篮子搬运、双臂协同清理。VLANeXt 在全部 4 项任务上超越 OpenVLA-OFT 与 π₀ 基线。
+      </figcaption>
+    </figure>
+    <table>
+      <tr><th>任务</th><th>成功次数（/20）</th></tr>
+      <tr><td>单臂桌面清理</td><td>14/20</td></tr>
+      <tr><td>单臂抽屉操作</td><td>11/20</td></tr>
+      <tr><td>双臂协同清理</td><td>11/20</td></tr>
+      <tr><td>双臂篮子搬运</td><td>15/20</td></tr>
+    </table>
+
+    <h3>关键消融发现</h3>
+    <p>
+      消融实验揭示了以下显著规律：（1）<b>多视角输入</b>是单项收益最大的感知改动（+5.8%，LIBERO-spatial）；（2）<b>VLM 主干选择</b>对性能影响远超策略模块结构（Qwen3-VL vs. LLaMA 差距约 10%）；（3）<b>历史帧</b>在当前设置下无益，这与直觉相悖，可能源于视频预训练分布与机器人数据的不匹配；（4）"<em>where information is injected matters as much as what information is used</em>"——本体感知注入位置对性能影响显著。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文无独立 Limitations 章节。以下条目：标注「<em>明确陈述</em>」者源自论文原文；标注「<em>设计推断</em>」者为从方法设计合理推断。</div>
+
+    <details class="lim" open>
+      <summary>World modeling 代价高昂，未纳入最终模型（明确陈述）</summary>
+      <p>论文明确指出，辅以未来帧预测的世界建模虽然有助于提升性能，但 "substantially higher training cost makes it less practical"，因此最终 VLANeXt 未包含此组件。这意味着世界建模带来的潜在增益被放弃以换取实用性。</p>
+    </details>
+    <details class="lim">
+      <summary>历史帧有效利用问题未解决（设计推断）</summary>
+      <p>Finding 7 表明添加多帧历史输入并不改善、甚至可能降低性能，但论文未深入分析根本原因，也未提出解决方案。如何让 VLA 模型有效利用时序历史信息仍是开放问题。</p>
+    </details>
+    <details class="lim">
+      <summary>评估场景规模有限（设计推断）</summary>
+      <p>实验主要集中于 LIBERO 系列基准和 4 类真实机器人任务，涉及的技能多样性和场景复杂度有限，泛化至更广泛真实场景的能力有待进一步验证。</p>
+    </details>
+    <details class="lim">
+      <summary>数据规模效应未充分探讨（设计推断）</summary>
+      <p>本文聚焦架构与训练目标的设计选择，对大规模预训练数据的影响分析较少。设计准则在数据量显著增大时是否依然成立，尚不清晰。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · VLANeXt: Recipes for Building Strong VLA Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.18532">https://arxiv.org/abs/2602.18532</a>
+  </div>
+</footer>
+
+</body>
+</html>

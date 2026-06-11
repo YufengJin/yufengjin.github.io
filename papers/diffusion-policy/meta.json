@@ -1,0 +1,20 @@
+{
+  "slug": "diffusion-policy",
+  "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+  "arxiv_id": "2303.04137",
+  "url": "https://arxiv.org/abs/2303.04137",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "diffusion policy",
+    "visuomotor policy",
+    "imitation learning",
+    "behavior cloning",
+    "robot manipulation",
+    "denoising diffusion",
+    "机器人操作",
+    "action diffusion"
+  ],
+  "summary_zh": "Diffusion Policy 将去噪扩散过程引入机器人策略学习，把动作生成建模为条件扩散过程，在 15 个操作任务上平均超越现有方法 46.9%，并在真实 Push-T 任务中以 95% 成功率接近人类示范水平。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

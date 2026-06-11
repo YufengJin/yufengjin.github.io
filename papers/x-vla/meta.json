@@ -1,0 +1,11 @@
+{
+  "slug": "x-vla",
+  "title": "X-VLA: Soft-Prompted Transformer as Scalable Cross-Embodiment Vision-Language-Action Model",
+  "arxiv_id": "2510.10274",
+  "url": "https://arxiv.org/abs/2510.10274",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "cross-embodiment", "soft prompt", "flow matching", "机器人操作", "跨形态训练", "异构数据", "迁移学习"],
+  "summary_zh": "X-VLA 提出以可学习软提示（soft prompt）为每个数据源分配形态标识，解决跨形态异构联合训练难题，0.9B 参数在 5 个仿真基准达 SOTA，仅 9M PEFT 参数可媲美 3B 模型 π₀。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

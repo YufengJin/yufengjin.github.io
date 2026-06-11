@@ -1,0 +1,11 @@
+{
+  "slug": "vla-adapter",
+  "title": "VLA-Adapter: An Effective Paradigm for Tiny-Scale Vision-Language-Action Model",
+  "arxiv_id": "2509.09372",
+  "url": "https://arxiv.org/abs/2509.09372",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "Bridge Attention", "机器人操作", "轻量级策略", "条件注入", "imitation learning", "具身智能"],
+  "summary_zh": "VLA-Adapter 提出带有 Bridge Attention 的轻量化 Policy 模块，通过系统分析 bridging paradigm 并设计可学习条件注入机制，仅用 0.5B 参数骨干即在 LIBERO 和 CALVIN 等基准上超越 7B 规模 VLA，推理速度快 52×，单卡 8 小时可完成训练。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

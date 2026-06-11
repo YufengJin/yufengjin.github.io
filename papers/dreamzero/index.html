@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 自动生成，仅供学习参考。
+  论文：World Action Models are Zero-shot Policies (DreamZero)
+  arXiv: 2602.15922
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Action Models are Zero-shot Policies</title>
+<meta name="keywords" content="World Action Model, 机器人操作, zero-shot generalization, video prediction, flow matching, 跨平台迁移, VLA, 扩散模型">
+<meta name="description" content="DreamZero：14B 参数的 World Action Model，联合预测视频帧与机器人动作，在未见任务与环境中实现 2× 以上的零样本泛化提升，并以 7Hz 实时闭环控制机器人。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · 2026</span>
+    <h1>World Action Models are Zero-shot Policies</h1>
+    <div class="sub">DreamZero：联合预测视频与动作，实现零样本机器人策略</div>
+    <div class="authors">Seonghyeon Ye, Yunhao Ge, Kaiyuan Zheng, Shenyuan Gao 等 · NVIDIA &amp; 多机构合作</div>
+    <p class="lead">DreamZero 是一个 14B 参数的 World Action Model（WAM），基于预训练视频扩散模型 Wan2.1，联合预测未来视频帧和机器人动作序列。通过继承世界物理先验，它在从未见过的任务和环境中展现出 2× 以上的零样本泛化能力，并以 7Hz 实现实时闭环控制。</p>
+    <div class="meta">
+      <span>arXiv 2026-02-17</span>
+      <span>14B 参数 · Wan2.1-I2V 骨干</span>
+      <span>AgiBot G1 &amp; DROID-Franka</span>
+      <span><a href="https://arxiv.org/abs/2602.15922">📄 arXiv:2602.15922</a></span>
+    </div>
+    <div class="kw">
+      <span>World Action Model</span>
+      <span>机器人操作</span>
+      <span>zero-shot generalization</span>
+      <span>video prediction</span>
+      <span>flow matching</span>
+      <span>跨平台迁移</span>
+      <span>VLA</span>
+      <span>扩散模型</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前主流机器人策略（VLA）依赖大量重复性示范数据进行训练，对未见任务和环境的泛化能力极为有限；即便经过预训练，在多样化非重复数据上也几乎学不到任何有效行为。如何让机器人策略真正"理解"物理世界、实现开放世界零样本泛化，是本文的核心问题。</p>
+    <blockquote>"By jointly predicting video and action, World Action Models (WAMs) inherit world physics priors that enable 1) effective learning from diverse, non-repetitive data, 2) open-world generalization, 3) cross-embodiment learning from video-only data, and 4) few-shot adaptation to new robots."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DreamZero Overview">
+      <figcaption><strong>图 1：DreamZero 概览。</strong>WAM 通过联合预测视频与动作，继承了世界物理先验，从而支持：(1) 从多样化非重复数据中有效学习；(2) 开放世界零样本泛化；(3) 从视频专属数据实现跨平台迁移；(4) 仅凭 30 分钟游玩数据适应新型机器人。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>&gt;2×</b><small>零样本泛化提升<br>vs. SOTA VLA</small></div>
+      <div><b>38×</b><small>推理加速<br>（vs. 原始 DiT）</small></div>
+      <div><b>7 Hz</b><small>实时闭环控制<br>（150ms 延迟）</small></div>
+      <div><b>30 min</b><small>少样本适配新机器人<br>仅需游玩数据</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DreamZero 以 Wan2.1-I2V-14B-480P 图像到视频扩散模型为骨干，采用 flow matching 联合去噪视频帧潜变量与动作序列，训练时施加 teacher-forcing（逐块去噪），推理时将真实观测替换预测帧以避免误差累积。额外参数仅为状态编码器、动作编码器与解码器，骨干权重几乎不动。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="DreamZero Model Architecture">
+      <figcaption><strong>图 4：DreamZero 模型架构。</strong>三路输入——视觉上下文（VAE 编码）、语言指令（文本编码器）、本体状态（状态编码器）——送入自回归 DiT 骨干，联合预测下一视频帧与动作序列。训练时对视频和动作潜变量同时去噪；推理时将预测帧异步执行，并将真实观测反馈入 KV cache，从根本上杜绝误差累积。</figcaption>
+    </figure>
+
+    <h3>联合视频–动作预测（Joint Video &amp; Action Denoising）</h3>
+    <p>
+      模型将生成过程分解为：
+      <br>
+      <code>π₀(videos, actions | observations, language, state) = π₀(videos | observations, language, state) × π₀(actions | videos, state)</code>
+      <br>
+      视频和动作在同一个 DiT 骨干中共同去噪，两者通过注意力机制深度耦合，保证动作与视频语义强对齐。相比于"先生成视频再预测动作"的两阶段方案，端到端联合训练在实验中显示出显著优势。
+    </p>
+
+    <h3>自回归架构与 KV Cache 推理加速</h3>
+    <p>
+      DreamZero 使用<strong>自回归（autoregressive）</strong>而非双向（bidirectional）注意力。自回归架构保留了帧的原始帧率，不需要为与语言对齐而降采样视频，避免了双向 WAM 中时序错位问题（Figure 13 对比）。更重要的是，自回归结构天然支持 KV cache：历史帧的 KV 对只需计算一次，推理时只需新帧重新计算，单步推理速度提升 3–4×。
+    </p>
+
+    <h3>DreamZero-Flash：解耦噪声调度</h3>
+    <p>
+      为支持单步去噪（1 NFE），DreamZero-Flash 引入<strong>解耦噪声调度（decoupled noise schedules）</strong>：视频侧采用 Beta(7,1) 分布将噪声集中于高噪区间，而动作侧保持均匀分布。这迫使模型学会"从高度噪声的视觉上下文预测干净动作"，使得单步推理下的任务进度从 52% 恢复至 74%。结合系统级与实现级优化（CFG 并行、DiT velocity cache、Torch Compile with CUDA Graphs、NVFP4 量化），总推理速度提升 <strong>38×</strong>，延迟降至 150ms（7Hz）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      主要评测平台：<strong>AgiBot G1</strong>（22 个真实场景，约 500 小时遥操数据，7.2K 轮次，平均每轮 4.4 分钟、约 42 个子任务）和 <strong>DROID-Franka</strong>。基线包括从零训练的 VLA 与预训练 VLA（含 π₀、RDT 等 SOTA 方法）。主要指标：平均任务进度（task progress，%）与成功率。
+    </p>
+
+    <h3>Q1 &amp; Q2：从多样化数据学习 &amp; 零样本泛化</h3>
+    <table>
+      <tr><th>评测设置</th><th>从零训练 VLA</th><th>预训练 VLA（最优）</th><th>DreamZero</th></tr>
+      <tr><td>AgiBot G1 已见任务（task progress）</td><td>≈0%</td><td>27.4%</td><td class="good">62.2%</td></tr>
+      <tr><td>AgiBot G1 未见任务（task progress）</td><td>&lt;1%</td><td>16.3%</td><td class="good">39.5%</td></tr>
+      <tr><td>DROID-Franka 任务进度</td><td>—</td><td>31–33%</td><td class="good">49%</td></tr>
+      <tr><td>DROID-Franka 成功率</td><td>—</td><td>—</td><td class="good">22.5%</td></tr>
+    </table>
+    <figure>
+      <img src="img/seen_tasks.webp" alt="Seen Task Evaluation">
+      <figcaption><strong>图 8：已见任务评测。</strong>DreamZero 在 PnP-Easy、PnP-Hard 和 Contact-Rich 三类任务上均大幅领先所有 VLA 基线。从零训练的 VLA 近乎零成功率，预训练 VLA 受益于重复示范数据中的平台特定知识，仍远低于 DreamZero。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/zero_shot.webp" alt="Zero-shot Generalization to Unseen Tasks">
+      <figcaption><strong>图 9：零样本泛化至未见任务。</strong>DreamZero 在训练集中完全不包含的 10 项任务（熨烫、刷漆、解鞋带等）上取得了非零的任务进度，而所有 VLA 基线几乎无法完成任何子步骤。</figcaption>
+    </figure>
+
+    <h3>Q4：跨平台迁移（Cross-Embodiment Transfer）</h3>
+    <figure>
+      <img src="img/cross_embodiment.webp" alt="Cross-Embodiment Transfer">
+      <figcaption><strong>图 11：跨平台迁移结果。</strong>仅用 10–20 分钟的视频专属示范数据，即可将 AgiBot G1 模型迁移至 YAM 机器人（robot-to-robot）或从人体第一视角视频迁移（human-to-robot）。</figcaption>
+    </figure>
+    <table>
+      <tr><th>迁移方向</th><th>迁移前基线</th><th>迁移后（DreamZero）</th><th>数据量</th></tr>
+      <tr><td>YAM → AgiBot（robot-to-robot）</td><td>38.3%</td><td class="good">55.4%</td><td>20 min 视频</td></tr>
+      <tr><td>人体 egocentric → AgiBot（human-to-robot）</td><td>38.3%</td><td class="good">54.3%</td><td>12 min 视频</td></tr>
+    </table>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>全部消融在 AgiBot PnP Easy 任务上，训练 50K 步、batch size 32：</p>
+    <table>
+      <tr><th>消融维度</th><th>配置</th><th>任务进度</th></tr>
+      <tr><td>数据多样性</td><td>多样化非重复数据</td><td class="good">50%</td></tr>
+      <tr><td>数据多样性</td><td>重复性数据</td><td>33%</td></tr>
+      <tr><td>模型规模</td><td>14B 参数</td><td class="good">50%</td></tr>
+      <tr><td>模型规模</td><td>5B 参数</td><td>21%</td></tr>
+      <tr><td>注意力机制</td><td>自回归（AR）</td><td class="good">50%（动作更平滑，推理 3–4× 更快）</td></tr>
+      <tr><td>注意力机制</td><td>双向（BD）</td><td>50%（等价任务进度，但有帧率失真问题）</td></tr>
+    </table>
+    <p>关于 DreamZero-Flash（单步去噪）：4 步去噪时任务进度为 <strong>89%</strong>，降至 1 步后 DreamZero 仅保留 52%（≈基线 83%），而 DreamZero-Flash 通过解耦噪声调度恢复至 <strong>74%</strong>。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均来自论文原文明确陈述（stated）或由设计可合理推断（inferred），已分别标注。</div>
+
+    <details class="lim" open>
+      <summary>视觉记忆有限（stated）</summary>
+      <p>DreamZero 当前视觉上下文窗口仅约 6 秒，长程推理和多步骤规划能力受限。需要更长历史窗口才能处理复杂连续任务。</p>
+    </details>
+    <details class="lim" open>
+      <summary>高精度任务覆盖不足（stated）</summary>
+      <p>多样化预训练数据以探索性和多样性为导向，子厘米级精度任务（如精密插针）在训练集中代表性不足，影响此类任务的成功率。</p>
+    </details>
+    <details class="lim" open>
+      <summary>计算开销高于 VLA（stated）</summary>
+      <p>即使经过 38× 推理加速，DreamZero 仍运行在 7Hz，而典型 VLA 可达 20Hz 以上。高精度实时控制场景仍面临延迟压力。</p>
+    </details>
+    <details class="lim">
+      <summary>Scaling law 尚未系统研究（stated）</summary>
+      <p>论文指出尚未对 WAM 特定的 scaling law 做深入探索，更大模型或更多数据的收益曲线未知。</p>
+    </details>
+    <details class="lim">
+      <summary>少样本平台适配仅测试相近形态（stated）</summary>
+      <p>Few-shot embodiment adaptation 目前仅验证于形态相似的机器人（AgiBot G1 ↔ YAM），对形态差异极大的平台（如四足、手型机器人）的效果尚未验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · World Action Models are Zero-shot Policies · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.15922">https://arxiv.org/abs/2602.15922</a>
+  </div>
+</footer>
+
+</body>
+</html>

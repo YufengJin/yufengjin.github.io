@@ -1,0 +1,21 @@
+{
+  "slug": "ego4d",
+  "title": "Ego4D: Around the World in 3,000 Hours of Egocentric Video",
+  "arxiv_id": "2110.07058",
+  "url": "https://arxiv.org/abs/2110.07058",
+  "category": "计算机视觉 · Computer Vision",
+  "keywords": [
+    "egocentric video",
+    "first-person perception",
+    "episodic memory",
+    "hand-object interaction",
+    "action forecasting",
+    "large-scale dataset",
+    "第一视角视频",
+    "增强现实",
+    "机器人感知"
+  ],
+  "summary_zh": "Ego4D 是迄今规模最大的第一视角（egocentric）视频数据集与基准套件，收录 3,670 小时来自全球 74 地、9 国、931 名拍摄者的日常活动视频，配套五大基准任务（情景记忆、手-物交互、音视频说话人分析、社交互动、行为预测），旨在催生增强现实与机器人感知领域的下一代研究。",
+  "date": "2026-06-10",
+  "source": "arxiv-eprint"
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — Qwen-VLA (arXiv 2605.30280)
+  中文海报，无 EN 版本。Body in 中文; academic terms / metrics / model names in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen-VLA：跨任务、环境与机器人形态的统一视觉-语言-行动模型</title>
+<meta name="keywords" content="VLA, vision-language-action, 具身智能, 机器人操作, 视觉语言导航, DiT, flow matching, 跨形态迁移, embodiment-aware prompt, 大规模联合预训练">
+<meta name="description" content="Qwen-VLA 是首个将操作、导航、轨迹预测统一在单一 VLA 模型中的具身基础模型，基于 Qwen3.5-4B 骨干和 DiT 流匹配动作解码器，在多个基准上超越专家模型。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · arXiv 2026</span>
+    <h1>Qwen-VLA：跨任务、环境与机器人形态的统一视觉-语言-行动建模</h1>
+    <div class="sub">Qwen-VLA: Unifying Vision-Language-Action Modeling across Tasks, Environments, and Robot Embodiments</div>
+    <div class="authors">Qwen Team（通义团队）· 阿里巴巴 · arXiv:2605.30280 · 2026年6月</div>
+    <p class="lead">Qwen-VLA 是首个将机器人操作、室内导航与轨迹预测统一在单一 Vision-Language-Action（VLA）模型中的具身基础模型。它在 Qwen3.5-4B 多模态骨干之上附加一个 DiT 流匹配（flow matching）动作解码器，通过形态感知提示条件（embodiment-aware prompt conditioning）和大规模联合预训练，实现单模型跨多平台部署——作为通才策略，同时在操作、导航、零样本泛化等多个基准上超越专家模型。</p>
+    <div class="meta">
+      <span>Qwen3.5-4B backbone</span>
+      <span>DiT flow-matching decoder</span>
+      <span>~1.15B 动作解码器参数</span>
+      <span><a href="https://arxiv.org/abs/2605.30280">📄 arXiv:2605.30280</a></span>
+      <span><a href="https://github.com/QwenLM/Qwen-VLA">GitHub 代码</a></span>
+      <span><a href="https://qwen.ai/blog?id=qwenvla">项目主页</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>具身智能</span>
+      <span>机器人操作</span>
+      <span>视觉语言导航</span>
+      <span>DiT flow matching</span>
+      <span>跨形态迁移</span>
+      <span>embodiment-aware prompt</span>
+      <span>大规模联合预训练</span>
+      <span>强化学习后训练</span>
+      <span>零样本泛化</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">具身智能的研究长期依赖专用模型：操作模型、导航模型各自独立，导致能力碎片化、跨场景泛化能力受限。这些模型表面上异构——动作空间、控制频率、预测视野均不相同——却共享同一底层计算结构：从视觉观测和语言指令出发，预测物理上合理的未来动作或轨迹。Qwen-VLA 正是基于这一观察，探索能否将操作、导航、轨迹预测等异构具身决策问题统一到单一 VLA 模型中。</p>
+    <blockquote>"We investigate whether these heterogeneous embodied decision-making problems can be unified within a single vision-language-action model."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="Qwen-VLA 架构概览">
+      <figcaption>图1：Qwen-VLA 总览。模型以 Qwen3.5 视觉-语言骨干为基础，附加 DiT 流匹配动作解码器，在混合操作（VLA）、导航（VLN）和视觉-语言理解数据上联合训练，统一生成机器人动作与文本响应。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>97.9%</b><small>LIBERO 平均成功率</small></div>
+      <div><b>73.7%</b><small>Simpler-WidowX 成功率</small></div>
+      <div><b>69.0%</b><small>R2R OSR（室内导航）</small></div>
+      <div><b>76.9%</b><small>ALOHA 真机 OOD 平均成功率</small></div>
+    </div>
+    <p>上述数字均来自论文表格，Qwen-VLA-Instruct 作为通才策略（generalist policy）一次性训练，无需针对各基准单独微调，在 LIBERO、RoboTwin-Easy/Hard（86.1%/87.2%）、RxR 导航（59.6% SR）等多个基准上与甚至超越专用专家模型。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">Qwen-VLA 的核心由三部分构成：(1) Qwen3.5-4B 多模态视觉-语言骨干；(2) 单流 DiT 流匹配动作解码器；(3) 统一动作与轨迹表示。通过形态感知提示条件（embodiment-aware prompt conditioning）在无需改变模型架构的前提下支持多机器人平台，并采用四阶段渐进训练流程（T2A → CPT → SFT → RL）将动作先验学习、视觉对齐、任务特化和成功率优化分离成独立阶段。</p>
+    <figure>
+      <img src="img/training_recipe.webp" alt="四阶段训练流程">
+      <figcaption>图2：Qwen-VLA 训练流程。Stage I（T2A）仅用文本-动作数据训练 DiT 解码器，建立语言索引的动作先验；Stage II（CPT）解冻两个模块，在异构数据上进行视觉对齐；Stage III（SFT）分为多任务和真机两条并行轨迹；Stage IV（RL）在仿真环境（SimplerEnv）中用稀疏二值奖励优化闭环成功率，得到最终模型 Qwen-VLA-Instruct。</figcaption>
+    </figure>
+
+    <h3>视觉-语言骨干：Qwen3.5</h3>
+    <p>骨干采用 Qwen3.5（Team, 2026），原生多模态模型，通过 ViT + 空间合并将视觉 token 直接插入文本 token 流，采用混合注意力设计（门控线性注意力 + 分组查询 softmax 注意力），在保留全精度全局推理的同时高效编码长多模态序列。</p>
+
+    <h3>DiT 流匹配动作解码器</h3>
+    <p>动作专家（action expert）采用单流 DiT 风格的流匹配策略。它将 VLM 隐状态与带噪动作块拼接成一个序列，经过带 AdaLN 时间步条件的联合 self-attention 处理，参数约 1.15B（16 个 DiT 块，每块 70.8M）。训练时采用流匹配目标（flow-matching objective），推理时通过少量 Euler 积分步从 τ=1 到 τ=0 生成动作块，实现低延迟实时控制。</p>
+
+    <h3>形态感知提示条件（Embodiment-Aware Prompt Conditioning）</h3>
+    <p>每个训练样本前置一个描述当前平台、手臂配置、控制约定的文本提示：</p>
+    <blockquote>"The robot is {robot_tag} with {single arm / dual arms}[, waist][, and mobile base]. The control frequency is {FPS} Hz. Please predict the next {chunk_size} control actions to execute the following task: {ori_instruction}."</blockquote>
+    <p>该提示是模型了解平台专属控制语义的唯一接口，无需额外的形态专用输出头。预训练语料覆盖 WidowX、Google Robot、Franka Panda、Fourier GR-1、Mobile ALOHA、AgiBot A2-D 等 11 种代表性机器人平台。</p>
+
+    <h3>统一动作与轨迹表示</h3>
+    <p>所有任务输出均表示为 Y ∈ R<sup>H×K</sup>（H 为预测视野，K 为共享通道维度）。操作任务（∆EEF、关节角度、夹手状态）和导航任务（∆x, ∆y, ∆θ 航点）均占据 Y 的前 c ≤ K 个通道，其余通道零填充，由二值掩码 M ∈ {0,1}<sup>H×K</sup> 屏蔽填充项对梯度的影响。这使单一 DiT 参数集可处理所有控制模式。</p>
+
+    <h3>四阶段渐进训练</h3>
+    <ul>
+      <li><b>Stage I — T2A（Text-to-Action 预训练）：</b>冻结 VLM，仅训练 DiT，刻意屏蔽图像，迫使解码器从紧凑的语言描述中重建高维动作分布，建立语言索引的动作先验。最优配置：∼20% 合成 + 80% 真实数据，全序列预测，Sigmoid-Normal 时间步分布，2,000 步，较无 T2A 基线提升 +10.2 pp（71.1% vs. 60.9%）。</li>
+      <li><b>Stage II — CPT（持续预训练）：</b>解冻两个模块，在包括机器人操作轨迹（74.2%）、人类第一视角演示（6.0%）、导航数据（7.5%）、合成仿真数据（3.7%）和辅助视觉-语言数据（8.5%）的混合语料上训练，使骨干适应具身感知。</li>
+      <li><b>Stage III — SFT（监督微调）：</b>从 CPT 检查点出发，分两条并行轨迹：多任务 SFT（联合 VQA、空间感知、操作、导航）和真机轨迹（ALOHA 遥操作数据）。损失权重：视觉-语言 0.1，动作 1.0。</li>
+      <li><b>Stage IV — RL（强化学习）：</b>从多任务 SFT 检查点出发，使用 PPO + GAE 在 SimplerEnv 中以稀疏二值成功奖励优化闭环策略，N=128 并行环境，每次迭代 8,192 个动作块过渡，得到最终 Qwen-VLA-Instruct。</li>
+    </ul>
+
+    <h3>预训练数据规模</h3>
+    <p>机器人操作轨迹（含 10,000+ 小时公开数据集 + 1,000+ 小时自有数据）、8M+ 合成仿真轨迹（IsaacLab + cuRobo）、EgoDex（829 小时）、EgoVerse（1,300+ 小时）、多种室内导航数据集，以及约 48,000 个细粒度具身动作标注 video-caption 对。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验覆盖机器人操作（仿真+真机）、室内视觉-语言导航、静态与动态操作 OOD 泛化共四大场景，比较两个模型变体：Qwen-VLA-Base（大规模预训练后）和 Qwen-VLA-Instruct（SFT+RL 后）。</p>
+
+    <h3>仿真操作基准（Table 4）</h3>
+    <table>
+      <tr>
+        <th>方法</th><th>类型</th><th>LIBERO</th><th>Simpler-WidowX</th><th>RoboTwin-Easy</th><th>RoboTwin-Hard</th>
+      </tr>
+      <tr><td>π0</td><td>Specialist</td><td>94.4</td><td>65.9</td><td>64.3</td><td>58.4</td></tr>
+      <tr><td>StarVLA-OFT</td><td>Specialist</td><td>96.6</td><td>64.6</td><td>50.4</td><td>—</td></tr>
+      <tr><td>GR00T N1.6</td><td>Specialist</td><td>97.2</td><td>63.2</td><td>47.6</td><td>—</td></tr>
+      <tr><td>π0.5</td><td>Specialist</td><td>97.6</td><td>46.9</td><td>82.7</td><td>76.8</td></tr>
+      <tr><td>ABot-M0</td><td>Specialist</td><td>98.6</td><td>—</td><td>86.0</td><td>85.0</td></tr>
+      <tr><td>Being-H0.5</td><td>Specialist</td><td>97.6</td><td>53.3</td><td>—</td><td>—</td></tr>
+      <tr><td>Qwen-VLA-Base</td><td>Generalist</td><td>90.8</td><td>64.3</td><td>64.3</td><td>66.4</td></tr>
+      <tr><td><b>Qwen-VLA-Instruct</b></td><td>Generalist</td><td class="good">97.9</td><td class="good">73.7</td><td class="good">86.1</td><td class="good">87.2</td></tr>
+    </table>
+    <p>Qwen-VLA-Instruct 作为通才模型，在 LIBERO 达到 97.9%，与最优专家模型持平；在 Simpler-WidowX（73.7%）、RoboTwin-Easy（86.1%）、RoboTwin-Hard（87.2%）上超越所有专家模型。RoboCasa-GR1 达到 56.7%，超越 π0.5（37.0%）、GR00T N1.6（49.9%）和 Being-H0.5（53.3%）。</p>
+
+    <h3>真机实验（ALOHA 双臂平台）</h3>
+    <figure>
+      <img src="img/realworld_eval.webp" alt="真机评测任务">
+      <figcaption>图4：真机评测在 ALOHA 双臂平台上的 6 类任务（域内）及 5 类 OOD 泛化设置（颜色/实例/位置/背景/指令泛化）的示意图。左列展示域内任务（拾取放置、清台面、碗叠放、细粒度操作等），右列展示对应 OOD 变体。</figcaption>
+    </figure>
+    <table>
+      <tr><th>模型</th><th>域内平均（%）</th><th>OOD 平均（%）</th></tr>
+      <tr><td>GR00T N1.6</td><td>28.6</td><td>25.4</td></tr>
+      <tr><td>π0.5</td><td>71.6</td><td>41.5</td></tr>
+      <tr><td>Qwen-VLA-alohaw/o pretrain</td><td>48.5</td><td>36.2</td></tr>
+      <tr><td><b>Qwen-VLA-alohaw/ pretrain</b></td><td class="good">83.6</td><td class="good">76.9</td></tr>
+    </table>
+    <p>从 Qwen-VLA-Base 微调的版本（有预训练）将域内平均成功率从 48.5% 提升至 83.6%，OOD 平均达 76.9%，较 π0.5 高 35.4 个百分点，较无预训练版本高 40.7 个百分点。</p>
+
+    <h3>室内导航（VLN-CE，Table 7）</h3>
+    <p>在 R2R Val-Unseen，Qwen-VLA-Instruct 达到 OSR 69.0、SR 57.5、SPL 51.2，超越 StreamVLN（OSR 64.2）；在 RxR Val-Unseen，SR 59.6、SPL 47.8，超越所有开源基线。</p>
+
+    <h3>动态操作 OOD（DOMINO，零样本）</h3>
+    <p>Qwen-VLA-Instruct 以 <b>26.6% SR、39.5 MS</b> 成为 DOMINO 动态操作基准最优，超越专门在动态操作数据上微调的 PUMA（SR 17.2%，MS 35.0）9.4 pp，且完全未使用动态操作训练数据。</p>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablations.webp" alt="T2A 预训练消融实验">
+      <figcaption>图6：T2A 预训练消融。(a) 数据配比与预测模式：∼20% 合成 + 80% 真实数据 + 全序列预测最优（71.1%），无 T2A 基线为 60.9%（+10.2 pp）；图像输入在 T2A 阶段有害（−2.9 pp）。(b) 时间步分布：T2A 用 Sigmoid-Normal、SFT 用 Beta 组合最优（71.1%）。(c) T2A 训练步数：2,000 步最优，40,000 步出现过拟合。</figcaption>
+    </figure>
+    <p>视觉-语言联合训练在需要细粒度识别和组合指令解析的基准上带来显著提升：RoboCasa-GR1 +4.9 pp（51.1% → 56.0%），RoboTwin-2.0 +4.6 pp（81.8% → 86.4%）。零填充（Zero-Padding）投影设计与 Multi-MLP、Concatenation 性能相当（差距 &lt;1.2 pp），但参数量最少，成为默认选择。RL 后训练在 SimplerEnv 目标环境提升 +2.9 pp，且在未参与 RL 训练的基准上性能保持或温和提升，无灾难性遗忘。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下三点均为论文第 7 节（Limitations and Future Work）作者明确陈述（stated），非推断。</div>
+    <details class="lim" open>
+      <summary>具身动作数据规模与多样性不足</summary>
+      <p>"Embodied action data remains far smaller and less diverse than vision-language pretraining data, limiting robustness to long-tail objects, environments, embodiments, and contact-rich interactions."——长尾物体、接触丰富的交互（如布料折叠、精细插接）仍是薄弱环节。</p>
+    </details>
+    <details class="lim">
+      <summary>多任务联合训练的优化权衡</summary>
+      <p>"Joint training across vision-language understanding, navigation, and action generation introduces optimization trade-offs. While action-oriented training improves policy learning, it can modestly regress some pure vision-language and navigation evaluations, suggesting the need for better objective balancing, data curricula, and modular specialization."——动作学习与语言理解之间存在梯度竞争，需要更好的目标平衡和数据课程。</p>
+    </details>
+    <details class="lim">
+      <summary>评估仍以短视野、基准驱动为主</summary>
+      <p>"Current evaluations are still largely short-horizon and benchmark-driven, leaving long-duration, failure-prone real-world deployment as an open challenge."——长时程规划、失败恢复、开放世界真机部署仍是未解决的挑战。未来方向包括情节记忆、世界模型预测、力觉/触觉等更丰富的物理反馈。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    基于论文原文与图表整理，仅供学习参考 · Qwen-VLA: Unifying Vision-Language-Action Modeling across Tasks, Environments, and Robot Embodiments<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2605.30280">https://arxiv.org/abs/2605.30280</a>
+  </div>
+</footer>
+
+</body>
+</html>

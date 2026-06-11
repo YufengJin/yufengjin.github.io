@@ -1,0 +1,11 @@
+{
+  "slug": "robocasa",
+  "title": "RoboCasa: Large-Scale Simulation of Everyday Tasks for Generalist Robots",
+  "arxiv_id": "2406.02523",
+  "url": "https://arxiv.org/abs/2406.02523",
+  "category": "机器人 · Robotics",
+  "keywords": ["机器人仿真", "household robot", "kitchen tasks", "imitation learning", "MimicGen", "large-scale dataset", "mobile manipulation", "generalist robot"],
+  "summary_zh": "RoboCasa 是面向通用机器人的大规模厨房仿真框架，提供 120 个场景、2,509 个 3D 资产与 100 项任务，结合 AI 生成工具和 MimicGen 合成数据，实现可扩展的模仿学习并验证了 sim-to-real 迁移效果。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

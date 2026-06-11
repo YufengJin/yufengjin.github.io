@@ -1,0 +1,11 @@
+{
+  "slug": "3d-cavla",
+  "title": "3D CAVLA: Leveraging Depth and 3D Context to Generalize Vision Language Action Models for Unseen Tasks",
+  "arxiv_id": "2505.05800",
+  "url": "https://arxiv.org/abs/2505.05800",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "机器人操作", "chain-of-thought", "深度感知点云", "TA-ROI 池化", "零样本泛化", "sim-to-real", "LIBERO", "OpenVLA-OFT"],
+  "summary_zh": "3D CAVLA 通过链式推理分解、轻量级点云深度编码器和任务感知 ROI 池化三种机制微调 OpenVLA-OFT，在 LIBERO 仿真基准达到 98.1% 成功率，未见任务提升 8.8%，真实 Franka 机器臂实验提升 25%，训练收敛速度提升 3 倍。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

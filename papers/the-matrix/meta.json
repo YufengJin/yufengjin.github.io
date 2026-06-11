@@ -1,0 +1,11 @@
+{
+  "slug": "the-matrix",
+  "title": "The Matrix: Infinite-Horizon World Generation with Real-Time Moving Control",
+  "arxiv_id": "2412.03568",
+  "url": "https://arxiv.org/abs/2412.03568",
+  "category": "生成模型 · Generative Models",
+  "keywords": ["world model", "video generation", "real-time control", "infinite-horizon", "世界模型", "diffusion transformer", "consistency model", "游戏数据"],
+  "summary_zh": "首个可在实时交互控制下生成无限长高保真720p视频流的世界模拟器，结合AAA级游戏训练数据（Forza Horizon 5、Cyberpunk 2077）、Swin-DPM滑动窗口无限生成与Stream Consistency Model蒸馏加速，实现8–16 FPS实时渲染与zero-shot泛化。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

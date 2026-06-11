@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open X-Embodiment: Robotic Learning Datasets and RT-X Models</title>
+<meta name="keywords" content="Open X-Embodiment, RT-X, 机器人学习, cross-embodiment transfer, 多机器人数据集, RT-2-X, vision-language-action model, 迁移学习">
+<meta name="description" content="汇聚22种机器人、60个数据集超百万条轨迹，训练RT-1-X与RT-2-X，实现跨机器人正向迁移，RT-2-X在泛化任务上取得3倍提升。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICRA 2024 · Robotics · 机器人学习</span>
+    <h1>Open X-Embodiment: Robotic Learning Datasets and RT-X Models</h1>
+    <div class="sub">用多机器人大规模数据集训练通用策略，实现跨机器人正向迁移</div>
+    <div class="authors">Open X-Embodiment Collaboration · 21 机构 · 293+ 作者 · 2023</div>
+    <p class="lead">
+      机器人学习长期受限于单一机器人、单一场景的小规模数据集。该工作汇聚来自21个机构、22种机器人的60个数据集（超过100万条真实轨迹），构建 Open X-Embodiment (OXE) 数据集，并在其上训练 RT-1-X 和 RT-2-X 两个模型，验证了跨机器人的正向迁移效果，其中 RT-2-X 在泛化任务上相比单一机器人训练取得约3倍提升。
+    </p>
+    <div class="meta">
+      <span>22 种机器人</span>
+      <span>60 个数据集</span>
+      <span>1M+ 轨迹</span>
+      <span><a href="https://arxiv.org/abs/2310.08864">📄 arXiv:2310.08864</a></span>
+      <span><a href="https://robotics-transformer-x.github.io">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>Open X-Embodiment</span>
+      <span>RT-X</span>
+      <span>cross-embodiment transfer</span>
+      <span>机器人学习</span>
+      <span>vision-language-action model</span>
+      <span>多机器人数据集</span>
+      <span>RT-2-X</span>
+      <span>迁移学习</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      NLP 和计算机视觉领域通过在大规模、多样化数据集上预训练，实现了显著的泛化能力。而机器人学习领域仍停滞于"各自为政"的小规模数据集——每个实验室只训练自己机器人上的任务，无法从他人数据中受益。核心问题是：<strong>机器人学习能否像 NLP 一样，围绕通用模型整合，从而实现正向迁移？</strong>
+    </p>
+    <blockquote>
+      "Robotic learning datasets are often still narrow along some axes of variation, either focusing on a single environment, a single set of objects, or a narrow range of tasks."
+    </blockquote>
+    <figure>
+      <img src="img/dataset.webp" alt="OXE Dataset Composition">
+      <figcaption>
+        图1：Open X-Embodiment 数据集概览。(a) 60个数据集在22种机器人上的分布；(b) 每种机器人的场景多样性；(c) 各机器人的轨迹数量（xArm 和 Google Robot 占主导）；(d)(e) 通过 PaLM 分析提取的技能和物体多样性。数据集涵盖527种技能和160,266个任务。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>22</b><small>机器人种类</small></div>
+      <div><b>60</b><small>聚合数据集</small></div>
+      <div><b>1M+</b><small>真实轨迹</small></div>
+      <div><b>527</b><small>技能类型</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      该工作提出两个核心贡献：(1) 构建 Open X-Embodiment (OXE) 数据集，将60个异构机器人数据集统一转换为 RLDS 格式；(2) 在 OXE 上训练 RT-1-X 和 RT-2-X 两个模型，分别代表中等容量专用网络和大容量 vision-language-action 模型。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="RT-1-X and RT-2-X Architecture">
+      <figcaption>
+        图2：RT-1-X（左）和 RT-2-X（右）架构。两者均以图像序列和自然语言指令为输入，输出离散化的7自由度末端执行器动作。RT-1-X 使用 EfficientNet + FiLM + Transformer Decoder（35M参数）；RT-2-X 基于 PaLI-X 骨干（55B参数），将动作表示为文本 token 输出。
+      </figcaption>
+    </figure>
+    <div class="grid2">
+      <div class="card">
+        <h3>RT-1-X：中等容量专用模型</h3>
+        <ul>
+          <li><strong>35M 参数</strong> Transformer 网络，专为机器人控制设计</li>
+          <li>输入：15帧图像历史 + 自然语言指令</li>
+          <li>视觉编码：ImageNet 预训练 EfficientNet</li>
+          <li>语言编码：Universal Sentence Encoder (USE) 嵌入</li>
+          <li>融合：FiLM 层交织视觉-语言 token（共81个 token）</li>
+          <li>输出：Decoder-only Transformer 产生离散化7自由度动作</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>RT-2-X：大容量 VLA 模型</h3>
+        <ul>
+          <li>基于 <strong>PaLI-X</strong> 骨干（ViT + UL2 语言模型）</li>
+          <li>在 WebLI 互联网规模视觉-语言数据上预训练</li>
+          <li>将机器人动作表示为文本 token（如 "1 128 91 241 5 101 127"）</li>
+          <li>输出：256个离散动作区间，覆盖8个维度</li>
+          <li>支持55B和5B两种规模</li>
+          <li>与机器人数据和网络数据<strong>联合微调（co-fine-tuning）</strong></li>
+        </ul>
+      </div>
+    </div>
+    <h3>OXE 数据集构建</h3>
+    <p>
+      所有60个数据集统一转换为 RLDS（serialized tfrecord）格式。数据来自21个机构，涵盖22种机器人平台，包含160,266个任务、527种技能，超过100万条真实机器人轨迹。各数据集按比例混合（混合权重基于数据集规模和质量评估），以避免大数据集完全主导训练。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在6种机器人上共评估3,600次试验，涵盖小规模和大规模数据集场景，同时评估 RT-2-X 的 emergent skills（跨机器人平台迁移能力）和泛化能力。
+    </p>
+
+    <h3>主要结果（Table I）：大规模数据集场景</h3>
+    <table>
+      <tr><th>评估域</th><th>Original Method</th><th>RT-1</th><th>RT-1-X</th><th>RT-2-X (55B)</th></tr>
+      <tr>
+        <td>Bridge (WidowX)</td>
+        <td>13%</td><td>40%</td><td>27%</td><td class="good">50%</td>
+      </tr>
+      <tr>
+        <td>RT-1 Paper Domain</td>
+        <td>13%</td><td>30%</td><td>27%</td><td class="good">30%</td>
+      </tr>
+      <tr>
+        <td>Google Robot</td>
+        <td>—</td><td class="good">92%</td><td>73%</td><td>91%</td>
+      </tr>
+    </table>
+    <p>
+      小规模数据集场景中，RT-1-X 相比原始方法或单机器人 RT-1 基线取得 <strong>50% 更高的平均成功率</strong>。大规模数据集场景下，RT-1-X 出现欠拟合（underfitting），而高容量的 RT-2-X (55B) 能有效学习并优于基线。
+    </p>
+
+    <figure>
+      <img src="img/results_barplot.webp" alt="RT-1-X Results Barplot">
+      <figcaption>
+        图3：各机器人平台上 RT-1-X 与原始方法和 RT-1 基线的成功率对比（小规模数据集场景）。RT-1-X 在多个机器人平台上均展现出正向迁移，平均成功率提升约50%。
+      </figcaption>
+    </figure>
+
+    <h3>Emergent Skills（涌现技能）评估</h3>
+    <p>
+      在 Google Robot 上执行来自 Bridge 数据集（WidowX 机器人）的任务，用于评估跨机器人平台的技能迁移能力：
+    </p>
+    <div class="kpi">
+      <div><b>27.3%</b><small>RT-2（单机器人）</small></div>
+      <div><b>75.8%</b><small>RT-2-X（多机器人）</small></div>
+      <div><b>~3×</b><small>涌现技能提升倍数</small></div>
+      <div><b>42.8%</b><small>去除 Bridge 数据后</small></div>
+    </div>
+
+    <figure>
+      <img src="img/rt2x_eval.webp" alt="RT-2-X Emergent Skills Evaluation">
+      <figcaption>
+        图4：RT-2-X emergent skills 评估结果。RT-2-X 在 Google Robot 上执行 Bridge 数据集任务，成功率75.8%，相比单机器人训练的 RT-2（27.3%）提升约3倍。去除 Bridge 训练数据后性能下降至42.8%，确认 WidowX 数据的迁移贡献。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Table II）</h3>
+    <table>
+      <tr><th>配置</th><th>模型规模</th><th>Web 预训练</th><th>Emergent Skills</th><th>泛化能力</th></tr>
+      <tr><td>RT-2（单机器人）</td><td>55B</td><td>✓</td><td>27.3%</td><td>62%</td></tr>
+      <tr><td>RT-2-X（完整）</td><td>55B</td><td>✓</td><td class="good">75.8%</td><td class="good">61%</td></tr>
+      <tr><td>RT-2-X（去除 Bridge）</td><td>55B</td><td>✓</td><td>42.8%</td><td>54%</td></tr>
+      <tr><td>RT-2-X（5B）</td><td>5B</td><td>✓</td><td>44.4%</td><td>52%</td></tr>
+      <tr><td>RT-2-X（5B，无图像历史）</td><td>5B</td><td>✓</td><td>14.5%</td><td>30%</td></tr>
+      <tr><td>RT-2-X（5B，无 Web 预训练）</td><td>5B</td><td>✗</td><td>0%</td><td>1%</td></tr>
+    </table>
+    <p>
+      消融实验揭示三个关键因素：(1) <strong>Web 预训练至关重要</strong>——去除后 emergent skills 从44.4%骤降至0%；(2) <strong>模型容量影响迁移效果</strong>——55B vs 5B 在 emergent skills 上相差约31个百分点（75.8% vs 44.4%）；(3) <strong>图像历史帮助性能</strong>——去除后 emergent skills 下降约30个百分点。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性均来自论文正文作者明确陈述（stated by authors）。</div>
+    <details class="lim" open>
+      <summary>不涵盖感知与驱动模态差异极大的机器人</summary>
+      <p>
+        论文原文："Our experiments do not consider robots with very different sensing and actuation modalities."
+        当前实验主要集中在使用相机视觉输入和标准末端执行器的机械臂，未探索触觉传感、力传感器、腿式机器人等差异更大的模态。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>未研究向全新机器人的泛化（zero-shot embodiment transfer）</summary>
+      <p>
+        论文原文："They do not study generalization to new robots, and provide a decision criterion for when positive transfer does or does not happen."
+        所有评估机器人均在训练阶段出现过，未测试能否将策略迁移到从未见过的机器人平台。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>RT-1-X 在大规模数据集上欠拟合</summary>
+      <p>
+        RT-1-X（35M参数）在大规模数据集场景下出现欠拟合现象，无法充分利用 OXE 数据的多样性。需要更高容量的模型（如 RT-2-X 55B）才能有效实现正向迁移，这对计算资源提出了较高要求。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>缺乏正向迁移发生条件的理论判据</summary>
+      <p>
+        论文原文提到该工作未能提供一个明确的判断准则来预测何时会发生正向迁移、何时会出现负向迁移，这一理论问题留待未来工作解决。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Open X-Embodiment: Robotic Learning Datasets and RT-X Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2310.08864">https://arxiv.org/abs/2310.08864</a>
+  </div>
+</footer>
+
+</body>
+</html>

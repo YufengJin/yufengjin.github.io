@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  GELLO: A General, Low-Cost, and Intuitive Teleoperation Framework for Robot Manipulators
+  arXiv:2309.13037
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GELLO: 低成本直觉式机器人遥操作框架</title>
+<meta name="keywords" content="teleoperation, robot manipulation, imitation learning, data collection, DYNAMIXEL, kinematically equivalent, low-cost, 遥操作, 机器人操作, 模仿学习">
+<meta name="description" content="GELLO 是一款通用、低成本、直觉式的机器人臂遥操作框架，通过缩小版运动等效结构，以 $300 的成本实现优于 VR 控制器的遥操作性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · ICRA 2024</span>
+    <h1>GELLO: 通用、低成本、直觉式机器人臂遥操作框架</h1>
+    <div class="sub">General, Low-Cost, and Intuitive Teleoperation Framework for Robot Manipulators</div>
+    <div class="authors">Philipp Wu, Yide Shentu, Zhongke Yi, Xingyu Lin, Pieter Abbeel &nbsp;·&nbsp; UC Berkeley</div>
+    <p class="lead">GELLO 通过构建目标机械臂的缩小版运动等效结构，以不到 $300 的成本提供直觉式遥操作体验。相比 VR 控制器和 SpaceMouse，GELLO 在五项双臂操作任务中平均成功率达到 <strong>0.92</strong>，显著超越其他低成本方案，并已为 Franka、UR5、xArm 三款机器人平台开源了全部硬件设计与代码。</p>
+    <div class="meta">
+      <span>arXiv 2023-09</span>
+      <span>DYNAMIXEL XL330</span>
+      <span>硬件全开源</span>
+      <span><a href="https://arxiv.org/abs/2309.13037">📄 arXiv:2309.13037</a></span>
+      <span><a href="https://wuphilipp.github.io/gello/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>teleoperation</span>
+      <span>robot manipulation</span>
+      <span>imitation learning</span>
+      <span>data collection</span>
+      <span>DYNAMIXEL</span>
+      <span>kinematically equivalent</span>
+      <span>low-cost hardware</span>
+      <span>遥操作</span>
+      <span>模仿学习</span>
+      <span>数据采集</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">机器人模仿学习的性能随数据集规模提升而提升，但高质量演示数据的采集仍是主要瓶颈。传统双边遥操作设备（如力反馈外骨骼）成本高昂；而 VR 控制器、SpaceMouse 等低成本替代方案将机器人运动学抽象化，使操作者难以感知奇异点和碰撞风险，操作效率低下。</p>
+    <blockquote>"Systems that abstract away kinematic constraints prevent operators from managing singularities and collisions effectively."</blockquote>
+    <figure>
+      <img src="img/design.webp" alt="GELLO 设计图">
+      <figcaption><strong>图 1：</strong>GELLO 硬件设计概览。左侧展示三款 GELLO 实例（针对 Franka Panda、UR5、xArm），右侧展示对应的全尺寸机器人臂。GELLO 采用缩小比例（α = 0.5）的运动等效结构，由 DYNAMIXEL XL330 舵机和 3D 打印零件构成。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>&lt;$300</b><small>GELLO 全套硬件成本</small></div>
+      <div><b>0.92</b><small>GELLO 平均任务成功率</small></div>
+      <div><b>3</b><small>支持的机器人平台（Franka / UR5 / xArm）</small></div>
+      <div><b>5</b><small>用户研究任务数（12 名参与者）</small></div>
+    </div>
+
+    <h3>现有方案的局限</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>高成本方案</h3>
+        <ul>
+          <li>力反馈外骨骼（如 Omega7）：约 $40,000</li>
+          <li>Robot-to-robot 遥操作（UR5）：约 $30,000</li>
+          <li>ALOHA 等方案需额外完整机器人臂，成本高且移植性差</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>低成本方案的痛点</h3>
+        <ul>
+          <li>3D Mouse（SpaceMouse）：$150，抽象末端执行器，忽略运动学</li>
+          <li>VR 控制器（Meta Quest 2）：$300，手腕方向不自然映射</li>
+          <li>均无法感知奇异点与自碰撞，导致频繁失败</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">GELLO 的核心思路是构建目标机器人臂的<strong>缩小版运动等效结构（scaled kinematically equivalent structure）</strong>：操作者直接操纵各关节，无需计算逆运动学，同时通过关节阻力天然感知奇异点。配合弹簧/橡皮筋关节正则化和 DYNAMIXEL 高精度编码器，GELLO 以极低成本实现直觉式操作。</p>
+
+    <figure>
+      <img src="img/tasks.webp" alt="多平台任务展示">
+      <figcaption><strong>图 2：</strong>GELLO 在三个机器人平台（Franka Panda、UR5、xArm）上执行的多样化操作任务，包括双臂协作、接触丰富型任务（插 USB、折叠毛巾）以及长时程任务（倒水）。</figcaption>
+    </figure>
+
+    <h3>硬件设计原则</h3>
+    <ul>
+      <li><strong>低成本：</strong>所有组件成本控制在 $300 以内。</li>
+      <li><strong>可复制：</strong>3D 打印结构件 + 现成舵机，最小化定制零件数量。</li>
+      <li><strong>便携性：</strong>紧凑自包含设计，可在多种环境中部署。</li>
+      <li><strong>高能力：</strong>支持复杂操作任务，包括双臂协调与 7-DOF 零空间管理。</li>
+    </ul>
+
+    <h3>舵机选型：DYNAMIXEL XL330</h3>
+    <p>GELLO 采用 DYNAMIXEL XL330 系列舵机。该舵机配备 <strong>12-bit 高精度编码器</strong>，关节测量精度达 <strong>0.088 mechanical degree</strong> 以内。选用 XL-330-288T 型号（最大传动比），提供较大关节阻力，作为天然阻尼，帮助操作者感知力矩和奇异点。舵机自带编码器和通信协议，构成"off-the-shelf, self-contained solution"。</p>
+
+    <h3>缩小版运动等效结构</h3>
+    <p>GELLO 将目标机械臂按比例因子 <strong>α = 0.5</strong> 缩小，保留完全相同的运动学结构。操作者直接控制各关节角度，无需求解逆运动学（IK），并可通过关节阻力感受奇异点临近。小尺寸设计提升便携性，同时降低操作者对环境碰撞的视觉遮挡。</p>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/force_measurement.webp" alt="关节正则化实物">
+        <figcaption><strong>图 3a：</strong>关节正则化机构实物照片。弹簧/橡皮筋安装在关节 2、3 处，为 UR5 版本的 GELLO 提供被动力反馈。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/force_plot.webp" alt="关节正则化力矩分析">
+        <figcaption><strong>图 3b：</strong>关节正则化前后的维持姿态所需力对比。无正则化时需 ~1.9 N；有正则化后，力随高度变化，辅助操作者规避奇异构型。</figcaption>
+      </figure>
+    </div>
+
+    <h3>关节正则化（Joint Regularization）</h3>
+    <p>重力会使手臂自然下垂至不理想构型。GELLO 使用弹簧或橡皮筋等简单机械元件进行"关节正则化"，产生被动力反馈：<br>
+    • 无正则化：维持关节姿态需约 1.9 N 的外力。<br>
+    • 有正则化：所需力随高度/关节角度变化，自然引导操作者远离奇异构型。</p>
+
+    <h3>软件架构</h3>
+    <p>软件栈基于 Python，利用 DYNAMIXEL SDK 读取各关节编码器值，通过 ZMQ 消息传递将关节角度流式发送给机器人控制器，实现直接关节空间控制，无需 IK 求解。设计高度模块化，支持快速扩展至新机器人平台。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">用户研究共招募 12 名无专业遥操作训练经历的大学志愿者，使用双臂 UR5 系统对 GELLO、VR（Meta Quest 2）、3D Mice（SpaceMouse）三种设备进行对比。每位参与者先进行 6 分钟通用介绍，再对每种设备进行 5 分钟练习，然后执行 5 项任务，设备顺序随机化（6 种排列各重复 2 次）。</p>
+
+    <h3>五项测试任务</h3>
+    <ul>
+      <li>Task 1：将帽子放到架子上（45 秒时限）</li>
+      <li>Task 2：打开盒子并取出眼罩（90 秒）</li>
+      <li>Task 3：将香蕉递到厨房区域（90 秒）</li>
+      <li>Task 4：折叠毛巾（90 秒）</li>
+      <li>Task 5：插入 USB 线（90 秒）</li>
+    </ul>
+
+    <h3>任务成功率对比（Table II）</h3>
+    <table>
+      <tr><th>设备</th><th>Hat</th><th>Mask</th><th>Banana</th><th>Towel</th><th>USB</th><th>平均</th></tr>
+      <tr><td>GELLO</td><td class="good">0.92</td><td class="good">0.92</td><td class="good">1.0</td><td class="good">0.92</td><td class="good">0.83</td><td class="good">0.92</td></tr>
+      <tr><td>VR (Meta Quest 2)</td><td>0.92</td><td>0.83</td><td>0.75</td><td>0.58</td><td>0.50</td><td>0.72</td></tr>
+      <tr><td>3D Mice (SpaceMouse)</td><td>0.75</td><td>0.58</td><td>0.67</td><td>0.58</td><td>0.58</td><td>0.63</td></tr>
+    </table>
+
+    <h3>失败模式分析（Table III）</h3>
+    <table>
+      <tr><th>失败原因</th><th>GELLO</th><th>3D Mice</th><th>VR</th></tr>
+      <tr><td>超时 (Timeout)</td><td class="good">1</td><td>9</td><td>5</td></tr>
+      <tr><td>自碰撞 (Self Collision)</td><td class="good">1</td><td>5</td><td>5</td></tr>
+      <tr><td>环境碰撞 (Env Collision)</td><td>3</td><td>6</td><td>6</td></tr>
+      <tr><td>其他 (Other)</td><td>2</td><td>1</td><td>—</td></tr>
+    </table>
+    <p>GELLO 超时次数仅为 1 次（SpaceMouse 为 9 次），说明运动等效设计显著降低了操作难度。论文指出："self collisions were a common problem for spacemouse and VR controllers due to teleoperator paying attention only to end effector"，而 GELLO 操作者能感知整臂构型，有效规避自碰撞。</p>
+
+    <figure>
+      <img src="img/user_study.webp" alt="用户研究场景">
+      <figcaption><strong>图 4：</strong>用户研究场景。左图展示双臂 UR5 系统配置及 GELLO 操作姿态；右图展示用户研究中的五项任务（帽子、眼罩、香蕉、毛巾、USB）。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/finish_time.webp" alt="任务完成时间对比">
+      <figcaption><strong>图 5：</strong>各任务成功完成时间的箱线图对比（仅统计成功试次）。GELLO 在全部五项任务上均展现更短的中位完成时间，说明其操作效率更高。</figcaption>
+    </figure>
+
+    <h3>系统能力展示</h3>
+    <p>GELLO 成功完成了多类复杂任务：接触丰富型任务（插 USB、折叠毛巾）、长时程任务（倒水至水瓶，需承担较大负载）、双臂协作任务，以及 7-DOF 臂（Franka Panda、xArm）的零空间管理操作，验证了框架的通用性。</p>
+
+    <h3>成本对比</h3>
+    <table>
+      <tr><th>设备</th><th>成本</th></tr>
+      <tr><td>3D Mouse (SpaceMouse)</td><td>$150</td></tr>
+      <tr><td>GELLO（本文）</td><td class="good">$300</td></tr>
+      <tr><td>VR (Meta Quest 2)</td><td>$300</td></tr>
+      <tr><td>Robot-to-robot（UR5）</td><td>$30,000</td></tr>
+      <tr><td>Haptic Device (Omega7)</td><td>$40,000</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>以下局限性均为作者在论文 Discussion 章节中明确陈述（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>缺乏力反馈（No Force Feedback）</summary>
+      <p>由于 DYNAMIXEL XL330 舵机输出力矩有限，GELLO <strong>不具备力反馈功能</strong>。论文原文指出："GELLO lacks force feedback due to limited output torque of motors, compromising contact-rich task performance. This sacrifice prioritized affordability and accessibility."<br>
+      作者表示希望"将来作为可选功能加入力反馈，以支持更高级的使用场景"。</p>
+    </details>
+
+    <details class="lim">
+      <summary>用户研究的局限性（Limited Practice Time）</summary>
+      <p>参与用户均为缺乏专业遥操作训练经验的志愿者，且每种设备的练习时间仅为 5 分钟。论文坦承："User study involved inexperienced users with limited practice time. Extended training could significantly improve proficiency with alternative devices."<br>
+      换言之，VR 控制器和 SpaceMouse 在更长时间训练后的性能差距可能缩小。</p>
+    </details>
+
+    <details class="lim">
+      <summary>设计依赖目标机器人运动学（Kinematic-Specific Hardware）</summary>
+      <p>（作者隐含，inferred from design）每套 GELLO 均针对特定机器人臂运动学定制 3D 打印件，扩展至新平台需重新设计并打印结构件。尽管开源了三款平台（Franka、UR5、xArm）的设计，但快速适配任意新型机器人仍需一定工程工作量。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · GELLO: A General, Low-Cost, and Intuitive Teleoperation Framework for Robot Manipulators · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2309.13037">https://arxiv.org/abs/2309.13037</a>
+  </div>
+</footer>
+
+</body>
+</html>

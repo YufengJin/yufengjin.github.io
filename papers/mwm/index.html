@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masked World Models for Visual Control</title>
+<meta name="keywords" content="masked world model, visual model-based RL, vision transformer, masked autoencoder, convolutional feature masking, latent dynamics, Meta-world, robot manipulation, 表征学习, 世界模型">
+<meta name="description" content="MWM 将视觉表征学习与动态学习解耦，利用卷积特征掩码自编码器和隐空间动态模型，在 Meta-world 50 个任务上实现 81.7% 成功率，显著超越 DreamerV2。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CoRL 2022 · 机器人学习</span>
+    <h1>Masked World Models for Visual Control</h1>
+    <div class="sub">解耦视觉表征与动态学习，构建精准视觉世界模型</div>
+    <div class="authors">Younggyo Seo · Danijar Hafner · Hao Liu · Fangchen Liu · Stephen James · Kimin Lee · Pieter Abbeel &nbsp;|&nbsp; KAIST · UC Berkeley · Google Research · University of Toronto</div>
+    <p class="lead">MWM（Masked World Models）是一种基于模型的视觉强化学习框架，核心思想是将视觉表征学习与动态学习解耦：先用带卷积特征掩码的自编码器（ViT + 辅助奖励预测）学习高质量表征，再在该表征空间上训练隐空间动态模型。这一设计使世界模型能够捕捉小物体等精细视觉细节，在 Meta-world 50 个任务上将成功率从基线的 67.9% 提升至 <strong>81.7%</strong>。</p>
+    <div class="meta">
+      <span>CoRL 2022</span>
+      <span>Model-Based RL</span>
+      <span>Vision Transformer</span>
+      <span><a href="https://arxiv.org/abs/2206.14244">📄 arXiv:2206.14244</a></span>
+      <span><a href="https://sites.google.com/view/mwm-rl">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>masked world model</span>
+      <span>visual model-based RL</span>
+      <span>convolutional feature masking</span>
+      <span>vision transformer</span>
+      <span>latent dynamics</span>
+      <span>Meta-world</span>
+      <span>robot manipulation</span>
+      <span>表征学习</span>
+      <span>世界模型</span>
+      <span>DreamerV2</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">视觉模型强化学习（visual model-based RL）有潜力从视觉观测中实现高样本效率的机器人学习，但现有方法通常将视觉表征学习与动态建模端到端联合优化，难以准确建模机器人与小物体之间的交互。</p>
+    <blockquote>"the current approaches typically train a single model end-to-end for learning both visual representations and dynamics, making it difficult to accurately model the interaction between robots and small objects."</blockquote>
+
+    <figure>
+      <img src="img/overview.webp" alt="MWM overview: Visual Representation Learning + Dynamics Learning">
+      <figcaption><strong>图 1（论文 Figure 1）：</strong>MWM 框架总览。左侧：反复更新带卷积特征掩码与奖励预测的自编码器；右侧：在自编码器隐空间中学习隐动态模型（RSSM 变体）。动态学习期间自编码器参数冻结，实现真正的解耦更新。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>81.7%</b><small>Meta-world 50 任务成功率（MWM）</small></div>
+      <div><b>67.9%</b><small>DreamerV2 基线成功率（同一基准）</small></div>
+      <div><b>&gt;80%</b><small>RLBench Reach Target 成功率（MWM）</small></div>
+      <div><b>&lt;20%</b><small>RLBench Reach Target 成功率（DreamerV2）</small></div>
+    </div>
+
+    <p>端到端优化在表征质量与动态准确性之间存在内在权衡：世界模型需同时负责"看清画面"和"预测未来"，两者目标相互干扰。另一方面，类 MAE（masked autoencoder）的像素块掩码方式虽计算高效，但难以捕捉块内精细细节（如小目标位置），限制了其在视觉控制中的应用。MWM 正是为此而生。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">MWM 将整个学习循环分为三个交替步骤：(i) 用卷积特征掩码 + 辅助奖励预测训练自编码器；(ii) 在自编码器冻结表征空间上训练隐动态模型；(iii) 与环境交互收集新样本。</p>
+
+    <h3>卷积特征掩码自编码器（Visual Representation Learning）</h3>
+    <p>
+      与 MAE 的像素块掩码不同，MWM 先通过 <strong>convolution stem</strong>（3 层卷积 + 线性投影）将图像 o<sub>t</sub> 转换为卷积特征序列 h<sup>c</sup><sub>t</sub>，再以掩码比例 <em>m = 75%</em> 随机遮掩这些特征向量，送入 ViT encoder（4 层）和 ViT decoder（3 层）重建原始像素。
+      由于早期卷积层会在空间上混合低级细节，模型可以从相邻非遮掩特征中恢复块内所有细节——既保留了 MAE 的稳定性与计算效率，又弥补了其对精细细节捕捉不足的缺陷。
+    </p>
+    <p>
+      <strong>辅助奖励预测（Reward Prediction）：</strong>为将任务相关信息编码进表征，自编码器同时预测奖励 r̂<sub>t</sub>。具体做法是在 ViT decoder 输入中追加一个可学习 mask token，对应输出接线性头预测奖励。实验证明这一设计对最终性能至关重要（去掉后性能显著下降）。
+    </p>
+
+    <h3>隐空间动态模型（Latent Dynamics Learning）</h3>
+    <p>
+      视觉表征学习完成后，利用<strong>冻结的</strong>自编码器表征 z<sup>c,0</sup><sub>t</sub>（无掩码编码结果）训练 RSSM 变体。与原始 DreamerV2 的区别在于：Representation Model 以 z<sup>c,0</sup><sub>t</sub> 而非原始像素为输入，图像解码器替换为"视觉表征解码器"（重建表征而非像素）。这使动态模型可以专注于建模状态转移，而不必同时学习高维像素重建。
+    </p>
+    <p>
+      整体优化目标 L<sub>mwm</sub>(φ, θ) 包含两项：<br>
+      &bull; <em>视觉表征学习</em>：重建损失（MSE）+ 奖励预测损失<br>
+      &bull; <em>动态学习</em>：表征重建损失 + 奖励损失 + KL 散度（RSSM）
+    </p>
+
+    <figure>
+      <img src="img/metaworld_curves.webp" alt="Meta-world learning curves for 6 challenging tasks">
+      <figcaption><strong>图 3（论文 Figure 3）：</strong>Meta-world 六个难度较高的视觉操纵任务（需要机器人臂与小物体交互）上的学习曲线。MWM（蓝）在样本效率和最终性能上均显著优于 DreamerV2（黄）。特别地，Pick Place 任务中 MWM 达到 &gt;80% 成功率，而 DreamerV2 几乎无法解决该任务。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在三个基准上评估 MWM：Meta-world（50 任务）、RLBench（2 任务）、DeepMind Control Suite（视觉运动控制）。视觉输入统一为 64×64×3 RGB 图像，基线为 DreamerV2。</p>
+
+    <table>
+      <tr><th>基准 / 任务</th><th>DreamerV2（基线）</th><th>MWM（本文）</th><th>备注</th></tr>
+      <tr><td>Meta-world 50 任务（成功率）</td><td>67.9%</td><td class="good">81.7%</td><td>+13.8pp</td></tr>
+      <tr><td>RLBench: Reach Target</td><td>&lt;20%</td><td class="good">&gt;80%</td><td>显著差距</td></tr>
+      <tr><td>RLBench: Push Button</td><td>低</td><td class="good">更高</td><td>定性优势</td></tr>
+      <tr><td>DMControl: Reach Duplo</td><td>—</td><td class="good">优于基线</td><td>操纵任务</td></tr>
+      <tr><td>DMControl: Quadruped Walk/Run</td><td>相当</td><td>相当</td><td>运动任务持平</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="Aggregate Meta-world + RLBench + DMControl results">
+      <figcaption><strong>图 4 & 5（论文 Figure 4, 5）：</strong>上：Meta-world 50 任务汇总成功率（步数归一化）；RLBench Reach Target（中）和 Push Button（右）学习曲线。下：DeepMind Control Suite 三个视觉任务的 episode return。实线为均值，阴影为 bootstrap 置信区间。</figcaption>
+    </figure>
+
+    <h3>消融研究 Ablations</h3>
+    <p>图 6（下图）系统分析了三个关键设计选择：</p>
+    <ul>
+      <li><strong>卷积特征掩码 vs. 像素块掩码（MAE）：</strong>卷积特征掩码显著优于像素块掩码，验证了捕捉块内精细细节对视觉控制的重要性。</li>
+      <li><strong>掩码比例 m：</strong>m = 75% 优于 m ∈ {0.25, 0.5}，说明强正则化可防止模型从相邻卷积特征中"走捷径"。但 m = 0.9（过强）会损害性能。</li>
+      <li><strong>奖励预测：</strong>去掉辅助奖励预测目标后性能大幅下降，说明重建目标单独不足以学习任务相关信息。</li>
+    </ul>
+
+    <figure>
+      <img src="img/ablations.webp" alt="Ablations and qualitative world model predictions">
+      <figcaption><strong>图 6 & 7（论文 Figure 6, 7）：</strong>上：三组消融曲线（卷积特征掩码、掩码比例、奖励预测）在 Meta-world 三个任务上的表现。下：RLBench Reach Target 任务中，真实帧、自编码器重建（Recon）与 MWM/DreamerV2 隐动态预测帧的对比。MWM 能准确预测红色目标块位置，DreamerV2 则失败。</figcaption>
+    </figure>
+
+    <p>定性分析（Figure 7）揭示了解耦设计的工作机制：自编码器忠实重建所有细节（包括蓝、橙色干扰块），而动态模型的预测则选择性地只追踪任务相关组件（红色目标块），忽略无关细节。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note:</b> 以下局限性均由作者在论文 Discussion 节明确陈述（stated by the authors）。</div>
+    <details class="lim" open><summary>对辅助奖励预测的依赖</summary>
+      <p>"the performance of our approach heavily depends on the auxiliary reward prediction task. This might be because our autoencoder is not learning temporal information, which is crucial for learning task-relevant information." 如果奖励信号不可用（如无监督探索场景），当前框架将难以编码任务相关信息。</p>
+    </details>
+    <details class="lim"><summary>仅使用单视角 RGB 输入</summary>
+      <p>"our model operates only on RGB pixels from a single camera viewpoint"，尚未整合本体感受状态（proprioceptive states）、点云等其他模态输入，限制了在更复杂真实场景中的应用。</p>
+    </details>
+    <details class="lim"><summary>样本效率仍不足以部署于真实世界</summary>
+      <p>RLBench 实验结果"are preliminary because they are still too sample-inefficient to be used in real-world scenarios."未来方向包括：利用少量演示数据、引入带路径规划的动作模式、在视频数据集上预训练世界模型等。</p>
+    </details>
+    <details class="lim"><summary>未利用时序视频表征学习</summary>
+      <p>自编码器在单帧图像上训练，不包含时序信息。作者指出探索视频 ViT 表征学习是值得研究的未来方向（inferred from design）。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Masked World Models for Visual Control · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2206.14244">https://arxiv.org/abs/2206.14244</a>
+  </div>
+</footer>
+
+</body>
+</html>

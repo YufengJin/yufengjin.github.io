@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: UniVLA: Unified Vision-Language-Action Model
+  arXiv: 2506.19850
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UniVLA: Unified Vision-Language-Action Model</title>
+<meta name="keywords" content="VLA, vision-language-action, 机器人操作, 世界模型, 自回归建模, 离散token, CALVIN, LIBERO, 多模态大模型, 策略学习">
+<meta name="description" content="UniVLA 将视觉、语言与动作信号统一为离散 token 序列，通过世界模型预训练捕获环境因果动态，在 LIBERO 基准上以 95.5% 平均成功率超越 π₀-FAST 的 85.5%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>UniVLA: Unified Vision-Language-Action Model</h1>
+    <div class="sub">将视觉、语言与动作统一为离散 token，通过世界模型预训练实现高效跨模态机器人策略学习</div>
+    <div class="authors">Yuqi Wang · Xinghang Li · Wenxuan Wang · Junbo Zhang · Yingyan Li · Yuntao Chen · Xinlong Wang · Zhaoxiang Zhang</div>
+    <p class="lead">UniVLA 以纯自回归 Transformer 将视觉、语言与动作信号编码为统一的离散 token 序列，并设计了两阶段训练策略：先在 622K 视频上进行无动作监督的世界模型后训练，再对下游任务进行策略微调。在 LIBERO 基准上以 95.5% 的平均成功率超越 π₀-FAST 的 85.5%，在 CALVIN 及 SimplerEnv 上也均达到新的最优水平。</p>
+    <div class="meta">
+      <span>8.5B 参数 Transformer</span>
+      <span>622K 后训练视频</span>
+      <span>32 × A100 GPUs</span>
+      <span><a href="https://arxiv.org/abs/2506.19850">📄 arXiv:2506.19850</a></span>
+      <span><a href="https://arxiv.org/pdf/2506.19850">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>机器人操作</span>
+      <span>世界模型</span>
+      <span>自回归建模</span>
+      <span>离散token</span>
+      <span>CALVIN</span>
+      <span>LIBERO</span>
+      <span>多模态大模型</span>
+      <span>策略学习</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有 VLA 方法大多采用"后期融合"策略：视觉特征提取与动作生成分处独立模块，难以捕捉跨模态的时序依赖关系。与此同时，有监督的机器人动作数据规模远小于互联网视频数据，策略泛化能力因此受限。如何充分利用海量无标注视频数据并实现视觉-语言-动作的紧密协同，是当前机器人学习面临的核心挑战。</p>
+    <blockquote>"vision, language, and action are jointly modeled within a unified representation space to facilitate tighter cross-modal integration."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="UniVLA 总览">
+      <figcaption>图 1：UniVLA 架构总览。所有模态（语言、视觉、动作）均被转化为统一词汇表中的离散 token，经单一自回归 Transformer 联合建模，支持动作预测、视觉未来帧预测及空间定位等多种任务。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>95.5%</b><small>LIBERO 平均成功率<br>超越 π₀-FAST 的 85.5%</small></div>
+      <div><b>4.63</b><small>CALVIN ABCD→D<br>平均任务链长度（SOTA）</small></div>
+      <div><b>69.8%</b><small>SimplerEnv WidowX 成功率<br>vs SpatialVLA 42.7%</small></div>
+      <div><b>81.7%</b><small>NAVSIM PDMS<br>仅用单目前视摄像头</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">UniVLA 的核心思想是将所有模态统一为离散 token：视觉通过 VQ 编码器以 8× 空间压缩率离散化，动作通过 FAST 对连续序列施加离散余弦变换（DCT）后编码为 1024 个 token，语言沿用标准 BPE 词汇表。三种模态共享同一词汇表，由特殊分隔符（boi/eoi 标示图像起止，boa/eoa 标示动作起止）明确边界，统一输入 8.5B 参数的自回归 Transformer，训练目标为标准 next-token prediction（cross-entropy loss）。</p>
+    <figure>
+      <img src="img/framework.webp" alt="UniVLA 框架">
+      <figcaption>图 2：两阶段训练框架。第一阶段（世界模型后训练）：以 Emu3 预训练权重初始化，在 622K 机器人及通用视频上进行无动作监督的视觉 token 预测；第二阶段（策略微调）：在目标任务数据上以双帧交错视觉-动作序列进行动作 token 监督微调。</figcaption>
+    </figure>
+
+    <h3>统一多模态 Tokenization</h3>
+    <p>视觉 token 采用与 Emu3 相同设计的 VQ 编码器，将图像以 8× 压缩率编码为离散 token。动作 token 采用 FAST tokenizer——对连续动作序列施加 DCT 变换后映射至 1024 个离散 token，替换语言词汇表末尾的 1024 个 ID，从而与语言 token 共享同一词汇表，实现真正统一的序列建模。特殊分隔符 boi/eoi（图像起止）和 boa/eoa（动作起止）明确标示模态边界。</p>
+
+    <h3>两阶段训练：世界模型后训练 + 策略微调</h3>
+    <p><strong>后训练（World Model Post-training）：</strong>模型以 Emu3 第一阶段预训练权重初始化，在 622K 精心策划的视频（覆盖 RT-1、BridgeV2、DROID 等多个机器人数据集及 Something-Something-V2 等通用视频）上训练，监督信号<em>仅作用于视觉 token</em>，无需动作标注。序列形式为 <code>S<sub>v</sub> = {Lt¹, Lv¹, Lv², …, Lvt}</code>，语言指令条件化视觉预测，引导模型学习环境因果动态。训练 30K 步，batch size 64，在 32 块 A100 GPU 上耗时 4–5 天。</p>
+    <p><strong>微调（Policy Fine-tuning）：</strong>以后训练权重为起点，采用双帧交错的视觉-动作序列，action chunk size 为 10，损失<em>仅作用于动作 token</em>。余弦退火学习率从 8×10⁻⁵ 开始，在各基准上分别训练 8K–20K 步。</p>
+
+    <figure>
+      <img src="img/capabilities.webp" alt="多模态能力展示">
+      <figcaption>图 3：UniVLA 的多模态能力展示，包括动作预测、视觉未来帧预测以及空间定位，体现了统一 token 建模框架的通用性——同一模型无需模态专用分支即可处理多种任务类型。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 CALVIN、LIBERO、SimplerEnv 和 NAVSIM 四个基准上与当前最优方法对比，并通过消融实验定量验证各关键组件的贡献。真实机器人实验在 AgileX 双臂平台上进行（3 路 RGB 摄像头，128×128 分辨率，14 维动作向量，chunk size 20），共 8 类操作任务。</p>
+
+    <h3>LIBERO 基准</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Average</th></tr>
+      <tr><td><strong>UniVLA（本文）</strong></td><td>95.4%</td><td>98.8%</td><td>93.6%</td><td class="good">94.0%</td><td class="good">95.5%</td></tr>
+      <tr><td>π₀-FAST</td><td>96.4%</td><td>96.8%</td><td>88.6%</td><td>60.2%</td><td>85.5%</td></tr>
+      <tr><td>CoT-VLA</td><td>87.5%</td><td>91.6%</td><td>87.6%</td><td>69.0%</td><td>81.1%</td></tr>
+      <tr><td>SpatialVLA</td><td>88.2%</td><td>89.9%</td><td>78.6%</td><td>55.5%</td><td>78.1%</td></tr>
+    </table>
+
+    <h3>CALVIN 基准（平均任务链长度，满分 5）</h3>
+    <table>
+      <tr><th>方法</th><th>ABC→D</th><th>ABCD→D</th></tr>
+      <tr><td><strong>UniVLA（本文）</strong></td><td class="good">4.41</td><td class="good">4.63</td></tr>
+      <tr><td>RoboVLMs</td><td>4.25</td><td>4.49</td></tr>
+      <tr><td>UP-VLA</td><td>4.08</td><td>4.42</td></tr>
+      <tr><td>Seer-Large</td><td>4.28</td><td>—</td></tr>
+    </table>
+
+    <h3>SimplerEnv（WidowX）& NAVSIM</h3>
+    <table>
+      <tr><th>基准</th><th>方法</th><th>成功率 / PDMS</th></tr>
+      <tr><td>SimplerEnv</td><td><strong>UniVLA（本文）</strong></td><td class="good">69.8%</td></tr>
+      <tr><td>SimplerEnv</td><td>SpatialVLA</td><td>42.7%</td></tr>
+      <tr><td>SimplerEnv</td><td>RoboVLMs</td><td>37.5%</td></tr>
+      <tr><td>SimplerEnv</td><td>Octo-Small</td><td>29.5%</td></tr>
+      <tr><td>NAVSIM</td><td><strong>UniVLA（单目前视）</strong></td><td class="good">81.7%</td></tr>
+    </table>
+
+    <h3>消融：世界模型后训练的贡献</h3>
+    <p>后训练对性能提升贡献最为显著：移除后，LIBERO 整体从 94.2% 降至 48.5%（<strong>−45.7 pp</strong>），LIBERO-Long 从 89.2% 降至 17.4%（<strong>−71.8 pp</strong>），CALVIN ABCD→D 从 4.61 降至 1.46（<strong>−3.15</strong>）。数据效率实验表明：仅使用 10% 训练数据时，UniVLA 在 CALVIN 上仍达 3.19，显著高于 RoboVLMs 的 2.52，体现出世界模型预训练带来的强泛化能力。</p>
+
+    <figure>
+      <img src="img/realrobot.webp" alt="真实机器人实验">
+      <figcaption>图 4：真实世界任务示例，包括擦白板、桌面整理、汉堡组装和连接器插入，展示 UniVLA 在 AgileX 双臂机器人平台上的多样化操作能力。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下前两条为论文作者明确陈述（stated by the authors）；第三条为从设计层面推断（inferred from the design）。</div>
+    <details class="lim" open>
+      <summary>后训练规模化探索受限于算力</summary>
+      <p>作者指出："Due to limited computational resources, our investigation into post-training scalability is still in its early stages." 现有实验仅在 32 块 A100 上进行，更大规模的后训练数据与参数量对性能的影响尚未充分研究，存在进一步提升空间。</p>
+    </details>
+    <details class="lim">
+      <summary>与强化学习的整合有待深入</summary>
+      <p>论文承认当前方法需要 "further research to fully integrate it with reinforcement learning paradigms, enabling more robust and adaptive policy learning"。现阶段仅依赖模仿学习，RL 闭环训练（探索、奖励设计等）尚未实现。</p>
+    </details>
+    <details class="lim">
+      <summary>视觉分辨率低 & 大模型实时部署挑战（inferred）</summary>
+      <p>真实机器人实验采用 128×128 分辨率，在细粒度操作（如连接器插入）中细节信息损失明显。此外，8.5B 参数的自回归 Transformer 在对延迟敏感的实时控制场景下部署存在挑战，论文未提供推理速度或模型量化方案的讨论。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · UniVLA: Unified Vision-Language-Action Model · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.19850">https://arxiv.org/abs/2506.19850</a>
+  </div>
+</footer>
+
+</body>
+</html>

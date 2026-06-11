@@ -1,0 +1,11 @@
+{
+  "slug": "embodied-ai-safety",
+  "title": "Safety in Embodied AI: A Survey of Risks, Attacks, and Defenses",
+  "arxiv_id": "2605.02900",
+  "url": "https://arxiv.org/abs/2605.02900",
+  "category": "机器人 · Robotics",
+  "keywords": ["embodied AI safety", "adversarial attacks", "jailbreak attacks", "backdoor attacks", "具身智能", "robot security", "perception attacks", "multi-level taxonomy", "VLA safety", "安全综述"],
+  "summary_zh": "首篇系统梳理具身智能全链路安全风险的综述，涵盖558篇论文，建立感知→认知→规划→行动→智能体五层分类体系，揭示对抗攻击、越狱攻击、后门攻击和硬件级攻击的全链路威胁与防御，并指出多模态感知融合脆弱性、越狱攻击下规划不稳定性、开放场景人机交互可信度三大被忽视挑战。",
+  "date": "2026-06-10",
+  "source": "arxiv-abs"
+}

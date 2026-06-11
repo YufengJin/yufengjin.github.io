@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UP-VLA: A Unified Understanding and Prediction Model for Embodied Agent</title>
+<meta name="keywords" content="VLA, vision-language-action, 具身智能, future prediction, 机器人操作, multi-modal understanding, embodied agent, Calvin benchmark, robotic manipulation, Phi-1.5">
+<meta name="description" content="UP-VLA 将多模态理解与未来视觉预测目标统一训练，在 Calvin ABC-D 基准上较先前最优方法提升 33%，并在需要精确空间信息的真实操作任务中展现出显著优势。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICML 2025 · 机器人操作 · VLA</span>
+    <h1>UP-VLA: A Unified Understanding and Prediction Model for Embodied Agent</h1>
+    <div class="sub">统一多模态理解与未来视觉预测，赋予 VLA 模型精细空间感知能力</div>
+    <div class="authors">Jianke Zhang, Yanjiang Guo, Yucheng Hu, Xiaoyu Chen, Xiang Zhu, Jianyu Chen</div>
+    <p class="lead">UP-VLA 通过联合训练 multi-modal understanding（MMU）和 future visual prediction（PRE）两个目标，弥补了现有 VLA 模型在低层空间理解上的不足。在仿真基准 Calvin ABC-D 上，UP-VLA 以平均完成长度 <strong>4.08</strong> 超越上一最优方法 GR-1 (3.06) 达 <strong>33%</strong>；在真实机械臂任务中，已见场景成功率达 <strong>80%</strong>，未见物体泛化成功率 <strong>58%</strong>。</p>
+    <div class="meta">
+      <span>ICML 2025</span>
+      <span>Phi-1.5 · 1.5B LLM</span>
+      <span>Calvin + Real-World Franka</span>
+      <span><a href="https://arxiv.org/abs/2501.18867">📄 arXiv:2501.18867</a></span>
+      <span><a href="https://arxiv.org/pdf/2501.18867">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>具身智能</span>
+      <span>future prediction</span>
+      <span>机器人操作</span>
+      <span>multi-modal understanding</span>
+      <span>embodied agent</span>
+      <span>Calvin benchmark</span>
+      <span>robotic manipulation</span>
+      <span>Phi-1.5</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">Vision-Language-Action (VLA) 模型借助大规模预训练 VLM 的语义知识，大幅提升了机器人策略的泛化能力。然而，现有 VLM 以高层语义理解为主，<strong>对低层视觉特征（距离、尺寸、空间关系）理解不足</strong>，而这些恰是机器人精细操作任务所必需的。</p>
+    <blockquote>"VLMs often focus on high-level semantic content and neglect low-level features, limiting their ability to capture detailed visual and spatial information. These aspects, which are crucial for robotic control tasks, remain underexplored in existing pre-training paradigms."</blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="UP-VLA overview teaser">
+      <figcaption><strong>图 1：</strong>UP-VLA 同时接受 multi-modal understanding 和 future prediction 两个预训练目标。左侧展示高层语义理解（VQA、指令跟随），右侧展示预测未来帧以建立低层空间感知；两者共同驱动 action 生成。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/x2.webp" alt="Comparison of VLA paradigms">
+      <figcaption><strong>图 2：</strong>三类 VLA 范式对比。纯 VLM-based VLA 语义理解强但空间感知弱；纯 prediction-based 方法空间感知强但缺乏语义泛化；UP-VLA 结合两者优势，在仿真与真实操作任务上均表现最优。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4.08</b><small>Calvin ABC→D Avg. Length（UP-VLA）</small></div>
+      <div><b>+33%</b><small>相对 GR-1 (3.06) 的提升幅度</small></div>
+      <div><b>80%</b><small>真实机械臂已见任务成功率</small></div>
+      <div><b>58%</b><small>未见物体 / 精细操作泛化成功率</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">UP-VLA 以 <strong>Phi-1.5</strong>（1.5B 参数）作为语言骨干，将 CLIP-ViT（连续 token，用于理解）和 VQ-GAN（离散 token，用于预测）双路图像编码器的输出统一送入同一 LLM，通过三个互补目标联合训练：多模态理解（MMU）、未来图像预测（PRE）以及动作学习（ACT），模型初始化自 Show-o（1.3B，512×512）。</p>
+    <figure>
+      <img src="img/x3.webp" alt="UP-VLA architecture overview">
+      <figcaption><strong>图 3：</strong>UP-VLA 整体架构。蓝色路径：CLIP-ViT 编码连续视觉 token，经 MLP 投影后与语言 token 一起喂入 LLM，完成 VQA / 语义理解；橙色路径：VQ-GAN 编码离散图像 token，LLM 在给定当前观测与任务指令的条件下自回归预测下一帧的离散 token；绿色路径：MAP（单层 attention）+ 线性层将 LLM 输出映射为机器人动作（6-DoF 末端位移 + 夹爪开合）。三路目标共享同一 LLM 权重。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/x4.webp" alt="Unified prompting and attention mechanism">
+      <figcaption><strong>图 4：</strong>统一 prompt 与 attention 机制示意图。MMU 任务时，图像 token 彼此可见并预测语言 token；PRE 任务时，语言 token 条件化未来离散图像 token 的生成；ACT 任务时，两路 token 联合驱动动作输出，并同步预测未来帧。</figcaption>
+    </figure>
+
+    <h3>三个训练目标</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Multi-modal Understanding (ℒ<sub>MMU</sub>)</h3>
+        <p>给定图像连续 token <em>u</em> 和已生成语言 token，最大化下一个语言 token 的对数似然：</p>
+        <p style="font-family:monospace;color:var(--acc2)">ℒ_MMU = Σ<sub>i</sub> log p<sub>θ</sub>(l<sub>i</sub> | u, l<sub>1</sub>,…,l<sub>i-1</sub>)</p>
+        <p>预训练数据：LLaVa-tuning-665k（665k 图文对），涵盖 VQA、描述、推理等任务，赋予模型丰富语义知识。</p>
+      </div>
+      <div class="card">
+        <h3>Future Visual Prediction (ℒ<sub>PRE</sub>)</h3>
+        <p>以语言指令和当前观测为条件，逐位预测未来帧的 VQ-GAN 离散 token，使用 cross-entropy 损失：</p>
+        <p style="font-family:monospace;color:var(--acc2)">ℒ_PRE = Σ<sub>j</sub> log p<sub>θ</sub>(v'<sub>j</sub> | l, v<sub>1</sub>,…,v<sub>M</sub>)</p>
+        <p>预训练数据：Bridge 数据集（25k 机械臂演示），强迫模型学习动作执行后的视觉后果，建立低层空间先验。</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Action Learning (ℒ<sub>ACT</sub>) — 联合目标</h3>
+      <p>在动作数据上同时预测下一帧图像和机器人动作，合并损失为：</p>
+      <p style="font-family:monospace;color:var(--acc2)">ℒ = λ₁ℒ<sub>MMU</sub> + λ₂ℒ<sub>PRE</sub> + λ₃ℒ<sub>ACT</sub></p>
+      <p>其中 ℒ<sub>ACT</sub> = Σ‖â<sub>pos</sub> − a<sub>pos</sub>‖²₂ + BCE(â<sub>end</sub>, a<sub>end</sub>)，分别约束末端执行器 6-DoF 相对位移（MSE）和夹爪开合状态（BCE）。</p>
+      <p>模型生成场景描述（VQA 自问自答）后将其拼接到 prompt 中，为动作推断提供明确的语义上下文，进一步利用 MMU 能力。训练 20k steps，batch size 64，前 1k steps 线性 warmup。</p>
+    </div>
+
+    <h3>真实机器人部署</h3>
+    <p>使用 Franka-Emika Panda 机械臂，收集 2k+ 演示（6 项技能，人工远程操控 + 脚本策略），涵盖抓取、摆放、插线等任务；测试分为已见场景、未见物体、精细操作三类，各执行 20 次。</p>
+    <figure>
+      <img src="img/fig5.webp" alt="Evaluation environments">
+      <figcaption><strong>图 5：</strong>评估环境可视化。左：Calvin 仿真环境，包含 ABC→D 和 ABCD→D 两种泛化设置；右：Franka 真实机械臂任务，包含已见任务（seen tasks）、未见物体（unseen objects）和精细操作（precise operations）三类。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在仿真基准 <strong>Calvin</strong>（ABC→D / ABCD→D）和真实 <strong>Franka</strong> 机械臂任务上与 RT-1、Robo-Flamingo、GR-1 等强基线对比，评测指标为平均任务完成长度（Avg. Length，最高 5）和操作成功率。</p>
+
+    <h3>Calvin ABC→D 仿真基准</h3>
+    <table>
+      <tr>
+        <th>方法</th><th>类型</th>
+        <th>Avg. Len ↑</th><th>Task 1</th><th>Task 2</th><th>Task 3</th><th>Task 4</th><th>Task 5</th>
+      </tr>
+      <tr><td>RT-1</td><td>other</td><td>0.90</td><td>0.533</td><td>0.222</td><td>0.094</td><td>0.038</td><td>0.013</td></tr>
+      <tr><td>Diffusion Policy*</td><td>other</td><td>0.56</td><td>0.402</td><td>0.123</td><td>0.026</td><td>0.008</td><td>0.000</td></tr>
+      <tr><td>3D Diffuser Actor</td><td>other</td><td>3.35</td><td>0.938</td><td>0.803</td><td>0.662</td><td>0.533</td><td>0.412</td></tr>
+      <tr><td>3D-VLA</td><td>VLA</td><td>0.71</td><td>0.447</td><td>0.163</td><td>0.081</td><td>0.016</td><td>0.000</td></tr>
+      <tr><td>UP-VLA-RT-2*</td><td>VLA</td><td>1.44</td><td>0.612</td><td>0.389</td><td>0.236</td><td>0.138</td><td>0.062</td></tr>
+      <tr><td>Robo-Flamingo</td><td>VLA</td><td>2.47</td><td>0.824</td><td>0.619</td><td>0.466</td><td>0.331</td><td>0.235</td></tr>
+      <tr><td>Uni-Pi</td><td>Prediction</td><td>0.92</td><td>0.560</td><td>0.160</td><td>0.080</td><td>0.080</td><td>0.040</td></tr>
+      <tr><td>SuSIE</td><td>Prediction</td><td>2.69</td><td>0.870</td><td>0.690</td><td>0.490</td><td>0.380</td><td>0.260</td></tr>
+      <tr><td>GR-1</td><td>Prediction</td><td>3.06</td><td>0.854</td><td>0.712</td><td>0.596</td><td>0.497</td><td>0.401</td></tr>
+      <tr><td>UP-VLA-phi-w/o-mmu*</td><td>Prediction</td><td>3.13</td><td>0.844</td><td>0.705</td><td>0.604</td><td>0.520</td><td>0.430</td></tr>
+      <tr style="background:rgba(110,168,254,.08)">
+        <td><strong>UP-VLA</strong></td><td>Prediction&amp;VLA</td>
+        <td class="good">4.08</td>
+        <td class="good">0.928</td><td class="good">0.865</td><td class="good">0.815</td>
+        <td class="good">0.769</td><td class="good">0.699</td>
+      </tr>
+    </table>
+
+    <h3>Calvin ABCD→D 仿真基准</h3>
+    <table>
+      <tr>
+        <th>方法</th><th>类型</th>
+        <th>Avg. Len ↑</th><th>Task 1</th><th>Task 2</th><th>Task 3</th><th>Task 4</th><th>Task 5</th>
+      </tr>
+      <tr><td>RT-1</td><td>other</td><td>2.45</td><td>0.844</td><td>0.617</td><td>0.438</td><td>0.323</td><td>0.227</td></tr>
+      <tr><td>Robo-Flamingo</td><td>VLA</td><td>4.09</td><td>0.964</td><td>0.896</td><td>0.824</td><td>0.740</td><td>0.660</td></tr>
+      <tr><td>GR-1</td><td>Prediction</td><td>4.21</td><td>0.949</td><td>0.896</td><td>0.844</td><td>0.789</td><td>0.731</td></tr>
+      <tr style="background:rgba(110,168,254,.08)">
+        <td><strong>UP-VLA</strong></td><td>Prediction&amp;VLA</td>
+        <td class="good">4.42</td>
+        <td class="good">0.962</td><td class="good">0.921</td><td class="good">0.879</td>
+        <td class="good">0.842</td><td class="good">0.812</td>
+      </tr>
+    </table>
+
+    <h3>消融实验（Calvin ABC→D + 真实机械臂）</h3>
+    <table>
+      <tr>
+        <th>消融变体</th>
+        <th>ABC→D Avg.Len ↑</th>
+        <th>真实已见任务 ↑</th>
+        <th>真实未见物体 ↑</th>
+      </tr>
+      <tr><td>w/o MMU</td><td>3.89</td><td>0.85</td><td>0.20</td></tr>
+      <tr><td>w/o Bridge-Pretrain</td><td>2.74</td><td>0.65</td><td>0.30</td></tr>
+      <tr><td>w/o Prediction</td><td>1.44</td><td>0.65</td><td>0.35</td></tr>
+      <tr><td>w/o MMU-Condition</td><td>3.99</td><td>0.80</td><td>0.50</td></tr>
+      <tr style="background:rgba(110,168,254,.08)">
+        <td><strong>Full UP-VLA</strong></td>
+        <td class="good">4.08</td><td>0.80</td><td class="good">0.58</td>
+      </tr>
+    </table>
+    <p>消融结果表明：去掉 visual prediction（Avg. Len 骤降至 1.44）和 Bridge 预训练（降至 2.74）影响最大，说明低层空间预测目标是模型核心收益来源。MMU-Condition（将自生成场景描述拼接入 prompt）对未见物体的泛化贡献显著（从 0.50 → 0.58）。</p>
+
+    <h3>真实操作与视觉预测可视化</h3>
+    <figure>
+      <img src="img/fig7.webp" alt="VQA results and predicted future images">
+      <figcaption><strong>图 7：</strong>左侧展示 VQA 理解结果（模型能正确识别场景中物体的位置、颜色与相对关系）；右侧展示 future prediction 生成的未来帧，模型能预测机械臂抓取动作后的视觉状态，验证了 PRE 目标赋予的空间推理能力。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/fig6.webp" alt="Real-world manipulation results">
+      <figcaption><strong>图 6：</strong>真实 Franka 机械臂操作成功率汇总。已见任务成功率 0.80，未见物体泛化 0.58，精细操作（插线、小物体抓取）0.58，均明显优于消融基线。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文未设独立 "Limitations" 小节；以下各点来自结论与结果讨论，均为<em>作者明确指出（stated）</em>的内容。</div>
+    <details class="lim" open>
+      <summary>特定物体识别准确率不稳定</summary>
+      <p>由于"数据规模和骨干网络的限制（constraints in data scale and backbone）"，模型对特定物体的识别有时不准确，导致 VQA 质量参差不齐，进而影响 MMU-Condition 的效果。</p>
+    </details>
+    <details class="lim" open>
+      <summary>预测帧中背景颜色伪影</summary>
+      <p>在 Calvin D 环境中，预测的未来帧有时出现与当前输入帧背景颜色不一致的颜色伪影，原因是训练数据（Bridge 数据集）的视觉分布与测试环境存在偏差，模型尚未充分泛化到新场景的视觉风格。</p>
+    </details>
+    <details class="lim">
+      <summary>视觉生成预训练数据不足</summary>
+      <p>当前 Bridge 预训练数据（25k 演示）规模有限，导致视觉预测在多样场景下不够鲁棒，限制了 PRE 目标在更广泛真实部署中的收益上限。未来引入更大规模、更多样的机器人视频数据有望突破此瓶颈。</p>
+    </details>
+    <details class="lim">
+      <summary>模型规模与计算成本</summary>
+      <p>（<em>inferred from design</em>）采用双路图像编码器（CLIP-ViT + VQ-GAN）加上自回归未来帧预测，推理时计算量大于单路 VLA；在实时高频控制场景下延迟较高，论文未给出推理速度的具体数据。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · UP-VLA: A Unified Understanding and Prediction Model for Embodied Agent · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2501.18867">https://arxiv.org/abs/2501.18867</a>
+  </div>
+</footer>
+
+</body>
+</html>

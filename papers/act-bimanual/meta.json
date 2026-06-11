@@ -1,0 +1,22 @@
+{
+  "slug": "act-bimanual",
+  "title": "Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware",
+  "arxiv_id": "2304.13705",
+  "url": "https://arxiv.org/abs/2304.13705",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "bimanual manipulation",
+    "imitation learning",
+    "action chunking",
+    "transformer",
+    "CVAE",
+    "teleoperation",
+    "ALOHA",
+    "双臂操作",
+    "复合误差缓解",
+    "低成本机器人"
+  ],
+  "summary_zh": "提出 ALOHA 低成本双臂遥操作系统（<$20k）与 ACT（Action Chunking with Transformers）算法，将未来 k 步动作作为整体预测以缓解复合误差，配合 CVAE 建模人类演示多模态性，仅需 10 分钟演示数据即可在真实世界 6 项精细操作任务中实现 80–90% 成功率。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

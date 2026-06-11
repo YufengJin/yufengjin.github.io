@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  ManiGaussian: Dynamic Gaussian Splatting for Multi-task Robotic Manipulation
+  arXiv: 2403.08321
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ManiGaussian: Dynamic Gaussian Splatting for Multi-task Robotic Manipulation</title>
+<meta name="keywords" content="robotic manipulation, Gaussian splatting, world model, scene dynamics, 动态场景重建, 机器人操作, RLBench, 多任务学习, 语言条件操作, future scene prediction">
+<meta name="description" content="ManiGaussian 通过动态 Gaussian Splatting 对场景时空动态建模，结合 Gaussian 世界模型提供未来场景重建监督信号，在 RLBench 10 个任务上以 44.8% 平均成功率超越 SOTA 13.1%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · ECCV 2024</span>
+    <h1>ManiGaussian: Dynamic Gaussian Splatting for Multi-task Robotic Manipulation</h1>
+    <div class="sub">用动态 Gaussian Splatting 挖掘操作场景时空动态，提升多任务机器人操控成功率</div>
+    <div class="authors">Guanxing Lu, Shiyi Zhang, Ziwei Wang, Changliu Liu, Jiwen Lu, Yansong Tang &nbsp;·&nbsp; Tsinghua University, NTU, CMU</div>
+    <p class="lead">ManiGaussian 将 3D Gaussian Splatting 扩展到动态时序场景，构建 Gaussian 世界模型来预测未来场景状态，以此为监督信号引导机器人理解物体交互动态，从而大幅提升语言条件下的多任务操控能力。在 RLBench 10 个任务的评测中，ManiGaussian 以 <strong>44.8%</strong> 的平均成功率超越 SOTA GNFactor <strong>13.1 个百分点</strong>。</p>
+    <div class="meta">
+      <span>RLBench 10 tasks · 166 variations</span>
+      <span>2024 · cs.RO / cs.CV</span>
+      <span>2× RTX 4090 · 100k iters</span>
+      <span><a href="https://arxiv.org/abs/2403.08321">📄 arXiv:2403.08321</a></span>
+      <span><a href="https://guanxinglu.github.io/ManiGaussian/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>robotic manipulation</span>
+      <span>Gaussian splatting</span>
+      <span>world model</span>
+      <span>动态场景建模</span>
+      <span>多任务学习</span>
+      <span>语言条件操作</span>
+      <span>future scene prediction</span>
+      <span>RLBench</span>
+      <span>时空动态</span>
+      <span>scene dynamics</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">语言条件机器人操控任务需要在非结构化环境中完成复杂的物体交互。现有的感知类方法（perceptive methods）提取语义特征做动作预测，而生成类方法（generative methods）通过自监督重建 3D 场景来辅助学习——但两类方法都忽略了一个关键因素。</p>
+    <blockquote>"Conventional robotic manipulation methods...ignore the scene-level spatiotemporal dynamics that depict the physical interaction among objects during manipulation."</blockquote>
+    <p>机器人在推、抓、拧、滑等任务中，物体之间存在时序上的因果依赖：夹爪移动如何引发物体位移？下一帧场景会如何变化？若模型无法建模这种<strong>时空动态</strong>，就难以在 long-horizon 或需要多步推理的任务中保持稳定。ManiGaussian 的核心思路是：以「预测未来场景」作为额外监督信号，迫使模型内化场景动态。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="teaser">
+      <figcaption>图 1：对比展示。在 "stack two rose blocks" 任务中，GNFactor 无法正确抓取绿色底座，而 ManiGaussian 通过编码场景动态成功完成任务。右侧显示两个模型在 RLBench 全部 10 个任务上的平均成功率对比：ManiGaussian（44.8%）vs GNFactor（31.7%），以及训练效率（2.29× 更快达到相同性能）。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>44.8%</b><small>平均成功率（10 tasks）</small></div>
+      <div><b>+13.1%</b><small>超越 GNFactor（SOTA）</small></div>
+      <div><b>2.29×</b><small>训练速度（相同性能）</small></div>
+      <div><b>166</b><small>任务变体总数</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">ManiGaussian 由两个核心模块组成：（1）<strong>动态 Gaussian Splatting 框架</strong>——将语义特征传播建模在 Gaussian 嵌入空间中；（2）<strong>Gaussian 世界模型</strong>——基于当前观测和动作预测未来场景，为策略学习提供监督信号。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="pipeline">
+      <figcaption>图 2：ManiGaussian 整体框架。输入 RGB-D 图像经提升（lifting）和体素化（voxelization）后进入动态 Gaussian Splatting 模块。Gaussian 世界模型由表征网络 q_ϕ、Gaussian regressor g_ϕ、变形预测器 p_ϕ 和 Gaussian renderer 组成，输出未来场景预测用于辅助监督；最终动作预测头输出末端执行器的平移（ℝ^100³ 体素空间）、旋转（ℝ^(72×3)）、开合度和碰撞信号。</figcaption>
+    </figure>
+
+    <h3>动态 Gaussian Splatting（Dynamic Gaussian Splatting）</h3>
+    <p>标准 3DGS 用静态 Gaussian 基元表示场景，参数 θᵢ = (μᵢ, cᵢ, rᵢ, sᵢ, σᵢ, fᵢ) 包含位置、颜色、旋转、尺度、不透明度和语义特征。ManiGaussian 将其扩展为时间相关形式：</p>
+    <blockquote>θᵢ⁽ᵗ⁾ = (μᵢ⁽ᵗ⁾, cᵢ⁽ᵗ⁾, rᵢ⁽ᵗ⁾, sᵢ⁽ᵗ⁾, σᵢ⁽ᵗ⁾, fᵢ⁽ᵗ⁾)</blockquote>
+    <p>针对刚体操控任务，位置和旋转随时间变化：μᵢ⁽ᵗ⁺¹⁾ = μᵢ⁽ᵗ⁾ + Δμᵢ⁽ᵗ⁾，而颜色、尺度、不透明度和语义特征保持不变。这样，变形预测器只需预测 Δμ 和 Δr，大大降低了建模难度。</p>
+
+    <h3>Gaussian 世界模型（Gaussian World Model）</h3>
+    <p>世界模型由四个子模块串联构成：</p>
+    <ul>
+      <li><strong>表征网络 q_ϕ</strong>：从 RGB-D 观测中提取 per-point 特征。</li>
+      <li><strong>Gaussian regressor g_ϕ</strong>：将 point 特征回归为当前时刻的 Gaussian 参数集合。</li>
+      <li><strong>变形预测器 p_ϕ</strong>：以当前 Gaussian 参数和动作为条件，预测 t→t+1 的形变 Δθ。</li>
+      <li><strong>Gaussian renderer</strong>：利用更新后的 Gaussian 参数可微渲染出未来场景图像，与真实 t+1 帧计算重建损失。</li>
+    </ul>
+    <p>训练包含 3,000 次迭代的热身阶段（warm-up），期间冻结变形预测器，先建立稳定的几何表征，再加入动态建模。</p>
+
+    <h3>训练目标（Learning Objectives）</h3>
+    <p>总损失由四项组成：</p>
+    <ul>
+      <li><strong>当前几何重建 ℒ_Geo</strong>：L₂ 图像重建损失 ‖C⁽ᵗ⁾ − Ĉ⁽ᵗ⁾‖₂²</li>
+      <li><strong>语义特征一致性 ℒ_Sem</strong>：基于 Stable Diffusion 语义特征的余弦距离 1 − σ_cos(F⁽ᵗ⁾, F̂⁽ᵗ⁾)</li>
+      <li><strong>动作预测 ℒ_Act</strong>：平移、旋转、开合度、碰撞的交叉熵损失</li>
+      <li><strong>未来动态重建 ℒ_Dyna</strong>：‖Ĉ⁽ᵗ⁺¹⁾(a⁽ᵗ⁾, o⁽ᵗ⁾) − C⁽ᵗ⁺¹⁾‖₂²</li>
+    </ul>
+    <blockquote>ℒ = ℒ_Act + λ_Geo · ℒ_Geo + λ_Sem · ℒ_Sem + λ_Dyna · ℒ_Dyna</blockquote>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在 RLBench 基准的 10 个任务、166 个变体上进行评测，每个任务提供 20 个专家演示。使用单前置摄像头（128×128 分辨率）做推理，20 路多视角摄像头作为 Gaussian Splatting 的训练监督。基线包括 PerAct（感知类）、PerAct(4cam)（4 摄像头版本）和 GNFactor（生成类）。</p>
+
+    <h3>Table 1：各任务成功率对比（%）</h3>
+    <table>
+      <tr>
+        <th>任务 Task</th>
+        <th>PerAct</th>
+        <th>PerAct(4cam)</th>
+        <th>GNFactor</th>
+        <th>ManiGaussian</th>
+      </tr>
+      <tr><td>close jar</td><td>18.7</td><td>21.3</td><td>25.3</td><td class="good">28.0</td></tr>
+      <tr><td>open drawer</td><td>54.7</td><td>44.0</td><td class="good">76.0</td><td class="good">76.0</td></tr>
+      <tr><td>sweep to dustpan</td><td>0.0</td><td>0.0</td><td>28.0</td><td class="good">64.0</td></tr>
+      <tr><td>meat off grill</td><td>40.0</td><td class="good">65.3</td><td>57.3</td><td>60.0</td></tr>
+      <tr><td>turn tap</td><td>38.7</td><td>46.7</td><td>50.7</td><td class="good">56.0</td></tr>
+      <tr><td>slide block</td><td>18.7</td><td>16.0</td><td>20.0</td><td class="good">24.0</td></tr>
+      <tr><td>put in drawer</td><td>2.7</td><td>6.7</td><td>0.0</td><td class="good">16.0</td></tr>
+      <tr><td>drag stick</td><td>5.3</td><td>12.0</td><td>37.3</td><td class="good">92.0</td></tr>
+      <tr><td>push buttons</td><td>18.7</td><td>9.3</td><td>18.7</td><td class="good">20.0</td></tr>
+      <tr><td>stack blocks</td><td>6.7</td><td>5.3</td><td>4.0</td><td class="good">12.0</td></tr>
+      <tr><td><strong>Average</strong></td><td>20.4</td><td>22.7</td><td>31.7</td><td class="good"><strong>44.8</strong></td></tr>
+    </table>
+    <p>注：<em>meat off grill</em> 任务中 PerAct(4cam) 以 65.3% 优于 ManiGaussian 的 60.0%，<em>open drawer</em> 中两者并列最优（76.0%）。其余 8 个任务 ManiGaussian 均为最优。</p>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="qualitative results">
+      <figcaption>图 4：定性对比。左列展示 "slide block to yellow target"，右列展示 "turn left tap"。GNFactor（上行）在这两个任务中失败，ManiGaussian（下行）通过理解场景动态成功完成操控。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/novel_view.webp" alt="novel view synthesis">
+      <figcaption>图 5：新视角合成与未来场景预测。上行为当前场景的 Gaussian 渲染（不同视角），下行为执行动作后的未来场景预测。模型不仅重建了当前几何，还能预测夹爪交互引发的物体形变。</figcaption>
+    </figure>
+
+    <h3>Table 2：消融实验（%，按任务类别分组）</h3>
+    <table>
+      <tr>
+        <th>Geo</th><th>Sem</th><th>Dyna</th>
+        <th>Planning</th><th>Long-horizon</th><th>Tools</th><th>Motion</th><th>Screw</th><th>Occlusion</th>
+        <th>Average</th>
+      </tr>
+      <tr><td>✗</td><td>✗</td><td>✗</td><td>36.0</td><td>2.0</td><td>25.3</td><td>52.0</td><td>4.0</td><td>28.0</td><td>23.6</td></tr>
+      <tr><td>✓</td><td>✗</td><td>✗</td><td>46.0</td><td>4.0</td><td>52.0</td><td>52.0</td><td>24.0</td><td>60.0</td><td>39.2</td></tr>
+      <tr><td>✓</td><td>✓</td><td>✗</td><td>46.0</td><td>8.0</td><td>53.3</td><td>64.0</td><td>28.0</td><td>56.0</td><td>41.6</td></tr>
+      <tr><td>✓</td><td>✗</td><td>✓</td><td>54.0</td><td>10.0</td><td>49.3</td><td>64.0</td><td>24.0</td><td>72.0</td><td>43.6</td></tr>
+      <tr><td>✓</td><td>✓</td><td>✓</td><td>40.0</td><td class="good">14.0</td><td class="good">60.0</td><td>56.0</td><td class="good">28.0</td><td class="good">76.0</td><td class="good"><strong>44.8</strong></td></tr>
+    </table>
+    <p>消融分析显示：<strong>几何重建（Geo）</strong>带来最显著的提升（23.6% → 39.2%，+15.6%），说明 3D 几何理解是操控成功的基础；<strong>动态预测（Dyna）</strong>在 long-horizon 和 occlusion 类任务上效果最突出；三者协同使用达到最优的 44.8%。</p>
+
+    <figure>
+      <img src="img/learning_curve.webp" alt="learning curve">
+      <figcaption>图 3：学习曲线对比。ManiGaussian 以 2.29× 更快的速度超越 GNFactor 的最终性能，并最终取得 1.18× 的绝对性能提升。横轴为训练步数，纵轴为平均成功率。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note:</b> 以下第一条为论文作者明确陈述（stated）的局限性，其余为从设计中推断的局限性（inferred from the design）。</div>
+
+    <details class="lim" open>
+      <summary>多视角监督与相机标定要求（Stated）</summary>
+      <p>论文明确指出："The limitations stem from the necessity of multiple view supervision with camera calibration for the Gaussian Splatting framework." 训练时需要 20 路多视角摄像头及其内外参数，在现实部署场景中（如单目移动机器人）代价较高，限制了方法的实用性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>刚体假设（Inferred）</summary>
+      <p>当前的动态建模仅对刚体物体进行位置和旋转的变形预测，不支持柔性物体（如绳子、布料）或流体的形变。对于高度非刚性的操控任务，方法可能需要扩展。</p>
+    </details>
+
+    <details class="lim">
+      <summary>单步动作预测（Inferred）</summary>
+      <p>ManiGaussian 预测 t→t+1 的未来场景作为监督信号，但对于需要多步规划的 long-horizon 任务（如 "stack blocks" 仅达 12.0%），单步世界模型的预测范围可能不足以充分约束策略。</p>
+    </details>
+
+    <details class="lim">
+      <summary>分辨率与推理效率（Inferred）</summary>
+      <p>训练使用 128×128 分辨率图像，推理仅依赖单一前置摄像头。当场景中存在大量细粒度操控对象时，低分辨率可能导致感知精度下降。此外，Gaussian Splatting 的渲染开销在实时部署中尚待优化。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · ManiGaussian: Dynamic Gaussian Splatting for Multi-task Robotic Manipulation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2403.08321">https://arxiv.org/abs/2403.08321</a>
+  </div>
+</footer>
+
+</body>
+</html>

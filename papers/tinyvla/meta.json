@@ -1,0 +1,11 @@
+{
+  "slug": "tinyvla",
+  "title": "TinyVLA: Towards Fast, Data-Efficient Vision-Language-Action Models for Robotic Manipulation",
+  "arxiv_id": "2409.12514",
+  "url": "https://arxiv.org/abs/2409.12514",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "vision-language-action", "机器人操作", "diffusion policy", "data efficiency", "LoRA 微调", "fast inference", "多模态策略"],
+  "summary_zh": "TinyVLA 采用轻量级 VLM（70M–1.4B 参数）结合 Diffusion Policy 解码器，无需大规模机器人预训练，推理速度比 OpenVLA 快 20 倍，真实机械臂平均成功率超越 OpenVLA 达 25.7 个百分点。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

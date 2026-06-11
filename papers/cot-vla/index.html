@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoT-VLA: Visual Chain-of-Thought Reasoning for Vision-Language-Action Models</title>
+<meta name="keywords" content="视觉思维链, VLA, 机器人操作, 子目标图像生成, VILA-U, 视觉语言动作模型, chain-of-thought, vision-language-action">
+<meta name="description" content="CoT-VLA 在视觉语言动作模型中引入显式视觉思维链推理，先生成未来图像帧作为子目标，再预测动作序列，在真实机器人操作任务上超越 SOTA 17%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CVPR 2025 · 机器人操作 · VLA</span>
+    <h1>CoT-VLA: Visual Chain-of-Thought Reasoning for Vision-Language-Action Models</h1>
+    <div class="sub">先"想象"未来，再执行动作——为 VLA 引入视觉思维链推理</div>
+    <div class="authors">Qingqing Zhao, Yao Lu, Moo Jin Kim, Zipeng Fu, Zhuoyang Zhang, Yecheng Wu, Zhaoshuo Li, Qianli Ma, Song Han, Chelsea Finn, Ankur Handa, Ming-Yu Liu, Donglai Xiang, Gordon Wetzstein, Tsung-Yi Lin &nbsp;·&nbsp; NVIDIA · Stanford University · MIT</div>
+    <p class="lead">CoT-VLA 在视觉语言动作模型（VLA）中引入显式视觉思维链（visual chain-of-thought）推理：模型在生成动作序列之前，先自回归地预测若干步后的未来图像帧作为"子目标"，以此为中间推理步骤指导动作生成。基于 7B 参数的 VILA-U 骨干网络，CoT-VLA 在真实机器人操作任务上超越当时最优 VLA 基线 17%，在仿真 benchmark 上超越 6%。</p>
+    <div class="meta">
+      <span>CVPR 2025</span>
+      <span>7B 参数</span>
+      <span>真实机器人 + 仿真双验证</span>
+      <span><a href="https://arxiv.org/abs/2503.22020">📄 arXiv:2503.22020</a></span>
+      <span><a href="https://arxiv.org/pdf/2503.22020">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>视觉思维链</span>
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>子目标图像生成</span>
+      <span>VILA-U</span>
+      <span>chain-of-thought reasoning</span>
+      <span>action chunking</span>
+      <span>hybrid attention</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前主流 VLA 模型直接将语言指令与视觉观测映射到机器人动作，缺乏中间推理过程。这与人类"先在脑海中规划目标状态，再执行"的认知方式相悖，也限制了模型在复杂长视野任务中的泛化能力。</p>
+    <blockquote>"We propose to incorporate explicit visual chain-of-thought (CoT) reasoning into VLAs by predicting future image frames autoregressively as visual goals before generating a short action sequence to achieve these goals."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="CoT-VLA vs Vanilla VLA 对比">
+      <figcaption><b>图 1 · 框架对比。</b>传统 VLA（左）直接从当前观测与语言指令预测动作；CoT-VLA（右）首先以自回归方式生成未来子目标图像作为视觉中间推理步骤，然后基于该子目标生成动作序列。CoT-VLA 可同时利用带动作标注的机器人演示数据与无动作标注的视频数据进行训练。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>+17%</b><small>真实机器人操作任务 vs SOTA</small></div>
+      <div><b>+6%</b><small>LIBERO 仿真 benchmark</small></div>
+      <div><b>7B</b><small>VILA-U 骨干参数量</small></div>
+      <div><b>46.7%</b><small>预训练阶段带来的相对提升（Franka-Tabletop）</small></div>
+    </div>
+    <p>核心洞察在于：若模型能生成"接下来 n 步后的场景应该是什么样"的图像，则这一预测本身就构成了对任务进度的显式规划。无动作标注的视频数据（如 EPIC-KITCHEN、Something-Something V2）同样包含丰富的视觉动态先验，可用于训练子目标图像生成能力，从而扩大有效训练数据规模。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">CoT-VLA 以 VILA-U 为基础模型，采用"两阶段条件生成"：先以自回归 Transformer 生成子目标图像 token，再以 full-attention 并行解码 action chunk。训练分三阶段：通用预训练 → 机器人预训练（含无动作视频）→ 任务微调。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="CoT-VLA 架构总览">
+      <figcaption><b>图 2 · 架构总览。</b>模型以 VILA-U 为骨干，输入当前图像观测与语言指令，先通过 causal attention 自回归生成子目标图像（256 个 RQ-VAE token，分辨率 256×256），再以 full attention 并行预测 m=10 步动作 chunk。闭环部署时，每执行完一个 action chunk 即重新感知并生成新子目标。</figcaption>
+    </figure>
+    <h3>VILA-U 与残差量化图像 token</h3>
+    <p>VILA-U 是一个统一的多模态基础模型，同时支持图像理解与生成。图像通过 RQ-VAE（Residual Quantization VAE）编码为 16×16×4 的 token 网格（残差深度为 4），在 256×256 分辨率下每帧共 256 个 token。深度 Transformer 逐层预测残差 token，从而在离散 token 空间内实现高质量图像生成。动作 token 则直接拼接在图像/文本序列之后，以统一的 Transformer 解码。</p>
+    <h3>Hybrid Attention：视觉生成用 Causal，动作预测用 Full</h3>
+    <figure>
+      <img src="img/attention.webp" alt="混合注意力机制示意图">
+      <figcaption><b>图 3 · Hybrid Attention 机制。</b>生成图像与文本 token 时使用 causal（因果）注意力以保证自回归一致性；预测动作 token 时切换为 full attention，使整个 action chunk 内每个时间步的动作都能相互感知，实现更平滑的 action chunking。特殊分隔 token 用于区分两种注意力模式。</figcaption>
+    </figure>
+    <p>这一设计将自回归图像生成与并行动作解码统一在同一 Transformer 中，避免了双网络带来的额外复杂度。Action chunking（m=10）减少了闭环控制的决策频率，提升执行流畅度。</p>
+    <h3>三阶段训练流程</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>阶段一：通用预训练</h3>
+        <ul>
+          <li>使用图文对、视频数据训练 VILA-U 的多模态理解与生成能力</li>
+          <li>奠定视觉语言基础，无需机器人数据</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>阶段二：机器人预训练</h3>
+        <ul>
+          <li>在 Open X-Embodiment 数据集上同时训练子目标图像生成与动作预测</li>
+          <li>引入无动作标注的视频数据（EPIC-KITCHEN、Something-Something V2），扩大视觉动态先验</li>
+          <li>子目标时间间隔 n 从数据集特定范围均匀采样（如 Bridge: n∈[5,10]，TOTO: n∈[20,24]）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>阶段三：目标任务微调</h3>
+      <ul>
+        <li>在目标任务的少量演示数据上微调，保持子目标图像生成头与动作预测头的联合训练</li>
+        <li>Franka-Tabletop 实验表明此阶段相比直接微调带来 <b>46.7% 相对提升</b>（53.7% → 78.8%）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在两个平台展开：LIBERO 仿真 benchmark（4 个任务分组）与真实 Franka-Tabletop 机器人平台（6 个操作任务，含 3 个单指令与 3 个多指令任务）。同时在 Bridge-V2 数据集上评估跨任务泛化。基线包括 Diffusion Policy、Octo 和 OpenVLA。</p>
+
+    <h3>LIBERO Benchmark（仿真）</h3>
+    <table>
+      <tr><th>模型</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>平均</th></tr>
+      <tr><td>Diffusion Policy</td><td>78.3±1.1%</td><td>92.5±0.7%</td><td>68.3±1.2%</td><td>50.5±1.3%</td><td>72.4±0.7%</td></tr>
+      <tr><td>Octo (fine-tuned)</td><td>78.9±1.0%</td><td>85.7±0.9%</td><td>84.6±0.9%</td><td>51.1±1.3%</td><td>75.1±0.6%</td></tr>
+      <tr><td>OpenVLA (fine-tuned)</td><td>84.7±0.9%</td><td>88.4±0.8%</td><td>79.2±1.0%</td><td>53.7±1.3%</td><td>76.5±0.6%</td></tr>
+      <tr><td class="good">CoT-VLA-7B（本文）</td><td class="good">87.5±1.4%</td><td class="good">91.6±0.5%</td><td class="good">87.6±0.6%</td><td class="good">69.0±0.8%</td><td class="good">81.13±0.6%</td></tr>
+    </table>
+    <p>CoT-VLA 在所有 4 个 LIBERO 子分组上均取得最优，尤其在长视野任务 LIBERO-Long 上提升显著（53.7% → 69.0%），体现了视觉子目标对长时序规划的帮助。</p>
+
+    <h3>Bridge-V2 跨任务泛化</h3>
+    <table>
+      <tr><th>模型</th><th>Visual</th><th>Motion</th><th>Semantic</th><th>Language</th></tr>
+      <tr><td>SUSIE</td><td>30%</td><td>10%</td><td>20%</td><td>40%</td></tr>
+      <tr><td>Octo</td><td>35%</td><td>10%</td><td>0%</td><td>40%</td></tr>
+      <tr><td>OpenVLA</td><td>75%</td><td>45%</td><td>40%</td><td>75%</td></tr>
+      <tr><td class="good">CoT-VLA（本文）</td><td>65%</td><td class="good">60%</td><td class="good">50%</td><td>70%</td></tr>
+    </table>
+    <p>在 Bridge-V2 上，CoT-VLA 在 Motion 泛化（60% vs 45%）与 Semantic 泛化（50% vs 40%）上超越 OpenVLA，但在 Visual 与 Language 分类上略低于 OpenVLA（65% vs 75%，70% vs 75%）。</p>
+
+    <h3>真实机器人 Franka-Tabletop</h3>
+    <figure>
+      <img src="img/results.webp" alt="Franka-Tabletop 真实机器人实验结果">
+      <figcaption><b>图 4 · Franka-Tabletop 真实机器人实验。</b>6 个操作任务（含 3 个单指令窄领域任务与 3 个多指令宽领域任务）的成功率对比。CoT-VLA 在平均成功率上超越所有基线 17%。</figcaption>
+    </figure>
+
+    <h3>定性结果</h3>
+    <figure>
+      <img src="img/qualitative.webp" alt="CoT-VLA 定性执行示例">
+      <figcaption><b>图 5 · 定性执行示例。</b>展示 CoT-VLA 在多个真实操作任务中，生成子目标图像与实际执行轨迹的对应关系。预测的子目标图像在视觉上接近任务中间状态，引导机器人准确完成操作。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验结果">
+      <figcaption><b>图 6 · 消融实验。</b>在 LIBERO-Spatial 与 LIBERO-Goal 上，逐步添加各组件（action chunking、hybrid attention、visual CoT）均带来稳定提升。Franka-Tabletop 预训练消融显示：预训练阶段带来 46.7% 相对提升（53.7% → 78.8%）。</figcaption>
+    </figure>
+    <p>消融实验验证了每个组件的独立贡献：Action chunking 提供稳定基础；Hybrid attention 使动作预测更连贯；Visual CoT 带来最终的性能跃升，尤其在需要多步规划的任务中效果最为明显。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>以下局限性均为论文作者在 Section 5 明确陈述（stated by the authors）。</div>
+    <details class="lim" open>
+      <summary>推理速度慢——约 7× 延迟开销</summary>
+      <p>论文明确指出："Our method requires generating 256 image tokens before action tokens, leading to a 7×slowdown on average with an action chunk size of 10."。在实时控制场景下，推理延迟是主要瓶颈，限制了对高频控制任务的适用性。</p>
+    </details>
+    <details class="lim">
+      <summary>自回归图像生成质量低于扩散模型</summary>
+      <p>VILA-U 的自回归图像生成在视觉细节上弱于扩散模型（如 DALL-E、Stable Diffusion）。子目标图像存在模糊或细节丢失，可能在需要精密视觉对准的任务中降低动作质量。论文在 OOD 泛化实验中也发现，使用生成子目标（20%/0%）远低于使用真实子目标（60%/40%）的成功率，印证了图像质量的瓶颈。</p>
+    </details>
+    <details class="lim">
+      <summary>Action chunking 引入动作不连续性</summary>
+      <p>预测固定长度的动作序列（chunk）会在两个 chunk 交界处出现动作不连续，且缺乏逐步反馈调整能力。当任务需要精细的实时感知-动作闭环时，chunk 边界的抖动可能影响执行稳定性。</p>
+    </details>
+    <details class="lim">
+      <summary>对全新任务的泛化能力受计算约束限制</summary>
+      <p>论文指出，模型在面对训练分布之外的全新视觉推理任务时泛化能力有限，部分原因在于计算约束（模型规模、生成 token 数）限制了推理深度与多样性。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · CoT-VLA: Visual Chain-of-Thought Reasoning for Vision-Language-Action Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2503.22020">https://arxiv.org/abs/2503.22020</a>
+  </div>
+</footer>
+
+</body>
+</html>

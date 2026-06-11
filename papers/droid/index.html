@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset
+  arXiv: 2403.12945 | 中文海报，无 EN 版本。
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DROID: 大规模野外机器人操作数据集</title>
+<meta name="keywords" content="robot manipulation dataset, imitation learning, 数据集, 仿真到现实迁移, diffusion policy, in-the-wild, teleoperation, scene diversity">
+<meta name="description" content="DROID 是一个包含 76,000 条演示轨迹、跨 564 个真实场景、350 小时交互数据的大规模机器人操作数据集，显著提升策略的泛化能力。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · CoRL 2024</span>
+    <h1>DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset</h1>
+    <div class="sub">大规模野外机器人操作数据集——用多样性解锁泛化能力</div>
+    <div class="authors">Alexander Khazatsky*, Karl Pertsch* et al.（共 101 位作者，13 家机构）· Stanford, UC Berkeley, CMU 等</div>
+    <p class="lead">
+      DROID 是一个包含 <strong>76,000 条</strong>机器人演示轨迹（350 小时）的大规模公开数据集，由来自北美、亚洲和欧洲的 50 名采集者在 <strong>564 个真实场景</strong>中收集，覆盖 86 类任务。
+      在此数据集上联合训练的 diffusion policy，分布内成功率相较基线提升 <strong>22%</strong>，分布外提升 <strong>17%</strong>。
+    </p>
+    <div class="meta">
+      <span>arXiv 2024-03</span>
+      <span>76,000 轨迹 / 350 h</span>
+      <span>564 场景 / 86 任务</span>
+      <span><a href="https://arxiv.org/abs/2403.12945">📄 arXiv:2403.12945</a></span>
+      <span><a href="https://droid-dataset.github.io">🌐 项目主页</a></span>
+    </div>
+    <div class="kw">
+      <span>robot manipulation dataset</span>
+      <span>in-the-wild 采集</span>
+      <span>imitation learning</span>
+      <span>diffusion policy</span>
+      <span>scene diversity</span>
+      <span>teleoperation</span>
+      <span>co-training</span>
+      <span>泛化能力</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      通才型机器人操作策略的关键瓶颈是数据——现有数据集几乎全部在<strong>少数受控实验室环境</strong>中采集，场景单一、任务有限，导致策略在新场景下的泛化极差。
+      如何以可扩展的方式采集<em>真实多样</em>的操作数据，是迈向通用机器人的核心挑战。
+    </p>
+    <blockquote>
+      "Most existing datasets are mostly trained on data collected in a small number of environments with limited scene and task diversity… collecting robot data remains logistically challenging and expensive outside of controlled lab settings."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DROID 机器人平台">
+      <figcaption>
+        <strong>DROID 硬件平台：</strong>Franka Panda 7-DoF 机械臂 + Robotiq 2F-85 夹爪，配备两个 ZED 2 外部立体相机和一个腕部 ZED Mini 相机，以及 Oculus Quest 2 遥操作手柄，全套硬件安装于可移动升降桌上，便于在任意真实场景中部署采集。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>76,000</b><small>成功演示轨迹</small></div>
+      <div><b>350 h</b><small>总交互时长</small></div>
+      <div><b>564</b><small>不同场景数量</small></div>
+      <div><b>86</b><small>任务类别（动词）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      DROID 的核心贡献是建立一套可在任意真实环境（办公室、厨房、户外等）快速部署的<strong>标准化采集系统</strong>，并在全球多个机构同步运行，以规模化方式覆盖真实世界的场景与任务多样性。
+    </p>
+
+    <h3>硬件与数据采集流程</h3>
+    <p>
+      每套 DROID 采集站包括：Franka Panda 机械臂（7-DoF）、两个可调角度的 ZED 2 外部立体相机（分辨率 1280×720，15 Hz）、一个腕部 ZED Mini 相机，以及 Oculus Quest 2 头显用于遥操作。
+      数据在 12 个月内由来自 <strong>18 个研究室、13 个机构</strong>的 50 名采集者在<strong>北美、亚洲和欧洲</strong>的 52 栋楼宇中完成，每个场景平均采集约 100 条轨迹（约 20 分钟）。
+      每条轨迹记录：3 路立体 RGB 视频流、7D 关节位姿/速度、6D 末端执行器位姿与速度、1D 夹爪状态，以及 1–3 条众包自然语言标注。
+    </p>
+
+    <figure>
+      <img src="img/distribution.webp" alt="动词-物体分布热力图">
+      <figcaption>
+        <strong>任务分布热力图：</strong>横轴为操作动词（如 pick up, place, open…），纵轴为操作对象，颜色深浅代表轨迹数量。DROID 覆盖了"pick up"、"place"、"push"、"open/close"等多种动词，以及大量不同类别的日常物品，展现出远超既有数据集的任务多样性。
+      </figcaption>
+    </figure>
+
+    <h3>场景多样性设计</h3>
+    <p>
+      DROID 刻意要求每个采集者在不同建筑、不同房间布置下工作，并记录场景类型（实验室、厨房、办公室、餐厅等）及相机外参标定矩阵，以支持后续的跨场景泛化研究。数据集共覆盖 <strong>564 个唯一场景</strong>，远超此前同类数据集（最大约 24–33 个场景）。
+    </p>
+
+    <figure>
+      <img src="img/scene_types.webp" alt="场景类型分布">
+      <figcaption>
+        <strong>场景类型分布：</strong>数据集中场景涵盖实验室、厨房、办公室、休息室、图书馆、户外等多种环境，每种场景下均有大量轨迹覆盖，体现了真实世界"in-the-wild"采集的多样性。
+      </figcaption>
+    </figure>
+
+    <h3>策略训练框架（Co-training）</h3>
+    <p>
+      为验证数据集价值，作者训练了一个基于 <strong>diffusion policy</strong> 的通用操作策略：ResNet-50 视觉编码器（ImageNet 预训练）+ 冻结 DistilBERT 语言嵌入 + U-Net 扩散头，生成 16 步动作序列，输出绝对末端执行器平移、旋转与夹爪动作。
+      训练时采用 <strong>50/50 batch mixing</strong>：50% 目标任务数据 + 50% DROID 数据联合训练。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      作者在 6 个真实机器人操作任务上评估了 DROID co-training 的效果，任务从短时程（如关闭华夫饼机）到长时程（如煮扁豆）不等，并在分布内（in-distribution）和分布外（OOD）两种设定下测试泛化能力。
+    </p>
+
+    <h3>评估任务</h3>
+    <ul>
+      <li><strong>Close Waffle Maker</strong>（短时程，实验室，70 条演示）</li>
+      <li><strong>Place Chips on Plate</strong>（短时程，实验室，50 条演示）</li>
+      <li><strong>Put Apple in Pot</strong>（中时程，实验室，60 条演示）</li>
+      <li><strong>Toasting</strong>（中时程，实验室，150 条演示）</li>
+      <li><strong>Clean Up Desk</strong>（长时程，办公室，50 条演示）</li>
+      <li><strong>Cook Lentils</strong>（长时程，厨房，50 条演示）</li>
+    </ul>
+
+    <table>
+      <tr><th>训练数据</th><th>分布内成功率</th><th>OOD 成功率</th></tr>
+      <tr><td>No Co-training（仅目标任务数据）</td><td>—</td><td>—</td></tr>
+      <tr><td>OXE Co-training（~300 场景，22 种机器人）</td><td>—</td><td>—</td></tr>
+      <tr><td class="good">DROID Co-training（564 场景，Franka）</td><td class="good">+22%（绝对值，vs. 最优基线）</td><td class="good">+17%（绝对值，vs. 最优基线）</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;">注：论文以平均成功率±标准误差展示，未逐任务列出精确数值，上表数字直接引自论文原文。</p>
+
+    <figure>
+      <img src="img/cotrain.webp" alt="Co-training 性能对比">
+      <figcaption>
+        <strong>Co-training 效果对比（Figure 6）：</strong>在 6 个任务上，DROID co-training（绿色）在分布内和 OOD 两个评估设定下均全面超越"No Co-training"和"OXE Co-training"基线。OOD 测试变体包括：干扰物体、新颖物体、未见过的薯片袋包装、相机位置偏移等。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/rollouts.webp" alt="策略展开示例">
+      <figcaption>
+        <strong>Cook Lentils 任务上的策略展开示例（Figure 7）：</strong>"Policies co-trained with DROID perform smoother, more precise motions, allowing them to solve long-horizon tasks"——在最具挑战性的长时程任务上，DROID 训练的策略动作更流畅精准，而基线方法则失败。
+      </figcaption>
+    </figure>
+
+    <h3>场景多样性消融（Ablation）</h3>
+    <p>
+      作者从完整 DROID 中抽取两个等大小子集（各 7,362 条轨迹）进行消融：
+    </p>
+    <ul>
+      <li><strong>DROID (7k, 20 Scenes)：</strong>仅取出现次数最多的 20 个场景的数据（高密度，低多样性）</li>
+      <li><strong>DROID (7k, Diverse Scenes)：</strong>在全数据集中均匀随机采样，保持高场景多样性</li>
+    </ul>
+
+    <figure>
+      <img src="img/ablation.webp" alt="场景多样性消融实验">
+      <figcaption>
+        <strong>场景多样性消融（Figure 8）：</strong>"Using the split with more diverse scenes yields better performance in the OOD evaluation setting"——在 OOD 设定下，多样场景子集显著优于同等规模的单一场景子集，表明<em>场景多样性</em>本身（而非仅靠数据量）是提升泛化的关键因素。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文未设专门的 Limitations 节；以下限制点部分为作者在附录与讨论中明确陈述（标注"stated"），部分为从系统设计推断（标注"inferred"）。</div>
+
+    <details class="lim" open>
+      <summary>硬件单一性（stated）</summary>
+      <p>DROID 全部数据均来自 Franka Panda + Robotiq 夹爪平台，而 OXE 等数据集覆盖 22 种机器人形态。这意味着 DROID 训练的策略在跨机器人形态迁移方面的优势尚不明确，泛化范围主要体现在<em>场景和任务</em>层面，而非<em>机器人本体</em>层面。</p>
+    </details>
+
+    <details class="lim">
+      <summary>相机标定精度有限（stated）</summary>
+      <p>论文附录 G 明确指出，外参标定参数"may not always be accurate due to checkerboard misalignment, inconsistent lighting, or errors inherent to OpenCV calibration"，这限制了利用精确三维几何信息进行更高层次空间推理的能力。</p>
+    </details>
+
+    <details class="lim">
+      <summary>开放问题：如何最优利用多样数据（stated）</summary>
+      <p>作者坦承，"how to best make use of such diverse data" 以及 "how can we train policies that perform tasks in new scenes without any in-domain data?" 仍是未解决的开放问题。Co-training 方案（50/50 混合）只是一种基础验证，最优利用方式有待进一步研究。</p>
+    </details>
+
+    <details class="lim">
+      <summary>场景计数方法的保守性（stated）</summary>
+      <p>564 个"唯一场景"采用保守估计方法，若不同研究室将机器人放置于外观相同的实验台，可能被重复计数，导致实际场景多样性略低于标称值。</p>
+    </details>
+
+    <details class="lim">
+      <summary>硬件复制成本（inferred）</summary>
+      <p>DROID 硬件套件（双 ZED 2 + ZED Mini + Oculus Quest 2 + Franka Panda）初始部署成本较高，且需要专业人员进行标定，限制了在资源受限机构中的大规模推广。（此点由作者在论文中隐含提及，属 inferred 推断。）</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2403.12945">https://arxiv.org/abs/2403.12945</a>
+    &nbsp;·&nbsp; 项目主页: <a href="https://droid-dataset.github.io">droid-dataset.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "slug": "f1-vla",
+  "title": "F1: A Vision-Language-Action Model Bridging Understanding and Generation to Actions",
+  "arxiv_id": "2509.06951",
+  "url": "https://arxiv.org/abs/2509.06951",
+  "category": "机器人 · Robotics",
+  "keywords": ["Vision-Language-Action", "Mixture-of-Transformer", "visual foresight", "inverse dynamics", "机器人操作", "策略学习", "VQ-VAE", "flow matching"],
+  "summary_zh": "F₁ 通过 Mixture-of-Transformer 架构将视觉前瞻生成整合入机器人动作决策，以预测引导的逆动力学范式在真实任务和 LIBERO、SimplerEnv 等基准上显著超越 π₀ 等现有 VLA 模型。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

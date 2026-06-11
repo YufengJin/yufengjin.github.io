@@ -1,0 +1,11 @@
+{
+  "slug": "ate-vla",
+  "title": "Align-Then-stEer: Adapting the Vision-Language Action Models through Unified Latent Guidance",
+  "arxiv_id": "2509.02055",
+  "url": "https://arxiv.org/abs/2509.02055",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "机器人操作", "cross-embodiment 迁移", "diffusion policy", "VAE 隐空间对齐", "classifier guidance", "跨任务适配", "data-efficient fine-tuning"],
+  "summary_zh": "ATE 框架通过两阶段非对称 VAE 将异构机器人动作空间对齐到统一隐空间，再利用 classifier guidance 引导扩散/流式 VLA 的 fine-tuning 过程，在仿真与真实跨机器人场景中分别实现最高 9.8% 与 32% 的成功率提升。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

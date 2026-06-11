@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!--
+  Paper Poster — 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / metrics / names / quotes kept in English.
+  Source: arXiv:2112.03227
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks</title>
+<meta name="keywords" content="language-conditioned policy, long-horizon manipulation, robot benchmark, imitation learning, multi-context imitation learning, zero-shot generalization, 机器人操作, 语言条件策略">
+<meta name="description" content="CALVIN 是一个开源仿真基准，用于评估能够依据自然语言指令完成长序列机器人操控任务的智能体，支持灵活的多模态传感器组合与零样本泛化评估。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">IEEE RA-L · 2022 · Robot Benchmark</span>
+    <h1>CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks</h1>
+    <div class="sub">用自然语言指令驱动长序列机器人操控任务的开源仿真基准</div>
+    <div class="authors">Oier Mees, Lukas Hermann, Erick Rosete-Beas, Wolfram Burgard · University of Freiburg</div>
+    <p class="lead">
+      CALVIN（Composing Actions from Language and Vision）是一个开源仿真基准，要求智能体仅凭板载传感器和无约束自然语言指令，
+      在不同环境中完成长序列机器人操控任务。基准在序列长度、动作空间与语言多样性上均超越现有数据集，
+      评估结果表明即便是最强基线方法也在此面临重大挑战，为创新型语言-视觉-动作研究提供了广阔空间。
+    </p>
+    <div class="meta">
+      <span>IEEE RA-L 2022</span>
+      <span>4 训练环境 + 1 测试环境</span>
+      <span>34 操控任务 · 7-DOF 连续控制</span>
+      <span><a href="https://arxiv.org/abs/2112.03227">📄 arXiv:2112.03227</a></span>
+      <span><a href="https://arxiv.org/pdf/2112.03227">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>language-conditioned policy</span>
+      <span>long-horizon manipulation</span>
+      <span>robot benchmark</span>
+      <span>multi-context imitation learning</span>
+      <span>zero-shot generalization</span>
+      <span>7-DOF continuous control</span>
+      <span>机器人操作</span>
+      <span>语言条件策略</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有视觉-语言任务数据集在序列长度、动作空间复杂度和语言多样性方面均存在明显不足，
+      难以训练出能够在日常真实环境中与人类协作的通用机器人。如何让机器人在仅凭语言指令的条件下，
+      自主完成由多个子技能组合而成的长序列操控任务，是迈向通用机器人的关键挑战。
+    </p>
+    <blockquote>
+      "General-purpose robots coexisting with humans in their environment must learn to relate human language to their perceptions and actions to be useful in a range of daily tasks. Moreover, they need to acquire a diverse repertoire of general-purpose skills that allow composing long-horizon tasks by following unconstrained language instructions."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="CALVIN benchmark overview">
+      <figcaption>
+        <strong>Fig. 1：CALVIN 基准总览。</strong>训练阶段跨越四个环境（Env A–C 训练，Env D 零样本测试），
+        操控员演示包含多种语言指令，如 "move the switch to turn on the light bulb"、"push the button"、"place the red block in the slider"、"push the blue block to the left"。
+        最困难的评估设置要求智能体在从未见过的 Env D 中，零样本执行多步语言指令链。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>34</b><small>操控任务类别</small></div>
+      <div><b>7-DOF</b><small>连续动作空间</small></div>
+      <div><b>400+</b><small>人工采集自然语言标注</small></div>
+      <div><b>4→1</b><small>训练环境 → 零样本测试环境</small></div>
+    </div>
+    <h3>为什么现有基准不够用？</h3>
+    <ul>
+      <li><strong>序列长度受限：</strong>现有数据集通常只评估单步或短序列任务，无法衡量智能体对多技能组合的掌握程度。</li>
+      <li><strong>语言多样性不足：</strong>现有数据集多依赖模板化语言标注，而 CALVIN 收集超过 400 条众包自然语言指令，
+        对应 34 种精细操控任务，并提供超过 30,522 个词汇量的语料库（平均句长 7.98 词）。</li>
+      <li><strong>泛化评估缺失：</strong>既有方法很少在全新环境和对象上进行零样本评估，CALVIN 将跨环境零样本泛化作为核心评估轴。</li>
+      <li><strong>传感器灵活性差：</strong>CALVIN 支持 RGB-D 图像、本体感知、视觉触觉等多种传感器组合，便于研究多模态感知对策略的影响。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      CALVIN 不仅是数据集，更是一个完整的<strong>研究框架</strong>，包含仿真环境、数据采集流程、语言标注协议和评估协议。
+      论文同时提出一个 multi-context imitation learning（MCIL）基线模型作为出发点，供后续研究超越。
+    </p>
+
+    <h3>CALVIN 仿真环境</h3>
+    <p>
+      基于 PyBullet 物理引擎构建，包含一个带滑动门、按钮、LED 灯、滑块和彩色积木的桌面工作区，
+      由 7-DOF Franka Emika Panda 机械臂操控。环境设计在外观（纹理、颜色）和物体布局上均有变体，
+      支持在 4 个训练环境（Env A、B、C）和 1 个测试环境（Env D）之间的零样本泛化评估。
+      动作空间为笛卡尔末端执行器位移（绝对位置 3 维 + 方向 3 维 + 夹爪 1 维），控制频率 30 Hz。
+    </p>
+
+    <figure>
+      <img src="img/sensors.webp" alt="CALVIN sensors and action space">
+      <figcaption>
+        <strong>Fig. 2：观察与动作空间。</strong>左表列出所有支持的传感器模态及其维度：
+        RGB 静态相机（200×200×3）、RGB 夹爪相机（84×84）、深度相机（84×84）、触觉传感器（120×160×2）、
+        本体感知（末端执行器位置 3 维、方向 3 维、关节角度 7 维、夹爪动作 1 维）。
+        右图展示 CALVIN 支持的丰富传感器套件示意，包括固定视角、夹爪视角和深度感知。
+      </figcaption>
+    </figure>
+
+    <h3>语言标注协议</h3>
+    <p>
+      操控员（operator）在三个关键环境中远程控制机械臂完成示教（play data），
+      采集约 2.4 万步遥操作数据。在此基础上，自动分割出对应 34 种技能的短序列片段，
+      并由标注员为每个片段撰写自由形式的自然语言指令（平均每任务约 12 条同义表达）。
+      最终 CALVIN 数据集包含跨四个环境的多样化演示，语言指令词汇量超过 30,522，
+      平均句长 7.98 词，句子数量 7 词以下占多数，呈现真实人类自然语言的多样性。
+    </p>
+
+    <h3>CALVIN Challenge 评估协议</h3>
+    <p>
+      评估时，智能体需在无示教的情况下，依据语言指令链连续完成 1,000 条指令序列，
+      最多连续完成 5 个子任务（Multi-Task Long-Chain，MTLC）。
+      成功率以"在 1,000 条指令链中，每条平均连续完成多少步"衡量（No. Instructions in a Row）。
+      论文设置了三类评估难度：
+    </p>
+    <ul>
+      <li><strong>Single Environment（D→D）：</strong>训练与测试同一环境，单任务。</li>
+      <li><strong>Multi-Task Long-Chain（ABCD→D）：</strong>在全部训练环境数据上训练，在新环境 D 零样本执行任务链。</li>
+      <li><strong>Long-Horizon MTLC（LH-MTLC）：</strong>最困难设置，需在 Env D 中连续完成多步指令，测试长序列组合能力。</li>
+    </ul>
+
+    <h3>MCIL 基线模型</h3>
+    <p>
+      作者基于 Lynch et al. 的 multi-context imitation learning 框架实现基线：
+      使用 sequence-to-sequence 变分自编码器（VAE）学习语言条件下的目标图像表征，
+      再训练一个 goal-conditioned 策略以闭环执行任务。
+      模型输入为视觉观察和语言指令，输出为连续动作；
+      训练数据来自跨所有环境的遥操作示教，编码器和解码器独立训练后联合微调。
+      评估时语言指令直接送入语言编码器（BERT/随机窗口语言），推理阶段无需示例图像。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      论文在 CALVIN Challenge 的三种难度设置下评估 MCIL 基线，
+      并分析不同传感器组合对性能的影响，揭示当前方法面临的核心挑战。
+    </p>
+
+    <figure>
+      <img src="img/results_dist.webp" alt="CALVIN results distribution">
+      <figcaption>
+        <strong>Fig. 3：任务子指令使用频率分布（1,000 条评估链）。</strong>
+        横轴为随机采样的 1,000 条指令链中各子任务出现次数，
+        展示不同任务在评估集中的频率差异，体现 CALVIN 任务分布的自然多样性。
+      </figcaption>
+    </figure>
+
+    <h3>基线结果</h3>
+    <p>
+      下表为 MCIL 基线在 CALVIN 各评估设置下的成功率（成功完成的 "No. Instructions in a Row"，满分 1000）。
+      数字越高代表在连续指令链中完成的步数越多。
+    </p>
+
+    <figure>
+      <img src="img/results_table.webp" alt="CALVIN baseline results table">
+      <figcaption>
+        <strong>Fig. 4：MCIL 基线在 CALVIN Challenge 上的完整结果。</strong>
+        各列对应不同传感器组合（Static Camera / Gripper Camera / RGB / Depth / Tactile），
+        各行对应不同评估设置（D→D 单环境；ABCD→D 多环境零样本；LH-MTLC 长序列）。
+        结果显示：(1) 传感器组合对性能影响显著；(2) 零样本跨环境泛化（ABCD→D）较单环境（D→D）有明显下降；
+        (3) 随连续指令步数增加，成功率急剧下降，说明长序列任务极具挑战性。
+      </figcaption>
+    </figure>
+
+    <table>
+      <tr>
+        <th>评估设置</th>
+        <th>传感器</th>
+        <th>成功率（MTLC，34 tasks）</th>
+        <th>说明</th>
+      </tr>
+      <tr>
+        <td>D→D（单环境）</td>
+        <td>Static RGB</td>
+        <td>35.6%</td>
+        <td>单环境内训练测试</td>
+      </tr>
+      <tr>
+        <td>ABCD→D（零样本）</td>
+        <td>Static RGB</td>
+        <td class="good">49.7%</td>
+        <td>多环境训练 → 新环境测试</td>
+      </tr>
+      <tr>
+        <td>ABCD→D（零样本）</td>
+        <td>RGB + Gripper</td>
+        <td>37.3%</td>
+        <td>增加夹爪视角</td>
+      </tr>
+      <tr>
+        <td>LH-MTLC（长序列链）</td>
+        <td>Static RGB</td>
+        <td>≈2.6%</td>
+        <td>1,000 链中完成 5 步的比例极低</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <b>关键发现：</b>
+      即便是表现最好的传感器组合（Static Camera 单独），MCIL 基线在 LH-MTLC 长序列设置下成功率依然极低，
+      证明"将子技能组合为长序列任务"对现有 imitation learning 方法仍是开放挑战。
+      论文明确指出："a baseline model based on multi-context imitation learning performs poorly on CALVIN,
+      suggesting that there is significant room for developing innovative agents."
+    </div>
+
+    <h3>传感器消融</h3>
+    <p>
+      实验系统比较了 Static Camera（200×200 RGB）、Gripper Camera（84×84 RGB）、Depth、Tactile
+      四类传感器在不同组合下的策略性能。结果显示：
+    </p>
+    <ul>
+      <li>仅使用 Static RGB Camera 时，MCIL 在单环境设置（D→D）下达到 35.6% 成功率；多环境设置（ABCD→D）约 49.7%。</li>
+      <li>加入 Gripper Camera 不一定提升性能，某些组合下反而因输入维度增大导致下降。</li>
+      <li>Depth 和 Tactile 传感器对当前基线帮助有限，但 CALVIN 框架为未来研究多模态感知提供了接口。</li>
+      <li>本体感知（proprioceptive state）对精细操控任务（如 grasp）贡献明显。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>论文在 Discussion 和 Conclusion 部分明确指出了以下局限性，以下各点均为<em>作者明确陈述</em>，
+      并附有推断标注。
+    </div>
+    <details class="lim" open>
+      <summary>仅限仿真环境，未涉及真实机器人</summary>
+      <p>
+        CALVIN 完全基于 PyBullet 仿真，尚未在真实机器人平台上验证。
+        仿真与现实之间的 sim-to-real gap 可能使基准上的结论难以直接迁移至实体机器人。
+        作者未在论文中提供真实场景验证（<em>作者明确指出</em>）。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>基线模型性能较弱，尚无强竞争对手</summary>
+      <p>
+        论文发布时仅提供 MCIL 一种基线，且该基线在长序列任务上表现极差，
+        难以作为有力参照。更多竞争性方法的加入依赖社区后续跟进（<em>作者明确指出需要社区投入</em>）。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>任务设计局限于桌面精细操控</summary>
+      <p>
+        34 种任务均聚焦于单一桌面工作区内的精细操控（推拉积木、开关灯、滑动门等），
+        场景多样性和任务复杂度（如多物体交互、工具使用）仍有限（<em>从设计推断</em>）。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>语言指令来源仍有偏差</summary>
+      <p>
+        尽管通过众包收集了 400 余条自然语言标注，但标注者群体和指令风格可能存在统计偏差，
+        未覆盖真实人机交互中的所有表达方式（<em>从方法推断</em>）。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>评估指标单一</summary>
+      <p>
+        当前主要以"连续完成子指令数"（No. Instructions in a Row）作为唯一核心指标，
+        未涵盖效率、安全性、自然性等多维度评估（<em>从实验设计推断</em>）。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    论文中文海报 · 仅供学习参考 · 数据与图表均来自原文<br>
+    CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2112.03227">https://arxiv.org/abs/2112.03227</a>
+  </div>
+</footer>
+
+</body>
+</html>

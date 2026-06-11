@@ -1,0 +1,11 @@
+{
+  "slug": "cola-world",
+  "title": "Co-Evolving Latent Action World Models",
+  "arxiv_id": "2510.26433",
+  "url": "https://arxiv.org/abs/2510.26433",
+  "category": "机器人 · Robotics",
+  "keywords": ["latent action model", "world model", "联合训练", "codebook collapse", "video generation", "visual planning", "VP2 benchmark", "机器人操作"],
+  "summary_zh": "CoLA-World 用 world model 替代 latent action model 中的 forward dynamics model，通过 warm-up + 端到端联合训练消除 codebook collapse，实现 LAM 与 world model 协同进化，在视频预测和视觉规划任务上全面超越两阶段基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

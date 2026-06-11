@@ -1,0 +1,11 @@
+{
+  "slug": "genie-reasoner",
+  "title": "Unified Embodied VLM Reasoning with Robotic Action via Autoregressive Discretized Pre-training",
+  "arxiv_id": "2512.24125",
+  "url": "https://arxiv.org/abs/2512.24125",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "embodied reasoning", "action tokenizer", "flow matching", "ERIQ", "FACT", "GenieReasoner", "机器人操作", "VQ-VAE", "离散动作"],
+  "summary_zh": "GenieReasoner 提出 ERIQ 具身推理基准（6,052 条问答）与 FACT 流匹配动作分词器，在统一序列空间中联合优化 VLM 推理与离散动作预测，在 ERIQ 上达到 82.72% 准确率（基线 58.64%），轨迹重建误差比 FAST+ 低近一个数量级，并在真实机器人任务中全面超越连续与离散基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "latent-policy-steering",
+  "title": "Latent Policy Steering with Embodiment-Agnostic Pretrained World Models",
+  "arxiv_id": "2507.13340",
+  "url": "https://arxiv.org/abs/2507.13340",
+  "category": "机器人 · Robotics",
+  "keywords": ["latent policy steering", "world model", "optical flow", "embodiment-agnostic", "diffusion policy", "behavior cloning", "robot manipulation", "跨形态迁移"],
+  "summary_zh": "以光流作为形态无关动作表征预训练视觉世界模型，再通过少量目标形态演示微调，并在推理时用隐空间价值引导 diffusion policy 选择最优动作规划，在真实机器人上以 30–50 条演示实现相对行为克隆 70% 的相对提升。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

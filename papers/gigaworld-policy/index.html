@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  GigaWorld-Policy: An Efficient Action-Centered World-Action Model
+  arXiv: 2603.17240
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GigaWorld-Policy: An Efficient Action-Centered World-Action Model</title>
+<meta name="keywords" content="世界-动作模型, 机器人操作策略, diffusion transformer, 因果注意力掩码, 具身预训练, flow matching, VLA, RoboTwin 2.0">
+<meta name="description" content="GigaWorld-Policy 提出以动作为中心的世界-动作模型，通过因果设计将视频生成作为辅助监督信号，在保持高成功率的同时实现比 Motus 快 9× 的推理速度。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · 世界-动作模型 · 2026</span>
+    <h1>GigaWorld-Policy: An Efficient Action-Centered World-Action Model</h1>
+    <div class="sub">以动作为中心的高效世界-动作模型，推理速度提升 9×</div>
+    <div class="authors">Angen Ye, Boyuan Wang, Chaojun Ni, Guan Huang, Guosheng Zhao, Hao Li, Hengtao Li, Jie Li, Jindi Lv, Jingyu Liu, Min Cao, Peng Li, Qiuping Deng, Wenjun Mei, Xiaofeng Wang, Xinze Chen, Xinyu Zhou, Yang Wang, Yifan Chang, Yifan Li, Yukun Zhou, Yun Ye, Zhichao Liu, Zheng Zhu 等</div>
+    <p class="lead">GigaWorld-Policy 提出了一种以动作为中心的世界-动作模型框架：在预测动作序列的同时，将未来视频生成作为可选的辅助监督信号。通过因果注意力掩码设计，完全避免视频 token 对动作 token 的信息泄露，从而在不依赖显式视频合成的情况下实现快速部署与高质量策略学习。</p>
+    <div class="meta">
+      <span>arXiv 2026-03</span>
+      <span>5B Diffusion Transformer</span>
+      <span>RoboTwin 2.0 · 50 tasks</span>
+      <a href="https://arxiv.org/abs/2603.17240"><span>📄 arXiv:2603.17240</span></a>
+      <a href="https://arxiv.org/pdf/2603.17240"><span>PDF</span></a>
+    </div>
+    <div class="kw">
+      <span>世界-动作模型</span>
+      <span>机器人操作策略</span>
+      <span>diffusion transformer</span>
+      <span>因果注意力掩码</span>
+      <span>具身预训练</span>
+      <span>flow matching</span>
+      <span>VLA</span>
+      <span>RoboTwin 2.0</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有世界-动作模型（World-Action Models）在推理时面临两大核心瓶颈：
+      一是<strong>推理开销过大</strong>——联合推断未来视觉动态与动作序列导致延迟极高；
+      二是<strong>表征耦合问题</strong>——动作预测质量与视频预测质量强绑定，一旦视频生成出错，动作也随之降级。
+      此外，基于 VLM 的 VLA 方法存在"监督稀疏"（supervision sparsity）问题：动作标签相对于高维观测过于稀疏，容易使模型将不同场景压缩为重复行为，而非学习有物理意义的动作。
+    </p>
+    <blockquote>
+      "jointly reasoning over future visual dynamics and corresponding actions incurs substantial inference overhead"
+      ——论文对当前世界-动作模型推理瓶颈的直接概括
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="推理频率与任务成功率对比">
+      <figcaption>
+        图1：在 A100 GPU 真实部署环境下，GigaWorld-Policy 与各基线方法的推理频率（Inference Frequency）与任务成功率（Task Success Rate）对比。GigaWorld-Policy 在保持竞争力成功率的同时，实现了显著更低的推理延迟。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>9×</b><small>比 Motus 推理速度提升（360ms vs 3231ms）</small></div>
+      <div><b>0.86</b><small>RoboTwin 2.0 仿真平均成功率（clean）</small></div>
+      <div><b>0.83</b><small>真实机器人平均成功率（20次试验/任务）</small></div>
+      <div><b>10%</b><small>达到基线最优所需的训练数据量</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      GigaWorld-Policy 以 5B 参数量的 diffusion Transformer 为骨干，将策略学习形式化为两个耦合组件：
+      从当前观测预测动作序列（主任务），同时以预测动作为条件生成未来视频（辅助任务）。
+      核心创新在于<strong>因果注意力掩码（causal attention mask）</strong>——它确保未来视频 token 的信息
+      绝对不会回流至动作 token，从而消除视觉-运动表征的纠缠，同时为动作学习提供更稠密的监督信号。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="四种世界-动作模型架构对比">
+      <figcaption>
+        图2：四种世界-动作模型架构示意。(a) 基于 VLM 的 VLA + 辅助监督；(b) 联合双向动作-视频预测；
+        (c) 两阶段先视频后动作流水线；(d) 本文提出的以动作为中心的设计，视频生成为可选路径。
+        GigaWorld-Policy 属于 (d)：推理时可直接跳过视频分支，大幅降低延迟。
+      </figcaption>
+    </figure>
+
+    <h3>因果注意力掩码（Causal Self-Attention Mask）</h3>
+    <p>
+      模型采用分块因果依赖设计（blockwise causal dependency）：动作 token 仅能 attend 到状态和观测 token，
+      而未来视频 token 可以 attend 到动作 token，但反向路径被彻底切断。
+      这一设计使得推理时可以只解码动作分支，完全不实例化视频 token，从而实现低延迟控制；
+      训练时视频分支则作为辅助损失，为动作头提供更丰富的梯度信号。
+      动作与视频均采用 flow-matching 目标函数（Equations 8–10）进行联合训练。
+    </p>
+
+    <figure>
+      <img src="img/attention.webp" alt="注意力掩码示意图">
+      <figcaption>
+        图3：blockwise 因果注意力掩码结构。动作 token（Actions）只能看到状态与观测，未来视频 token 可向前 attend 到动作，但不能反向影响动作预测。
+      </figcaption>
+    </figure>
+
+    <h3>三阶段预训练流程（Three-Stage Pre-training）</h3>
+    <p>
+      模型采用渐进式预训练策略：
+    </p>
+    <ul>
+      <li><strong>Stage 1 — 大规模网络视频预训练：</strong>在互联网视频数据上初始化 diffusion Transformer 基础模型，学习通用视觉表征与物理先验。</li>
+      <li><strong>Stage 2 — 具身数据预训练（Embodied Pre-training）：</strong>在约 10,000 小时的机器人与第一人称人类演示数据上继续训练，涵盖 Agibot、RDT、RoboMind、ATARA（机器人视频）以及 EgoDex、Ego4D（以人为中心的演示）。</li>
+      <li><strong>Stage 3 — 策略后训练（Policy Post-training）：</strong>在目标机器人轨迹数据上进行动作-语言-图像对齐微调，适配具体任务。</li>
+    </ul>
+
+    <figure>
+      <img src="img/training.webp" alt="三阶段训练流水线">
+      <figcaption>
+        图4：GigaWorld-Policy 三阶段训练流水线示意。从通用视频基础模型出发，经具身数据预训练，最终通过策略后训练对接目标机器人，推理时可选择性地生成未来视频。
+      </figcaption>
+    </figure>
+
+    <h3>多视角观测融合</h3>
+    <p>
+      系统接收多视角 RGB 输入（Multi-view RGB），按 Equation 4 将其拼合为单张图像后送入共享 Transformer 块，
+      与状态 token、动作 token、视频 token 一并处理。这种统一 token 化设计简化了模型结构，
+      避免了针对不同模态引入独立编码器。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验在两个场景下评估 GigaWorld-Policy：
+      (1) <strong>仿真</strong>——RoboTwin 2.0 基准，50 个任务，分 clean（标准环境）和 randomized（随机初始状态）两种设置；
+      (2) <strong>真实世界</strong>——AgileX PiPER 6 自由度机械臂，每个任务执行 20 次试验，涉及 QR 码扫描、垃圾清扫、碗叠放、桌面清洁等任务。
+      基线方法包括：π₀.₅、X-VLA、Motus、GigaBrain-0、Cosmos-Policy。
+    </p>
+
+    <h3>仿真基准（RoboTwin 2.0）</h3>
+    <table>
+      <tr><th>方法</th><th>Clean SR</th><th>Randomized SR</th><th>推理延迟 (A100)</th></tr>
+      <tr><td>π₀.₅</td><td>0.43</td><td>0.44</td><td>225ms</td></tr>
+      <tr><td>X-VLA</td><td>0.73</td><td>0.73</td><td>—</td></tr>
+      <tr><td>Motus</td><td>0.89</td><td>0.87</td><td>3231ms</td></tr>
+      <tr><td>GigaBrain-0</td><td>—</td><td>—</td><td>452ms</td></tr>
+      <tr class="good"><td>GigaWorld-Policy（本文）</td><td class="good">0.86</td><td class="good">0.85</td><td class="good">360ms</td></tr>
+    </table>
+    <p>注：Motus 在仿真成功率上略高（0.89 vs 0.86），但推理延迟达 3231ms，为 GigaWorld-Policy（360ms）的 9×；π₀.₅ 延迟最低（225ms），但成功率仅 0.43/0.44。</p>
+
+    <h3>真实世界部署（AgileX PiPER，20次/任务）</h3>
+    <table>
+      <tr><th>方法</th><th>平均成功率</th></tr>
+      <tr><td>Cosmos-Policy</td><td>0.58</td></tr>
+      <tr><td>GigaBrain-0</td><td>0.68</td></tr>
+      <tr><td>π₀.₅</td><td>0.69</td></tr>
+      <tr><td>Motus</td><td>0.76</td></tr>
+      <tr><td class="good">GigaWorld-Policy（本文）</td><td class="good">0.83</td></tr>
+    </table>
+
+    <h3>数据效率（Data Efficiency）</h3>
+    <p>
+      在训练数据量实验中，GigaWorld-Policy 仅使用 <strong>10%</strong> 的训练数据即可达到 VLA 基线方法的最优成功率，
+      展现出显著更强的样本效率。
+    </p>
+    <figure>
+      <img src="img/data_efficiency.webp" alt="数据效率对比曲线">
+      <figcaption>
+        图5：不同训练数据比例下各方法的成功率曲线。GigaWorld-Policy 在 10% 数据量处已达到 VLA 基线的满数据性能上限，随数据增加持续提升。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>预训练策略对最终真实世界成功率的影响（消融实验，真实机器人测试）：</p>
+    <table>
+      <tr><th>配置</th><th>成功率（SR）</th></tr>
+      <tr><td>无预训练（from scratch）</td><td>0.45</td></tr>
+      <tr><td>仅视频基础模型初始化</td><td>0.57</td></tr>
+      <tr><td>仅具身数据预训练</td><td>0.73</td></tr>
+      <tr><td class="good">完整三阶段预训练（full）</td><td class="good">0.83</td></tr>
+    </table>
+    <p>
+      未来帧间距（frame spacing）的消融实验表明，Δ=12 时性能最优（SR = 0.83）。
+      具身预训练数据量实验显示，随着具身数据比例从 0% 增至 100%，模型性能单调提升（图8），
+      验证了大规模具身预训练对下游策略学习的持续正收益。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>注意：</b>原论文无独立的"Limitations"章节。以下各点综合了论文设计决策中可推断出的隐含约束，均标注为 <em>inferred（推断）</em>。
+    </div>
+    <details class="lim" open>
+      <summary>依赖大规模具身预训练数据（inferred）</summary>
+      <p>
+        模型 Stage 2 需要约 10,000 小时机器人与第一人称演示数据（Agibot、RDT、RoboMind、ATARA、EgoDex、Ego4D）。
+        对于数据采集成本较高的新场景或新型机器人，完整三阶段预训练流程的复现难度较大。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>评估机器人形态单一（inferred）</summary>
+      <p>
+        真实世界实验仅在 AgileX PiPER 6-DoF 机械臂上进行，且限于桌面操作类任务（QR 码扫描、垃圾清扫、碗叠放、桌面清洁）。
+        跨机器人形态（如双臂、移动操作）的泛化能力尚未验证。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>无零样本跨任务迁移（inferred）</summary>
+      <p>
+        各具体任务均需要针对性的 Stage 3 后训练（task-specific post-training），而非真正的零样本迁移或少样本适应。
+        在新任务上直接部署时，需要收集并标注新的轨迹数据。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>视频辅助分支的实际贡献量化不足（inferred）</summary>
+      <p>
+        消融实验主要针对预训练阶段的配置，对"是否使用视频辅助损失"这一核心设计选择的独立消融结果在论文中未被单独列出，
+        难以精确量化视频生成分支对最终策略性能的边际贡献。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    根据论文内容与图表整理 · GigaWorld-Policy · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2603.17240">https://arxiv.org/abs/2603.17240</a>
+  </div>
+</footer>
+
+</body>
+</html>

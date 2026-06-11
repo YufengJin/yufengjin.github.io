@@ -1,0 +1,11 @@
+{
+  "slug": "mm-act",
+  "title": "MM-ACT: Learn from Multimodal Parallel Generation to Act",
+  "arxiv_id": "2512.00975",
+  "url": "https://arxiv.org/abs/2512.00975",
+  "category": "机器人 · Robotics",
+  "keywords": ["Vision-Language-Action", "多模态并行生成", "parallel decoding", "机器人操作", "context-shared learning", "imitation learning", "双臂操作", "re-mask decoding"],
+  "summary_zh": "MM-ACT 将文本、图像与动作统一于共享 token 空间，通过 Context-Shared Multimodal Learning 和并行解码策略实现跨模态协同训练，在 LIBERO 达到 96.3%、真实 Franka 达到 72.0%、RoboTwin2.0 达到 52.38% 成功率。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

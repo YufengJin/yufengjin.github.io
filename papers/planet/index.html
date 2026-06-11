@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  Paper Poster — 中文海报，无 EN 版本。
+  Paper: Learning Latent Dynamics for Planning from Pixels (PlaNet)
+  arXiv: 1811.04551
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Latent Dynamics for Planning from Pixels（PlaNet）</title>
+<meta name="keywords" content="model-based reinforcement learning, latent dynamics, planning, RSSM, latent overshooting, pixel observations, continuous control, CEM, 基于模型的强化学习, 隐空间规划">
+<meta name="description" content="PlaNet：在像素观测下，通过在学习到的隐动态空间中规划，以少量环境交互实现连续控制任务的高效解决。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICML 2019 · 基于模型的强化学习</span>
+    <h1>Learning Latent Dynamics for Planning from Pixels</h1>
+    <div class="sub">PlaNet：从像素出发，在隐空间中规划连续控制</div>
+    <div class="authors">Danijar Hafner · Timothy Lillicrap · Ian Fischer · Ruben Villegas · David Ha · Honglak Lee · James Davidson（Google Brain / DeepMind / University of Michigan）</div>
+    <p class="lead">PlaNet（Deep Planning Network）是一种纯基于模型的 agent，仅从像素观测中学习环境动态，并在学习到的隐状态空间内通过在线规划（CEM）选取动作。它无需价值网络或策略网络，却在多个连续控制基准上以<strong>比 model-free 方法少得多的环境交互次数</strong>达到相近或更好的最终性能。</p>
+    <div class="meta">
+      <span>ICML 2019</span>
+      <span>6 个 DeepMind Control Suite 任务</span>
+      <span>纯像素观测 64×64</span>
+      <span><a href="https://arxiv.org/abs/1811.04551">📄 arXiv:1811.04551</a></span>
+      <span><a href="https://github.com/google-research/planet">💻 Code (GitHub)</a></span>
+    </div>
+    <div class="kw">
+      <span>model-based RL</span>
+      <span>latent dynamics</span>
+      <span>RSSM</span>
+      <span>latent overshooting</span>
+      <span>CEM planning</span>
+      <span>pixel observations</span>
+      <span>连续控制</span>
+      <span>隐空间规划</span>
+      <span>变分推断</span>
+      <span>world model</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机（Motivation）</h2>
+    <p class="lead">强化学习在控制任务上取得了令人瞩目的成果，但绝大多数成功案例都依赖 <em>model-free</em> 方法——需要与环境进行数以百万计的交互。当传感器只能提供高维图像时，样本效率问题更为严峻。利用学习到的<strong>动态模型（dynamics model）</strong>进行规划，理论上可以大幅减少所需交互，但长期以来难以在复杂的图像域中可靠地实现。</p>
+
+    <blockquote>"Planning using learned models offers several benefits over model-free reinforcement learning. First, model-based planning can be more data efficient because it leverages a richer training signal and does not rely on propagating rewards through Bellman backups."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="六种连续控制任务示例">
+      <figcaption>
+        <strong>Figure 1（论文原图）</strong>：PlaNet 所测试的六种 DeepMind Control Suite 任务——Cartpole Swingup、Reacher Easy、Cheetah Run、Finger Spin、Cup Catch、Walker Walk。图像分辨率降采样至 64×64 像素后作为唯一观测，不提供物理状态。Cartpole/Finger Spin 仅有稀疏奖励；Cheetah/Walker 存在接触动力学。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>6</b><small>连续控制任务（DeepMind Control Suite）</small></div>
+      <div><b>50×</b><small>比 D4PG 少的样本（Finger Spin 任务，100K episodes）</small></div>
+      <div><b>64×64</b><small>像素输入分辨率（唯一观测）</small></div>
+      <div><b>1 GPU</b><small>Nvidia V100，10–20 小时训练</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法（Method）</h2>
+    <p class="lead">PlaNet 的核心是 <strong>Recurrent State Space Model（RSSM）</strong>——一个同时包含确定性（deterministic）和随机性（stochastic）转移分量的隐状态空间模型。通过变分自编码器（VAE）框架从像素中学习该模型，再利用 <strong>Cross-Entropy Method（CEM）</strong>在隐空间中规划动作序列，无需任何策略网络。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="RSSM 模型架构对比">
+      <figcaption>
+        <strong>Figure 2（论文原图）</strong>：三种隐状态空间模型对比。(a) 纯确定性 RNN：转移完全确定，难以捕捉多模态未来；(b) 纯随机状态空间模型（SSM）：每步独立采样随机状态，信息传播受限；(c) RSSM（本文）：将隐状态分为确定性部分 <em>h<sub>t</sub></em>（由 GRU 维护）和随机部分 <em>s<sub>t</sub></em>，二者共同决定观测和奖励预测。这种设计使模型既能记忆长程历史，又能表示不确定性。
+      </figcaption>
+    </figure>
+
+    <h3>Recurrent State Space Model（RSSM）</h3>
+    <p>RSSM 将隐状态 <em>z<sub>t</sub></em> 拆分为两部分：</p>
+    <ul>
+      <li><strong>确定性状态 <em>h<sub>t</sub></em></strong>：由 GRU（Gated Recurrent Unit）根据上一步确定性状态、随机状态和动作递推得到，负责跨步骤传递长期信息。</li>
+      <li><strong>随机状态 <em>s<sub>t</sub></em></strong>：以 Gaussian 分布为先验，以当前确定性状态为条件独立采样，使模型能够表达对未来的不确定性。</li>
+    </ul>
+    <p>观测模型（decoder）和奖励模型（reward model）均以 <em>(h<sub>t</sub>, s<sub>t</sub>)</em> 为输入进行预测。训练使用变分下界（ELBO），同时最大化图像重建对数似然和奖励预测准确性，并对 KL 散度施加正则化。</p>
+
+    <h3>Latent Overshooting（隐空间多步预测目标）</h3>
+    <p>标准 VAE 目标（ELBO）只对单步转移进行变分推断，导致模型仅在一步预测上做优化，而规划需要准确的<em>多步</em>预测。论文提出 <strong>latent overshooting</strong>：在所有预测距离 <em>d = 1, 2, …, D</em> 上都附加 KL 散度惩罚项，迫使先验和后验在多个时间步上保持一致：</p>
+
+    <figure>
+      <img src="img/overshooting.webp" alt="Latent Overshooting 示意图">
+      <figcaption>
+        <strong>Figure 3（论文原图）</strong>：三种变分目标对比。(a) 标准变分界（只有单步 KL）；(b) observation overshooting（对每个距离的预测都加重建损失，计算量极大）；(c) latent overshooting（本文）：只在隐空间计算多步 KL，避免了高开销的像素解码，但提供了更强的多步一致性监督信号。
+      </figcaption>
+    </figure>
+
+    <p>Latent overshooting 的核心思路："If we could train our model to make perfect one-step predictions, it would also make perfect multi-step predictions, so this would not be a problem. However, when using a model with limited capacity and restricted distributional family, training the model only on one-step predictions until convergence does in general not coincide with the model that is best at multi-step predictions."</p>
+
+    <h3>在线规划：CEM（Cross-Entropy Method）</h3>
+    <p>测试时，agent 利用学习到的 RSSM 进行 MPC（Model Predictive Control）：在隐空间中以 CEM 采样并评估 <em>H</em> 步候选动作序列（默认 H=12，迭代 10 次，每次 1000 个候选），选取期望累积奖励最高的序列执行第一步动作，再重新规划。整个过程不需要任何策略网络或价值函数——模型是唯一"知识"来源。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验（Experiments）</h2>
+    <p class="lead">在 DeepMind Control Suite 的 6 个连续控制任务上，对比 A3C（模型无关、像素输入）、D4PG（模型无关、像素输入，proprioceptive 版本作为上界）、带真实动态的 CEM（oracle），以及纯随机随机策略。所有 pixel-based 方法使用相同 64×64 三阶段下采样图像。指标为最终性能的 median ± IQR（5 seeds × 10 trajectories）。</p>
+
+    <figure>
+      <img src="img/results_curves.webp" alt="训练曲线对比">
+      <figcaption>
+        <strong>Figure 4（论文原图）</strong>：六个任务上 PlaNet（RSSM）vs. 纯随机策略（Random collection）vs. A3C（100K episodes）vs. D4PG（1M episodes，proprioceptive，作为 oracle 上界）的训练曲线。横轴为收集的 episode 数，纵轴为 episode 奖励。PlaNet 在 Finger Spin、Cup Catch、Walker Walk 等任务上用远少于 D4PG 的样本超越或接近其性能；Cheetah Run 上 D4PG 占优。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/results_table.webp" alt="Table 1 与模型设计消融">
+      <figcaption>
+        <strong>Table 1（论文原图）</strong>：方法比较——模态（proprioceptive vs. pixels）、所需 episodes 数与最终性能（各任务 median reward，100 episodes 评估）。PlaNet（RSSM）在 pixels 模态下以 1,000 个 episodes 实现最优总分 862；D4PG 使用 proprioceptive 观测和 100,000 个 episodes 得分 961（作为 oracle 上界）；A3C 用 100,000 episodes 只达到 214。
+      </figcaption>
+    </figure>
+
+    <table>
+      <tr><th>方法</th><th>观测模态</th><th>Episodes</th><th>总 median 奖励</th></tr>
+      <tr><td>A3C (pixels)</td><td>pixels</td><td>100,000</td><td>214</td></tr>
+      <tr><td>D4PG (pixels)</td><td>pixels</td><td>100,000</td><td>462</td></tr>
+      <tr><td>D4PG (proprioceptive)</td><td>proprioceptive</td><td>100,000</td><td>961</td></tr>
+      <tr><td>PlaNet / RSSM（本文）</td><td>pixels</td><td><strong>1,000</strong></td><td class="good">862</td></tr>
+      <tr><td>CEM + 真实动态（oracle）</td><td>state</td><td>—</td><td class="good">941</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/episode_efficiency.webp" alt="样本效率对比">
+      <figcaption>
+        <strong>Figure 5（论文原图）</strong>：PlaNet 与 model-free 算法（A3C、D4PG）的样本效率对比，图中展示了在相同 episode 预算下各方法的性能。PlaNet 使用仅约 2,000 个 episodes 便超越使用 100,000 个 episodes 的 A3C pixel 版本。在 Finger Spin 任务上，PlaNet 以 100K episodes 的表现超越 D4PG 约 20%（relative improvement）。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>论文通过控制变量验证了各设计选择的必要性：</p>
+    <ul>
+      <li><strong>RSSM vs. 纯确定性（GRU）vs. 纯随机（SSM）</strong>：在所有任务上 RSSM 均优于另外两种，说明确定性和随机分量缺一不可。纯随机 SSM 在 Cheetah Run 等接触动力学任务上表现最差。</li>
+      <li><strong>Latent overshooting 的效果</strong>：加入多步 KL 目标后，多步预测准确性显著提升，规划性能随之改善，尤其在需要长视野的稀疏奖励任务上。</li>
+      <li><strong>规划视野 H 与迭代次数</strong>：H=12、迭代 10 次在性能与计算开销之间取得较好平衡；过短的视野导致规划短视，过长则计算开销上升且预测误差累积。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性（Limitations）</h2>
+    <div class="note"><b>Note：</b>论文在第 7 节（Limitations and Future Work）中明确列出了以下局限，属于作者<em>stated</em>陈述；部分条目为从设计出发的<em>inferred</em>推断，已标注。</div>
+
+    <details class="lim" open>
+      <summary>规划计算开销随视野增加（stated）</summary>
+      <p>CEM 规划在每个环境步骤都需要在隐空间中评估大量候选序列（默认 1000 × 10 次迭代 × 12 步），随着规划视野 <em>H</em> 增加，计算量线性增长。论文指出"对于实际实时控制问题这仍是一个挑战"。</p>
+    </details>
+
+    <details class="lim">
+      <summary>视觉复杂度与部分可观测性的局限（stated）</summary>
+      <p>论文明确表示该方法"在视觉复杂度很高或者部分可观测性严重时可能面临困难"。实验中的 64×64 像素任务视觉相对简单；在更真实的图像域中模型容量可能成为瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>仅限连续动作空间与低维任务（inferred）</summary>
+      <p>PlaNet 的 CEM 规划天然适配连续动作空间，对高维离散动作空间或复杂操控任务（如机械臂抓取）的扩展性尚未验证。实验中的六个任务动作维度均较低（1–6维）。</p>
+    </details>
+
+    <details class="lim">
+      <summary>模型复合误差（compounding errors，inferred）</summary>
+      <p>基于模型规划的固有问题：在分布外（out-of-distribution）的状态区域，learned dynamics 的预测误差会随规划步数累积，导致规划效果退化。论文通过缩短 MPC 重规划间隔来缓解，但未根本解决。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Learning Latent Dynamics for Planning from Pixels (PlaNet) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1811.04551">https://arxiv.org/abs/1811.04551</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "slug": "dynamicvla",
+  "title": "DynamicVLA: A Vision-Language-Action Model for Dynamic Object Manipulation",
+  "arxiv_id": "2601.22153",
+  "url": "https://arxiv.org/abs/2601.22153",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "动态物体操作", "continuous inference", "latent-aware action streaming", "机器人操作", "flow matching", "低延迟控制", "DOM benchmark"],
+  "summary_zh": "DynamicVLA 是一个 0.4B 参数的 VLA 模型，通过 Continuous Inference 与 Latent-aware Action Streaming 消除推理-执行时序错位，在自建 DOM 基准上实现 47.06% 整体成功率，超越现有最强基线 3.46 倍。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

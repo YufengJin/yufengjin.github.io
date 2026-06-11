@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / names / metrics / quoted phrases kept in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeFI：解耦前向与逆向动力学预训练的机器人学习框架</title>
+<meta name="keywords" content="Vision-Language-Action, 机器人操作, 前向动力学, 逆向动力学, 预训练, CALVIN, 解耦学习, video prediction">
+<meta name="description" content="DeFI 通过解耦视觉前向与逆向动力学预训练，分别利用海量无标注视频与机器人演示数据，最终整合成端到端微调架构，在 CALVIN 和 SimplerEnv 上达到 SOTA 表现。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics | ICLR 2026</span>
+    <h1>DeFI：解耦前向与逆向动力学预训练的机器人学习</h1>
+    <div class="sub">Disentangled Robot Learning via Separate Forward and Inverse Dynamics Pretraining</div>
+    <div class="authors">Wenyao Zhang · Bozhou Zhang · Zekun Qi · Wenjun Zeng · Xin Jin · Li Zhang &nbsp;|&nbsp; Shanghai Jiao Tong University, Fudan University, Eastern Institute of Technology &amp; Shanghai Innovation Institute</div>
+    <p class="lead">
+      VLA（Vision-Language-Action）模型在构建通用机器人方面潜力巨大，但其将 2D 图像预测与 3D 动作预测耦合训练的方式存在本质矛盾，也限制了从海量无标注网络视频中学习。DeFI 通过将视觉前向动力学（future prediction）与逆向动力学（action inference）解耦预训练，分别利用各自最匹配的数据源，再融合为端到端微调架构——让两个模块先各自发光，再协同增益。
+    </p>
+    <div class="meta">
+      <span>arXiv 2026-03-27</span>
+      <span>CALVIN ABC-D benchmark</span>
+      <span>SimplerEnv + Real-world</span>
+      <span><a href="https://arxiv.org/abs/2604.16391">📄 arXiv:2604.16391</a></span>
+      <span><a href="https://github.com/WenyaoZhang0310/DeFI">GitHub</a></span>
+    </div>
+    <div class="kw">
+      <span>Vision-Language-Action</span>
+      <span>机器人操作</span>
+      <span>前向动力学预训练</span>
+      <span>逆向动力学预训练</span>
+      <span>解耦学习</span>
+      <span>CALVIN</span>
+      <span>video prediction</span>
+      <span>self-supervised</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">
+      现有 VLA 模型将视觉生成与动作预测捆绑训练，存在两大根本矛盾：其一，2D 图像空间的未来帧预测目标与 3D 空间的精细动作预测目标本质不对齐；其二，这种耦合训练方式使模型无法充分利用互联网上海量的、仅有视觉内容的无动作标注视频数据。
+    </p>
+    <blockquote>
+      "VLA models have shown great potential in building generalist robots, but still face a dilemma — misalignment of 2D image forecasting and 3D action prediction. Besides, such a vision-action entangled training manner limits model learning from large-scale, action-free web video data."
+    </blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="DeFI Teaser：解耦预训练示意与实验结果">
+      <figcaption>
+        <strong>图1：DeFI 框架总览。</strong>左侧：将前向动力学模型（GFDM）在多样化人类与机器人视频上预训练用于未来预测，将逆向动力学模型（GIDM）通过自监督学习在无标注视频转换中推断潜在动作；两者整合后在下游任务上端到端微调。这一解耦预训练范式在 CALVIN、SimplerEnv 和真实世界部署中均取得当前最优结果。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4.51</b><small>CALVIN ABC-D<br>平均任务链长度</small></div>
+      <div><b>51.2%</b><small>SimplerEnv-Fractal<br>成功率</small></div>
+      <div><b>81.3%</b><small>真实世界部署<br>成功率</small></div>
+      <div><b>SOTA</b><small>三大评测均超越<br>所有先前方法</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">
+      DeFI 将 VLA 训练拆分为三个阶段：① 独立预训练 GFDM 用于视觉前向动力学；② 独立预训练 GIDM 用于逆向动力学；③ 将两者整合进统一架构后在机器人演示数据上端到端微调。两个模型先各自从最合适的数据中汲取知识，再协同合作共同提升下游任务性能。
+    </p>
+    <figure>
+      <img src="img/architecture.webp" alt="DeFI 整体架构图">
+      <figcaption>
+        <strong>图2：DeFI 三阶段框架。</strong>(a) 阶段一：在海量人类与机器人视频上预训练 GFDM（前向动力学），目标为未来帧预测；(b) 阶段二：在无标注视频转换上以自监督学习预训练 GIDM（逆向动力学），推断隐式动作表征；(c) 阶段三：两模块耦合（Coupled Finetuning），在机器人演示数据上端到端微调，GFDM 输出作为视觉先验指导 GIDM 生成准确动作，并由 diffusion-based action adapter 解码为最终动作。
+      </figcaption>
+    </figure>
+
+    <h3>General Forward Dynamics Model (GFDM)</h3>
+    <p>
+      GFDM 以当前观测 <em>o<sub>t</sub></em> 和语言指令 <em>l</em> 为输入，预测未来视频帧序列。模型基于视频 VAE（2D 或 3D）在 mixed 数据集上预训练：包含多样化人类视频与机器人操作视频，并附加文本条件。由于不依赖动作标注，GFDM 可以利用互联网上大规模的无动作标注视频数据——这是此前 VLA 范式无法实现的。目标函数为预测 latent 的 noise prediction loss。
+    </p>
+
+    <h3>General Inverse Dynamics Model (GIDM)</h3>
+    <p>
+      GIDM 以相邻视频帧对 <em>(v<sub>t</sub>, v<sub>t+1</sub>)</em> 为输入，通过自监督学习推断两帧之间发生的隐式动作（latent action）。具体而言，以 NonCausal-Transformer 编码未来帧到 latent action codebook（VQ-VAE 量化），再以 Causal-Transformer 从当前帧出发重建未来帧，从而学习有意义的动作表征而无需任何动作标注。预训练后，GIDM 的 latent 动作将作为 action adapter 的输入，并以下游任务的机器人本体动作（proprioceptive actions）作为监督信号进行微调，使用的是 diffusion-based adapter。
+    </p>
+
+    <h3>Coupled Finetuning 端到端融合</h3>
+    <p>
+      微调阶段，GFDM 先预测未来帧，将预测的视觉特征（intermediate embeddings）注入 GIDM，从而将丰富的视觉先验引导动作推断。GIDM 接收当前观测、语言指令及 GFDM 提供的未来视觉特征后，经由 diffusion-based action adapter 输出最终机器人动作序列。这一设计既保留了两个预训练模块各自的专长，又通过端到端的梯度传播实现了协同优化。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">
+      在三大评测基准上与先前最优方法对比：CALVIN ABC-D（长序列多任务操作）、SimplerEnv（Fractal 与 Bridge 子集）以及真实世界 Franka Robot 部署。同时进行消融实验分析各组件贡献与预训练规模的影响。
+    </p>
+
+    <h3>CALVIN ABC-D benchmark</h3>
+    <figure>
+      <img src="img/results.webp" alt="CALVIN 和 SimplerEnv 实验结果表格">
+      <figcaption>
+        <strong>表1 & 表2：主要定量结果。</strong>CALVIN ABC-D 上，DeFI 的平均任务链长度（average task length，1000 次 rollout）达到 <strong>4.51</strong>，超越 VPP（4.08）、GR-2（3.97）、GROOT-N1（3.90）等先前 SOTA 方法。SimplerEnv-Fractal 上 DeFI 达到 <strong>51.2%</strong> 成功率，超越 OpenVLA-OFT（45.6%）和 π₀（48.4%）。表中加粗数字为 DeFI 结果，*表示作者复现基线值。
+      </figcaption>
+    </figure>
+
+    <table>
+      <tr><th>Benchmark</th><th>次优方法</th><th>DeFI（本文）</th><th>提升</th></tr>
+      <tr><td>CALVIN ABC-D（Avg. Len.）</td><td>VPP 4.08</td><td class="good">4.51</td><td>+10.5%</td></tr>
+      <tr><td>SimplerEnv-Fractal（SR%）</td><td>π₀ 48.4%</td><td class="good">51.2%</td><td>+2.8pp</td></tr>
+      <tr><td>SimplerEnv-Bridge（SR%）</td><td>OpenVLA-OFT 44.8%</td><td class="good">49.8%</td><td>+5.0pp</td></tr>
+      <tr><td>Real-world（SR%）</td><td>—</td><td class="good">81.3%</td><td>—</td></tr>
+    </table>
+
+    <h3>真实世界实验</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="真实世界 Franka 机器人实验设置与结果">
+      <figcaption>
+        <strong>图3：真实世界实验。</strong>在 Franka Panda 机器人上部署，评测多种单步操作任务（put the mug, pour water 等）。DeFI 在单任务评估中取得 81.3% 的平均成功率，显著高于 baseline 方法。对复杂任务（如桌面摆放多步流程）的泛化能力也优于对比方法。
+      </figcaption>
+    </figure>
+
+    <h3>消融分析 Ablations</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验：预训练有效性、数据规模与离散化策略">
+      <figcaption>
+        <strong>图4 & 消融表。</strong>左：在 CALVIN 上分别消融 GFDM 预训练与 GIDM 预训练，发现两者均贡献显著，完整 DeFI 最优（Avg. Len. 4.51 vs 仅用 GIDM-pretrain 的 4.19）。中：数据效率实验——使用 10%、50%、100% 的可用训练数据时，DeFI 始终优于 baseline，在 10% 数据条件下性能仅下降约 18%（vs 基线下降约 43%），体现出预训练带来的强泛化性。右：针对 GIDM 中逆向动力学不同离散化方法（VQ-VAE、DINO、IDM）的对比，VQ-VAE 配合 NonCausal 编码器效果最佳。
+      </figcaption>
+    </figure>
+
+    <p>
+      消融实验进一步发现：① 将 GFDM 预训练移除后性能下降约 0.32 Avg. Len.；② 移除 GIDM 预训练则下降约 0.36；③ 在 Coupled Finetuning 阶段，将 GFDM 的中间表征注入 GIDM 比仅使用预测帧提升更明显，验证了特征级融合的重要性。使用 VQ-VAE 量化隐式动作相比连续 latent 提升了动作表征的稳定性，减少了训练中的梯度干扰（gradient interference）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note：</b>论文在 Section 5 Conclusion 及附录中对局限性有部分说明；以下条目标注了哪些是作者明确陈述（stated）、哪些是从设计中推断（inferred）。</div>
+
+    <details class="lim" open>
+      <summary>依赖视频预测质量（stated）</summary>
+      <p>
+        GFDM 的未来帧预测质量直接影响下游动作质量。作者在附录中指出，当视频预测出现较大误差（如快速运动或遮挡场景）时，注入 GIDM 的视觉先验可能引入噪声，进而影响动作精度。论文建议后续工作探索更鲁棒的视频生成基础模型。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>GFDM 推断开销较大（inferred from design）</summary>
+      <p>
+        在推断阶段 GFDM 需要先生成未来帧（latent video），再传递给 GIDM 解码动作。相比直接动作回归的 VLA，这一两阶段推断流程增加了推断延迟，可能限制对实时控制频率要求极高的任务场景。论文中未报告推断速度数据。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>真实世界实验规模有限（inferred）</summary>
+      <p>
+        真实世界评测仅在 Franka Panda 平台上进行，任务种类和数量相对有限，且未涉及双臂、移动底座等更复杂的机器人系统。泛化到其他硬件平台的能力需进一步验证。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>SimplerEnv 上部分任务表现不及 baseline（stated）</summary>
+      <p>
+        作者诚实地指出，在 SimplerEnv 的若干特定子任务上，DeFI 并未全面超越所有 baseline（如在某些 Bridge 子集任务上与 OpenVLA-OFT 接近），并将其归因于预训练视频数据域与 SimplerEnv 仿真环境的分布差距。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DeFI · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2604.16391">https://arxiv.org/abs/2604.16391</a>
+  </div>
+</footer>
+
+</body>
+</html>

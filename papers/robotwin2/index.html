@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboTwin 2.0: 可扩展双臂机器人操作数据生成与基准</title>
+<meta name="keywords" content="双臂机器人操作, 合成数据生成, 域随机化, sim-to-real, bimanual manipulation, MLLM, embodiment-aware, benchmark">
+<meta name="description" content="RoboTwin 2.0 通过多模态大语言模型驱动的闭环代码生成、五维域随机化和机器人本体感知适配，构建大规模双臂操作合成数据集，显著提升 sim-to-real 迁移性能。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · 2025</span>
+    <h1>RoboTwin 2.0</h1>
+    <div class="sub">可扩展双臂机器人操作数据生成器与强域随机化基准</div>
+    <div class="authors">Tianxing Chen, Zanxin Chen, Baijun Chen, Zijian Cai, Yibin Liu 等 · Shanghai AI Lab · HKU MMLab · SJTU · THU</div>
+    <p class="lead">RoboTwin 2.0 是一个面向双臂机器人操作的大规模合成数据生成框架，集成了基于多模态大语言模型（MLLM）的闭环专家代码生成、五维域随机化以及机器人本体感知自适应抓取。该系统包含 731 个物体组成的操作数据集，覆盖 147 个类别，预生成超过 10 万条专家轨迹，并提供 50 任务双臂操作基准，显著提升了策略在真实世界中的泛化能力。</p>
+    <div class="meta">
+      <span>arXiv 2025</span>
+      <span>50 任务 · 5 机器人平台</span>
+      <span>731 objects · 147 categories</span>
+      <span><a href="https://arxiv.org/abs/2506.18088">📄 arXiv:2506.18088</a></span>
+      <span><a href="https://robotwin-benchmark.github.io/rob2/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>双臂机器人操作</span>
+      <span>合成数据生成</span>
+      <span>域随机化</span>
+      <span>sim-to-real</span>
+      <span>bimanual manipulation</span>
+      <span>MLLM 代码生成</span>
+      <span>embodiment-aware</span>
+      <span>benchmark</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">双臂机器人操作需要海量高质量轨迹数据，而现有合成数据管线在自动质量控制、场景多样性和跨机器人平台泛化三方面存在根本缺陷。</p>
+    <blockquote>
+      "lack of automated quality control: without an expert-level validation loop, many generated trajectories include execution failures or suboptimal grasps; domain randomization is often superficial, yielding overly clean and homogeneous scenes; overlooking cross-embodiment variation: different bimanual platforms can differ substantially in their kinematic capabilities."
+    </blockquote>
+
+    <figure>
+      <img src="img/x1.webp" alt="RoboTwin 2.0 系统总览">
+      <figcaption>
+        <strong>图 1：RoboTwin 2.0 系统概览。</strong> 框架包含：（左）基于 MLLM 的专家数据生成管线；（中）覆盖 50 个任务的双臂操作基准，支持 Franka、Piper、UR5、ARX-X5、Aloha-AgileX 五种机器人平台；（右）包含 731 个物体、147 个类别的 RoboTwin Object Dataset（RoboTwin-OD），每个物体均标注了操作姿态候选。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>731</b><small>操作物体数量（147 类别）</small></div>
+      <div><b>50</b><small>双臂操作任务基准</small></div>
+      <div><b>5</b><small>支持的机器人平台</small></div>
+      <div><b>367%</b><small>10 条真实样本相对增益（vs. 纯真实数据基线）</small></div>
+    </div>
+
+    <p>真实数据采集成本高昂且难以规模化，而直接使用合成数据训练的策略往往因 sim-to-real 差距而失败。RoboTwin 2.0 通过三个相互协同的组件来解决上述问题：自动化专家数据生成、全面的域随机化，以及机器人本体感知自适应，从而生成 "high-quality, diverse, realistic, and interaction-rich datasets for bimanual manipulation"。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">RoboTwin 2.0 由三大核心组件构成：MLLM 驱动的闭环专家代码生成、五维系统性域随机化，以及基于物体 affordance 的机器人本体感知抓取适配。</p>
+
+    <figure>
+      <img src="img/x2.webp" alt="RoboTwin 2.0 数据生成管线">
+      <figcaption>
+        <strong>图 2：RoboTwin 2.0 数据生成管线。</strong> 给定任务描述，MLLM 生成 Python 任务程序，在仿真中执行并由视觉-语言观察者模型进行逐帧诊断，根据"multimodal execution feedback"迭代修正代码，直到程序达到目标成功率或耗尽最大修正轮次（5 次）。合格程序随后叠加五维域随机化，生成多样化的专家轨迹。
+      </figcaption>
+    </figure>
+
+    <h3>专家代码生成（Automated Expert Code Generation）</h3>
+    <p>系统采用闭环架构，由代码生成模型与视觉-语言观察者模型协同工作。每次生成的任务程序在仿真中执行 <strong>10 次</strong>以评估随机性影响。观察者模型对失败执行进行逐帧检查，诊断失败模式（如抓取轴错误、碰撞干涉等），并向代码生成模型反馈精准的错误定位，指导代码修复。最多允许 <strong>5 次</strong>连续迭代修正，未达标则终止并标记为失败任务。与仅使用文本反馈相比，多模态反馈将 Average Success Rate (ASR) 从 62.1% 提升至 71.3%，同时将 token 消耗从 1236.6 降至 839.7。</p>
+
+    <figure>
+      <img src="img/x3.webp" alt="专家代码生成闭环架构">
+      <figcaption>
+        <strong>图 3：专家代码生成闭环架构。</strong> 代码生成代理（code-generation agent）与视觉-语言观察者代理（VLM observer agent）交替工作，观察者对仿真执行视频进行帧级检查，提供故障定位诊断，驱动代码迭代修复，直至达到目标成功率。
+      </figcaption>
+    </figure>
+
+    <h3>五维域随机化（Domain Randomization）</h3>
+    <p>针对场景外观和语言指令实施五个维度的系统化增广，从根本上解决仿真到现实的视觉差距：</p>
+    <ul>
+      <li><strong>杂乱物体（Clutter）</strong>：在场景中随机放置干扰物，模拟真实工作台的混乱状态</li>
+      <li><strong>背景纹理（Background Textures）</strong>：包含 11,000 张精选纹理，覆盖多样化桌面和环境背景</li>
+      <li><strong>光照变化（Lighting Variation）</strong>：随机化光源位置、强度和色温</li>
+      <li><strong>桌面高度（Tabletop Heights）</strong>：模拟不同高度的操作台</li>
+      <li><strong>语言指令多样化（Language Instructions）</strong>：组合增广生成大量语言变体，丰富策略的语言条件输入</li>
+    </ul>
+
+    <figure>
+      <img src="img/x4.webp" alt="五维域随机化可视化">
+      <figcaption>
+        <strong>图 4：五维域随机化可视化与纹理库。</strong> 从左到右展示了杂乱物体、背景纹理（来自 11,000 张纹理库）、光照变化、桌面高度、语言指令五个维度的随机化效果，以及典型任务在不同域随机化配置下的场景对比。
+      </figcaption>
+    </figure>
+
+    <h3>机器人本体感知抓取适配（Embodiment-Aware Grasp Adaptation）</h3>
+    <p>不同双臂平台在运动学上差异显著（如 Piper 自由度受限，Aloha-AgileX 臂展不同），通用抓取姿态往往导致部分平台无法执行。RoboTwin 2.0 为 RoboTwin-OD 中的每个物体标注多个候选操作姿态（覆盖不同抓取轴），通过角度扰动偏向更高可达性的抓取候选，实现平台专属的抓取执行。该策略在全平台平均提升 <strong>8.3%</strong> 的操作成功率，其中低自由度平台 Piper 提升最高达 <strong>+22.7%</strong>，Aloha-AgileX 提升 <strong>+13.7%</strong>。</p>
+
+    <figure>
+      <img src="img/x7.webp" alt="RoboTwin-OD 物体数据集">
+      <figcaption>
+        <strong>图 7：RoboTwin Object Dataset（RoboTwin-OD）。</strong> 包含 147 个类别、731 个带操作姿态标注的三维物体模型。每个物体标注了多个候选抓取轴，用于机器人本体感知的自适应抓取选择。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在代码生成质量、策略鲁棒性（仿真）以及 sim-to-real 迁移三个维度上进行全面评估，涵盖 RDT、Pi0、DP3 等主流策略学习方法和 5 种机器人平台。</p>
+
+    <h3>代码生成质量（Table 1）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>ASR (%)</th>
+        <th>Top5-ASR (%)</th>
+        <th>CR-Iter</th>
+        <th>Token Cost</th>
+      </tr>
+      <tr>
+        <td>RoboTwin 1.0 Vanilla</td>
+        <td>47.4</td>
+        <td>—</td>
+        <td>2.42</td>
+        <td>1236.6</td>
+      </tr>
+      <tr>
+        <td>RoboTwin 2.0（文本反馈）</td>
+        <td>62.1</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>RoboTwin 2.0（多模态反馈）</td>
+        <td class="good">71.3</td>
+        <td class="good">78.6</td>
+        <td class="good">1.76</td>
+        <td>839.7</td>
+      </tr>
+    </table>
+
+    <h3>策略鲁棒性：域随机化数据的影响（仿真）</h3>
+    <p>在 50 任务基准（Easy vs. Hard 配置）上评估 RDT、Pi0、DP3 等策略。使用域随机化数据训练相比 clean 数据带来显著提升，且 Hard 配置下分数骤降凸显了真实鲁棒性挑战：</p>
+    <table>
+      <tr>
+        <th>策略</th>
+        <th>Easy (%)</th>
+        <th>Hard (%)</th>
+        <th>域随机化提升（RDT）</th>
+      </tr>
+      <tr>
+        <td>RDT</td>
+        <td>34.5</td>
+        <td>13.7</td>
+        <td class="good">+31.9%（相对提升）</td>
+      </tr>
+      <tr>
+        <td>Pi0</td>
+        <td>46.4</td>
+        <td>16.3</td>
+        <td class="good">+29.3%（相对提升）</td>
+      </tr>
+      <tr>
+        <td>DP3</td>
+        <td>55.2</td>
+        <td>5.0</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <h3>真实世界 Sim-to-Real 评估</h3>
+    <p>在 Franka 平台上进行四种配置（seen/unseen 场景 × clean/cluttered 环境）的真实实验，使用 10 条真实演示 + 1000 条合成轨迹的 few-shot 设置：</p>
+    <table>
+      <tr>
+        <th>配置</th>
+        <th>Seen Clean</th>
+        <th>Seen Cluttered</th>
+        <th>Unseen Clean</th>
+        <th>Unseen Cluttered</th>
+      </tr>
+      <tr>
+        <td>域随机化合成数据增益</td>
+        <td class="good">+13.5%</td>
+        <td class="good">+27.5%</td>
+        <td class="good">+23.5%</td>
+        <td class="good">+33.0%</td>
+      </tr>
+    </table>
+    <p>在 unseen 背景的 zero-shot 配置（仅合成数据，无真实演示）下，成功率分别提升 <strong>+21.0%</strong> 和 <strong>+20.5%</strong>。总体而言，10 条真实样本 + 合成数据相对于仅使用真实数据的基线实现了 <strong>367%</strong> 的相对增益。</p>
+
+    <figure>
+      <img src="img/x10.webp" alt="真实世界评估结果">
+      <figcaption>
+        <strong>图 10：真实世界评估（四种测试配置）。</strong> 从左到右依次为：seen clean、seen cluttered、unseen clean、unseen cluttered 四种场景配置下的机器人执行关键帧，覆盖带/不带杂乱物体与已见/未见背景的组合，系统性验证了域随机化在真实部署中的有效性。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/x8.webp" alt="50 个双臂操作任务关键帧">
+      <figcaption>
+        <strong>图 8：50 个双臂操作任务关键帧总览。</strong> 涵盖从简单单步抓放到复杂多步组装、工具使用等各类任务，任务设计兼顾 Easy 和 Hard 难度配置，用于全面评估策略的操作能力。
+      </figcaption>
+    </figure>
+
+    <h3>消融分析</h3>
+    <p>对域随机化各维度的消融结果表明，杂乱物体和背景纹理对 sim-to-real 性能贡献最大；Clean 数据训练对域随机化测试场景的提升"showed negligible improvements"，说明五维随机化不可或缺。机器人本体感知抓取适配的消融同样显示，低自由度平台（如 Piper）获益最明显（+22.7%），验证了平台专属抓取候选策略的必要性。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b> 论文未设独立 Limitations 章节。以下第一条为论文正文中明确陈述（stated），其余为从系统设计中推断（inferred）。</div>
+
+    <details class="lim" open>
+      <summary>视觉观察者诊断准确率有限（stated）</summary>
+      <p>论文指出，视觉-语言观察者模型对失败执行的错误定位准确率仅约 <strong>30%</strong>。"failures from invisible factors like incorrect grasp axis parameters remain challenging for purely vision-based observers to diagnose."这意味着部分失败轨迹可能无法被有效过滤，影响数据质量的上限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Hard 配置下策略性能大幅下降（stated/inferred）</summary>
+      <p>即便使用域随机化数据，策略在 Hard 基准配置下的成功率相较 Easy 配置仍显著下降（DP3 从 55.2% 跌至 5.0%，Pi0 从 46.4% 跌至 16.3%），说明现有策略对强随机化场景的鲁棒性仍有 "significant room for improvement"。</p>
+    </details>
+
+    <details class="lim">
+      <summary>数据生成规模与任务多样性的扩展边界（inferred）</summary>
+      <p>当前系统覆盖 50 个任务和 5 种平台，代码生成的 ASR 上限为 71.3%（Top5-ASR 78.6%），约有 20-30% 的任务程序生成失败。对于需要更复杂接触物理或长时程规划的任务，MLLM 驱动的代码生成可靠性可能进一步下降，限制了系统向更广泛操作场景的自动扩展。</p>
+    </details>
+
+    <details class="lim">
+      <summary>真实平台评估范围有限（inferred）</summary>
+      <p>真实世界实验主要在 Franka 平台上进行，其余四种平台（Piper、UR5、ARX-X5、Aloha-AgileX）的 sim-to-real 结果以仿真为主，真实部署验证尚不完整，不同平台间的迁移效果有待进一步实验确认。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · RoboTwin 2.0 · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.18088">https://arxiv.org/abs/2506.18088</a>
+  </div>
+</footer>
+
+</body>
+</html>

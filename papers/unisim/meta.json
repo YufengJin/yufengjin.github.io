@@ -1,0 +1,11 @@
+{
+  "slug": "unisim",
+  "title": "Learning Interactive Real-World Simulators",
+  "arxiv_id": "2310.06114",
+  "url": "https://arxiv.org/abs/2310.06114",
+  "category": "机器人 · Robotics",
+  "keywords": ["world model", "video diffusion", "interactive simulator", "机器人策略", "action-conditioned generation", "真实世界仿真", "reinforcement learning", "视频生成"],
+  "summary_zh": "UniSim 通过视频扩散模型统一整合机器人、人类活动、导航等多源异构数据，学习一个可交互的真实世界通用仿真器，支持高层语言指令与底层连续控制，训练所得策略可零样本迁移至真实机器人。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "state-free-visuomotor",
+  "title": "Do You Need Proprioceptive States in Visuomotor Policies?",
+  "arxiv_id": "2509.18644",
+  "url": "https://arxiv.org/abs/2509.18644",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "visuomotor policy",
+    "proprioception",
+    "relative end-effector action",
+    "spatial generalization",
+    "wrist camera",
+    "机器人操控",
+    "cross-embodiment",
+    "imitation learning",
+    "State-free Policy",
+    "data efficiency"
+  ],
+  "summary_zh": "State-free 策略去除本体感知状态输入，仅凭视觉观测（双广角腕部相机）加相对末端执行器动作空间，在三种真实机器人平台上实现大幅空间泛化提升，同时保持域内性能不变并降低对大量数据的依赖。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

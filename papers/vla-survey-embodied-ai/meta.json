@@ -1,0 +1,11 @@
+{
+  "slug": "vla-survey-embodied-ai",
+  "title": "A Survey on Vision-Language-Action Models for Embodied AI",
+  "arxiv_id": "2405.14093",
+  "url": "https://arxiv.org/abs/2405.14093",
+  "category": "机器人 · Robotics",
+  "keywords": ["vision-language-action", "VLA", "embodied AI", "具身智能", "robot manipulation", "diffusion policy", "task planner", "large language models", "策略学习"],
+  "summary_zh": "首篇系统综述 VLA（视觉-语言-动作）模型，提出层级化分类框架（组件 / 低层控制策略 / 高层任务规划器），梳理 50+ 代表性方法及 8 大未来挑战，发表于 IEEE TNNLS 2026。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

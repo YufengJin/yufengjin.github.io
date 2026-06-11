@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.webp.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThinkAct: Vision-Language-Action Reasoning via Reinforced Visual Latent Planning</title>
+<meta name="keywords" content="VLA, vision-language-action, embodied reasoning, reinforcement learning, visual plan latent, dual-system, 机器人操作, long-horizon planning, few-shot adaptation, self-correction">
+<meta name="description" content="ThinkAct 提出双系统框架，通过强化视觉潜在规划将高层推理与低层动作执行联结，在复杂具身 AI 任务中实现少样本自适应、长时域规划与自我纠错。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">NeurIPS 2025 · 机器人 · Robotics</span>
+    <h1>ThinkAct</h1>
+    <div class="sub">Vision-Language-Action Reasoning via Reinforced Visual Latent Planning</div>
+    <div class="authors">Chi-Pin Huang · Yueh-Hua Wu · Min-Hung Chen · Yu-Chiang Frank Wang · Fu-En Yang</div>
+    <p class="lead">ThinkAct 提出一个双系统框架，将多模态大语言模型（MLLM）的高层推理与下游动作模型的低层执行联结起来：MLLM 通过强化学习生成动作对齐的视觉推理计划，计划被压缩为视觉潜变量（visual plan latent）后条件化动作模型，从而在复杂具身 AI 任务中实现少样本自适应、长时域规划与自我纠错。</p>
+    <div class="meta">
+      <span>NeurIPS 2025</span><span>Qwen2.5-VL 7B · DiT-based Action (432M)</span><span>SimplerEnv · LIBERO · EgoPlan-Bench2</span>
+      <span><a href="https://arxiv.org/abs/2507.16815">📄 arXiv:2507.16815</a></span>
+      <span><a href="https://arxiv.org/pdf/2507.16815">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>vision-language-action</span>
+      <span>embodied reasoning</span>
+      <span>reinforcement learning</span>
+      <span>visual plan latent</span>
+      <span>dual-system framework</span>
+      <span>机器人操作</span>
+      <span>long-horizon planning</span>
+      <span>few-shot adaptation</span>
+      <span>self-correction</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      现有 VLA 模型通常以端到端方式将多模态输入直接映射到低层动作，<strong>缺乏显式推理过程</strong>，导致在多步规划和复杂任务变体上表现不足。尽管思维链（Chain-of-Thought, CoT）方法有所改进，但依赖昂贵的人工标注；基于问答（QA）风格的强化学习奖励则难以支撑具身规划的视觉基础。
+    </p>
+    <blockquote>
+      "Existing approaches typically train VLA models in an end-to-end fashion, directly mapping inputs to actions without explicit reasoning, which hinders their ability to plan over multiple steps or adapt to complex task variations."
+    </blockquote>
+    <figure>
+      <img src="img/x1.webp" alt="ThinkAct teaser">
+      <figcaption>
+        图 1：ThinkAct 的"先思考，后行动"双系统框架概览。通过动作对齐的视觉反馈进行强化，使模型具备少样本自适应、长时域规划与自我纠错三大关键能力。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>71.5%</b><small>SimplerEnv Google-VM 成功率<br>（DiT-Policy：56.0%）</small></div>
+      <div><b>84.4%</b><small>LIBERO 综合成功率<br>（DiT-Policy：76.8%）</small></div>
+      <div><b>48.2%</b><small>EgoPlan-Bench2 准确率<br>（Qwen2.5-VL*：45.7%）</small></div>
+      <div><b>+9.5%</b><small>LIBERO-Spatial 10-shot<br>超越 Magma 的提升幅度</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      ThinkAct 包含两个协同工作的子系统：<strong>推理 MLLM</strong>（Qwen2.5-VL 7B）负责在视觉观测与语言指令输入下生成具身推理计划，并通过动作对齐的视觉奖励进行强化训练；<strong>DiT-based Action Model</strong>（432M 参数）以视觉计划潜变量为条件，在目标环境中预测可执行动作序列。
+    </p>
+    <figure>
+      <img src="img/x2.webp" alt="ThinkAct architecture">
+      <figcaption>
+        图 2：ThinkAct 架构总览。(a) 推理 MLLM 接收观测与指令，预测轨迹计划，通过基于目标完成度和轨迹一致性的视觉奖励进行 GRPO 强化训练；(b) DiT-based 动作模型以视觉计划潜变量为条件，输出可执行的低层动作序列。
+      </figcaption>
+    </figure>
+
+    <h3>动作对齐的视觉奖励（Action-Aligned Visual Rewards）</h3>
+    <p>
+      ThinkAct 设计了两类视觉奖励取代传统 QA-style 奖励：
+    </p>
+    <ul>
+      <li><strong>Goal Reward (r<sub>goal</sub>)：</strong>将 MLLM 预测的轨迹起止位置与检测器提取的真实轨迹点进行基于距离的相似度对比，衡量目标完成程度。</li>
+      <li><strong>Trajectory Reward (r<sub>traj</sub>)：</strong>使用动态时间规整距离（Dynamic Time Warping, DTW）正则化预测轨迹分布，提升轨迹一致性。</li>
+    </ul>
+    <p>
+      综合奖励公式为：<code>r = 0.9·r<sub>visual</sub> + 0.1·r<sub>format</sub></code>，其中 <code>r<sub>visual</sub> = 0.5·r<sub>goal</sub> + 0.5·r<sub>traj</sub></code>。
+    </p>
+
+    <h3>训练策略（Training Strategy）</h3>
+    <p>
+      训练分两阶段进行：
+    </p>
+    <ul>
+      <li><strong>Cold-start SFT：</strong>在 20K 轮次（batch size 32）的监督微调中初始化轨迹解读能力，使模型具备基础的视觉计划生成能力。</li>
+      <li><strong>GRPO Fine-tuning：</strong>在 6K 轮次（batch size 64，rollout 5）的强化训练中，利用动作对齐视觉奖励优化推理质量。动作模型则在 OXE 数据上以模仿学习方式训练，推理模块在此阶段保持冻结。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验涵盖<strong>机器人操作基准</strong>（SimplerEnv、LIBERO）和<strong>具身推理基准</strong>（EgoPlan-Bench2、RoboVQA、OpenEQA），与 DiT-Policy、CoT-VLA、Magma 等基线对比，并考察少样本自适应（10-shot）和自我纠错能力。
+    </p>
+
+    <h3>机器人操作（SimplerEnv）</h3>
+    <table>
+      <tr><th>场景</th><th>DiT-Policy</th><th>CoT-VLA</th><th>ThinkAct（本文）</th></tr>
+      <tr><td>Google-VM</td><td>56.0%</td><td>—</td><td class="good">71.5%</td></tr>
+      <tr><td>Google-VA</td><td>48.2%</td><td>—</td><td class="good">65.1%</td></tr>
+      <tr><td>Bridge-VM</td><td>32.4%</td><td>—</td><td class="good">43.8%</td></tr>
+    </table>
+
+    <h3>LIBERO 综合成功率</h3>
+    <table>
+      <tr><th>子集</th><th>DiT-Policy</th><th>CoT-VLA</th><th>ThinkAct（本文）</th></tr>
+      <tr><td>Spatial</td><td>—</td><td>—</td><td class="good">88.3%</td></tr>
+      <tr><td>Object</td><td>—</td><td>—</td><td class="good">91.4%</td></tr>
+      <tr><td>Goal</td><td>—</td><td>—</td><td class="good">87.1%</td></tr>
+      <tr><td>Long</td><td>—</td><td>—</td><td class="good">70.9%</td></tr>
+      <tr><td><strong>Overall</strong></td><td>76.8%</td><td>83.9%</td><td class="good"><strong>84.4%</strong></td></tr>
+    </table>
+
+    <h3>具身推理基准</h3>
+    <table>
+      <tr><th>基准</th><th>Qwen2.5-VL*（基线）</th><th>ThinkAct（本文）</th></tr>
+      <tr><td>EgoPlan-Bench2（Acc.）</td><td>45.7%</td><td class="good">48.2%</td></tr>
+      <tr><td>RoboVQA（BLEU-4）</td><td>55.7</td><td class="good">59.8</td></tr>
+      <tr><td>OpenEQA（Overall%）</td><td>52.0%</td><td class="good">56.2%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/x3.webp" alt="qualitative results">
+      <figcaption>
+        图 3：在 SimplerEnv 和 LIBERO 上的定性操作示例，展示中间推理分解（intermediate reasoning decomposition）和任务执行过程中的轨迹可视化。
+      </figcaption>
+    </figure>
+
+    <h3>少样本自适应（10-shot）</h3>
+    <figure>
+      <img src="img/x5.webp" alt="few-shot adaptation results">
+      <figcaption>
+        图 4：在 LIBERO 任务上使用每任务 10 个演示的少样本自适应性能。ThinkAct 在 LIBERO-Spatial 上比 Magma 高 +9.5%，在 LIBERO-Goal 上高 +7.3%。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations，SimplerEnv）</h3>
+    <table>
+      <tr><th>配置</th><th>综合得分</th></tr>
+      <tr><td>ThinkAct（Full）</td><td class="good">60.1</td></tr>
+      <tr><td>w/o r<sub>traj</sub></td><td>59.2</td></tr>
+      <tr><td>w/o r<sub>goal</sub></td><td>59.1</td></tr>
+      <tr><td>w/o both rewards</td><td>56.9</td></tr>
+      <tr><td>SFT baseline</td><td>56.4</td></tr>
+    </table>
+    <p>
+      消融结果表明，目标奖励和轨迹奖励均对最终性能有正向贡献；移除任一奖励均导致性能下降，完全去除视觉奖励后性能下降最为明显（60.1 → 56.9）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下局限性中，第一条为论文作者明确陈述（stated），第二和第三条为基于设计的推断（inferred from the design）。</div>
+
+    <details class="lim" open>
+      <summary>MLLM 幻觉（Hallucination）问题（stated）</summary>
+      <p>
+        论文明确指出，该框架"inherits limitations from pretrained MLLMs, particularly hallucinations in visual or spatial reasoning"，即预训练 MLLM 在视觉或空间推理中存在幻觉，可能生成引用"incorrect object attributes or spatial relationships"的计划，从而影响下游动作执行质量。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>对演示数据的依赖（inferred）</summary>
+      <p>
+        虽然 ThinkAct 展示了 10-shot 适应能力，但动作模型的训练仍依赖 OXE 等大规模机器人数据集进行预训练，在全新形态或环境中的零样本泛化能力尚不明确。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>计算开销较大（inferred）</summary>
+      <p>
+        推理阶段需要先运行 Qwen2.5-VL 7B 生成视觉推理计划，再驱动 432M 参数的 DiT-based 动作模型，双系统的串联推理对实时控制场景的延迟要求构成挑战；GRPO fine-tuning（batch 64，rollout 5）的训练成本也不可忽视。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · ThinkAct: Vision-Language-Action Reasoning via Reinforced Visual Latent Planning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2507.16815">https://arxiv.org/abs/2507.16815</a>
+  </div>
+</footer>
+
+</body>
+</html>

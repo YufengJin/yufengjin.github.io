@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perceiver-Actor: A Multi-Task Transformer for Robotic Manipulation</title>
+<meta name="keywords" content="robotic manipulation, behavior cloning, language-conditioned, voxel representation, Perceiver Transformer, 6-DoF manipulation, multi-task learning, 机器人操作, 语言条件控制, RLBench">
+<meta name="description" content="PerAct 是一个语言条件化的机器人操作 agent，通过 Perceiver Transformer 处理体素化 RGB-D 观测与语言目标，在 18 个任务上训练单一多任务模型，性能全面超越 image-based 和 3D ConvNet 基线。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CoRL 2022 · 机器人操作</span>
+    <h1>Perceiver-Actor: A Multi-Task Transformer for Robotic Manipulation</h1>
+    <div class="sub">语言条件化、体素化、单一多任务 Transformer agent</div>
+    <div class="authors">Mohit Shridhar · Lucas Manuelli · Dieter Fox &nbsp;|&nbsp; University of Washington, NVIDIA</div>
+    <p class="lead">PerAct 是一个语言条件化的 behavior cloning agent，采用 Perceiver Transformer 对体素化 RGB-D 场景与自然语言目标进行联合编码，通过检测"下一个最优体素动作（next best voxel action）"输出离散化的 6-DoF 末端执行器姿态。单一多任务模型在 RLBench 18 个任务（249 种变体）上仅用少量演示训练，性能大幅超越 image-based 基线（+34x）和 3D ConvNet 基线（+2.8x）。</p>
+    <div class="meta">
+      <span>CoRL 2022</span>
+      <span>18 RLBench Tasks</span>
+      <span>6-DoF Manipulation</span>
+      <span><a href="https://arxiv.org/abs/2209.05451">📄 arXiv:2209.05451</a></span>
+      <span><a href="https://peract.github.io/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>robotic manipulation</span>
+      <span>behavior cloning</span>
+      <span>language-conditioned</span>
+      <span>voxel representation</span>
+      <span>Perceiver Transformer</span>
+      <span>6-DoF manipulation</span>
+      <span>multi-task learning</span>
+      <span>RLBench</span>
+      <span>机器人操作</span>
+      <span>语言条件控制</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">机器人操作任务需要对多样化的物体、空间位置和语言指令进行泛化——而现有方法要么依赖目标物体的显式检测与位姿估计，要么只能处理 2D 图像输入，难以有效利用 3D 空间结构先验。如何用单一模型、在极少演示下学会多种 6-DoF 操作任务？</p>
+    <blockquote>"Rather than explicitly detecting or tracking objects, we want to learn <em>perceptual representations of actions conditioned on language goals</em>."</blockquote>
+
+    <figure>
+      <img src="img/page2.webp" alt="PerAct 任务多样性展示">
+      <figcaption>图 1：PerAct 在 RLBench 18 个操作任务（249 种变体）上的展示，涵盖抓取、推拉、开关门抽屉、堆叠、倒液体等多种交互类型。图中展示了语言指令（如 "open the middle drawer"、"put the green block in the green bowl"）与对应的操作场景。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>18</b><small>RLBench 仿真任务</small></div>
+      <div><b>249</b><small>任务变体数量</small></div>
+      <div><b>34×</b><small>vs Image-BC 基线提升</small></div>
+      <div><b>2.8×</b><small>vs C2FARM-BC 提升</small></div>
+    </div>
+
+    <h3>核心问题</h3>
+    <p>传统机器人操作方法存在以下主要挑战：</p>
+    <ul>
+      <li><strong>图像平面局限性：</strong>Image-BC（CNN/ViT）等方法将 RGB 图像直接映射到动作，缺乏 3D 空间推理能力，在精细 6-DoF 操作任务上表现差。</li>
+      <li><strong>特定任务设计：</strong>许多方法依赖目标检测、位姿估计等中间表示，无法在任务间共享泛化能力。</li>
+      <li><strong>Transformer 对高维输入的处理瓶颈：</strong>标准 Transformer 的 self-attention 在百万维度体素输入上计算量为 O(N²)，不可行。</li>
+      <li><strong>演示数据稀缺：</strong>收集大量机器人演示数据代价高昂，需要能从极少演示（每任务 10–100 条）中学习的方法。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">PerAct 将操作任务转化为"体素动作检测"问题：给定多视角 RGB-D 图像与语言指令，在离散化的 3D 体素空间中预测末端执行器的下一个最优位置与方向，输出包含平移、旋转、开合状态和碰撞规避在内的完整 6-DoF 动作。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="PerAct 整体架构">
+      <figcaption>图 2：PerAct 整体架构。左侧：4 台 RGB-D 相机的点云融合为 100×100×100 体素网格，每个体素携带 RGB、占据和法向量特征；底部：语言指令通过预训练语言编码器（CLIP）转化为 token 序列。中部：Voxel Encoder 将体素序列与语言 token 拼接，输入 PerceiverIO Transformer，通过 cross-attention 压缩至 2048×512 latent 向量，再经多轮 self-attention 深度处理。右侧：Voxel Decoder 通过 cross-attention 输出每个体素的动作得分，Maxpool 后分别预测平移（Q_trans）、旋转（Q_rot）、开合（Q_open）和碰撞（Q_collide）。</figcaption>
+    </figure>
+
+    <h3>体素化观测表示（Voxelized Observation）</h3>
+    <p>来自 4 台 RGB-D 相机的点云被融合并离散化为 100×100×100 的体素网格（voxel grid），空间分辨率约 1cm/voxel。每个体素存储 RGB 颜色、占据状态（0/1）与法向量，构成结构化的 3D 场景表示。体素按 Vision Transformer 方式切分为 patch，展平后与位置编码（positional embedding）相加，输入 PerceiverIO Transformer。</p>
+
+    <figure>
+      <img src="img/perceiver.webp" alt="PerceiverIO Transformer 结构">
+      <figcaption>图 3：PerceiverIO Transformer 结构。输入体素 token（100万+维度）先通过 cross-attention 压缩至小型 latent 数组（2048×512），随后多轮 self-attention 在 latent 空间高效处理，最后再次通过 cross-attention 解码输出体素级别的动作分数。该设计将 self-attention 的计算复杂度从 O(N²) 降至 O(NM)（N≫M）。</figcaption>
+    </figure>
+
+    <h3>语言条件化（Language Conditioning）</h3>
+    <p>自然语言指令（如 "open the middle drawer"）通过预训练的 CLIP 语言编码器转化为 token 序列，与体素 token 序列拼接后共同输入 Perceiver。此设计允许 agent 通过语言指令区分任务变体（如颜色、位置、类别等），实现对未见过的物体实例的零样本泛化。语言特征与视觉特征在同一 latent 空间中通过 cross-attention 融合，无需额外的跨模态对齐模块。</p>
+
+    <h3>动作输出（Action Representation）</h3>
+    <p>PerAct 将 6-DoF 末端执行器动作分解为：</p>
+    <ul>
+      <li><strong>平移（Q_trans）：</strong>在体素网格上预测最优体素位置（100×100×100 = 100 万类分类）；</li>
+      <li><strong>旋转（Q_rot）：</strong>俯仰/横滚/偏航三个轴各独立预测，每轴离散化为 5° 精度（72 类）；</li>
+      <li><strong>夹爪开合（Q_open）：</strong>二元分类；</li>
+      <li><strong>碰撞规避（Q_collide）：</strong>二元分类，控制是否规避碰撞。</li>
+    </ul>
+    <p>训练目标为所有输出的交叉熵损失之和：<em>L = L_trans + L_rot_x + L_rot_y + L_rot_z + L_open + L_collide</em>。</p>
+
+    <h3>训练细节</h3>
+    <p>使用 keyframe-based 的 behavior cloning：每条演示轨迹提取关键帧（速度接近零且夹爪状态改变处），以此作为监督信号。数据增强包括对体素网格施加随机颜色 jitter 和随机平移。模型在单台 GPU 上训练，不同任务共享一个多任务模型（single multi-task agent），每次输入的语言指令决定当前任务。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在 RLBench 仿真环境（CoppeliaSim + PyRep）中进行，使用 4 台 RGB-D 相机；并在真实 Franka Panda 机械臂上进行了 7 个现实任务的验证。评估指标为每个任务的成功率（success rate），以 100 次评估为准（仿真），每次最多 25 步。</p>
+
+    <h3>基线方法</h3>
+    <ul>
+      <li><strong>Image-BC (CNN)：</strong>以多视角 RGB 图像直接预测动作，卷积神经网络主干；</li>
+      <li><strong>Image-BC (ViT)：</strong>同上，使用 Vision Transformer 主干；</li>
+      <li><strong>C2FARM-BC：</strong>基于 3D 卷积网络的 coarse-to-fine action regression 方法，当时 state-of-the-art 的 3D 基线；</li>
+      <li><strong>PerAct (ours)：</strong>本文方法。</li>
+    </ul>
+
+    <figure>
+      <img src="img/page7.webp" alt="PerAct 在 RLBench 18 个任务上的多任务性能对比">
+      <figcaption>图 4（Table 1）：RLBench 18 个任务的多任务成功率（%）对比。每个任务以 10 或 100 个 demonstrations 训练，25 次评估取平均（以 episodes 为单位）。PerAct 在绝大多数任务中显著领先，整体平均成功率从 C2FARM-BC 的约 26% 提升至约 49%（100 demos）。Image-BC (CNN) 在多数任务成功率接近 0，C2FARM-BC 是最具竞争力的基线。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>方法</th><th>10 Demos 平均成功率</th><th>100 Demos 平均成功率</th><th>相对 C2FARM-BC 提升</th></tr>
+      <tr><td>Image-BC (CNN)</td><td>~1%</td><td>~1%</td><td>—</td></tr>
+      <tr><td>Image-BC (ViT)</td><td>~1%</td><td>~4%</td><td>—</td></tr>
+      <tr><td>C2FARM-BC</td><td>~20%</td><td>~26%</td><td>基线</td></tr>
+      <tr><td class="good">PerAct (ours)</td><td class="good">~29%</td><td class="good">~49%</td><td class="good">+2.83× (100 demos)</td></tr>
+    </table>
+
+    <h3>关键发现</h3>
+    <ul>
+      <li>PerAct 在 10 个 demonstrations 时平均成功率约 29%，100 个 demonstrations 提升至约 49%，使用更多 demonstrations 时还有进一步提升空间（"likely due to insufficient capacity"，论文原文）。</li>
+      <li>对于 stack blocks（3 种变体）、insert peg、place cups 等高精度任务，PerAct 超越所有基线但成功率仍低于 65%，说明这些任务对末端执行器精度要求极高（"a few centimeters or degrees could lead to unrecoverable failures"）。</li>
+      <li>PerAct 展现出对语言描述的语义理解：可以泛化到训练中未见过的语言指令变体（如颜色词、位置描述），即 emergent language grounding。</li>
+    </ul>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>论文（Appendix G）分析了以下因素：</p>
+    <ul>
+      <li><strong>体素化分辨率（Voxelization resolution）：</strong>100³ 体素（约 1cm 精度）对多数任务足够，高精度任务（如 insert peg）受益于更高分辨率。</li>
+      <li><strong>全局 vs. 局部感受野（Global vs. Local Receptive Fields）：</strong>PerceiverIO 的全局感受野显著优于仅使用局部感受野的变体，说明 long-range attention 对多步规划至关重要。</li>
+      <li><strong>Skip connection：</strong>去除 Voxel Encoder→Decoder 的 skip connection 后性能下降，说明细粒度空间特征对精确体素预测有帮助。</li>
+      <li><strong>Latent 向量维度：</strong>2048 latent 向量优于更小的 latent 维度，提供足够的容量来编码多任务信息。</li>
+    </ul>
+
+    <h3>真实机器人实验</h3>
+    <p>在 Franka Panda 机械臂上验证了 7 个真实任务（18 种变体），每任务仅使用 <strong>5–10 个人工演示</strong>，成功率优于从头训练的 C2FARM-BC，且无需任何 domain adaptation，展示了 3D voxel 表示在 sim-to-real 方面的优势。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note：</b>以下局限性部分来自论文正文的明确陈述（标注 <em>stated</em>），部分为从方法设计推断（标注 <em>inferred</em>）。</div>
+
+    <details class="lim" open><summary>静态 keyframe 动作表示的局限性（stated）</summary>
+      <p>PerAct 使用 keyframe-based behavior cloning，仅在关键帧处预测动作，默认采用线性插值运动规划器（motion planner）连接关键帧。论文明确指出："our observations and actions are colorless and motionless"，不建模非关键帧的连续轨迹，对高度动态或时序依赖的操作任务（如抓取移动物体）不适用。</p>
+    </details>
+
+    <details class="lim"><summary>计算量与内存开销（inferred）</summary>
+      <p>100³ 体素网格在每步推理时需处理约 100 万个体素 token，即便 PerceiverIO 通过 latent 压缩将复杂度降至 O(NM)，仍需显著的计算资源。论文未报告单步推理时延，在实时机器人控制场景下可能存在瓶颈。</p>
+    </details>
+
+    <details class="lim"><summary>演示数量上限与容量瓶颈（stated）</summary>
+      <p>论文实验显示 PerAct 在增加演示（从 10 到 100）时持续涨点，但同时指出额外训练 demonstrations 带来的提升"likely due to insufficient capacity"，说明当前模型容量可能仍是瓶颈，在演示数量更大时需要更大的模型或更高效的训练策略。</p>
+    </details>
+
+    <details class="lim"><summary>依赖结构化场景与标定相机（inferred）</summary>
+      <p>方法依赖多台标定好的 RGB-D 相机重建 3D 体素场景，对相机标定精度和场景光照条件敏感。在无结构化环境（如非实验室场景）或单相机设置下，3D 重建质量下降会直接影响体素空间中的动作预测精度。</p>
+    </details>
+
+    <details class="lim"><summary>高精度任务成功率仍有差距（stated）</summary>
+      <p>对于 insert peg、place cups、stack blocks 等高精度任务，PerAct 成功率仍显著低于 65%，论文明确指出"a few centimeters or degrees could lead to unrecoverable failures"，这类任务对当前 ~1cm 体素分辨率和 5° 旋转精度仍构成挑战。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Perceiver-Actor: A Multi-Task Transformer for Robotic Manipulation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2209.05451">https://arxiv.org/abs/2209.05451</a>
+  </div>
+</footer>
+
+</body>
+</html>

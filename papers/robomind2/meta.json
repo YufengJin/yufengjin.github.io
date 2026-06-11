@@ -1,0 +1,11 @@
+{
+  "slug": "robomind2",
+  "title": "RoboMIND 2.0: A Multimodal, Bimanual Mobile Manipulation Dataset for Generalizable Embodied Intelligence",
+  "arxiv_id": "2512.24653",
+  "url": "https://arxiv.org/abs/2512.24653",
+  "category": "机器人 · Robotics",
+  "keywords": ["机器人操作数据集", "bimanual manipulation", "VLA", "imitation learning", "mobile manipulation", "tactile sensing", "sim-to-real", "具身智能"],
+  "summary_zh": "RoboMIND 2.0 收录超过 310K 条双臂操作轨迹（六种机器人本体、759 项任务），首次同时支持双臂协调、移动操作、灵巧手与触觉传感；配套 MIND-2 层级化双系统（VLM 规划 + VLA + IQL 后训练）在长时域协作操作任务上显著优于现有 VLA 基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

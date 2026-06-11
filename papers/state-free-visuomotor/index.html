@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do You Need Proprioceptive States in Visuomotor Policies?</title>
+<meta name="keywords" content="visuomotor policy, proprioception, robot manipulation, relative end-effector action, spatial generalization, 机器人操控, 视觉运动策略, cross-embodiment, wrist camera, imitation learning">
+<meta name="description" content="State-free 策略仅依赖视觉输入，通过相对末端执行器动作空间和双广角腕部相机，大幅提升机器人操控的空间泛化能力，同时消除对本体感知状态的依赖。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · arXiv 2025</span>
+    <h1>Do You Need Proprioceptive States in Visuomotor Policies?</h1>
+    <div class="sub">State-free 策略：仅凭视觉实现跨高度、跨位置的空间泛化机器人操控</div>
+    <div class="authors">Juntu Zhao*, Wenbo Lu*, Di Zhang, Yufeng Liu, Yushen Liang, Tianluo Zhang, Yifeng Cao, Junyuan Xie, Yingdong Hu, Shengjie Wang, Junliang Guo, Dequan Wang, Yang Gao<br>
+    上海交通大学 · Spirit AI · 清华大学 · 纽约大学上海 · 同济大学</div>
+    <p class="lead">本体感知（关节角度、末端位姿等状态输入）是机器人视觉运动策略的默认输入，但作者发现它实际上是泛化的"绊脚石"——策略会以状态为"捷径"记忆训练轨迹，而非学会真正的视觉推理。去掉状态输入、改用相对末端执行器动作空间与双广角腕部相机，即可在多机器人平台上大幅提升空间泛化，同时保持域内性能不变。</p>
+    <div class="meta">
+      <span>arXiv 2509.18644</span>
+      <span>cs.RO</span>
+      <span>2025-09-23</span>
+      <span><a href="https://arxiv.org/abs/2509.18644">📄 arXiv:2509.18644</a></span>
+      <span><a href="https://arxiv.org/pdf/2509.18644">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>visuomotor policy</span>
+      <span>proprioception</span>
+      <span>relative end-effector action</span>
+      <span>spatial generalization</span>
+      <span>wrist camera</span>
+      <span>机器人操控</span>
+      <span>cross-embodiment</span>
+      <span>imitation learning</span>
+      <span>State-free Policy</span>
+      <span>data efficiency</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">本体感知状态（关节角度、末端执行器绝对位姿等）长期以来被视为视觉运动策略的必要输入——但它真的有帮助吗？作者通过系统实验发现，状态输入反而会让策略"走捷径"：在固定高度、固定位置训练后，只要物体位置稍有变动，成功率就从98%骤降至0%。</p>
+    <blockquote>"State inputs may act as <em>shortcuts</em> that enable policies to memorize training trajectories tied to specific states, rather than developing true visual reasoning for task completion."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="teaser — spatial generalization comparison">
+      <figcaption><b>图1：空间泛化对比。</b> State-based 策略（蓝）在高度/水平方向泛化时成功率接近0%；State-free 策略（绿）在多个任务和机器人平台上均保持高成功率。x轴为物体偏移量，y轴为任务成功率。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>0% → 98.4%</b><small>Pick Pen 高度泛化提升</small></div>
+      <div><b>6% → 58.4%</b><small>Pick Pen 水平泛化提升</small></div>
+      <div><b>18.3% → 83.4%</b><small>Fold Shirt 水平泛化提升</small></div>
+      <div><b>11.7% → 78.4%</b><small>Fetch Bottle 全身机器人泛化提升</small></div>
+    </div>
+    <p>传统的 state-based 策略在域内（in-domain）表现良好，但当桌子高度变化±10cm 或物体水平偏移5~10cm 时，性能急剧下降。这种脆弱性在真实部署中代价极高。作者验证了该现象在三种不同机器人平台（双臂类人机器人、Arx5 系统、26自由度全身机器人）上均普遍存在。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">State-free Policy 由三个核心设计组成：<b>去除所有状态输入</b>、<b>采用相对末端执行器动作空间</b>、以及<b>使用双广角腕部相机提供充分的视觉覆盖</b>。三者协同，使策略的决策完全依赖于视觉观测，从而具备内在的位姿无关性。</p>
+    <figure>
+      <img src="img/cameras.webp" alt="camera setup comparison">
+      <figcaption><b>图2：相机配置对比。</b> (a) 单个普通腕部相机视角受限，任务目标可能移出视野；(b) 顶部+底部双广角相机（各120°×120°视角）安装于末端执行器，覆盖完整任务空间，确保目标始终可见。</figcaption>
+    </figure>
+
+    <h3>相对末端执行器动作空间（Relative EEF Action Space）</h3>
+    <p>策略预测相对位移 Δp<sub>t</sub> = [Δx<sub>t</sub>, Δq<sub>t</sub>]，而非绝对位姿。由于相机固定在末端执行器上，相同的视觉观测对应相同的相对位移，无论机器人的绝对姿态如何——这是空间泛化的核心机制。与之对比，绝对动作空间下策略必须感知自身绝对位置（即需要状态输入），而关节角度空间则因逆运动学高度非线性而难以泛化。</p>
+
+    <h3>双广角腕部相机（Dual Wide-Angle Wrist Cameras）</h3>
+    <p>在末端执行器顶部和底部各安装一个120°×120° 广角相机。单个普通腕部相机在抓取不同高度物体时，目标很容易滑出视野；双广角方案保证了在所有操作阶段任务相关区域均在视场内。实验还发现，<b>移除俯视（overhead）相机反而提升了性能</b>——俯视视角在机器人姿态变化时会引入分布偏移，拖累泛化。</p>
+
+    <figure>
+      <img src="img/embodiments.webp" alt="three robot embodiments">
+      <figcaption><b>图3：三种机器人平台与代表性任务。</b> 从左至右：2×8 DoF 类人双臂机器人、2×7 DoF Arx5 系统、26 DoF 全身机器人，以及 pick-and-place、shirt-folding、bottle-fetching 等代表性任务。所提方法在三种平台上均有效。</figcaption>
+    </figure>
+
+    <h3>与策略架构无关</h3>
+    <p>State-free 设计并非针对某一特定策略架构，而是一种通用的输入/动作空间改造方案。实验验证了其在 π₀、ACT、Diffusion Policy 三种架构上均一致有效，其中 π₀ 表现最优。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在三种真实机器人平台和 LIBERO 仿真基准上进行验证，涵盖高度泛化（±10cm）、水平泛化（5~10cm偏移）、域内性能、数据效率和跨实体迁移五个维度。使用 π₀ 作为主要策略架构，对比 state-based 变体（相同视觉输入+本体感知状态）。</p>
+
+    <h3>真实场景空间泛化（主要结果）</h3>
+    <table>
+      <tr><th>任务</th><th>泛化类型</th><th>State-based</th><th>State-free (本文)</th><th>提升</th></tr>
+      <tr><td>Pick Pen</td><td>高度泛化</td><td>0%</td><td class="good">98.4%</td><td>+98.4pp</td></tr>
+      <tr><td>Pick Pen</td><td>水平泛化</td><td>6%</td><td class="good">58.4%</td><td>+52.4pp</td></tr>
+      <tr><td>Fold Shirt</td><td>水平泛化</td><td>18.3%</td><td class="good">83.4%</td><td>+65.1pp</td></tr>
+      <tr><td>Fetch Bottle（全身）</td><td>水平泛化</td><td>11.7%</td><td class="good">78.4%</td><td>+66.7pp</td></tr>
+      <tr><td>LIBERO（仿真均值）</td><td>域内</td><td>93.8%</td><td class="good">94.5%</td><td>+0.7pp</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/generalization.webp" alt="generalization success rates">
+      <figcaption><b>图5：三项 pick-and-place 任务的高度与水平泛化成功率柱状图。</b> 绿色（State-free）在各任务和偏移量下均显著优于蓝色（State-based）。域内性能（最左侧）两者相当，证明 State-free 在不损失训练集性能的前提下大幅提升泛化。</figcaption>
+    </figure>
+
+    <h3>消融实验：动作表示</h3>
+    <p>Table III 对比四种动作表示：</p>
+    <table>
+      <tr><th>动作空间</th><th>高度泛化</th><th>水平泛化</th></tr>
+      <tr><td>Relative EEF（本文）</td><td class="good">98.4%</td><td class="good">58.4%</td></tr>
+      <tr><td>Absolute EEF</td><td>0%</td><td>0%</td></tr>
+      <tr><td>Relative Joint-angle</td><td>0%</td><td>0%</td></tr>
+      <tr><td>Absolute Joint-angle</td><td>0%</td><td>0%</td></tr>
+    </table>
+    <p>结果清晰表明：相对末端执行器动作空间是泛化的必要条件，其他三种表示方式均完全失效。</p>
+
+    <h3>消融实验：相机配置</h3>
+    <p>Table IV 对比五种相机方案（Pick Pen 任务）：</p>
+    <table>
+      <tr><th>相机配置</th><th>高度泛化</th><th>水平泛化</th></tr>
+      <tr><td>仅 Overhead</td><td>21.7%</td><td>13.3%</td></tr>
+      <tr><td>单个普通腕部</td><td>86.7%</td><td>26.7%</td></tr>
+      <tr><td>双普通腕部</td><td>92.0%</td><td>40.0%</td></tr>
+      <tr><td><b>双广角腕部（本文）</b></td><td class="good">98.3%</td><td class="good">58.3%</td></tr>
+    </table>
+
+    <h3>数据效率与跨实体迁移</h3>
+    <figure>
+      <img src="img/data_efficiency.webp" alt="data efficiency curves">
+      <figcaption><b>图6：数据效率对比。</b> 仅使用50个演示时，State-based 策略域内成功率约40%；State-free 策略约85%。随微调步数增加（10k步时），跨实体迁移（Arx5 → 类人机器人）成功率：State-based 76.7%，State-free <b>96.7%</b>（Table VI）。State-free 策略在数据稀缺场景下表现出更强的鲁棒性。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note:</b> 以下第1条为作者在论文中明确陈述的局限；第2条为作者提及的观察现象；第3条为从设计出发的推断（<em>inferred</em>）。</div>
+    <details class="lim" open><summary>背景敏感性（stated）</summary>
+      <p>论文明确指出："Vision-only policies might exhibit sensitivity to the background: changing the background (e.g., relocating the robot and table) may require additional fine-tuning to restore performance." 纯视觉策略对环境外观变化较为敏感，实际部署时若更换场地、光照或背景，需要额外采集数据并微调。</p>
+    </details>
+    <details class="lim"><summary>双臂场景中非活动手臂引发误动（stated）</summary>
+      <p>作者观察到：在双臂操作中，当一侧手臂静止时，另一侧手臂的视觉移动有时会触发非预期的运动。这是宽视场腕部相机会捕捉到对侧手臂运动的副作用，目前尚无系统性解决方案。</p>
+    </details>
+    <details class="lim"><summary>动作空间局限于末端执行器控制（inferred）</summary>
+      <p>Relative EEF 动作空间要求机器人支持末端执行器笛卡尔控制接口；对于仅支持关节级控制、或动力学特性复杂（如柔性/软体机器人）的平台，该方法的适用性有待验证。此为从设计推断，论文未显式讨论。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Do You Need Proprioceptive States in Visuomotor Policies? · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2509.18644">https://arxiv.org/abs/2509.18644</a>
+  </div>
+</footer>
+
+</body>
+</html>

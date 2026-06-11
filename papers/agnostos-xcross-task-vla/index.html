@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--
+  Paper poster: "Exploring the Limits of Vision-Language-Action Manipulations in Cross-task Generalization"
+  arXiv: 2505.15660 | Category: 机器人 · Robotics
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGNOSTOS &amp; X-ICM：视觉语言动作模型跨任务泛化极限探索</title>
+<meta name="keywords" content="VLA, cross-task generalization, in-context manipulation, X-ICM, AGNOSTOS benchmark, dynamics-guided selection, 机器人操作, zero-shot manipulation, RLBench, LLM">
+<meta name="description" content="提出 AGNOSTOS 基准（23 个未见任务）与 X-ICM 方法，通过 LLM 上下文预测与动态引导示例选择，实现机器人跨任务零样本操作泛化。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>AGNOSTOS &amp; X-ICM：探索 VLA 模型跨任务操作泛化的极限</h1>
+    <div class="sub">Exploring the Limits of Vision-Language-Action Manipulations in Cross-task Generalization</div>
+    <div class="authors">Jiaming Zhou, Ke Ye, Jiayi Liu, Teli Ma, Zifan Wang, Ronghe Qiu, Kun-Yu Lin, Zhilin Zhao, Junwei Liang</div>
+    <p class="lead">本文提出 <strong>AGNOSTOS</strong>——首个系统性评估 VLA 模型跨任务零样本泛化能力的仿真基准（23 个未见任务，两个难度级别），并提出 <strong>X-ICM</strong>（Cross-Task In-Context Manipulation）方法：利用 LLM 在已见任务示例的上下文条件下预测未见任务的动作，配合动态引导示例选择模块，大幅超越现有 VLA 基线。</p>
+    <div class="meta">
+      <span>23 未见任务</span>
+      <span>Level-1 &amp; Level-2 难度</span>
+      <span>X-ICM 72B: 30.1% Overall</span>
+      <span><a href="https://arxiv.org/abs/2505.15660">📄 arXiv:2505.15660</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>cross-task generalization</span>
+      <span>X-ICM</span>
+      <span>AGNOSTOS benchmark</span>
+      <span>dynamics-guided selection</span>
+      <span>zero-shot manipulation</span>
+      <span>in-context learning</span>
+      <span>机器人操作</span>
+      <span>RLBench</span>
+      <span>LLM</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">通用机器人操作的核心挑战在于：模型能否将学到的技能迁移到<strong>从未见过的任务</strong>上？现有 VLA 模型（包括 π0、OpenVLA、RDT 等）的跨任务泛化能力几乎未被系统研究，缺乏统一的评估框架。</p>
+    <blockquote>"The cross-task generalization capabilities of existing VLA models remain significantly underexplored."</blockquote>
+
+    <figure>
+      <img src="img/benchmark.webp" alt="AGNOSTOS benchmark overview">
+      <figcaption><strong>Figure 1：AGNOSTOS 基准概览。</strong>Level-1 包含 13 个未见任务，与训练任务有部分语义相似性（共享对象或动作原语）；Level-2 包含 10 个完全陌生的场景，既无已知对象也无已知动作，要求更强的泛化推断能力。右侧展示了具体任务示例。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>23</b><small>未见测试任务总数</small></div>
+      <div><b>13 + 10</b><small>Level-1 + Level-2</small></div>
+      <div><b>18</b><small>已见训练任务数（RLBench）</small></div>
+      <div><b>12+</b><small>评测的 VLA 模型类别</small></div>
+    </div>
+
+    <p>现有跨任务评估基准（如 Colosseum、GemBench）缺乏对 foundation model 与人类视频预训练模型的系统比较，且未区分难度级别。AGNOSTOS 通过双难度设计和多类别 VLA 评测，首次全面揭示了当前模型的跨任务能力边界。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>已评测 VLA 模型类别</h3>
+        <ul>
+          <li><strong>域内模型：</strong>PerAct, RVT, RVT2, Sigma-Agent, InstantPolicy</li>
+          <li><strong>人类视频预训练：</strong>R3M, D4R 系列</li>
+          <li><strong>Foundation model：</strong>OpenVLA, RDT, π0, VoxPoser, SAM2Act, 3D-LOTUS++</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>核心发现</h3>
+        <ul>
+          <li>所有现有 VLA 基线在 23 个未见任务中均表现欠佳</li>
+          <li>多个模型在 ≥8 个任务上完全失败（成功率 0%）</li>
+          <li>Level-2 难度对所有模型均构成显著挑战</li>
+          <li>X-ICM 是唯一在全部 23 个任务中均有成功的方法</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead"><strong>X-ICM（Cross-Task In-Context Manipulation）</strong>将跨任务泛化问题转化为 LLM 的上下文学习问题：将已见任务的示例"文本化"后作为 prompt，驱动大语言模型直接预测未见任务的动作序列。该方法无需对 VLA 进行额外微调，完全在推理阶段运行。</p>
+
+    <figure>
+      <img src="img/method.webp" alt="X-ICM method overview">
+      <figcaption><strong>Figure 2：X-ICM 方法总览。</strong>左侧为<em>动态引导示例选择</em>模块：训练 dynamics diffusion model 从初始观测和语言描述预测任务完成后的最终视觉状态，提取特征后通过余弦相似度检索最相关的 K=18 条已见示例。右侧为<em>跨任务上下文预测</em>模块：将选出的示例构造为"语言/对象上下文 → 归一化 3D 动作坐标"映射的文本 prompt，输入 LLM（Qwen2.5-7B/72B）生成未见任务的动作。</figcaption>
+    </figure>
+
+    <h3>模块一：Dynamics-Guided Sample Selection（动态引导示例选择）</h3>
+    <p>直接用语义相似性选示例效果有限，因为跨任务的关键在于<em>动作动态</em>而非表面语义。X-ICM 训练一个基于 InstructPix2Pix 的 <strong>dynamics diffusion model</strong>（记为 𝒢），以初始视觉观测和语言描述为条件，预测任务完成时的最终视觉状态。提取其 language feature（f<sub>lang</sub>）与 visual feature（f<sub>vis.in</sub>）的组合作为动态特征表示，然后通过<strong>余弦相似度</strong>从所有已见示例中检索 K=18 条最相关的跨任务演示。该模块显著提升了示例的相关性，降低了预测方差。</p>
+
+    <h3>模块二：Cross-Task In-Context Prediction（跨任务上下文预测）</h3>
+    <p>将选出的 K 条示例"文本化"为结构化 prompt：每条示例表示为<code>（语言描述, 对象位置信息）→（归一化 3D 动作坐标序列）</code>的映射。将 prompt 输入 LLM（Qwen2.5-7B 或 Qwen2.5-72B），要求其推断未见任务的动作模式并输出相应的动作坐标。整个流程不修改 VLA 模型权重，推理时间开销主要来自 LLM forward pass。</p>
+
+    <div class="note">
+      <b>设计核心：</b>通过"动态特征"而非"表面语义"匹配示例，使 LLM 能够在已见任务的动作模式中发现与未见任务最相关的跨任务规律，从而实现真正意义上的零样本操作泛化。
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 AGNOSTOS 基准的 23 个未见任务上进行零样本跨任务评测，并在 5 个真实物理场景中验证 X-ICM 的迁移能力。所有成功率均为多次运行的均值 ± 标准差。</p>
+
+    <h3>主要结果（Table 2：跨任务零样本操作成功率）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>Level-1（13 任务）</th>
+        <th>Level-2（10 任务）</th>
+        <th>Overall（23 任务）</th>
+      </tr>
+      <tr>
+        <td>VoxPoser</td>
+        <td>20.9% ± 0.3</td>
+        <td>8.0% ± 0.3</td>
+        <td>15.6% ± 0.2</td>
+      </tr>
+      <tr>
+        <td>π0（prior best）</td>
+        <td>21.7% ± 0.4</td>
+        <td>11.5% ± 0.5</td>
+        <td>17.5% ± 0.4</td>
+      </tr>
+      <tr>
+        <td>SAM2Act</td>
+        <td>14.4% ± 0.5</td>
+        <td>15.9% ± 1.3</td>
+        <td>15.1% ± 0.8</td>
+      </tr>
+      <tr>
+        <td>X-ICM（7B）</td>
+        <td>28.6% ± 1.9</td>
+        <td>16.9% ± 1.3</td>
+        <td>23.5% ± 1.6</td>
+      </tr>
+      <tr>
+        <td class="good">X-ICM（72B）</td>
+        <td class="good">37.6% ± 1.4</td>
+        <td class="good">20.3% ± 1.7</td>
+        <td class="good">30.1% ± 1.0</td>
+      </tr>
+    </table>
+
+    <p>X-ICM（72B）在 Overall 上超越 π0 约 <strong>+6.0%</strong>，超越 VoxPoser 约 <strong>+7.9%</strong>。更重要的是，X-ICM（72B）是唯一在全部 23 个任务中均获得非零成功率的方法，而其他基线模型在 ≥8 个任务上完全失败。</p>
+
+    <h3>Ablation：动态引导选择模块的作用（Table 3）</h3>
+    <table>
+      <tr>
+        <th>配置</th>
+        <th>Level-1</th>
+        <th>Level-2</th>
+        <th>Overall</th>
+      </tr>
+      <tr>
+        <td>X-ICM（72B）无选择模块</td>
+        <td>30.7% ± 4.7</td>
+        <td>18.0% ± 2.2</td>
+        <td>25.2% ± 3.2</td>
+      </tr>
+      <tr>
+        <td class="good">X-ICM（72B）含选择模块</td>
+        <td class="good">37.6% ± 1.4</td>
+        <td class="good">20.3% ± 1.7</td>
+        <td class="good">30.1% ± 1.0</td>
+      </tr>
+    </table>
+
+    <p>动态引导选择模块将 Overall 从 25.2% 提升至 30.1%（+4.9%），同时将标准差从 ±3.2 显著降至 ±1.0，表明该模块不仅提升了性能，还大幅增强了预测的<strong>稳定性</strong>。此外，上下文示例数量 K 在超过 12 条后性能趋于饱和。</p>
+
+    <figure>
+      <img src="img/demo-count.webp" alt="effect of demo count">
+      <figcaption><strong>Figure 3：上下文示例数量的影响。</strong>随着 K 增加，X-ICM 性能持续提升，但在 K≈12 后趋于平稳，说明过多示例不再带来额外收益。</figcaption>
+    </figure>
+
+    <h3>真实世界实验</h3>
+    <figure>
+      <img src="img/realworld.webp" alt="real-world results">
+      <figcaption><strong>Figure 4：五个真实物理任务的零样本跨任务测试结果。</strong>X-ICM 在单步任务上表现合理，但在长流程任务（"clean the table"，需多步骤串联）上仅达到 5% 成功率，源于各子步骤错误的累积放大效应。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为论文作者明确陈述（stated）。</div>
+
+    <details class="lim" open>
+      <summary>视觉信息利用不足（Limited Visual Understanding）</summary>
+      <p>X-ICM 将视觉信息压缩为对象坐标文本，原文指出 <em>"the use of visual information is limited to textualizing object information, which may ignore important visual context in the raw data"</em>。这意味着纹理、形状、场景上下文等精细视觉线索无法被 LLM 直接利用，对于需要精细视觉感知的任务（如区分相似外观物体）效果受限。</p>
+    </details>
+
+    <details class="lim" open>
+      <summary>LLM 外推能力的上限（Extrapolation Limits of LLMs）</summary>
+      <p>原文指出 <em>"X-ICM's performance on many unseen tasks...remains limited due to LLMs' challenges in extrapolating beyond pre-training data"</em>。当未见任务的概念完全超出 LLM 的预训练分布时，其动作推断能力将显著退化，特别是 Level-2 中具有全新对象和动作原语的任务。</p>
+    </details>
+
+    <details class="lim">
+      <summary>长流程任务的累积失败（Cascading Failures in Long-Horizon Tasks）</summary>
+      <p>真实世界"clean the table"任务的整体成功率仅为 5%，原因是多步骤串联任务中各子步骤的错误相互叠加。这是 in-context 预测框架的固有缺陷：无法在线修正中间步骤的偏差。</p>
+    </details>
+
+    <details class="lim">
+      <summary>全新语义组合的挑战（Novel Semantic Combinations）</summary>
+      <p>Level-2 中同时包含新对象<em>与</em>新动作原语的任务对所有方法均构成最大挑战。X-ICM（72B）在 Level-2 的 20.3% 成功率虽优于基线，但仍远低于 Level-1 的 37.6%，反映出当前 LLM 的跨任务外推能力边界。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    本海报根据论文原文整理，仅供学习参考 · AGNOSTOS &amp; X-ICM · Cross-Task VLA Generalization<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2505.15660">https://arxiv.org/abs/2505.15660</a>
+  </div>
+</footer>
+
+</body>
+</html>

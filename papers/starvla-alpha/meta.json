@@ -1,0 +1,11 @@
+{
+  "slug": "starvla-alpha",
+  "title": "StarVLA-α: Reducing Complexity in Vision-Language-Action Systems",
+  "arxiv_id": "2604.11757",
+  "url": "https://arxiv.org/abs/2604.11757",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "机器人操作", "action modeling", "简化基线", "LIBERO", "RoboChallenge", "泛化能力", "cross-embodiment", "预训练"],
+  "summary_zh": "StarVLA-α 通过极简架构与统一多 benchmark 训练，证明强大 VLM 主干加最少设计已足以在 LIBERO、SimplerEnv、RoboTwin、RoboCasa 上高度竞争，并在真实 RoboChallenge 榜单上以 20% 优势超越 π₀.₅。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

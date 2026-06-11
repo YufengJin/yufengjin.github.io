@@ -1,0 +1,20 @@
+{
+  "slug": "playable-environments",
+  "title": "Playable Environments: Video Manipulation in Space and Time",
+  "arxiv_id": "2203.01914",
+  "url": "https://arxiv.org/abs/2203.01914",
+  "category": "计算机视觉 · Computer Vision",
+  "keywords": [
+    "playable environments",
+    "neural radiance fields",
+    "video generation",
+    "camera control",
+    "action learning",
+    "可交互视频生成",
+    "三维场景操控",
+    "非刚性NeRF"
+  ],
+  "summary_zh": "从单帧图像构建可交互三维”可玩环境”，通过组合式非刚性 NeRF 与无监督离散动作模块，支持相机操控、多对象动作控制与外观风格切换，无需任何动作标注。",
+  "date": "2026-06-10",
+  "source": "arxiv-latex"
+}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware</title>
+<meta name="keywords" content="bimanual manipulation, imitation learning, action chunking, transformer, CVAE, teleoperation, ALOHA, 双臂操作, 模仿学习, 低成本机器人">
+<meta name="description" content="提出 ALOHA 低成本双臂遥操作系统与 ACT（Action Chunking with Transformers）算法，仅需 10 分钟演示数据即可在真实世界中以 80-90% 成功率完成精细操作任务。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人操作 · Robotics · RSS 2023</span>
+    <h1>Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware</h1>
+    <div class="sub">ALOHA 低成本双臂遥操作系统 + ACT 算法：仅用 10 分钟演示数据学会精细操作</div>
+    <div class="authors">Tony Z. Zhao · Vikash Kumar · Sergey Levine · Chelsea Finn &nbsp;|&nbsp; Stanford University · UC Berkeley · Meta</div>
+    <p class="lead">精细操作（如插电池、开调味品杯）历来需要昂贵的高精度机器人。本文提出 <strong>ALOHA</strong>——一套预算在 $20k 以内的开源双臂遥操作系统，以及配套的模仿学习算法 <strong>ACT（Action Chunking with Transformers）</strong>。ACT 以 Transformer + CVAE 为骨干，将未来 k 步动作作为一个"chunk"整体预测，有效缓解了复合误差（compounding error）和人类演示中的非 Markov 噪声，最终在真实世界 6 项精细操作任务上实现 80–90% 成功率。</p>
+    <div class="meta">
+      <span>arXiv 2023-04-23</span>
+      <span>cs.RO · cs.LG</span>
+      <span>约 80M 参数</span>
+      <span><a href="https://arxiv.org/abs/2304.13705">📄 arXiv:2304.13705</a></span>
+      <span><a href="https://tonyzhaozh.github.io/aloha/">Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>bimanual manipulation</span>
+      <span>imitation learning</span>
+      <span>action chunking</span>
+      <span>transformer</span>
+      <span>CVAE</span>
+      <span>teleoperation</span>
+      <span>ALOHA</span>
+      <span>双臂操作</span>
+      <span>复合误差缓解</span>
+      <span>低成本机器人</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">精细操作任务（opening a lid of a condiment cup、slotting a battery）需要毫米级精度、接触力的精细协调以及视觉闭环反馈，传统上依赖昂贵的高端机器人与精密传感器。本文的核心问题是：<strong>能否让低成本、本身不够精确的硬件，通过学习来完成精细操作？</strong></p>
+    <blockquote>"Can learning enable low-cost and imprecise hardware to perform these fine manipulation tasks?"</blockquote>
+    <p>低成本硬件的不精确性使感知与规划难度更高。人类虽同样没有工业级本体感觉（proprioception），却能通过学习和视觉闭环反馈完成精密任务。因此，作者设计了端到端像素到动作（pixel-to-action）的策略，并搭建了一套低成本但具备高度灵巧性的遥操作系统来采集高质量演示数据。</p>
+    <figure>
+      <img src="img/teaser.webp" alt="ALOHA 系统展示">
+      <figcaption>图 1：<strong>ALOHA</strong> 系统概览。左：用户通过反向驱动（backdriving）小型 leader 机器人（WidowX）实现遥操作，follower 机器人（ViperX 6-DoF）镜像跟随。右：ALOHA 可完成穿扎带、开调味品杯、插 RAM 等高精度、接触丰富和动态任务。整套系统预算低于 $20k。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>$20k</b><small>整套系统总预算上限</small></div>
+      <div><b>80–90%</b><small>真实任务成功率（6 项任务平均）</small></div>
+      <div><b>10 min</b><small>每个任务所需演示数据量</small></div>
+      <div><b>50 Hz</b><small>控制与数据采集频率</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">本文提出两大核心贡献：<strong>（1）ALOHA 遥操作硬件系统</strong>，以及<strong>（2）ACT（Action Chunking with Transformers）模仿学习算法</strong>。两者协同作用，使低成本硬件能够从少量真实演示中学会精细双臂操作技能。</p>
+
+    <h3>ALOHA：低成本双臂遥操作系统</h3>
+    <p>ALOHA 以两条 ViperX 6-DoF 机械臂（~$5,600/臂）作为 follower，两条 WidowX 机械臂（~$3,300/臂）作为 leader，采用 <strong>joint-space mapping</strong> 进行遥操作——用户反向驱动 leader，follower 实时镜像。相比 task-space（末端执行器）映射，joint-space 映射在奇点附近控制更稳定、延迟更低。系统配备 4 路 Logitech C922x 网络摄像头（分辨率 480×640，帧率 30fps），包括顶部、正面和两个腕部摄像头，以 50Hz 采集数据。</p>
+
+    <h3>ACT：Action Chunking with Transformers</h3>
+    <p>针对模仿学习的两大难题——<strong>复合误差（compounding error）</strong>和<strong>人类演示的非 Markov 噪声</strong>，ACT 提出了以下设计：</p>
+    <ul>
+      <li><strong>Action Chunking：</strong>策略每次预测未来 k 步的动作序列（而非单步动作），将任务的有效时间跨度压缩 k 倍，大幅缓解复合误差。</li>
+      <li><strong>Temporal Ensembling：</strong>每一时间步都查询策略，对多个重叠 action chunk 的预测结果按指数权重（<em>w<sub>i</sub> = exp(−m · i)</em>）加权平均，使轨迹更平滑，且无需额外训练代价。</li>
+      <li><strong>CVAE 训练目标：</strong>将策略建模为 <strong>Conditional VAE</strong>，通过"style variable" z 捕捉人类演示中的多模态性（multimodality）和随机性。CVAE encoder 在测试时丢弃，z 设为先验均值（即零向量）以确定性解码。</li>
+    </ul>
+    <p>具体实现：CVAE encoder 采用 BERT-style Transformer encoder，输入为 [CLS] token + 关节位置 + 目标动作序列（长度 k+2）；CVAE decoder（即策略）使用 ResNet18 图像编码器 + Transformer encoder-decoder，处理 4 路 480×640 RGB 图像及关节位置，输出 k×14 维动作序列（双臂绝对关节位置）。使用 L1 重建损失 + KL 散度正则化，共约 80M 参数，在单张 RTX 2080 Ti 上训练约 5 小时。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="ACT 架构图">
+      <figcaption>图 4：ACT 架构。<strong>左（训练时）：</strong>CVAE encoder 将动作序列与关节观测压缩为 style variable z 的均值和方差。<strong>右（训练 + 推断）：</strong>CVAE decoder（策略）融合多视角图像、关节位置和 z，通过 Transformer encoder 合成特征，再由 Transformer decoder 解码为 k 步动作序列。测试时 z=0（先验均值）。</figcaption>
+    </figure>
+
+    <h3>数据采集</h3>
+    <p>每个真实任务收集 50 条演示（Thread Velcro 任务收集 100 条），每条演示耗时 8–14 秒（400–700 步@50Hz），总数据量约 10–20 分钟/任务。演示具有固有随机性——例如空中换手的位置每次都略有不同——这要求策略学习任务的本质规律而非死记演示。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验覆盖 2 个 MuJoCo 仿真任务（Cube Transfer、Bimanual Insertion）和 6 个真实任务（Slide Ziploc、Slot Battery、Open Cup、Thread Velcro、Prep Tape、Put On Shoe），与 BC-ConvMLP、BeT、RT-1、VINN 四条基线对比。仿真任务报告 3 个随机种子、各 50 次评测的平均成功率；真实任务报告 1 个种子、25 次评测的成功率。</p>
+
+    <h3>主要成功率对比（Table I）</h3>
+    <table>
+      <tr><th>任务</th><th>BC-ConvMLP</th><th>BeT</th><th>RT-1</th><th>VINN</th><th>ACT (Ours)</th></tr>
+      <tr><td>Cube Transfer (sim, scripted)</td><td>3</td><td>16</td><td>2</td><td>17</td><td class="good">82</td></tr>
+      <tr><td>Cube Transfer (sim, human)</td><td>3</td><td>16</td><td>2</td><td>17</td><td class="good">82</td></tr>
+      <tr><td>Bimanual Insertion (sim, scripted)</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="good">50</td></tr>
+      <tr><td>Slide Ziploc (real)</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="good">88</td></tr>
+      <tr><td>Slot Battery (real)</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="good">96</td></tr>
+    </table>
+    <p>ACT 在每个任务上都以大幅优势超越所有基线。仿真任务中，ACT 较第二好方法的成功率领先幅度分别为 59%、49%、29% 和 20%。其他方法虽然能完成前 1–2 个子任务，但最终成功率均低于 30%。</p>
+
+    <h3>剩余真实任务（Table II，与 BeT 对比）</h3>
+    <table>
+      <tr><th>任务</th><th>BeT (最终成功率)</th><th>ACT (最终成功率)</th></tr>
+      <tr><td>Open Cup</td><td>0</td><td class="good">84%</td></tr>
+      <tr><td>Thread Velcro</td><td>0</td><td class="good">20%</td></tr>
+      <tr><td>Prep Tape</td><td>0</td><td class="good">64%</td></tr>
+      <tr><td>Put On Shoe</td><td>0</td><td class="good">92%</td></tr>
+    </table>
+    <p>BeT 在上述 4 项高难度任务的最终成功率均为 0，而 ACT 展现出显著能力（Thread Velcro 相对较低是因为该任务需要在空中完成毫米级插入，视觉定位极为困难）。</p>
+
+    <figure>
+      <img src="img/results.webp" alt="任务定义与子任务示意">
+      <figcaption>图 6：6 个真实世界任务的定义与子任务流程。每个任务的初始物体位置在 15cm 白色参考线范围内随机，子任务逐步递进，要求精细的双臂协调。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablations.webp" alt="消融实验结果">
+      <figcaption>图 8：消融实验。<strong>(a)</strong> chunk size k 的影响：成功率从 k=1（无 chunking）的 1% 提升至 k=100 时的 44%，过大的 k（接近完全开环）性能略有下降。BC-ConvMLP 和 VINN 加入 chunking 后也显著提升，验证了 action chunking 的通用性。<strong>(b)</strong> Temporal Ensemble (TE) 对参数化方法（ACT +3.3%，BC-ConvMLP +4%）有益，对非参数化的 VINN 反而下降 20%。<strong>(c)</strong> CVAE 目标的必要性：在人类演示数据上，移除 CVAE 后成功率从 35.3% 骤降至 2%；而对确定性脚本演示影响甚微。<strong>(d)</strong> 用户研究：将遥操作频率从 50Hz 降至 5Hz 导致任务完成时间平均增加 62%（p&lt;0.001）。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下限制部分由作者在论文 Appendix F 及 Section VII 中明确陈述（标注为 <em>stated</em>），部分为设计本身隐含的局限（标注为 <em>inferred</em>）。</div>
+
+    <details class="lim" open>
+      <summary>超出硬件与算法能力的任务 <em>（stated）</em></summary>
+      <p>论文明确指出："there exist tasks that are beyond the capability of either the robots or the learning algorithm, such as buttoning up a dress shirt." 此类任务需要更复杂的手指自由度或更长程的规划，当前 parallel-jaw gripper 设计无法胜任。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Thread Velcro 任务成功率较低 <em>（stated）</em></summary>
+      <p>Thread Velcro 最终成功率仅 20%，每个子任务成功率约减半。主要失败模式：（1）右臂空中夹持过早，无法抓住扎带尾端；（2）插入阶段不够精准，错过 3mm×25mm 的塑料环。根本原因是黑色扎带与背景对比度低，仅占图像极小比例，视觉定位困难。</p>
+    </details>
+
+    <details class="lim">
+      <summary>每个任务独立训练，无任务泛化能力 <em>（inferred）</em></summary>
+      <p>ACT 对每个任务从零训练独立策略（约 5 小时/任务），模型并不具备跨任务泛化或 few-shot 能力。对新任务需重新采集 50 条演示并重训，这限制了系统在实际部署中的灵活性。</p>
+    </details>
+
+    <details class="lim">
+      <summary>演示量与场景多样性有限 <em>（inferred）</em></summary>
+      <p>每个任务仅收集 50 条演示（Thread Velcro 为 100 条），物体的位置随机化仅限于 15cm 白色参考线范围内，背景和光照条件相对固定。在更复杂或更多变的真实场景中泛化能力尚未验证。</p>
+    </details>
+
+    <details class="lim">
+      <summary>单用户遥操作，缺乏多操作员鲁棒性 <em>（inferred）</em></summary>
+      <p>所有演示均由单一操作员采集，人类演示的风格和策略具有操作员依赖性。不同操作员的数据混合可能引入更大的多模态噪声，CVAE 是否足以建模此类噪声尚未验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2304.13705">https://arxiv.org/abs/2304.13705</a>
+  </div>
+</footer>
+
+</body>
+</html>

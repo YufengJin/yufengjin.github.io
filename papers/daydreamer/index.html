@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--
+  DayDreamer: World Models for Physical Robot Learning
+  arXiv:2206.14176 — 中文海报
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayDreamer: World Models for Physical Robot Learning</title>
+<meta name="keywords" content="world model, robot learning, model-based RL, Dreamer, 四足机器人, 机械臂, locomotion, pick-and-place, 真实世界强化学习">
+<meta name="description" content="将 Dreamer 世界模型算法直接部署到四款真实机器人上，无需仿真器，实现从零开始的快速强化学习。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; CoRL 2022</span>
+    <h1>DayDreamer: World Models for Physical Robot Learning</h1>
+    <div class="sub">用世界模型让真实机器人跳过仿真器，直接从零学会行走、抓取与导航</div>
+    <div class="authors">Philipp Wu*, Alejandro Escontrela*, Danijar Hafner* · Ken Goldberg · Pieter Abbeel &nbsp;|&nbsp; UC Berkeley &nbsp;|&nbsp; arXiv 2022</div>
+    <p class="lead">
+      DayDreamer 将 Dreamer 世界模型算法直接应用于 4 款真实机器人，无需任何仿真器或人工示范，仅凭在线 reinforcement learning 即可高效学习。
+      四足机器人 <strong>1 小时</strong>从零学会翻身起立行走，机械臂在稀疏奖励下<strong>8–10 小时</strong>达到接近人类的抓放性能，
+      轮式机器人 <strong>2 小时</strong>学会纯视觉导航。
+    </p>
+    <div class="meta">
+      <span>arXiv: 2022-06-28</span>
+      <span>4 robots</span>
+      <span>No simulators</span>
+      <span><a href="https://arxiv.org/abs/2206.14176">📄 arXiv:2206.14176</a></span>
+      <span><a href="https://danijar.com/daydreamer">🌐 Project page</a></span>
+    </div>
+    <div class="kw">
+      <span>world model</span>
+      <span>model-based RL</span>
+      <span>Dreamer / DreamerV2</span>
+      <span>四足机器人 locomotion</span>
+      <span>visual pick-and-place</span>
+      <span>真实世界强化学习</span>
+      <span>RSSM</span>
+      <span>sensor fusion</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      深度强化学习 (deep RL) 在机器人学习中广受欢迎，但现有算法需要大量与环境的试错交互，
+      在真实机器人上部署成本极高。为此，大多数工作依赖<strong>仿真器</strong>进行预训练，
+      再通过 sim-to-real 迁移到实体机器人。然而，仿真器难以精确复现真实世界的动态特性，
+      且训练出的策略无法自动适应环境变化。
+    </p>
+    <blockquote>
+      "Learning inside of simulators fails to capture the complexity of the real world, is prone to simulator inaccuracies,
+      and the resulting behaviors do not adapt to changes in the world."
+    </blockquote>
+    <p>
+      世界模型 (world model) 通过从少量真实交互中学习环境动态，使智能体能够在"想象"中规划，
+      从而大幅减少现实中的试错次数。Dreamer 算法已在视频游戏中展现了卓越的数据效率，
+      但能否在真实机器人上同样奏效仍是开放问题——本文正面回答了这一问题。
+    </p>
+    <figure>
+      <img src="img/page_1.webp" alt="四款机器人任务概览">
+      <figcaption>
+        <strong>图 1：</strong>DayDreamer 在四款机器人上的任务。
+        (a) A1 四足机器人行走；(b) UR5 机械臂视觉抓放；(c) XArm 视觉抓放；(d) Sphero 轮式导航。
+        四项任务涵盖连续/离散动作、稠密/稀疏奖励、本体感知/图像输入等多种挑战，
+        且全程使用统一超参数，无仿真器辅助。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>1 hr</b><small>四足机器人从零学会行走</small></div>
+      <div><b>10 min</b><small>被推倒后自适应恢复</small></div>
+      <div><b>8–10 hr</b><small>机械臂达到接近人类抓放性能</small></div>
+      <div><b>4 robots</b><small>统一超参数，无需仿真器</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      DayDreamer 直接复用 DreamerV2 算法，核心是将 <strong>世界模型学习</strong>与<strong>行为学习 (actor-critic)</strong>
+      解耦并异步运行：learner 线程持续更新神经网络，actor 线程并行与真实机器人交互，
+      满足高控制频率下的低延迟需求。
+    </p>
+    <figure>
+      <img src="img/page_2.webp" alt="Dreamer 算法架构">
+      <figcaption>
+        <strong>图 2 &amp; 3：</strong>（左）Dreamer 在线学习流水线：当前策略在机器人上采集经验并存入 replay buffer；
+        世界模型在回放序列上通过监督学习训练；actor-critic 在世界模型的潜在空间中通过想象轨迹优化策略。
+        数据采集与神经网络训练并行，保证低延迟动作计算。
+        （右）神经网络训练细节：左侧为世界模型学习（Encoder + RSSM + Decoder + Reward 网络），
+        右侧为行为学习（Actor + Critic 在紧凑潜在空间中大批量并行优化，典型 batch size 16K）。
+      </figcaption>
+    </figure>
+
+    <h3>世界模型：Recurrent State-Space Model (RSSM)</h3>
+    <p>
+      世界模型基于 RSSM，包含四个组件：
+    </p>
+    <ul>
+      <li><strong>Encoder</strong>：将所有传感器模态（图像 + 本体感知）融合为离散潜在码 z<sub>t</sub>。</li>
+      <li><strong>Dynamics network</strong>：利用循环隐状态 h<sub>t</sub> 预测未来潜在码序列，无需观测中间输入。</li>
+      <li><strong>Decoder</strong>：从潜在码重建传感器输入，提供丰富的学习信号，并支持人工检视模型预测质量。</li>
+      <li><strong>Reward network</strong>：预测奖励信号，支持从真实世界自动发现任务奖励。</li>
+    </ul>
+    <p>
+      所有组件联合优化（stochastic backpropagation）。由于预测的是紧凑潜在表示而非高维原始观测，
+      累积误差大幅降低，可在单块 GPU 上以 batch size 16K 进行大规模并行训练。
+    </p>
+
+    <h3>Actor-Critic 行为学习</h3>
+    <p>
+      Actor 网络 π(a<sub>t</sub>|s<sub>t</sub>) 与 Critic 网络 v(s<sub>t</sub>) 完全在世界模型的潜在空间中通过<em>想象轨迹</em>优化，
+      无需解码观测。Critic 通过 temporal difference learning 预测 λ-returns（平均 N∈[1,H-1]，
+      imagination horizon H=15），Actor 通过最大化 λ-returns 学习策略。
+      连续动作任务使用 reparameterization gradients，离散动作使用 Reinforce gradients。
+      Actor 还通过熵正则化防止策略过早收敛。
+    </p>
+    <p>
+      超参数设置：replay buffer 容量 10<sup>6</sup>，batch size 32，batch length 32，
+      RSSM 隐状态维度 512，latent codes 32×32，discount γ=0.95，λ=0.95，学习率 10<sup>-4</sup>，
+      <strong>所有机器人实验使用完全相同的超参数</strong>。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 4 款机器人上评估 Dreamer，对比各自领域最强的 model-free baseline：
+      SAC（连续控制）、Rainbow DQN + PPO（离散视觉控制）、DrQv2（连续视觉控制），
+      以及人类操作员作为近似上界。
+    </p>
+
+    <h3>A1 四足机器人行走（A1 Quadruped Walking）</h3>
+    <p>
+      任务：从背部朝上躺着出发，无任何 reset，学会翻身、站起、以目标速度行走。
+      动作为 12 个关节角度（20 Hz），输入为关节角、姿态、角速度。
+      奖励函数由 5 个分量组成（upright、髋/肩/膝关节角度、前向速度），最大奖励为 14。
+    </p>
+    <figure>
+      <img src="img/page_3.webp" alt="A1 四足机器人行走学习曲线与翻身动作">
+      <figcaption>
+        <strong>图 4：</strong>A1 四足机器人行走。Dreamer 在 1 小时内从零学会翻身→站立→行走（平均奖励从 0 提升到接近满分 14）。
+        SAC 仅学会翻身，始终无法站立或行走。训练后对机器人施加外力扰动，
+        Dreamer <strong>10 分钟</strong>内即适应，能抵抗轻推或迅速翻身恢复。
+      </figcaption>
+    </figure>
+
+    <h3>UR5 多目标视觉抓放（UR5 Multi-Object Visual Pick and Place）</h3>
+    <p>
+      任务：从第三方相机 RGB 图像中定位 3 个球，将其从一个料仓移到另一料仓。
+      稀疏奖励：抓住 +1，放回同仓 −1，放入对仓 +10。
+      动作离散（X/Y/Z 增量 + 夹爪开关，2 Hz）。对比 Rainbow DQN、PPO 以及人类操作员（20 分钟演示）。
+    </p>
+    <figure>
+      <img src="img/page_4.webp" alt="UR5 抓放学习曲线">
+      <figcaption>
+        <strong>图 5：</strong>UR5 视觉多目标抓放。Dreamer 在 8 小时内达到 <strong>2.5 objects/min</strong>，接近人类水平。
+        Rainbow DQN 与 PPO 仅学会短视行为（抓起后立即放回同仓），无法完成跨仓转移。
+      </figcaption>
+    </figure>
+
+    <h3>XArm 视觉抓放（XArm Visual Pick and Place）</h3>
+    <p>
+      XArm 为低成本 7-DOF 机械臂（约 0.5 Hz），使用 RGB-D 相机（深度+彩色），
+      需学习将软物体从一仓移到另一仓（物体用绳连接夹爪，避免卡角）。
+      在改变光照条件（日出时强烈阴影）下，Dreamer 性能短暂下降后约 5 小时自适应恢复并超越原有性能。
+    </p>
+    <figure>
+      <img src="img/page_5.webp" alt="XArm 与 Sphero 学习曲线">
+      <figcaption>
+        <strong>图 6 &amp; 7：</strong>（上）XArm 10 小时内达到 <strong>3.1 objects/min</strong>，与人类性能相当；Rainbow 收敛于局部最优（原地抓放）。
+        Dreamer 还学会用绳子将物体从角落拉出。
+        （下）Sphero 导航：Dreamer 2 小时内学会纯视觉导航，平均目标距离达 0.15（以场地尺寸为单位），与 DrQv2 性能相当。
+      </figcaption>
+    </figure>
+
+    <h3>Sphero 视觉导航（Sphero Navigation）</h3>
+    <p>
+      Sphero Ollie 轮式机器人，仅凭俯视 RGB 图像（无本体感知），连续力矩控制（2 Hz），
+      导航至固定目标点。奖励为负 L2 距离。
+      Dreamer 2 小时内达到平均目标距离 <strong>0.15</strong>（场地归一化），与专门为像素连续控制设计的 DrQv2 持平。
+    </p>
+
+    <table>
+      <tr><th>机器人 / 任务</th><th>Baseline</th><th>Dreamer（本文）</th><th>训练时长</th></tr>
+      <tr><td>A1 四足行走</td><td>SAC（仅学会翻身）</td><td class="good">翻身+站立+行走</td><td>1 小时</td></tr>
+      <tr><td>UR5 抓放</td><td>Rainbow / PPO（局部最优）</td><td class="good">2.5 obj/min ≈ 人类</td><td>8 小时</td></tr>
+      <tr><td>XArm 抓放</td><td>Rainbow（局部最优）</td><td class="good">3.1 obj/min ≈ 人类</td><td>10 小时</td></tr>
+      <tr><td>Sphero 导航</td><td>DrQv2（相当）</td><td class="good">avg dist 0.15</td><td>2 小时</td></tr>
+    </table>
+
+    <h3>适应性与泛化（Appendix A）</h3>
+    <p>
+      XArm 实验在日落后进行，日出时光照剧变导致性能下滑，但 Dreamer 无需算法改动，
+      约 5 小时自动适应并<em>超越</em>原有性能——展现了世界模型在 continual learning 场景下的潜力。
+      A1 机器人在行走策略学成后，10 分钟内自适应抵抗外力推扰或迅速翻身恢复。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为作者在论文 Discussion 节中明确陈述。</div>
+
+    <details class="lim" open>
+      <summary>硬件磨损与人工干预</summary>
+      <p>
+        "learning on hardware over many hours creates wear on robots that may require human intervention or repair."
+        长时间真实世界训练对机器人硬件造成磨损，可能需要人工维护或更换零件，限制了大规模部署。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>训练时长与极限尚未充分探索</summary>
+      <p>
+        "more work is required to explore the limits of Dreamer and our baselines by training for a longer time."
+        本文实验固定了训练时长预算（1–10 小时），更长时间训练下 Dreamer 及 baseline 的性能上限有待研究。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>更具挑战性任务 + 结合仿真的混合范式有待探索</summary>
+      <p>
+        "we see tackling more challenging tasks, potentially by combining the benefits of fast real world learning
+        with those of simulators, as an impactful future research direction."
+        目前任务难度有限；将真实世界学习与仿真器结合（例如仿真预训练 + 真实微调）可能是更有前景的路径。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>空间约束与手动位置重置（inferred）</summary>
+      <p>
+        由于训练空间有限，A1 机器人到达训练区边界时需要人工移回（不改变关节配置），
+        这在一定程度上引入了人工干预，影响了"完全自主"的声称。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DayDreamer: World Models for Physical Robot Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2206.14176">https://arxiv.org/abs/2206.14176</a>
+    &nbsp;|&nbsp; Project: <a href="https://danijar.com/daydreamer">danijar.com/daydreamer</a>
+  </div>
+</footer>
+
+</body>
+</html>

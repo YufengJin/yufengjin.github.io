@@ -1,0 +1,11 @@
+{
+  "slug": "flare-robot-world-model",
+  "title": "FLARE: Robot Learning with Implicit World Modeling",
+  "arxiv_id": "2505.15659",
+  "url": "https://arxiv.org/abs/2505.15659",
+  "category": "机器人 · Robotics",
+  "keywords": ["隐式世界模型", "机器人操作", "diffusion transformer", "VLA", "imitation learning", "人形机器人", "潜空间对齐", "cross-embodiment"],
+  "summary_zh": "FLARE 在扩散变换器策略内嵌入隐式潜在世界模型，通过余弦对齐损失将中间层 future tokens 特征与未来观测嵌入对齐，使机器人策略隐式地预见未来状态，在多任务操作基准上最高超越现有方法 26%，并可利用无动作标注的人类视频提升新物体泛化。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

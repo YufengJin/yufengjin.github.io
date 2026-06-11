@@ -1,0 +1,11 @@
+{
+  "slug": "hbvla",
+  "title": "HBVLA: Pushing 1-Bit Post-Training Quantization for Vision-Language-Action Models",
+  "arxiv_id": "2602.13710",
+  "url": "https://arxiv.org/abs/2602.13710",
+  "category": "机器人 · Robotics",
+  "keywords": ["1-bit quantization", "post-training quantization", "Vision-Language-Action", "VLA", "Hessian saliency", "Haar transform", "机器人部署", "模型压缩", "binarization", "边缘推理"],
+  "summary_zh": "HBVLA 通过 policy-aware rectified Hessian 分区权重显著性、稀疏正交变换优化权重几何、混合 Haar 域量化，将 VLA 模型压缩至 1.08 bit，在 LIBERO（OpenVLA-OFT）保留 90.3% 性能，在 SIMPLER（CogACT）保留 93.6%，实机 Mobile ALOHA 验证接近全精度。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

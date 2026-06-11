@@ -1,0 +1,11 @@
+{
+  "slug": "lapa",
+  "title": "Latent Action Pretraining from Videos",
+  "arxiv_id": "2410.11758",
+  "url": "https://arxiv.org/abs/2410.11758",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "latent action", "视频预训练", "VQ-VAE", "机器人操作", "action quantization", "pretraining without labels", "embodiment transfer"],
+  "summary_zh": "LAPA 通过 VQ-VAE 从无标注视频中学习离散 latent action，无需人工动作标注即可预训练 VLA 模型，在真实机器人操作上以约 30× 更高效率超越 OpenVLA（50.1% vs. 43.9%）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

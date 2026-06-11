@@ -1,0 +1,11 @@
+{
+  "slug": "rh20t",
+  "title": "RH20T: A Comprehensive Robotic Dataset for Learning Diverse Skills in One-Shot",
+  "arxiv_id": "2307.00595",
+  "url": "https://arxiv.org/abs/2307.00595",
+  "category": "机器人 · Robotics",
+  "keywords": ["机器人操控数据集", "one-shot imitation learning", "multi-modal perception", "contact-rich manipulation", "force-torque sensing", "机器人技能泛化", "遥操作数据采集", "多视角标定"],
+  "summary_zh": "RH20T 是首个超过 11 万条序列的大规模多模态机器人操控数据集，同步采集视觉、力觉、音频和动作信息，覆盖 147 项任务，旨在支持单样本模仿学习与 contact-rich 技能泛化。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

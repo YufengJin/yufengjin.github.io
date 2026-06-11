@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Prediction Policy: A Generalist Robot Policy with Predictive Visual Representations</title>
+<meta name="keywords" content="video prediction policy, robot manipulation, video diffusion model, predictive visual representation, diffusion policy, VLA, imitation learning, 机器人操作, 视频扩散模型, 通用机器人策略">
+<meta name="description" content="VPP 利用视频扩散模型的预测性视觉表征训练通用机器人策略，在 CALVIN 等基准上大幅超越先前方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICML 2025 Spotlight · 机器人操作</span>
+    <h1>Video Prediction Policy</h1>
+    <div class="sub">A Generalist Robot Policy with Predictive Visual Representations</div>
+    <div class="authors">Yucheng Hu, Yanjiang Guo, Pengchao Wang, Xiaoyu Chen, Yen-Jen Wang, Jianke Zhang, Koushil Sreenath, Chaochao Lu, Jianyu Chen &nbsp;·&nbsp; UC Berkeley / Shanghai AI Lab / 清华大学</div>
+    <p class="lead">VPP（Video Prediction Policy）将视频扩散模型（Video Diffusion Model, VDM）中蕴含的预测性视觉表征用于机器人策略学习，使 policy 同时感知当前状态与未来动态。在 CALVIN ABC→D 泛化基准上，VPP 比先前 SOTA 提升 <strong>18.6%</strong>；在真实灵巧手操作任务中成功率提升 <strong>31.6%</strong>。</p>
+    <div class="meta">
+      <span>arXiv: 2412.14803</span>
+      <span>ICML 2025 Spotlight</span>
+      <span>提交: 2024-12-19</span>
+      <!-- REQUIRED: link back to the source paper. Prefer arXiv abs. Keep the footer link too. -->
+      <span><a href="https://arxiv.org/abs/2412.14803">📄 arXiv:2412.14803</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords (mixed 中英 academic terms); mirror in <meta name=keywords> -->
+    <div class="kw">
+      <span>video prediction policy</span>
+      <span>video diffusion model</span>
+      <span>predictive visual representation</span>
+      <span>diffusion policy</span>
+      <span>robot manipulation</span>
+      <span>imitation learning</span>
+      <span>通用机器人策略</span>
+      <span>视频扩散模型</span>
+      <span>预测性表征</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">当前机器人视觉表征方法主要依赖单帧图像或两帧图像学习，<strong>忽视了具身任务中至关重要的动态信息</strong>。视频扩散模型（VDM）在大规模互联网视频上预训练，隐含地理解了物理世界的演化规律，但如何将这种"未来预见"能力转化为 robot policy 的视觉表征，尚无有效方案。</p>
+    <blockquote>"We hypothesize that VDMs contain both current static information and predicted future dynamics, which can provide more comprehensive guidance for robot policy learning."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="teaser：VDM 表征 vs 先前视觉编码器">
+      <figcaption>图 1：先前视觉编码器（左）只利用当前静态信息；VPP（右）通过视频扩散模型同时获得当前状态与预测的未来动态，形成更丰富的 predictive visual representation，为策略决策提供前瞻性信息。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>+18.6%</b><small>CALVIN ABC→D 相对先前 SOTA 提升</small></div>
+      <div><b>+31.6%</b><small>真实灵巧操作任务成功率提升</small></div>
+      <div><b>4.33</b><small>CALVIN 平均完成任务数（先前 SOTA: 3.35）</small></div>
+      <div><b>1.5B</b><small>VDM 基础模型参数量（Stable Video Diffusion）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">VPP 分两阶段：首先在机器人与人类操作数据上微调视频扩散模型，使其具备文本引导的视频预测能力（TVP）；然后以 TVP 的内部 latent 特征作为视觉编码器，通过 Video Former 聚合时空信息，最终由 Diffusion Policy 输出动作序列。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="VPP 两阶段训练流程">
+      <figcaption>图 2：VPP 整体流程。Stage 1 — 在多样化数据集上微调 Stable Video Diffusion，加入 language conditioning via cross-attention，得到 Text-guided Video Prediction（TVP）模型。Stage 2 — 冻结 TVP，以其 up-sampling layers 的 latent 特征拼接为聚合表征 F_p，经 Video Former 压缩后输入 Diffusion Policy Head 生成动作。</figcaption>
+    </figure>
+
+    <h3>Stage 1：Text-guided Video Prediction (TVP)</h3>
+    <p>以 Stable Video Diffusion（1.5B 参数）为基础，通过 cross-attention 引入语言条件，在三类数据集上联合训练：
+      <ul>
+        <li><strong>互联网人类操作数据</strong>：193,690 条轨迹，提供丰富的物理先验</li>
+        <li><strong>机器人数据</strong>：179,074 条轨迹（BridgeV2、Open X-Embodiment 等）</li>
+        <li><strong>下游任务视频</strong>：用于域适应</li>
+      </ul>
+      训练目标是从带噪样本重建完整视频序列，使模型在 single forward pass 中生成当前帧与未来帧的联合 latent 表征。
+    </p>
+
+    <h3>Stage 2：Video Former + Diffusion Policy Head</h3>
+    <p>
+      TVP 充当"视觉编码器"，约 140ms 完成一次前向推理，提取多个 up-sampling layers 的 latent 特征并拼接为 F_p。
+      <strong>Video Former</strong> 利用可学习 token 通过 spatial attention 与 temporal attention 对 F_p 进行时空聚合，压缩多视角信息，无需逐帧生成完整视频（相比 SuSIE 快 3.2×）。
+      <strong>Diffusion Policy Head</strong> 通过 cross-attention 将聚合表征与语言指令结合，生成连续的动作序列，以去噪扩散过程输出 6-DoF 末端执行器轨迹。
+    </p>
+
+    <figure>
+      <img src="img/prediction.webp" alt="单步前向预测的可视化">
+      <figcaption>图 4：TVP 单步前向预测的可视化。虽然单步预测的视频画面并不清晰，但其 latent 特征已编码了物体的物理演化信息（如滑块位置、物体朝向），对策略学习具有有效的引导作用。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在四类平台上系统评估 VPP：仿真基准 CALVIN（跨环境泛化）与 MetaWorld（50 任务多任务操作），以及真实硬件 Franka Panda 机械臂（30+ 任务）和灵巧手（100+ 任务）。与 RT-1、Diffusion Policy、GR-1、RoboUniview、SuSIE、Vidman 等基线对比。</p>
+
+    <table>
+      <tr><th>Benchmark</th><th>Prior SOTA</th><th>VPP（本文）</th><th>相对提升</th></tr>
+      <tr><td>CALVIN ABC→D 平均完成任务数</td><td>3.35 (RoboUniview)</td><td class="good">4.33</td><td>+29.3%</td></tr>
+      <tr><td>CALVIN 10% 数据</td><td>1.41 (GR-1)</td><td class="good">3.25</td><td>+130.5%</td></tr>
+      <tr><td>MetaWorld 平均成功率</td><td>57.4% (GR-1)</td><td class="good">68.2%</td><td>+10.8%</td></tr>
+      <tr><td>Franka 已见任务成功率</td><td>52% (GR-1)</td><td class="good">85.6%</td><td>+64.6%</td></tr>
+      <tr><td>灵巧手 已见任务成功率</td><td>32% (GR-1)</td><td class="good">74.9%</td><td>+134.1%</td></tr>
+      <tr><td>灵巧手 工具使用任务</td><td>15% (GR-1)</td><td class="good">68%</td><td>+353.3%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/tasks.webp" alt="CALVIN 与 MetaWorld 任务场景">
+      <figcaption>图 3：CALVIN（左）与 MetaWorld（右）任务环境。CALVIN 要求跨 4 个视觉不同场景（A/B/C/D）的泛化能力；MetaWorld 涵盖 50 种不同的机械臂操作任务。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实硬件平台">
+      <figcaption>图 5：真实硬件评估平台。左：Franka Panda 机械臂执行日常操作任务（如折叠布料、打开抽屉）。右：灵巧手执行精细操作（如使用剪刀、旋紧瓶盖），VPP 在灵巧手工具使用任务上比 GR-1 高出 53 个百分点（68% vs 15%）。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="预测轨迹与实际执行轨迹对比">
+      <figcaption>图 6：预测轨迹（红色）与实际执行轨迹（绿色）对比，两者高度吻合，说明 TVP 所学习的预测性表征确实捕捉了物体运动的物理规律。</figcaption>
+    </figure>
+
+    <h3>消融实验 Ablations</h3>
+    <p>在 CALVIN 基准上的关键消融（以平均完成任务数衡量）：</p>
+    <table>
+      <tr><th>配置</th><th>CALVIN 平均任务数</th><th>相对完整版本</th></tr>
+      <tr><td>完整 VPP</td><td class="good">4.33</td><td>—</td></tr>
+      <tr><td>去掉互联网数据</td><td>3.97</td><td>−8.3%</td></tr>
+      <tr><td>去掉 SVD 预训练（随机初始化）</td><td>1.63</td><td>−62.4%</td></tr>
+      <tr><td>去掉 Video Former（改用所有帧特征）</td><td>3.86</td><td>−10.9%，推理速度慢 3.2×</td></tr>
+      <tr><td>以 VAE 替换 VDM</td><td>2.58</td><td>−40.4%</td></tr>
+      <tr><td>以 VC-1 编码器替换</td><td>1.23</td><td>−71.6%</td></tr>
+      <tr><td>仅用最后一层特征</td><td>3.60</td><td>−16.9%</td></tr>
+    </table>
+    <p>消融结果揭示：<strong>SVD 大规模预训练是最关键的性能来源</strong>（去掉后性能下降 62.4%）；Video Former 对效率与性能均有重要贡献；多层特征融合优于只用最后一层。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <!-- If the paper has NO explicit limitations section, keep this note and label each item. -->
+    <div class="note"><b>注意：</b>论文未设专门的 Limitations 章节。以下第 1 条为作者在正文中明确提及的局限，第 2–3 条为从系统设计中<em>推断</em>的潜在约束，已标注来源。</div>
+
+    <details class="lim" open>
+      <summary>单步预测视觉质量有限（作者明确提及）</summary>
+      <p>作者指出，单步前向预测"do not yield clear video"，生成的预测帧较为模糊。尽管如此，实验表明其 latent 特征已足够编码物理演化信息，对策略学习仍有指导价值。但若任务需要高精度视觉预测，此局限可能影响表现。</p>
+    </details>
+
+    <details class="lim">
+      <summary>推理延迟较高（设计推断）</summary>
+      <p>TVP 单次前向推理约需 140ms，对控制频率有影响。虽然相比 SuSIE 等需要多步去噪的方法快 3.2×，但对于需要高频控制（&gt;10Hz）的任务（如高速避障、接触丰富操作）仍是瓶颈。</p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖大规模预训练数据与算力（设计推断）</summary>
+      <p>VPP 的性能高度依赖 Stable Video Diffusion 在海量互联网视频上的预训练（消融去掉 SVD 预训练后性能下降 62.4%）。这意味着方法对计算资源要求较高，难以在资源受限场景下从头训练或快速迁移到全新领域。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Video Prediction Policy (arXiv 2412.14803) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2412.14803">https://arxiv.org/abs/2412.14803</a>
+  </div>
+</footer>
+
+</body>
+</html>

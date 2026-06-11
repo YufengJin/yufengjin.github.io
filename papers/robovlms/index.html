@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Matters in Building Vision-Language-Action Models for Generalist Robots</title>
+<meta name="keywords" content="VLA, Vision-Language-Action, 机器人操作, VLM backbone, policy architecture, cross-embodiment, RoboVLMs, 策略学习">
+<meta name="description" content="系统研究构建通用机器人 VLA 模型的三大关键要素：VLM backbone 选择、策略架构设计与跨机体数据利用，通过 600 余组实验归纳出最优设计准则。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics &nbsp;|&nbsp; arXiv 2024</span>
+    <h1>What Matters in Building Vision-Language-Action Models for Generalist Robots</h1>
+    <div class="sub">大规模系统研究：构建通用机器人 VLA 模型的三大关键要素</div>
+    <div class="authors">Xinghang Li, Peiyan Li, Long Qian, Minghuan Liu, Dong Wang, Jirong Liu, Bingyi Kang, Xiao Ma, Xinlong Wang, Di Guo, Tao Kong, Hanbo Zhang, Huaping Liu</div>
+    <p class="lead">本文通过超过 600 组精心设计的实验，系统研究了构建 Vision-Language-Action (VLA) 模型的三大核心决策：VLM backbone 的选择、策略架构的制定方式，以及跨机体数据的整合策略，并基于实证结果提炼出最优设计准则，发布了 RoboVLMs 框架与配套数据集。</p>
+    <div class="meta">
+      <span>arXiv 2412.14058</span>
+      <span>600+ 实验</span>
+      <span>8+ VLM Backbones</span>
+      <!-- REQUIRED: link back to the source paper -->
+      <span><a href="https://arxiv.org/abs/2412.14058">📄 arXiv:2412.14058</a></span>
+      <span><a href="https://robovlms.github.io">🌐 Project Page</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords -->
+    <div class="kw">
+      <span>VLA</span>
+      <span>Vision-Language-Action</span>
+      <span>机器人操作</span>
+      <span>VLM backbone</span>
+      <span>policy architecture</span>
+      <span>cross-embodiment</span>
+      <span>RoboVLMs</span>
+      <span>策略学习</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · Motivation</a>
+  <a href="#method">2 · Method</a>
+  <a href="#exp">3 · Experiments</a>
+  <a href="#limit">4 · Limitations</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> Motivation</h2>
+    <p class="lead">大型视觉语言模型（VLM）为通用机器人策略带来了新的可能，但如何将其转化为高效的 VLA 模型，业界缺乏系统性的实证研究——现有工作各自选择不同的 backbone、架构和数据策略，难以进行公平比较，也无法给出可推广的设计原则。</p>
+    <blockquote>"We observe a significant gap between the performance of VLAs and expected performance of generalist robots, while the community lacks a systematic study covering all key design factors."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="teaser">
+      <figcaption>图 1：学习型机器人策略的分类与比较。左侧展示了从 imitation learning 到 VLA 的演进路径；右侧展示了本文研究覆盖的三大设计维度——VLM backbone、架构制定方式（formulation）、跨机体数据（cross-embodiment data），并标注各 design choice 对最终性能的影响程度。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>600+</b><small>精心设计的对照实验</small></div>
+      <div><b>8+</b><small>VLM backbone 横向对比</small></div>
+      <div><b>4</b><small>策略架构类型</small></div>
+      <div><b>+30.3%</b><small>5-task 连续执行绝对提升（vs. GR-1）</small></div>
+    </div>
+    <p>研究聚焦三个核心问题：</p>
+    <ul>
+      <li><strong>哪种 VLM backbone 最适合机器人策略？</strong>——预训练质量与规模的影响。</li>
+      <li><strong>如何制定 VLA 架构？</strong>——one-step / interleaved / policy-head，离散 vs. 连续动作，训练目标（MSE+BCE、Flow Matching），以及 MoE 结构。</li>
+      <li><strong>何时、如何利用跨机体数据？</strong>——co-training 与 post-training 的区别。</li>
+    </ul>
+    <figure>
+      <img src="img/ingredients.webp" alt="ingredients">
+      <figcaption>图 2：构建 VLA 的三大关键要素。研究系统性地覆盖 backbone 选择、架构制定与跨机体数据整合三个维度，每个维度均设有多个对比变量。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> Method</h2>
+    <p class="lead">RoboVLMs 是一个高度模块化的实验框架，支持自由组合各类 VLM backbone 与策略架构。研究在统一的数据集和评测基准（CALVIN 仿真 + SimplerEnv + Kinova Gen3 真机）下进行所有对比实验，确保结论可靠。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="architecture">
+      <figcaption>图 3：VLA 架构的四种制定方式。(a) One-step Continuous：单步预测连续动作序列；(b) One-step Discrete：将动作离散化为 token，以文本生成方式预测；(c) Interleaved：在 observation token 与动作 token 之间交替编码历史信息；(d) Policy-head：VLM 提供单步特征表示，额外的 policy head（RNN/Transformer/Diffusion）建模历史动作依赖。其中 MoE（Mixture of Experts）结构可集成到各类架构中。</figcaption>
+    </figure>
+
+    <h3>VLM Backbone 选择</h3>
+    <p>实验涵盖 LLaVA、Flamingo、KosMos（8B）、PaliGemma（3B）等 8 种以上 backbone。研究发现，在大规模视觉-语言数据上充分预训练的模型（KosMos、PaliGemma）在机器人任务中表现"distinctively better"，而参数规模并不是决定性因素——3B 的 PaliGemma 与 8B 的 KosMos 表现相当。</p>
+
+    <h3>策略架构制定</h3>
+    <p>动作空间使用 7 维向量（6-DoF gripper pose + open/close 状态），连续动作归一化至 [-1,1]，离散动作均匀划分为 256 bins。四种架构中，<strong>policy-head + continuous action</strong> 在 CALVIN 上达到最高平均完成长度（Avg. Len. 4.49），同时在 zero-shot 泛化中展现出最强鲁棒性。训练目标方面，Flow Matching "slightly outperforms MSE+BCE in all experiments"，但差距不显著。MoE 结构在 zero-shot 设置下有助于泛化，但在已见场景中无额外增益。</p>
+
+    <h3>跨机体数据整合策略</h3>
+    <p>研究区分了 <em>co-training</em>（同时使用跨机体数据和领域内数据）与 <em>post-training</em>（先在跨机体数据上预训练，再用领域内数据微调）两种策略。实验表明，co-training 单独使用收益有限，而 post-training 在少样本（few-shot）场景中带来显著提升：单任务成功率提高 17.2%，平均完成任务数多 0.25。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> Experiments</h2>
+    <p class="lead">实验在 CALVIN 仿真基准（ABC→D zero-shot 泛化，最多 5 步连续执行）、SimplerEnv（WidowX+Bridge、Google Robot）以及真实 Kinova Gen3 机械臂（105 个操作任务，74K 轨迹）上全面评测。</p>
+
+    <h3>CALVIN 基准——Backbone 对比（Policy-head + Continuous Action）</h3>
+    <table>
+      <tr><th>Backbone</th><th>1-task</th><th>2-task</th><th>3-task</th><th>4-task</th><th>5-task</th><th>Avg. Len.</th></tr>
+      <tr><td>LLaVA</td><td>0.873</td><td>0.678</td><td>0.506</td><td>0.376</td><td>0.275</td><td>2.71</td></tr>
+      <tr><td>Flamingo</td><td>0.964</td><td>0.896</td><td>0.824</td><td>0.740</td><td>0.662</td><td>4.09</td></tr>
+      <tr><td>PaliGemma (3B)</td><td>0.984</td><td>0.933</td><td>0.888</td><td>0.835</td><td>0.779</td><td>4.42</td></tr>
+      <tr><td>KosMos (8B)</td><td class="good">0.967</td><td class="good">0.930</td><td class="good">0.899</td><td class="good">0.865</td><td class="good">0.826</td><td class="good">4.49</td></tr>
+    </table>
+
+    <h3>SimplerEnv 对比——Google Robot</h3>
+    <table>
+      <tr><th>方法</th><th>Pick Coke</th><th>Move Near</th><th>Open/Close</th><th>Overall</th></tr>
+      <tr><td>RT-1 (Converged)</td><td>0.960</td><td>0.900</td><td>0.730</td><td>0.630</td></tr>
+      <tr><td>OpenVLA-7b</td><td>0.270</td><td>0.030</td><td>0.356</td><td>0.219</td></tr>
+      <tr><td>RoboVLMs (Ours)</td><td class="good">1.000</td><td class="good">0.910</td><td>0.544</td><td class="good">0.818</td></tr>
+    </table>
+
+    <h3>训练目标与 MoE 消融（PaliGemma，CALVIN Split ABC→D）</h3>
+    <table>
+      <tr><th>训练目标</th><th>执行范式</th><th>MoE</th><th>1-task</th><th>5-task</th><th>Avg. Len.</th></tr>
+      <tr><td>Flow Matching</td><td>Chunk</td><td>✓</td><td class="good">0.940</td><td class="good">0.597</td><td class="good">3.84</td></tr>
+      <tr><td>Flow Matching</td><td>Chunk</td><td>✗</td><td>0.910</td><td>0.573</td><td>3.68</td></tr>
+      <tr><td>MSE+BCE</td><td>Chunk</td><td>✗</td><td>0.933</td><td>0.688</td><td>4.04</td></tr>
+      <tr><td>Flow Matching</td><td>First</td><td>✗</td><td>0.898</td><td>0.544</td><td>3.56</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="results">
+      <figcaption>图 4：RoboVLMs 在仿真与真实场景的整体实验结果，涵盖 CALVIN 多步执行、SimplerEnv 多任务以及真实 Kinova 机械臂的五类评测设置。最优 VLA 配置在所有真实世界评测中均达到最强表现，并展现了基线模型所不具备的自我纠错能力（self-correction）。</figcaption>
+    </figure>
+
+    <h3>消融：数据规模效应</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="ablation cross-embodiment">
+      <figcaption>图 5：跨机体训练配置的消融。不同的 co-training / post-training 组合对 Bridge 环境少样本学习的影响：post-training 使单任务成功率从 44% 提升至 50%（Bridge），少样本成功率提升 17.2%。</figcaption>
+    </figure>
+    <p>数据规模消融（KosMos Policy-head）显示：从 0.1× 扩展至 1× CALVIN 数据，5-task 成功率从 17.6% 跃升至 82.6%；进一步扩展至 5× 仅带来边际增益（82.6% → 83.0%），说明更大的 VLM 具备更强的数据效率。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> Limitations</h2>
+    <div class="note"><b>Note:</b> 本文没有专门的 Limitations 章节。以下各点均为<em>从设计与实验中推断</em>（inferred from the design），非作者明确陈述。</div>
+    <details class="lim" open><summary>Interleaved 架构仅适用于 decoder-only 模型</summary><p>由于 attention masking 机制的限制，interleaved 历史建模只能应用于 decoder-only 结构的 VLM，不适用于 encoder-decoder 类模型，限制了该架构与更多 backbone 的组合可能。</p></details>
+    <details class="lim"><summary>跨机体数据收益在 full fine-tune 场景有限</summary><p>实验显示，cross-embodiment pre-training 的增益主要体现在 few-shot 场景；在充足的领域内数据下，co-training 单独使用"does not consistently yield significant improvements in final performance"，说明跨机体数据的价值主要体现在数据稀缺时。</p></details>
+    <details class="lim"><summary>真实机器人测试局限于单一平台</summary><p>真实世界验证仅在 7-DoF Kinova Gen3（配 Robotiq 夹爪）上进行，结论能否迁移至其他机械臂、移动底盘或双臂系统尚未验证。</p></details>
+    <details class="lim"><summary>计算成本随历史长度增长</summary><p>Policy-head 与 interleaved 架构在处理长历史序列时计算开销显著增加，实际部署中的实时性约束未作充分讨论。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · What Matters in Building VLA Models for Generalist Robots · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2412.14058">https://arxiv.org/abs/2412.14058</a>
+  </div>
+</footer>
+
+</body>
+</html>

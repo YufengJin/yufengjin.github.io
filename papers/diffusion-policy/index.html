@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<!--
+  Paper Poster — 中文，仅供学习参考。
+  Body text in 中文; academic terms / method names / metrics / quoted phrases kept in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diffusion Policy: Visuomotor Policy Learning via Action Diffusion</title>
+<meta name="keywords" content="diffusion policy, visuomotor policy, imitation learning, behavior cloning, robot manipulation, denoising diffusion, 机器人操作, action diffusion">
+<meta name="description" content="Diffusion Policy 将扩散生成模型引入机器人策略学习，把动作生成建模为条件去噪扩散过程，在 15 个任务上平均超越现有方法 46.9%。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2023 · 机器人操作 · Imitation Learning</span>
+    <h1>Diffusion Policy</h1>
+    <div class="sub">Visuomotor Policy Learning via Action Diffusion</div>
+    <div class="authors">Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, Shuran Song &nbsp;·&nbsp; Columbia / MIT / TRI</div>
+    <p class="lead">
+      Diffusion Policy 将去噪扩散概率模型（DDPM）引入机器人策略学习：将机器人动作生成建模为条件去噪扩散过程，
+      通过学习动作分布的分数函数梯度，在推理时经多步去噪输出一段动作序列。在 4 个操作基准的共 15 个任务中，
+      Diffusion Policy 平均超越现有最优方法 46.9%，并在多个真实机器人任务上达到接近人类示范的性能。
+    </p>
+    <div class="meta">
+      <span>arXiv Mar 2023 · v5 Mar 2024</span>
+      <span>15 tasks · 4 benchmarks</span>
+      <span>CNN &amp; Transformer variants</span>
+      <span><a href="https://arxiv.org/abs/2303.04137">📄 arXiv:2303.04137</a></span>
+      <span><a href="https://diffusion-policy.cs.columbia.edu">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>diffusion policy</span>
+      <span>visuomotor policy</span>
+      <span>imitation learning</span>
+      <span>behavior cloning</span>
+      <span>robot manipulation</span>
+      <span>denoising diffusion</span>
+      <span>机器人操作</span>
+      <span>action diffusion</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      机器人 visuomotor 策略学习面临三大核心挑战：<strong>多模态动作分布</strong>（同一状态存在多种合理行为）、
+      <strong>高维动作序列的时序相关性</strong>以及<strong>高精度控制要求</strong>。
+      现有方法（显式策略、IBC 隐式策略、BET 序列模型）各有缺陷，均难以同时满足这三点。
+    </p>
+    <blockquote>
+      "This work presents Diffusion Policy, a new way of generating robot behavior by representing a robot's visuomotor policy as a conditional denoising diffusion process on robot action space."
+    </blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="Policy Representations">
+      <figcaption>
+        <strong>图 1：三种策略表示的对比。</strong>
+        (a) 显式策略直接预测动作，无法表达多峰分布；
+        (b) 隐式策略（IBC）学习能量函数，通过优化寻找最优动作，但训练不稳定；
+        (c) Diffusion Policy 通过学习梯度场将噪声迭代去噪为动作，天然支持多模态分布。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>+46.9%</b><small>平均超越现有 SOTA<br>（15 个任务）</small></div>
+      <div><b>95%</b><small>真实 Push-T 任务<br>成功率（E2E Trans）</small></div>
+      <div><b>0.80</b><small>真实 Push-T 的 IoU<br>（人类示范 0.84）</small></div>
+      <div><b>12</b><small>测试任务总数<br>（含双臂操作）</small></div>
+    </div>
+
+    <h3>为什么现有方法不够用？</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>显式策略（BC / LSTM-GMM / BET）</h3>
+        <ul>
+          <li>GMM 等混合模型建模能力有限，难以捕捉复杂多峰分布</li>
+          <li>BET（Behavior Transformer）在精细操作任务中准确率显著下降</li>
+          <li>高精度任务（如 Square、ToolHang）成功率偏低</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>隐式策略（IBC）</h3>
+        <ul>
+          <li>训练极不稳定：训练 loss 下降，但策略成功率剧烈震荡，难以选择 checkpoint</li>
+          <li>推理时需要优化能量函数，计算开销大且容易陷入局部极小</li>
+          <li>在仿真多个任务上成功率接近 0%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      Diffusion Policy 将策略参数化为条件去噪扩散过程：给定最近 T<sub>o</sub> 步观测 O<sub>t</sub>，
+      从高斯噪声出发，经过 K 步去噪（学习动作分布的分数函数梯度），输出 T<sub>a</sub> 步动作序列，
+      再通过 receding-horizon control 执行其中前 T<sub>a</sub> 步并滑窗更新。
+      论文提供两种网络骨干：<strong>CNN-based（DP-C）</strong>与<strong>Transformer-based（DP-T）</strong>。
+    </p>
+
+    <figure>
+      <img src="img/overview.webp" alt="Diffusion Policy Overview">
+      <figcaption>
+        <strong>图 2：Diffusion Policy 整体框架。</strong>
+        (a) 通用公式：T<sub>o</sub> 步观测作为条件，输出 T<sub>a</sub> 步动作；
+        (b) CNN 变体：以 FiLM 将观测特征注入每层卷积；
+        (c) Transformer 变体：观测 embedding 通过 multi-head cross-attention 与动作 token 交互，
+        有效缓解过平滑（over-smoothing）问题。
+      </figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>去噪扩散过程</h3>
+        <p>
+          训练时对动作加噪，学习预测噪声（或分数）；推理时从 <em>A<sup>K</sup> ∼ 𝒩(0, I)</em> 出发，
+          迭代执行 K 步 DDPM 去噪（或 DDIM 加速推理）得到动作序列 A<sup>0</sup>。
+          关键优势：能量函数无需显式定义，分布覆盖度由扩散过程天然保证，可表达任意复杂的多模态分布。
+        </p>
+      </div>
+      <div class="card">
+        <h3>Receding-Horizon Control</h3>
+        <p>
+          每次推理预测未来 T<sub>a</sub> 步动作，实际执行前 T<sub>a</sub> 步，
+          再以滑窗获取新观测、重新推理。这一机制在保持时序一致性（trajectory coherence）的同时
+          保留闭环响应能力。论文消融实验表明 action horizon 的选择对性能影响显著。
+        </p>
+      </div>
+      <div class="card">
+        <h3>视觉条件输入</h3>
+        <p>
+          观测 O<sub>t</sub>（RGB 图像或状态向量）<em>仅作为条件</em>输入去噪网络，
+          而非被去噪的对象，从而保持动作空间扩散的简洁性。
+          CNN 变体用 FiLM conditioning；Transformer 变体用 cross-attention。
+        </p>
+      </div>
+      <div class="card">
+        <h3>多模态行为建模</h3>
+        <p>
+          扩散模型天然支持多峰（multimodal）分布：同一观测下策略可采样出截然不同但各自合理的动作轨迹，
+          且每次 rollout 内部保持一致性，不会在执行中途切换模式。
+        </p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/multimodal.webp" alt="Multimodal behavior">
+      <figcaption>
+        <strong>图 3：多模态行为示例（Push-T）。</strong>
+        同一起始状态下，末端执行器（蓝色）既可绕左侧推块，也可绕右侧推块。
+        Diffusion Policy 学到了两种模式，且在单次 rollout 内只选择其中一种执行，
+        而不会在中途"切换"——这是分数匹配扩散过程的本质优势。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验覆盖 4 个基准（Robomimic 仿真、Push-T 仿真、真实 Push-T、多个真实操作任务），
+      基线包括 BC、LSTM-GMM、IBC、BET。指标为任务成功率（sim）和 IoU / 成功率（real Push-T）。
+      DP-C = CNN-based Diffusion Policy，DP-T = Transformer-based Diffusion Policy。
+    </p>
+
+    <h3>Robomimic 仿真基准（State Policy，最大成功率 / 最后 10 checkpoint 均值）</h3>
+    <table>
+      <tr>
+        <th>方法</th><th>Lift</th><th>Can</th><th>Square</th><th>Transport</th><th>ToolHang</th><th>Push-T</th>
+      </tr>
+      <tr><td>LSTM-GMM</td><td>1.00/0.96</td><td>1.00/0.93</td><td>1.00/0.91</td><td>1.00/0.81</td><td>0.95/0.73</td><td>0.86/0.59</td></tr>
+      <tr><td>IBC</td><td>0.79/0.41</td><td>0.15/0.02</td><td>0.00/0.00</td><td>0.01/0.01</td><td>0.00/0.00</td><td>0.00/0.00</td></tr>
+      <tr><td>BET</td><td>1.00/0.96</td><td>1.00/0.99</td><td>1.00/0.89</td><td>1.00/0.90</td><td>0.76/0.52</td><td>0.68/0.43</td></tr>
+      <tr><td class="good">DP-C（ours）</td><td class="good">1.00/0.98</td><td class="good">1.00/0.97</td><td class="good">1.00/0.96</td><td class="good">1.00/0.96</td><td class="good">1.00/0.93</td><td class="good">0.97/0.82</td></tr>
+      <tr><td class="good">DP-T（ours）</td><td class="good">1.00/1.00</td><td class="good">1.00/1.00</td><td class="good">1.00/1.00</td><td class="good">1.00/0.94</td><td class="good">1.00/0.89</td><td class="good">0.95/0.81</td></tr>
+    </table>
+
+    <h3>Robomimic 仿真基准（Visual Policy，最大/均值）</h3>
+    <table>
+      <tr>
+        <th>方法</th><th>Lift</th><th>Can</th><th>Square</th><th>Transport</th><th>ToolHang</th><th>Push-T</th>
+      </tr>
+      <tr><td>LSTM-GMM</td><td>1.00/0.96</td><td>1.00/0.95</td><td>1.00/0.88</td><td>0.98/0.90</td><td>0.82/0.59</td><td>0.64/0.38</td></tr>
+      <tr><td>IBC</td><td>0.94/0.73</td><td>0.39/0.05</td><td>0.08/0.01</td><td>0.00/0.00</td><td>0.03/0.00</td><td>0.00/0.00</td></tr>
+      <tr><td class="good">DP-C（ours）</td><td class="good">1.00/1.00</td><td class="good">1.00/1.00</td><td class="good">1.00/0.97</td><td class="good">1.00/0.96</td><td class="good">0.98/0.92</td><td class="good">0.98/0.84</td></tr>
+      <tr><td class="good">DP-T（ours）</td><td class="good">1.00/1.00</td><td class="good">1.00/0.99</td><td class="good">1.00/0.98</td><td class="good">1.00/0.98</td><td class="good">1.00/0.90</td><td class="good">0.94/0.80</td></tr>
+    </table>
+
+    <h3>真实 Push-T 对比（20 次试验）</h3>
+    <table>
+      <tr><th>方法</th><th>IoU</th><th>成功率</th><th>时长（秒）</th></tr>
+      <tr><td>人类示范</td><td>0.84</td><td>1.00</td><td>20.3</td></tr>
+      <tr><td>IBC (pos)</td><td>0.14</td><td>0.00</td><td>56.3</td></tr>
+      <tr><td>IBC (vel)</td><td>0.19</td><td>0.00</td><td>41.6</td></tr>
+      <tr><td>LSTM-GMM (pos)</td><td>0.24</td><td>0.20</td><td>47.3</td></tr>
+      <tr><td>LSTM-GMM (vel)</td><td>0.25</td><td>0.10</td><td>51.7</td></tr>
+      <tr><td>DP (R3M)</td><td>0.53</td><td>0.65</td><td>57.5</td></tr>
+      <tr><td>DP (ImgNet)</td><td>0.24</td><td>0.15</td><td>55.8</td></tr>
+      <tr><td class="good">DP E2E Trans（ours）</td><td class="good">0.80</td><td class="good">0.95</td><td>22.9</td></tr>
+      <tr><td>DP E2E CNN（ours）</td><td>0.66</td><td>0.80</td><td>31.7</td></tr>
+    </table>
+
+    <h3>真实复杂操作任务（均采用 E2E Diffusion Policy）</h3>
+    <table>
+      <tr><th>任务</th><th>成功率</th><th>试验次数</th><th>示范数</th></tr>
+      <tr><td>Mug Flipping（6DoF 抓取+翻转杯子）</td><td class="good">90%</td><td>20</td><td>—</td></tr>
+      <tr><td>Sauce Pouring（酱料倒浇披萨）</td><td class="good">79%</td><td>—</td><td>—</td></tr>
+      <tr><td>Sauce Spreading（酱料涂抹）</td><td class="good">100%</td><td>—</td><td>—</td></tr>
+      <tr><td>双臂 Egg Beater（打蛋器操作）</td><td class="good">55%</td><td>20</td><td>210</td></tr>
+      <tr><td>双臂 Mat Unrolling（展开垫子）</td><td class="good">75%</td><td>20</td><td>162</td></tr>
+      <tr><td>双臂 Shirt Folding（折叠衬衫）</td><td class="good">75%</td><td>20</td><td>284</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="Real Push-T results">
+      <figcaption>
+        <strong>图 4：真实 Push-T 实验对比。</strong>
+        各列分别展示关键时刻的动作轨迹，最后一列为末态均值图像。
+        DP (E2E Trans) 达到 IoU 0.80、成功率 95%，接近人类示范水平（IoU 0.84），
+        而 IBC 在所有变体上成功率均为 0%。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="Ablation study">
+      <figcaption>
+        <strong>图 5：消融实验。</strong>
+        左图：action horizon（动作预测步长）存在最优区间——太短则时序一致性差，太长则响应性下降。
+        右图：Position control 相比 velocity control 使 Diffusion Policy 对延迟更鲁棒，
+        而传统方法（BCRNN、BET）切换到 position control 反而性能下降。
+      </figcaption>
+    </figure>
+
+    <p>
+      训练稳定性方面，论文专门与 IBC 对比（Figure 6）：IBC 的 evaluation success rate 剧烈震荡，
+      即便训练 loss 单调下降也无法获得稳定收敛的策略；Diffusion Policy 则展现出平稳的训练曲线，
+      checkpoint 选择不敏感。这一特性在实际应用中尤为重要。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>注：</b>以下局限性混合了论文明确陈述（stated）与从方法设计推断（inferred）的内容，已分别标注。
+    </div>
+
+    <details class="lim" open>
+      <summary>继承 Behavior Cloning 的数据依赖性 [stated]</summary>
+      <p>
+        Diffusion Policy 本质是一种 behavior cloning 方法，当示范数据不足或质量较差时，
+        性能会显著下降。论文指出其改进并不能突破 BC 范式的根本限制——
+        若示范覆盖的状态空间有限，策略在分布外状态的泛化性仍无法保证。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>推理延迟较高，不适合高频控制 [stated]</summary>
+      <p>
+        每次动作推理需要运行 K 步去噪（DDPM K=100，DDIM K=10~16），
+        推理延迟明显高于直接回归策略。论文承认这使得 Diffusion Policy
+        在需要高频（如 > 10 Hz）控制的任务上可能遇到瓶颈。
+        虽然 DDIM 加速推理可缓解此问题，但代价是生成质量可能略有下降。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>Transformer 变体超参数敏感 [stated/inferred]</summary>
+      <p>
+        DP-T（Transformer-based）在多数任务上性能优异，但论文指出其对超参数（如 action horizon、
+        observation horizon）的选择较为敏感，需要细致调优。
+        此外，Transformer 变体的显存占用和训练时间也更高（inferred from architecture scale）。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>双臂复杂任务成功率仍有差距 [inferred]</summary>
+      <p>
+        在双臂操作任务（Egg Beater 55%、Mat Unrolling 75%、Shirt Folding 75%）中，
+        成功率相比单臂任务明显偏低。这部分源于任务本身的复杂性（多步骤、双臂协调、
+        接触点丰富），也暗示当前方法在长时程、高接触任务中仍有较大提升空间（inferred）。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from paper figures and text · Diffusion Policy: Visuomotor Policy Learning via Action Diffusion · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2303.04137">https://arxiv.org/abs/2303.04137</a>
+  </div>
+</footer>
+
+</body>
+</html>

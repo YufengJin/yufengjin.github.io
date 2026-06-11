@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboArena: Distributed Real-World Evaluation of Generalist Robot Policies</title>
+<meta name="keywords" content="机器人评测, generalist robot policy, pairwise evaluation, Bradley-Terry, distributed evaluation, crowdsourced benchmark, 策略排名, real-world robotics">
+<meta name="description" content="RoboArena 通过分布式成对比较，对通用机器人策略进行可扩展的真实世界评估，比集中式方法更准确地排名策略表现。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">cs.RO · arXiv 2506.18123</span>
+    <h1>RoboArena</h1>
+    <div class="sub">Distributed Real-World Evaluation of Generalist Robot Policies</div>
+    <div class="authors">Pranav Atreya, Karl Pertsch, Tony Lee, Moo Jin Kim, Arhan Jain, Artur Kuramshin, Clemens Eppner, Cyrus Neary, Edward Hu, Fabio Ramos, Jonathan Tremblay, Kanav Arora, Kirsty Ellis, Luca Macesanu, Marcel Torne Villasevil, Matthew Leonard, Meedeum Cho, Ozgur Aslan, Shivin Dass, Jie Wang, William Reger, Xingfang Yuan, Xuning Yang, Abhishek Gupta, Dinesh Jayaraman, Glen Berseth, Kostas Daniilidis, Roberto Martin-Martin, Youngwoon Lee, Percy Liang, Chelsea Finn, Sergey Levine（七所机构联合）</div>
+    <p class="lead">RoboArena 借鉴语言模型评测中的 Chatbot Arena 思路，通过分布式、双盲的成对策略比较，在真实机器人上对通用策略进行可扩展评估。跨越七个机构超过 600 次成对真实机器人评测，RoboArena 的排名结果比传统集中式评测方法更准确地反映策略的真实能力。</p>
+    <div class="meta">
+      <span>arXiv 2025-06</span>
+      <span>7 机构联合</span>
+      <span>600+ 成对评测 · 4284 总 episode</span>
+      <span><a href="https://arxiv.org/abs/2506.18123">📄 arXiv:2506.18123</a></span>
+    </div>
+    <div class="kw">
+      <span>机器人评测</span>
+      <span>generalist robot policy</span>
+      <span>pairwise evaluation</span>
+      <span>Bradley-Terry model</span>
+      <span>distributed benchmark</span>
+      <span>策略排名</span>
+      <span>real-world robotics</span>
+      <span>crowdsourced evaluation</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · Motivation</a>
+  <a href="#method">2 · Method</a>
+  <a href="#exp">3 · Experiments</a>
+  <a href="#limit">4 · Limitations</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 · Motivation</h2>
+    <p class="lead">现有机器人评测范式要求对任务和环境进行严格标准化，难以全面衡量具备广泛能力的通用机器人策略。随着机器人策略越来越"通用"，标准化评测反而成为瓶颈——任务覆盖窄、场景固定、无法反映真实部署多样性。</p>
+    <blockquote>"Tightly standardized sets of environments and tasks are not well-suited to provide comprehensive performance evaluations for policies designed for broad capability."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="RoboArena 总览">
+      <figcaption>图1：RoboArena 框架总览。分布在多个机构的评测者各自选择任务和场景，对两个策略进行双盲成对评测，汇总偏好反馈后通过 Bradley-Terry 模型导出全局策略排名。与集中式方法不同，此框架无需标准化环境，天然覆盖真实世界的多样性。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4284</b><small>总 evaluation episodes</small></div>
+      <div><b>600+</b><small>成对双盲比较 episodes</small></div>
+      <div><b>7</b><small>参与机构数</small></div>
+      <div><b>94.6%</b><small>VLM 任务分类准确率（448 样本）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 · Method</h2>
+    <p class="lead">RoboArena 将评测分为三个核心模块：<strong>分布式评测协议</strong>（双盲成对实验）、<strong>任务感知排名算法</strong>（扩展 Bradley-Terry 模型）、<strong>定性分析流水线</strong>（VLM + LLM 自动生成策略特征报告）。</p>
+
+    <figure>
+      <img src="img/system.webp" alt="系统架构">
+      <figcaption>图4：RoboArena 系统架构。由策略推理服务器（policy inference servers）、评测客户端（evaluation clients）、评测数据库（evaluation database）和中央评测服务器（central evaluation server）组成。评测者从中央服务器请求策略对，在本地场景中依次执行两个策略，并提交三类反馈：连续进度分（progress score ∈ [0…100]）、二元偏好标签（binary preference label）和自由文本解释（free-form explanation）。</figcaption>
+    </figure>
+
+    <h3>双盲分布式评测协议</h3>
+    <p>评测者在自选的场景和任务中对两个匿名策略（πA 和 πB）依次执行 rollout，双盲设计防止评测者对特定策略产生偏见。反馈包含三个维度：连续进度分、二元偏好以及自由文本说明，三种信号相互印证，提升排名可靠性。</p>
+
+    <h3>任务感知 Bradley-Terry 排名算法</h3>
+    <p>标准 Bradley-Terry 模型仅建模策略绝对能力，忽略任务难度差异。RoboArena 引入三类参数：策略对数能力 θ、任务难度 τ、以及策略-任务偏置 ψ，将胜出概率建模为：</p>
+    <blockquote>"p(πA &gt; πB) = ∑<sub>t=1</sub><sup>T</sup> ν<sub>t</sub> · σ(θ<sub>A</sub> + ψ<sub>At</sub> − τ<sub>t</sub>) · (1 − σ(θ<sub>B</sub> + ψ<sub>Bt</sub> − τ<sub>t</sub>))"</blockquote>
+    <p>参数通过近似最大似然期望最大化（approximate maximum likelihood expectation-maximization, EM）算法拟合，能够在样本稀疏时显著提升排名质量。</p>
+
+    <figure>
+      <img src="img/pipeline.webp" alt="定性分析流水线">
+      <figcaption>图2：定性分析流水线。使用视觉语言模型（VLM）对评测场景和任务进行分类，再用大语言模型（LLM）跨评测 rollout 聚合信息，最终自动生成每个策略的特征报告，辅助研究者理解策略的优势和薄弱环节。VLM 任务分类在 448 个样本上达到 94.6% 准确率。</figcaption>
+    </figure>
+
+    <h3>策略池与硬件平台</h3>
+    <p>本次评测以 DROID 平台（Franka 机械臂 + Robotiq 夹爪 + 双目相机）为基础，评测七个通用策略变体，涵盖 π0-flow、π0-FAST、PG-flow、PG-FAST、PG-FAST+、PG-FSQ、PG-Bin，系统性覆盖了不同 action tokenization 和 flow matching 配置。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 · Experiments</h2>
+    <p class="lead">在七所机构收集共 4284 个 evaluation episodes，其中超过 600 个为成对双盲对比。将 Oracle 排名（由全量 episode 得出）作为参考标准，与传统集中式方法和多种排名算法对比。</p>
+
+    <figure>
+      <img src="img/ranking.webp" alt="排名相关性对比">
+      <figcaption>图6：RoboArena 排名与 Oracle 排名的相关性。任务感知 Bradley-Terry 排名（RoboArena）与 Oracle 的 Kendall-τ 相关性显著高于传统集中式评测方法；MMRV（Mean Maximum Rank Violation）指标同样支持任务感知方法优于普通 Bradley-Terry 和简单平均成功率等基线。</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>排名方法</th><th>与 Oracle 相关性</th><th>MMRV ↓</th></tr>
+      <tr><td>传统集中式评测（平均成功率）</td><td>较低</td><td>较高</td></tr>
+      <tr><td>Elo 在线更新</td><td>中等</td><td>中等</td></tr>
+      <tr><td>Bradley-Terry（标准）</td><td>中等</td><td>中等</td></tr>
+      <tr><td>RoboArena（任务感知 BT）</td><td class="good">最高</td><td class="good">最低</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/efficiency.webp" alt="样本效率">
+      <figcaption>图7：样本效率分析。RoboArena 在仅进行约 100 次成对比较后即收敛到高质量排名，与需要相同 episode 数量的传统评测方法相当，展示了分布式成对评测在样本效率上的显著优势。</figcaption>
+    </figure>
+
+    <h3>定性分析验证</h3>
+    <p>对 LLM 自动生成的策略报告进行人工校验：对于报告中声称"π0-FAST-DROID 优于、持平或劣于其他策略"的大多数类别，这些结论均与评测数据中的实际胜率一致，证明了定性分析流水线的可靠性。</p>
+
+    <h3>消融实验</h3>
+    <p>实验对比了四种排名算法（Elo、标准 Bradley-Terry MLE、基于进度分的 PROG 排名、任务感知 Bradley-Terry），发现任务感知扩展在各指标上均优于其他变体；进度分排名（PROG）也有一定效果，但精细程度不及任务感知方法。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 · Limitations</h2>
+    <div class="note"><b>Note:</b> 以下局限性均为论文作者明确陈述（stated by the authors）。</div>
+
+    <details class="lim" open>
+      <summary>跨平台/跨体态扩展（Cross-embodiment）</summary>
+      <p>当前评测集中在 DROID 平台（Franka 机械臂），尚未覆盖跨体态通用策略。作者将跨平台扩展列为未来工作。</p>
+    </details>
+
+    <details class="lim">
+      <summary>难以隔离变量（Controlled Experimentation）</summary>
+      <p>去中心化设计使"单变量对照实验"变得困难——不同机构使用不同场景和任务，无法像集中式评测那样精确控制实验条件。</p>
+    </details>
+
+    <details class="lim">
+      <summary>对抗性评测者鲁棒性未验证（Adversarial Evaluators）</summary>
+      <p>作者坦言"尚未研究该系统对故意对抗性评测者的鲁棒性（have not investigated its robustness to intentionally adversarial evaluators）"，系统在恶意操纵下的表现有待进一步分析。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Goodhart 定律风险（Over-optimization）</summary>
+      <p>当评测指标本身成为优化目标时，它可能不再是真实能力的良好代理（"a measure ceases to be a good measure when it becomes a target"）。作者认为当前策略性能有限使得过度优化不太可能，但随着策略能力提升，这一风险会增大。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · RoboArena: Distributed Real-World Evaluation of Generalist Robot Policies · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.18123">https://arxiv.org/abs/2506.18123</a>
+  </div>
+</footer>
+
+</body>
+</html>

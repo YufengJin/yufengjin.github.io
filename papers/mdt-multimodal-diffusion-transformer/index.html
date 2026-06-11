@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multimodal Diffusion Transformer: Learning Versatile Behavior from Multimodal Goals</title>
+<meta name="keywords" content="multimodal diffusion policy, robot manipulation, language conditioning, masked generative foresight, contrastive alignment, CALVIN benchmark, LIBERO benchmark, imitation learning, 扩散策略, 多模态目标">
+<meta name="description" content="MDT 提出多模态扩散 Transformer，通过 Masked Generative Foresight 和 Contrastive Latent Alignment 两个自监督辅助任务，在极少语言标注下实现多任务机器人操作，在 CALVIN 和 LIBERO 基准上超越现有方法。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2024 · 机器人操作 · Robotics</span>
+    <h1>Multimodal Diffusion Transformer</h1>
+    <div class="sub">用多模态目标学习多样化机器人操作策略</div>
+    <div class="authors">Moritz Reuss, Ömer Erdinç Yağmurlu, Fabian Wenzel, Rudolf Lioutikov &nbsp;·&nbsp; RSS 2024</div>
+    <p class="lead">MDT（Multimodal Diffusion Transformer）提出了一种基于扩散模型的机器人操作策略框架，能够同时接受图像目标和语言目标作为条件，仅需极少量的语言标注（2%）便可超越全标注 baseline。两个核心辅助任务——Masked Generative Foresight（MGF）和 Contrastive Latent Alignment（CLA）——通过自监督方式对齐多模态表征，在 CALVIN 和 LIBERO 基准上均取得当时最优性能。</p>
+    <div class="meta">
+      <span>RSS 2024</span>
+      <span>机器人操作 · Imitation Learning</span>
+      <span>CALVIN + LIBERO Benchmarks</span>
+      <span><a href="https://arxiv.org/abs/2407.05996">📄 arXiv:2407.05996</a></span>
+      <span><a href="https://arxiv.org/pdf/2407.05996">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>multimodal diffusion policy</span>
+      <span>robot manipulation</span>
+      <span>language conditioning</span>
+      <span>masked generative foresight</span>
+      <span>contrastive alignment</span>
+      <span>CALVIN benchmark</span>
+      <span>LIBERO benchmark</span>
+      <span>扩散策略</span>
+      <span>多模态目标</span>
+      <span>imitation learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · Motivation</a>
+  <a href="#method">2 · Method</a>
+  <a href="#exp">3 · Experiments</a>
+  <a href="#limit">4 · Limitations</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> Motivation</h2>
+    <p class="lead">现实中的机器人示教数据往往只有图像目标，语言标注极为稀缺。如何在只有少量语言标注的情况下，让策略同时支持图像目标和语言目标的条件输入，是构建通用机器人操作系统的核心挑战。</p>
+    <blockquote>"We propose a multimodal diffusion policy that learns robot manipulation behaviors from multimodal goals with few language annotations."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="MDT architecture overview">
+      <figcaption>Figure 1：MDT 整体架构。系统由多模态 Transformer Encoder（处理当前观测和多模态目标）和 Diffusion Decoder（生成动作序列）组成。Encoder 通过两个自监督辅助任务（MGF 和 CLA）学习对齐图像与语言目标的隐表征，Decoder 通过 10 步 DDIM 采样生成机器人动作序列。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>4.52</b><small>CALVIN ABCD→D<br>平均完成链长（MDT-V）</small></div>
+      <div><b>+15%</b><small>超越 RoboFlamingo<br>在 ABCD→D 子集上的绝对提升</small></div>
+      <div><b>2%</b><small>语言标注比例<br>仍超越全标注 Transformer-BC</small></div>
+      <div><b>&lt;10%</b><small>相比 RoboFlamingo 所用<br>可训练参数量比例</small></div>
+    </div>
+    <p>在大多数现实数据集中，语言指令只覆盖小部分演示，而图像目标（goal image）则可以免标注地从轨迹末帧获取。MDT 通过同时支持两种目标模态，充分利用了这类不完整标注数据集。与依赖大规模预训练（如 RoboFlamingo）的方法相比，MDT 无需预训练，参数量更少，却取得更好的效果。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> Method</h2>
+    <p class="lead">MDT 由多模态 Transformer Encoder 和扩散式 Decoder 组成，通过两个自监督辅助目标——Masked Generative Foresight（MGF）和 Contrastive Latent Alignment（CLA）——在极少语言标注下学习统一的多模态目标条件策略。</p>
+
+    <h3>整体架构</h3>
+    <p>Encoder 使用冻结的 CLIP 文本编码器处理语言目标，使用 ResNet 编码当前观测和图像目标，并融合为统一的 latent goal-conditioned state representation。Decoder 为 GPT 风格的因果 Transformer，通过 Adaptive Layer Normalization（AdaLN）注入扩散时间步噪声，迭代去噪生成长度为 10 的动作序列。训练采用连续时间 SDE，噪声范围为 [0.001, 80]；推理使用 10 步 DDIM 采样。</p>
+
+    <h3>Masked Generative Foresight（MGF）</h3>
+    <p>MGF 是一个自监督辅助任务：用 Vision Transformer 在当前观测的 latent 表征条件下，预测并重建未来第 v 步（论文设 v=3）帧的被遮挡 patch（masking ratio=0.75）。这迫使 encoder 学习包含足够未来状态信息的表征，且与目标模态（图像 or 语言）无关，从而对齐两类目标的表征空间。MGF 单独使用即可为 CALVIN 带来约 25% 的性能提升；迁移到 MT-ACT baseline 时，提升达 44%。</p>
+    <figure>
+      <img src="img/mgf.webp" alt="Masked Generative Foresight">
+      <figcaption>Figure 2：Masked Generative Foresight 辅助任务。Encoder 编码当前观测和目标（图像或语言），ViT 解码器在 latent 表征条件下重建未来帧的被遮挡 patch，迫使表征编码充足的未来预测信息，实现图像/语言目标表征的自然对齐。</figcaption>
+    </figure>
+
+    <h3>Contrastive Latent Alignment（CLA）</h3>
+    <p>CLA 应用 InfoNCE 对比损失，直接拉近同一轨迹中图像目标条件和语言目标条件下的 latent state embedding。这弥补了 CLIP 对空间任务动态理解不足的缺陷。在 LIBERO-90（任务多样性高）子集上，CLA 的增益尤为显著。两个辅助目标的损失权重均设为 α=β=0.1。</p>
+
+    <h3>预训练潜力</h3>
+    <p>CLA 和 MGF 均不依赖动作标签，因此可在无动作标注的视频数据上做预训练。论文在 LIBERO-90 上验证：仅用 5 条带动作演示 fine-tune，预训练版本比随机初始化提升约 100%；用 20 条演示，提升约 25%。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> Experiments</h2>
+    <p class="lead">在 CALVIN（长时序多任务操作）和 LIBERO（多任务模仿学习）两个基准上评测，并在真实机器人（toy kitchen，4.5 小时非分段 play data，20% 语言标注）上验证。</p>
+
+    <h3>CALVIN 基准（Table I）</h3>
+    <table>
+      <tr><th>方法</th><th>D→D Avg</th><th>ABCD→D Avg</th></tr>
+      <tr><td>HULC</td><td>2.68</td><td>3.06</td></tr>
+      <tr><td>LAD</td><td>2.88</td><td>—</td></tr>
+      <tr><td>Distill-D</td><td>2.97</td><td>3.16</td></tr>
+      <tr><td>MT-ACT</td><td>2.98</td><td>2.80</td></tr>
+      <tr><td>RoboFlamingo</td><td>—</td><td>4.09</td></tr>
+      <tr><td>MDT（ours）</td><td>3.59</td><td>4.41</td></tr>
+      <tr><td class="good">MDT-V（ours）</td><td class="good">3.72</td><td class="good">4.52</td></tr>
+    </table>
+    <p>MDT-V（视频预训练版本）在 ABCD→D 子集达到 4.52 平均链长，较 RoboFlamingo（4.09）提升约 15%；在 D→D 子集超越第二名约 20%。MDT 可训练参数量不足 RoboFlamingo 的 10%，且无需大规模预训练。</p>
+
+    <h3>LIBERO 基准（Table II，仅 2% 语言标注）</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>LIBERO-90</th><th>平均</th></tr>
+      <tr><td>Transformer-BC（100% 标注）</td><td>71.8±3.7</td><td>71.0±7.9</td><td>76.3±1.3</td><td>24.2±2.6</td><td>—</td></tr>
+      <tr><td>Distill-D（2%）</td><td>46.8±2.8</td><td>72.0±6.5</td><td>63.8±2.5</td><td>47.3±4.1</td><td>56.0±3.4</td></tr>
+      <tr><td>MDT（2%）</td><td>66.0±1.9</td><td>85.2±2.3</td><td>67.8±4.6</td><td>65.0±2.0</td><td>68.5±9.92</td></tr>
+      <tr><td>MDT + CLA（2%）</td><td>74.3±0.8</td><td>87.5±2.7</td><td>71.5±3.5</td><td>65.3±2.1</td><td>73.1±8.81</td></tr>
+      <tr><td>MDT + MGF（2%）</td><td>67.5±2.1</td><td>87.5±2.6</td><td>69.3±2.5</td><td>63.0±1.7</td><td>70.0±10.2</td></tr>
+      <tr><td class="good">MDT + CLA + MGF（2%）</td><td class="good">78.5±1.5</td><td class="good">87.5±0.9</td><td class="good">73.5±2.0</td><td class="good">64.8±0.3</td><td class="good">74.3±9.13</td></tr>
+    </table>
+    <p>仅用 2% 语言标注，MDT+CLA+MGF 在多个子集上超越使用 100% 标注的 Transformer-BC，平均成功率达 74.3%，比 Distill-D（56.0%）高约 18 个百分点。辅助损失平均带来约 8.5% 的提升。</p>
+
+    <h3>真实机器人实验</h3>
+    <p>在真实 toy kitchen 场景下，单任务成功率：MDT-V 58%，MT-ACT 仅 25%。多任务链式完成：带辅助目标的 MDT 平均完成 1.56 步，展现了从非分段、稀疏标注 play 数据中学习多任务策略的能力。</p>
+
+    <figure>
+      <img src="img/environments.webp" alt="Benchmark environments">
+      <figcaption>Figure 3：实验环境概览。左：CALVIN 基准，四个子环境各有不同位置和纹理；中：LIBERO 任务集合，涵盖空间、物体、目标和 LIBERO-90 四个子集；右：真实 toy kitchen 机器人实验场景。</figcaption>
+    </figure>
+
+    <h3>Ablations</h3>
+    <figure>
+      <img src="img/results.webp" alt="Pretraining study results">
+      <figcaption>Figure 5：MGF 和 CLA 用于无动作视频预训练的效果研究。在 LIBERO-90 上预训练后，仅用 5 条带动作演示 fine-tune 即可获得约 100% 的性能提升；用 20 条演示仍有约 25% 提升，验证了辅助目标的预训练迁移能力。</figcaption>
+    </figure>
+    <ul>
+      <li>MGF masking ratio=0.75 为最优；foresight distance v=3 在性能与方差之间平衡最佳。</li>
+      <li>冻结 CLIP 编码器并非必须——使用可训练 ResNet 可达到相近效果。</li>
+      <li>去除 Transformer Encoder 时，CALVIN 平均链长降至 1.41，证明编码器结构至关重要。</li>
+      <li>MGF 在 LIBERO-Long（无子目标标注）子集上效果有限，CLA 在高任务多样性（LIBERO-90）场景增益更明显。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> Limitations</h2>
+    <div class="note"><b>Note:</b> 以下局限性部分由作者在论文中明确指出（标注为 stated），部分从系统设计推断（标注为 inferred）。</div>
+
+    <details class="lim" open><summary>MGF 在无子目标标注的长时任务上效果受限（stated）</summary><p>MGF 依赖轨迹中子目标的图像表征来学习未来预测，当任务数据缺乏子目标标注（如 LIBERO-Long）时，辅助任务无法有效发挥作用，该子集上 MGF 带来的提升有限。</p></details>
+
+    <details class="lim"><summary>多步扩散推理速度慢于非扩散方法（stated）</summary><p>MDT 在推理时需要 10 步 DDIM 采样，这使得它比单步策略（如 ACT）慢，在对延迟敏感的实时控制场景中存在瓶颈。</p></details>
+
+    <details class="lim"><summary>真实机器人多任务性能仍有提升空间（stated）</summary><p>在非分段的稀疏标注 play 数据上，多任务链式完成平均仅 1.56 步，任务之间的转换仍具挑战，作者指出相机位置导致的自遮挡（self-occlusion）是部分失败原因。</p></details>
+
+    <details class="lim"><summary>辅助损失权重需要手动调参（inferred）</summary><p>MGF 和 CLA 的损失权重均固定为 α=β=0.1，不同任务、数据集下最优权重可能存在差异，自动化调参策略尚未探索。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Multimodal Diffusion Transformer (MDT) · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2407.05996">https://arxiv.org/abs/2407.05996</a>
+  </div>
+</footer>
+
+</body>
+</html>

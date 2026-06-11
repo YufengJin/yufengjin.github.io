@@ -1,0 +1,11 @@
+{
+  "slug": "egodex",
+  "title": "EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video",
+  "arxiv_id": "2505.11709",
+  "url": "https://arxiv.org/abs/2505.11709",
+  "category": "机器人 · Robotics",
+  "keywords": ["dexterous manipulation", "egocentric video", "imitation learning", "灵巧手操作", "hand tracking", "Apple Vision Pro", "trajectory prediction", "模仿学习", "dataset", "robotics"],
+  "summary_zh": "EgoDex 是一个使用 Apple Vision Pro 采集的大规模第一视角灵巧操作数据集，包含 829 小时视频、338,000 个任务演示、194 种桌面操作任务及完整的手部骨骼追踪数据，并建立了手部轨迹预测与逆动力学预测两个新 benchmark。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

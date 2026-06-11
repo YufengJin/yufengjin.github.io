@@ -1,0 +1,11 @@
+{
+  "slug": "cap-x",
+  "title": "CaP-X: A Framework for Benchmarking and Improving Coding Agents for Robot Manipulation",
+  "arxiv_id": "2603.22435",
+  "url": "https://arxiv.org/abs/2603.22435",
+  "category": "机器人 · Robotics",
+  "keywords": ["Code-as-Policy", "robot manipulation", "benchmark", "embodied AI", "CaP-Agent0", "CaP-RL", "强化学习", "VLA", "agentic framework", "机器人编程"],
+  "summary_zh": "CaP-X 系统性地评测并提升「代码即策略」机器人操控智能体：提出CaP-Gym交互环境与CaP-Bench八层次基准（12模型×7任务），发现前沿模型与人类专家仍存在显著差距；训练无关的CaP-Agent0（VDM+技能库+并行推理）在4/7任务上接近或超越人类，基于GRPO的CaP-RL将小模型在Cube Lift任务上的真实机器人成功率从24%提升至84%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,20 @@
+{
+  "slug": "furniturebench",
+  "title": "FurnitureBench: Reproducible Real-World Benchmark for Long-Horizon Complex Manipulation",
+  "arxiv_id": "2305.12821",
+  "url": "https://arxiv.org/abs/2305.12821",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "furniture assembly",
+    "long-horizon manipulation",
+    "robotic benchmark",
+    "imitation learning",
+    "offline RL",
+    "reproducibility",
+    "FurnitureSim",
+    "真实机器人"
+  ],
+  "summary_zh": "FurnitureBench 以家具组装为载体，提出首个可复现的真实世界长时域复杂操作基准，配套 3D 可打印家具模型、219.6 小时遥操作演示数据及 FurnitureSim 模拟器，评测结果表明现有 BC 和 IQL 算法在该基准上仍远未达到实用水平。",
+  "date": "2026-06-10",
+  "source": "arxiv-latex"
+}

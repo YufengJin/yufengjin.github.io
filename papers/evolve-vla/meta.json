@@ -1,0 +1,11 @@
+{
+  "slug": "evolve-vla",
+  "title": "EVOLVE-VLA: Test-Time Training from Environment Feedback for Vision-Language-Action Models",
+  "arxiv_id": "2512.14666",
+  "url": "https://arxiv.org/abs/2512.14666",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "test-time training", "具身智能", "GRPO", "机器人操作", "progress estimation", "LIBERO", "跨任务泛化", "online RL", "reinforcement learning"],
+  "summary_zh": "EVOLVE-VLA 通过环境反馈驱动的 test-time training，结合学习式进度估计器（VLAC）、累积进度估计和渐进式视野扩展，使 VLA 模型无需额外示范即可持续提升操作能力，在 LIBERO-Long 达到 +8.6% 提升并实现跨任务泛化（20.8% vs 0% SFT）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

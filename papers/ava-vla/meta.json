@@ -1,0 +1,11 @@
+{
+  "slug": "ava-vla",
+  "title": "AVA-VLA: Improving Vision-Language-Action models with Active Visual Attention",
+  "arxiv_id": "2511.18960",
+  "url": "https://arxiv.org/abs/2511.18960",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Active Visual Attention", "POMDP", "机器人操作", "LIBERO", "CALVIN", "部分可观测", "历史上下文", "imitation learning", "视觉token重加权"],
+  "summary_zh": "AVA-VLA 将 VLA 策略学习重新表述为 POMDP，引入循环历史状态与主动视觉注意力（AVA）模块，根据指令与执行历史动态重加权视觉 token，在 LIBERO（98.0% 平均 SR）和 CALVIN（avg. len 4.65）上达到最先进水平，并成功迁移至真实双臂机械手。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

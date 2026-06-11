@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorldVLA: Towards Autoregressive Action World Model</title>
+<meta name="keywords" content="VLA, world model, autoregressive, action chunking, attention mask, robot manipulation, LIBERO, 机器人操控">
+<meta name="description" content="WorldVLA 将视觉-语言-动作模型（VLA）与世界模型统一在单一自回归框架中，并引入 attention mask 策略解决动作块生成中的误差累积问题，在 LIBERO 基准上超越 OpenVLA。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>WorldVLA: Towards Autoregressive Action World Model</h1>
+    <div class="sub">将 VLA 与世界模型统一在单一自回归框架中，双向增强动作生成与环境预测</div>
+    <div class="authors">Jun Cen, Chaohui Yu, Hangjie Yuan, Yuming Jiang, Siteng Huang, Jiayan Guo, Xin Li, Yibing Song, Hao Luo, Fan Wang, Deli Zhao, Hao Chen</div>
+    <p class="lead">WorldVLA 将视觉-语言-动作模型（VLA）与世界模型集成在同一自回归架构中，实现动作预测与未来帧预测的相互增强。针对动作块（action chunk）自回归生成时的误差累积问题，论文提出一种选择性 attention mask 策略，在 LIBERO 基准上将平均成功率（SR）提升至 <strong>81.8%</strong>，相比 OpenVLA 基线（76.5%）提升显著。</p>
+    <div class="meta">
+      <span>📅 2025 年 6 月</span>
+      <span>🤖 机器人操控</span>
+      <span>📊 LIBERO Benchmark</span>
+      <span><a href="https://arxiv.org/abs/2506.21539">📄 arXiv:2506.21539</a></span>
+      <span><a href="https://arxiv.org/pdf/2506.21539">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>world model</span>
+      <span>autoregressive</span>
+      <span>action chunking</span>
+      <span>attention mask</span>
+      <span>robot manipulation</span>
+      <span>LIBERO</span>
+      <span>机器人操控</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前机器人学习中，动作模型（VLA）与世界模型被视为两个相互独立的范式：VLA 从图像和文本预测动作，世界模型从图像和动作预测未来帧。这两者的能力存在天然互补性，但此前没有工作将它们真正统一在同一框架中并验证相互增益。</p>
+    <blockquote>"We integrate action model and world model into a unified framework, demonstrate that action and image generation mutually enhance each other, and propose an attention mask strategy that selectively masks prior actions during the generation of the current action."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="三种模型范式对比">
+      <figcaption><strong>Figure 1</strong>：三种模型范式对比。(a) 动作模型：从图像理解生成动作；(b) 世界模型：从图像与动作理解生成未来图像；(c) WorldVLA：本文提出的统一动作世界模型，同时具备图像与动作的理解与生成能力。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>81.8%</b><small>WorldVLA 512×512<br>LIBERO 平均 SR</small></div>
+      <div><b>76.5%</b><small>OpenVLA 基线<br>LIBERO 平均 SR</small></div>
+      <div><b>−10%</b><small>FVD 改善<br>vs. 纯世界模型（50 帧）</small></div>
+      <div><b>+4%</b><small>抓取成功率提升<br>vs. 同骨干动作模型</small></div>
+    </div>
+
+    <h3>核心问题：动作块生成中的误差累积</h3>
+    <p>在自回归生成多步动作块（action chunk）时，每一步动作都依赖前一步的输出。若前一步出现误差，后续动作会受到污染，导致整体性能显著下降。实验表明，在不加干预的情况下加入 action chunking 会导致成功率下降 10–50 个百分点。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">WorldVLA 基于 Chameleon 架构构建，将图像、文本、动作三类 token 统一在单一序列中进行自回归建模。动作模型负责从视觉和语言条件预测动作序列，世界模型在此基础上额外预测下一帧图像，两者共享参数，以多任务方式联合训练。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="WorldVLA 整体架构">
+      <figcaption><strong>Figure 2</strong>：WorldVLA 整体架构。动作模型以文本和历史图像帧为条件生成动作序列；世界模型在动作之后继续预测下一帧图像。两个分支共享同一个自回归 transformer，token 序列在同一上下文窗口内处理。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Tokenizer 设计</h3>
+        <ul>
+          <li><strong>图像 tokenizer</strong>：VQ-GAN，codebook 大小 8192，压缩比 16×</li>
+          <li><strong>动作 tokenizer</strong>：将连续动作离散化为 256 个 bin（共 7 个 token：3 位置 + 3 角度 + 1 夹爪状态）</li>
+          <li><strong>文本 tokenizer</strong>：BPE，词表大小 65,536</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>训练配置</h3>
+        <ul>
+          <li>动作模型输入：M=2 帧历史图像</li>
+          <li>Action chunk 大小：K=10（长任务）或 K=5（其他任务）</li>
+          <li>世界模型预测轮数：N=1</li>
+          <li>世界模型损失权重：α=0.04</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>关键创新：Attention Mask 策略</h3>
+    <p>论文针对 action chunk 自回归生成中的误差累积问题，提出选择性 attention mask：在生成当前动作 token 时，遮盖（mask）同一 chunk 中此前已生成的动作 token，使每个动作仅依赖视觉和文本输入，而非依赖前序动作。</p>
+
+    <figure>
+      <img src="img/attention_mask.webp" alt="Attention Mask 配置对比">
+      <figcaption><strong>Figure 3</strong>：三种 attention mask 配置。(a) 默认因果 mask 的动作模型；(b) 本文提出的、对前序动作选择性遮盖的动作模型；(c) 世界模型沿用标准因果 attention。</figcaption>
+    </figure>
+
+    <h3>动作与世界模型的相互增强</h3>
+    <p>论文从两个维度验证互利关系：（1）加入世界模型预测任务后，动作模型的抓取成功率提升 4%，说明预测未来视觉状态有助于学习更优的动作策略；（2）世界模型以动作为条件（action world model）相比无动作条件的纯世界模型，在 LIBERO 数据集上 FVD 降低约 10%（50 帧评估），说明动作信息改善了未来帧预测质量。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">主要在 LIBERO 基准上评估，涵盖 Spatial、Object、Goal、Long 四个子任务，指标为成功率（SR）。同时在 LIBERO 上评估世界模型质量（FVD、LPIPS）。</p>
+
+    <h3>Table 2：动作模型性能对比（LIBERO）</h3>
+    <table>
+      <tr><th>Model</th><th>Spatial SR</th><th>Object SR</th><th>Goal SR</th><th>Long SR</th><th>Average SR</th></tr>
+      <tr><td>OpenVLA（基线）</td><td>84.7%</td><td>88.4%</td><td>79.2%</td><td>53.7%</td><td>76.5%</td></tr>
+      <tr><td>WorldVLA 256×256</td><td>85.6%</td><td>89.0%</td><td>82.6%</td><td>59.0%</td><td>79.1%</td></tr>
+      <tr><td class="good">WorldVLA 512×512</td><td class="good">87.6%</td><td class="good">96.2%</td><td class="good">83.4%</td><td class="good">60.0%</td><td class="good">81.8%</td></tr>
+    </table>
+
+    <h3>Table 4：世界模型生成质量（LIBERO）</h3>
+    <table>
+      <tr><th>Model</th><th>FVD↓（10 帧）</th><th>FVD↓（50 帧）</th><th>LPIPS↓（10 帧）</th><th>LPIPS↓（50 帧）</th></tr>
+      <tr><td>纯世界模型（World Model only）</td><td>250.0</td><td>718.6</td><td>11.97</td><td>15.60</td></tr>
+      <tr><td class="good">动作世界模型（Action World Model）</td><td>255.1</td><td class="good">674.1</td><td class="good">11.94</td><td class="good">15.44</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="定性结果对比">
+      <figcaption><strong>Figure 4</strong>：定性可视化对比。上方为纯动作模型的执行结果，下方为 WorldVLA（动作世界模型）的执行结果，展示世界模型集成如何改善抓取任务的成功率。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablation）</h3>
+    <p>Table 3 分析了各组件对动作模型性能的影响：</p>
+    <table>
+      <tr><th>配置</th><th>Goal SR</th><th>Object SR</th><th>Spatial SR</th><th>Long SR</th><th>Average SR</th></tr>
+      <tr><td>仅动作（Action only）</td><td>67.3%</td><td>82.9%</td><td>77.8%</td><td>23.0%</td><td>62.8%</td></tr>
+      <tr><td>+世界模型（+World model）</td><td>73.1%</td><td>88.0%</td><td>80.2%</td><td>27.3%</td><td>67.2%</td></tr>
+      <tr><td>+Action chunking（无 mask）</td><td>79.6%</td><td>82.9%</td><td>36.7%</td><td>16.9%</td><td>54.0%</td></tr>
+      <tr><td>+Action chunking + attention mask</td><td>84.4%</td><td>90.9%</td><td>81.8%</td><td>49.3%</td><td>76.6%</td></tr>
+      <tr><td class="good">完整模型（Full model）</td><td class="good">85.1%</td><td class="good">90.9%</td><td class="good">84.0%</td><td class="good">52.4%</td><td class="good">78.1%</td></tr>
+    </table>
+    <p>关键发现：仅加入 action chunking（不加 mask）会导致平均 SR 从 67.2% 骤降至 54.0%（尤其 Spatial SR 从 80.2% 跌至 36.7%）；加入 attention mask 后恢复至 76.6%，再结合世界模型提升至 78.1%。</p>
+
+    <figure>
+      <img src="img/ablation.webp" alt="Chunk 长度消融">
+      <figcaption><strong>Figure 6</strong>：动作块长度消融实验。展示在不同 chunk size 下，朴素自回归与本文 attention mask 策略之间的性能对比。</figcaption>
+    </figure>
+
+    <h3>历史帧数量分析（Table 5）</h3>
+    <p>在启用 action chunking 的条件下：1 帧输入 SR 为 74.0%；2 帧输入 SR 为 84.4%；4 帧输入 SR 为 84.7%。选用 2 帧作为默认配置，在性能与计算效率之间取得最优平衡。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>以下局限性均为论文作者在 Future Work 小节中明确陈述（stated），非推断。</div>
+
+    <details class="lim" open>
+      <summary>数据与模型规模尚未充分探索</summary>
+      <p>论文指出 "scaling of both data and model size emerges as a promising avenue"，当前实验规模有限，更大规模训练的潜力尚待验证。</p>
+    </details>
+
+    <details class="lim" open>
+      <summary>离散图像 tokenizer 的感知表达受限</summary>
+      <p>当前使用的离散图像 tokenizer "exhibits limitations in perceptual expressiveness"，作者建议未来开发 "a unified tokenizer capable of both understanding and generating high-quality visual content"。</p>
+    </details>
+
+    <details class="lim">
+      <summary>辅助动作头（auxiliary action head）尚未引入</summary>
+      <p>论文认为引入 "an auxiliary action head" 有助于进一步增强抓取能力，但当前版本尚未实现。</p>
+    </details>
+
+    <details class="lim">
+      <summary>评估局限于 LIBERO 仿真环境</summary>
+      <p>所有定量实验均在 LIBERO 仿真基准上进行，未在真实机器人硬件上验证泛化性能。（<em>inferred from scope</em>）</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · WorldVLA: Towards Autoregressive Action World Model · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.21539">https://arxiv.org/abs/2506.21539</a>
+  </div>
+</footer>
+
+</body>
+</html>

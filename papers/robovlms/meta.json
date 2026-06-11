@@ -1,0 +1,11 @@
+{
+  "slug": "robovlms",
+  "title": "What Matters in Building Vision-Language-Action Models for Generalist Robots",
+  "arxiv_id": "2412.14058",
+  "url": "https://arxiv.org/abs/2412.14058",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "Vision-Language-Action", "机器人操作", "VLM backbone", "policy architecture", "cross-embodiment", "RoboVLMs", "策略学习"],
+  "summary_zh": "通过 600 余组对照实验系统研究构建通用机器人 VLA 模型的三大关键要素——VLM backbone 选择、策略架构制定与跨机体数据整合——发现 KosMos/PaliGemma + policy-head + continuous action + post-training 的组合在 CALVIN 及真实机器人评测中达到最优表现。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

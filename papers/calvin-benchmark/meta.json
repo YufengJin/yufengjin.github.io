@@ -1,0 +1,20 @@
+{
+  "slug": "calvin-benchmark",
+  "title": "CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks",
+  "arxiv_id": "2112.03227",
+  "url": "https://arxiv.org/abs/2112.03227",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "language-conditioned policy",
+    "long-horizon manipulation",
+    "robot benchmark",
+    "multi-context imitation learning",
+    "zero-shot generalization",
+    "7-DOF continuous control",
+    "机器人操作",
+    "语言条件策略"
+  ],
+  "summary_zh": "CALVIN 是一个开源仿真基准，要求智能体仅凭自然语言指令和板载传感器在四个训练环境与一个零样本测试环境中完成 34 种长序列机器人操控任务，揭示现有 imitation learning 方法在长序列语言条件控制上的严重不足。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

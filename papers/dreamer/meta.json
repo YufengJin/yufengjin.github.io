@@ -1,0 +1,11 @@
+{
+  "slug": "dreamer",
+  "title": "Dream to Control: Learning Behaviors by Latent Imagination",
+  "arxiv_id": "1912.01603",
+  "url": "https://arxiv.org/abs/1912.01603",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": ["world model", "latent imagination", "model-based reinforcement learning", "actor-critic", "RSSM", "visual control", "DeepMind Control Suite", "潜在动力学", "长视野规划", "数据效率"],
+  "summary_zh": "Dreamer 是一个基于学习世界模型的强化学习智能体，通过在紧凑潜在状态空间中”想象”未来轨迹并反向传播价值梯度，纯粹用潜在想象学习长视野行为；在 20 个视觉控制任务上以 5×10⁶ 步环境交互超越了需要 10⁸ 步的最强 model-free 基线 D4PG。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

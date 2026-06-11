@@ -1,0 +1,11 @@
+{
+  "slug": "flowvla",
+  "title": "FlowVLA: Visual Chain of Thought-based Motion Reasoning for Vision-Language-Action Models",
+  "arxiv_id": "2508.18269",
+  "url": "https://arxiv.org/abs/2508.18269",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "optical flow", "visual chain-of-thought", "world model", "机器人操作", "autoregressive transformer", "motion reasoning", "sample efficiency", "策略学习", "视觉语言动作模型"],
+  "summary_zh": "FlowVLA 提出视觉思维链范式，在预测未来帧前先显式推断光流（运动动态），解决 VLA 世界模型的物理不一致和领域鸿沟问题，在 LIBERO、SimplerEnv 及真实机器人基准上均达到最优性能，低数据场景下成功率比基线高 55%。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Body text in 中文; academic terms / names / metrics / quoted phrases in English.
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLA-Reasoner: Empowering Vision-Language-Action Models with Reasoning via Online Monte Carlo Tree Search</title>
+<meta name="keywords" content="Vision-Language-Action, Monte Carlo Tree Search, test-time compute, world model, KDE sampling, value estimation, robot manipulation, VLA, 机器人操作, 测试时推理">
+<meta name="description" content="VLA-Reasoner 是一个即插即用框架，通过在线蒙特卡洛树搜索赋予 VLA 模型测试时长视野规划能力，在仿真和真实机器人任务上均大幅提升成功率。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:36px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICRA 2026 · cs.RO</span>
+    <h1>VLA-Reasoner: Empowering Vision-Language-Action Models with Reasoning via Online Monte Carlo Tree Search</h1>
+    <div class="sub">赋予 VLA 模型测试时长视野推理能力的即插即用框架</div>
+    <div class="authors">Wenkai Guo, Guanxing Lu, Haoyuan Deng, Zhenyu Wu, Yansong Tang, Ziwei Wang</div>
+    <p class="lead">VLA-Reasoner 是一个即插即用框架，通过在线蒙特卡洛树搜索（MCTS）与学习型世界模型，赋予已有 VLA 模型在测试时探索长视野动作轨迹的能力，从而避免短视决策导致的累积偏差，在仿真和真实机器人任务上均显著提升操作成功率。</p>
+    <div class="meta">
+      <span>ICRA 2026</span>
+      <span>提交：2025-09</span>
+      <span>机器人操作 · 测试时推理</span>
+      <span><a href="https://arxiv.org/abs/2509.22643">📄 arXiv:2509.22643</a></span>
+      <span><a href="https://vla-reasoner.github.io">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>Vision-Language-Action</span>
+      <span>Monte Carlo Tree Search</span>
+      <span>test-time compute</span>
+      <span>world model</span>
+      <span>KDE sampling</span>
+      <span>value estimation</span>
+      <span>robot manipulation</span>
+      <span>VLA</span>
+      <span>机器人操作</span>
+      <span>测试时推理</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">当前 Vision-Language-Action（VLA）模型在机器人部署时存在"短视"问题：每一步只预测当前最优动作，不考虑后续轨迹后果，导致误差随时间累积，长视野任务失败率高。</p>
+    <blockquote>"Can VLAs explore the long-horizon future influence of actions at test time, and decide the optimal action?"</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="VLA-Reasoner Teaser">
+      <figcaption>图 1：VLA-Reasoner 与基础 VLA 的对比示意。左侧为直接输出动作的传统 VLA 基线；右侧为加入 MCTS 树搜索后的 VLA-Reasoner——通过多步模拟和回溯更新，在测试时选取具有长视野优势的动作。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>+19%</b><small>OpenVLA 真实任务绝对成功率提升（22% → 41%）</small></div>
+      <div><b>+10%</b><small>π0-FAST 真实任务绝对成功率提升（64% → 74%）</small></div>
+      <div><b>+9.8%</b><small>Octo-Small 在仿真中的绝对提升</small></div>
+      <div><b>3 VLAs</b><small>覆盖 OpenVLA / Octo-Small / SpatialVLA 三类骨干</small></div>
+    </div>
+    <p>VLA 模型继承了大规模视觉-语言预训练的泛化能力，在机器人模仿学习上取得了显著成果。然而，这类模型在部署阶段仍然脆弱——它们将机器人控制当作一步步的局部决策，忽略了动作对未来状态的长链式影响。对于需要精确堆叠、抓取或多步协调的任务，即使微小的偏差也会随时间放大，最终导致任务失败。</p>
+    <p>VLA-Reasoner 的核心思路是：<strong>不修改 VLA 权重</strong>，仅在测试时外挂一套基于 MCTS 的规划模块，通过学习型世界模型模拟未来状态，以 value function 引导搜索，从而找到长视野更优的动作。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">VLA-Reasoner 由三个核心模块组成：基于 MCTS 的在线动作搜索、Kernel Density Estimation（KDE）高效采样机制、以及基于视觉的轻量 value network。最终动作由 VLA 预测与 MCTS 结果加权融合得到。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="VLA-Reasoner Pipeline">
+      <figcaption>图 2：VLA-Reasoner 完整流程。VLA 模型输出动作作为树搜索的根节点初始化；轻量 MCTS 通过"扩展→模拟→回传→选择"四步循环，借助世界模型预测未来视觉状态，并由 value network 评估节点价值；最终选取最优叶节点动作与原始 VLA 动作加权融合后执行。</figcaption>
+    </figure>
+
+    <h3>在线 MCTS 动作搜索</h3>
+    <p>MCTS 以当前 VLA 的预测动作为根节点，执行四阶段循环：</p>
+    <ul>
+      <li><strong>Expansion（扩展）：</strong>从根节点采样 N 个候选动作，按欧氏距离选取 k 个最近邻作为子节点，使得搜索集中在 VLA 分布的高概率区域。</li>
+      <li><strong>Simulation（模拟）：</strong>使用学习型 action-aware 世界模型递推预测未来状态：<code>s(i+1) = W(a(i), s(i))</code>，将动作轨迹转化为视觉观测序列。</li>
+      <li><strong>Backpropagation（回传）：</strong>沿路径更新节点 Q 值，综合 value estimate 与子节点 Q 值的访问次数加权平均：<code>Q(o(i)) = [N(o(i))·v(i) + Σ N(o(j))·Q(o(j))] / [N(o(i)) + Σ N(o(j))]</code></li>
+      <li><strong>Selection（选择）：</strong>采用 Upper Confidence Bound（UCB）策略平衡探索与利用，选取最优子节点继续扩展。</li>
+    </ul>
+
+    <h3>Kernel Density Estimation（KDE）高效采样</h3>
+    <p>反复查询 VLA 成本高昂。VLA-Reasoner 用 KDE 对离线数据中的动作分布建模：<code>π(a) = (1/N) Σ K_h(a − a(i))</code>，以概率密度作为访问次数的代理，在保留 VLA 先验的同时大幅减少对模型的实时调用。</p>
+
+    <h3>视觉 value network 与动作融合</h3>
+    <p>轻量 ResNet-34 + 2-layer MLP 在离线轨迹上训练，以线性插值帧位置为 ground-truth value（MSE loss），为中间树节点提供稠密反馈。最终执行动作为：</p>
+    <blockquote><code>a(t) = α · a(VLA) + (1−α) · a(Reasoner)</code></blockquote>
+    <p>其中超参数 α 控制原始 VLA 预测与树搜索结果之间的平衡。消融实验显示 α = 0.6 时效果最佳，适度融合优于完全依赖任一来源。</p>
+
+    <figure>
+      <img src="img/realworld.webp" alt="Real-world Setup">
+      <figcaption>图 3：真实世界实验配置。使用 Galaxea-A1 机械臂，配备侧置摄像头与腕部摄像头，覆盖积木堆叠、水果拣选、杯子堆叠、圆周运动等五类任务，每类任务提供 20 个训练示例。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在仿真环境（LIBERO、SimplerEnv）和真实机器人（Galaxea-A1）上与 OpenVLA、Octo-Small、SpatialVLA、π0-FAST 等多个 VLA 基线对比，评估指标为任务成功率（success rate）。</p>
+
+    <h3>仿真结果（LIBERO &amp; SimplerEnv）</h3>
+    <table>
+      <tr><th>基线 VLA</th><th>原始成功率</th><th>+ VLA-Reasoner</th><th>绝对提升</th></tr>
+      <tr><td>OpenVLA-SFT</td><td>76.0%</td><td class="good">81.0%</td><td>+5.0%</td></tr>
+      <tr><td>Octo-Small</td><td>26.5%</td><td class="good">37.3%</td><td>+9.8%</td></tr>
+      <tr><td>SpatialVLA</td><td>34.0%</td><td class="good">41.8%</td><td>+7.8%</td></tr>
+    </table>
+    <p>值得注意的是，VLA-Reasoner 在不进行大规模后训练的前提下，使部分基线达到了与当前最优变体相当的性能水平。</p>
+
+    <h3>真实机器人结果（Galaxea-A1，55 项任务）</h3>
+    <table>
+      <tr><th>基线 VLA</th><th>原始成功率</th><th>+ VLA-Reasoner</th><th>相对提升</th></tr>
+      <tr><td>OpenVLA-7B</td><td>22%</td><td class="good">41%</td><td>+86.4%</td></tr>
+      <tr><td>π0-FAST（商业模型）</td><td>64%</td><td class="good">74%</td><td>+15.6%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="Qualitative Case Study">
+      <figcaption>图 4：杯子堆叠任务的案例对比。上行为基线 VLA 的失败过程——动作偏移累积，最终无法完成叠放；下行为 VLA-Reasoner 通过测试时模拟主动修正轨迹偏差，实现稳定操作。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <div class="grid2">
+      <figure>
+        <img src="img/ablation_alpha.webp" alt="Alpha ablation">
+        <figcaption>图 5：注入强度 α 的消融。α = 0.6 时性能最优；纯 VLA（α = 1.0）和纯 Reasoner（α = 0.0）均弱于适度融合，说明两者各有互补价值。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/ablation_components.webp" alt="Component ablation">
+        <figcaption>图 6：关键组件验证。KDE 采样优于高斯噪声基线（有效捕获专家行为先验）；基于图像的 value estimation 优于 token-based reward head（更简洁且可解释）。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>以下局限性均为论文作者明确陈述（stated），见论文 Limitations 章节及 Future Directions 讨论。</div>
+
+    <details class="lim" open>
+      <summary>需要部署前的任务专属训练</summary>
+      <p>当前方案在部署前需要针对目标任务训练世界模型、KDE 分布估计器和 value network，增加了新任务的配置成本，不支持零样本直接迁移。</p>
+    </details>
+
+    <details class="lim" open>
+      <summary>依赖世界模型的预测精度</summary>
+      <p>MCTS 的搜索质量高度依赖学习型世界模型对未来视觉状态的预测是否准确。论文指出"better visual foresight models would improve feedback quality"——世界模型误差会传导为错误的 value 信号，影响最终动作选择。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Value estimation 设计较为简单</summary>
+      <p>当前的离线线性插值方式为 value 提供稠密监督，但较为启发式。论文认为"more principled data-driven or learning-based methods"有望带来更稳定的搜索效果。</p>
+    </details>
+
+    <details class="lim">
+      <summary>计算开销限制部署平台</summary>
+      <p>实验使用 RTX 4090 进行实时 GPU 推理。在计算资源受限的嵌入式机器人平台上，当前框架的可扩展性尚不明确，面向低算力平台的适配是未来工作方向之一。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    整理自论文原文与图表 · 仅供学习参考<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2509.22643">https://arxiv.org/abs/2509.22643</a>
+    &nbsp;·&nbsp; 项目主页：<a href="https://vla-reasoner.github.io">vla-reasoner.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

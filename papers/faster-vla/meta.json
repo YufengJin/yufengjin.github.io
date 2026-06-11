@@ -1,0 +1,11 @@
+{
+  "slug": "faster-vla",
+  "title": "FASTer: Toward Efficient Autoregressive Vision Language Action Modeling via Neural Action Tokenization",
+  "arxiv_id": "2512.04952",
+  "url": "https://arxiv.org/abs/2512.04952",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "action tokenization", "autoregressive decoding", "residual vector quantization", "机器人操作", "推理加速", "block-wise decoding", "cross-embodiment"],
+  "summary_zh": "FASTer 通过 Transformer 残差向量量化分词器（FASTerVQ）和块级自回归解码（FASTerVLA），在保持高重建保真度的同时大幅提升 VLA 推理效率，LIBERO 成功率达 97.9%，推理延迟仅 112 ms。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

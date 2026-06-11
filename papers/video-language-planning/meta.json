@@ -1,0 +1,11 @@
+{
+  "slug": "video-language-planning",
+  "title": "Video Language Planning",
+  "arxiv_id": "2310.10625",
+  "url": "https://arxiv.org/abs/2310.10625",
+  "category": "机器人 · Robotics",
+  "keywords": ["video language planning", "long-horizon planning", "tree search", "vision-language model", "text-to-video model", "goal-conditioned policy", "机器人操作", "长时序规划"],
+  "summary_zh": "VLP 将 vision-language model（VLM）与 text-to-video model 通过树搜索组合，在视频与语言联合空间中规划长时序机器人操作任务，大幅超越 PaLM-E、RT-2 等强基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

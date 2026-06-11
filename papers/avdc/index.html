@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Learning to Act from Actionless Videos through Dense Correspondences
+  arXiv: 2310.08576
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning to Act from Actionless Videos through Dense Correspondences</title>
+<meta name="keywords" content="actionless video, dense correspondences, optical flow, video diffusion, robot manipulation, imitation learning, 无标签视频学习, SE(3) 变换">
+<meta name="description" content="AVDC 方法从无动作标签的视频中学习机器人策略，通过视频扩散模型生成想象执行视频并利用稠密对应关系推导闭合形式动作，无需环境交互即可迁移至多种机器人平台。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · ICLR 2024</span>
+    <h1>Learning to Act from Actionless Videos through Dense Correspondences</h1>
+    <div class="sub">从无动作标签视频中学习机器人策略，通过稠密对应关系推导闭合形式动作</div>
+    <div class="authors">Po-Chen Ko · Jiayuan Mao · Yilun Du · Shao-Hua Sun · Joshua B. Tenenbaum &nbsp;｜&nbsp; National Taiwan University &amp; MIT CSAIL</div>
+    <p class="lead">本文提出 <strong>AVDC（Actions from Video Dense Correspondences）</strong>：一种无需动作标注即可从 RGB 视频中学习机器人操控与导航策略的框架。系统利用视频扩散模型生成"想象执行"视频，再通过相邻帧间的稠密光流对应关系以闭合形式解算 SE(3) 变换，从而在无环境交互的情况下实现跨机器人平台的策略迁移。</p>
+    <div class="meta">
+      <span>arXiv · Oct 2023</span>
+      <span>操控 + 导航 · 3 平台</span>
+      <span>4 GPUs · 1 天训练</span>
+      <span><a href="https://arxiv.org/abs/2310.08576">📄 arXiv:2310.08576</a></span>
+      <span><a href="https://flow-diffusion.github.io/">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>actionless video</span>
+      <span>dense correspondences</span>
+      <span>optical flow</span>
+      <span>video diffusion</span>
+      <span>robot manipulation</span>
+      <span>SE(3) 变换</span>
+      <span>无标签视频学习</span>
+      <span>跨实体迁移</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">机器人策略训练面临两大核心困难：其一，收集带动作标注的演示数据成本极高，且高度依赖特定平台；其二，仿真与真实环境的 sim-to-real gap 使得策略难以直接部署。互联网上已存在海量 RGB 视频，如果能直接从这些<strong>无动作标签</strong>的视频中学习策略，将大幅降低数据采集门槛并提升泛化能力。</p>
+    <blockquote>"We present a method for training a robot policy capable of reliably executing diverse tasks across different robots and environments from RGB video demonstrations without any action annotation."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="AVDC 多任务执行示例">
+      <figcaption>图 1：AVDC 的多任务执行演示。系统仅凭合成视频（无动作标签）即可控制机器人完成 Assembly（装配）、Find toaster（寻找烤面包机）、Put the peach into the bowl（抓放桃子）等多种操控与导航任务，跨越不同机器人与环境。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>165</b><small>Meta-World 训练视频数（11 任务）</small></div>
+      <div><b>240</b><small>iTHOR 训练视频数（12 类目标）</small></div>
+      <div><b>4</b><small>训练所用 GPU 数量，1 天完成</small></div>
+      <div><b>10</b><small>DDIM 推理步数（替代标准 100 步）</small></div>
+    </div>
+    <p>先前方法的局限性主要体现在两方面：<br>
+    （1）<strong>基于逆动力学模型</strong>的方法（如 UniPi）需要知道精确步数，且通常以模态方式预测动作，训练开销大（需超过 256 TPU-pods）；<br>
+    （2）<strong>行为克隆（BC）</strong>类方法依赖专家动作标注，无法直接利用互联网视频资源。<br>
+    AVDC 的核心洞见是：<em>图像本身即可同时编码状态与动作信息</em>——相邻帧之间的稠密光流对应关系天然蕴含了物体运动轨迹，可以以<strong>闭合形式</strong>解算 SE(3) 变换，无需学习任何额外动作预测器。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">AVDC 将策略执行解耦为三个阶段：（a）<strong>条件视频生成</strong>——用扩散模型合成从当前状态到目标的想象执行视频；（b）<strong>稠密光流估计</strong>——计算相邻帧的稠密对应关系；（c）<strong>动作回归</strong>——结合深度信息，以闭合形式将光流对应关系转化为 SE(3) 刚体变换，指导机器人执行。</p>
+    <figure>
+      <img src="img/framework.webp" alt="AVDC 总体框架">
+      <figcaption>图 2：AVDC 整体框架概览。输入为 RGBD 观测和文本目标描述；扩散模型生成未来帧序列；光流模块估计稠密对应关系；最终结合深度图计算 SE(3) 变换并驱动机器人执行，同时循环替换（replanning）以处理执行误差。</figcaption>
+    </figure>
+
+    <h3>条件视频生成（Conditioned Video Generation）</h3>
+    <p>本文使用以 <strong>U-Net</strong>（基于 Ho et al. 2019）为骨干的条件扩散模型，输入当前帧 <em>f<sub>0</sub></em> 和文本目标描述，预测未来 <em>F</em> 帧序列。为提升时间一致性，在空间注意力中引入<strong>factorized spatial-temporal convolution</strong>（参考 Ho et al. 2022），使每帧在自身空间范围内同时与时间维度交互。推理时采用 <strong>DDIM</strong> 加速，仅需 10 步即可生成高保真视频（标准需 100 步）。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="网络架构">
+      <figcaption>图 3：（左）以 U-Net 为基础的视频扩散模型网络架构，集成空间-时间卷积；（右）时空分离卷积（Factorized Spatial-Temporal ConvBlock）结构，两路卷积分别处理空间特征和时间序列特征后加权融合。</figcaption>
+    </figure>
+
+    <h3>光流预测（Flow Prediction）</h3>
+    <p>给定合成视频中相邻帧对 <em>(img<sub>t</sub>, img<sub>t+1</sub>)</em>，利用 off-the-shelf 光流估计器（如 <strong>RAFT</strong>）提取稠密对应关系。每个像素的光流向量编码了该点在下一时刻的位移，从而构成从当前帧到下一帧的稠密像素级映射。</p>
+
+    <h3>动作回归：从光流到 SE(3)（Action Regression from Flows and Depths）</h3>
+    <p>这是 AVDC 的核心创新。给定深度图和稠密光流，可以将每个 3D 点的对应关系 <em>(x<sub>t</sub>, x̂<sub>t+1</sub>)</em> 提取出来，从而以闭合形式（closed-form）求解刚体变换 <em>T = (R, t) ∈ SE(3)</em>，最小化如下目标：</p>
+    <blockquote>min<sub>R∈SO(3), t∈ℝ³</sub> Σ<sub>i</sub> ‖R·x<sub>t,i</sub> + t − x̂<sub>t+1,i</sub>‖²</blockquote>
+    <p>对于<strong>操控任务</strong>（manipulation），系统先识别目标对象掩码，再仅在对象区域内计算变换，得到末端执行器的 pick-and-place 轨迹。对于<strong>导航任务</strong>（navigation），全帧光流被用来估计相机（即机器人底盘）的运动。整个动作推导无需学习任何参数，完全依赖几何约束，因此具有强大的跨平台迁移能力。</p>
+
+    <h3>Replanning 策略</h3>
+    <p>在执行过程中，机器人每完成一个子目标后，以新的当前观测作为条件重新运行视频生成和动作回归流程（replanning），以应对执行误差或环境变化。实验表明随着 replanning 次数增加，任务成功率单调上升（图 5）。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在三大基准上验证 AVDC：<strong>Meta-World</strong>（桌面操控仿真，11 任务，165 视频）、<strong>iTHOR</strong>（室内导航仿真，12 类目标，240 视频）、<strong>Bridge / Franka Panda</strong>（真实机器人，zero-shot 迁移）。基线包括行为克隆（BC-Scratch、BC-R3M）、UniPi 及 AVDC 各变体。</p>
+
+    <h3>Meta-World 操控结果</h3>
+    <table>
+      <tr><th>方法</th><th>faucet-close</th><th>handle-pull</th><th>button-top</th><th>bin-picking</th><th>Overall</th></tr>
+      <tr><td>BC-Scratch</td><td>1.3%</td><td>0.0%</td><td>0.0%</td><td>0.0%</td><td>低</td></tr>
+      <tr><td>BC-R3M</td><td>4.0%</td><td>0.0%</td><td>0.0%</td><td>0.0%</td><td>低</td></tr>
+      <tr><td>UniPi</td><td>21.3%</td><td>6.7%</td><td>14.7%</td><td>0.0%</td><td>—</td></tr>
+      <tr><td>AVDC (Flow)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>中</td></tr>
+      <tr><td><strong>AVDC (Full)</strong></td><td class="good">—</td><td class="good">—</td><td class="good">—</td><td class="good">—</td><td class="good">最优</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/results.webp" alt="Meta-World 结果与 replanning 分析">
+      <figcaption>图 5（上）：Meta-World 11 任务的平均成功率（每任务 3 个摄像机视角各 25 次试验）。AVDC (Full) 大幅超越所有基线，包括 BC-Scratch、BC-R3M 和 UniPi。（下）replanning 次数对任务成功率的影响——随次数增加，成功率单调提升，验证了闭环重规划策略的有效性。</figcaption>
+    </figure>
+
+    <h3>iTHOR 导航结果</h3>
+    <p>在 iTHOR 室内导航基准上，AVDC 在 12 类目标物体上均表现出合理的导航成功率。系统以当前 RGBD 帧和目标对象名称为输入，在合成视频中追踪全帧光流以估算摄像机运动，并循环执行 replanning 直到到达目标区域。</p>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="iTHOR 与 Visual Pusher 定性结果">
+      <figcaption>图 7：iTHOR 定性结果（左）：AVDC 可可靠地推断当前观测及子目标的光流，进而执行正确的导航动作。图 8（右）：Visual Pusher 上的定性结果，AVDC 生成的光流准确反映了推动对象所需的末端执行器轨迹。</figcaption>
+    </figure>
+
+    <h3>跨实体迁移：Bridge 数据集 → Franka Panda</h3>
+    <p>在此实验中，AVDC 模型在包含 ~200 段人类手部推物视频的 Bridge 数据集上训练，然后<strong>零样本</strong>迁移到 Franka Emika Panda 机械臂。由于系统在动作推导上完全依赖几何对应关系而非具体动作标注，因此无需任何域适应即可直接部署。定性实验表明机械臂可以可靠跟随合成视频中的物体运动轨迹（图 9-10）。</p>
+
+    <h3>消融实验（Ablations）</h3>
+    <ul>
+      <li><strong>AVDC (Flow)</strong>：仅用光流预测动作，无 replanning——在 faucet-close 等简单任务表现尚可，但在需要精确接触的任务上（如 button-top）明显下降。</li>
+      <li><strong>AVDC (No Replan)</strong>：完整管线但不做 replanning——验证单次规划的上限，成功率明显低于 Full 版。</li>
+      <li><strong>AVDC (Full)</strong>：完整两阶段（生成+重规划）管线，性能最优，在 Meta-World 上大幅超过 BC 和 UniPi 基线。</li>
+      <li>Replanning 次数分析（图 5 右图）：成功率随次数增加单调上升，在约 10 次后趋于饱和。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>说明：</b>以下局限性由论文作者在 Discussion 节明确陈述（stated）。</div>
+
+    <details class="lim" open>
+      <summary>物体遮挡导致光流跟踪失败</summary>
+      <p>当目标对象被机械臂自身或其他物体遮挡时，系统可能丢失对象的光流追踪，进而导致动作计算错误。论文指出："it may lose track of objects when they are occluded by the robot arm."</p>
+    </details>
+
+    <details class="lim">
+      <summary>光流预测中的大物体运动困难</summary>
+      <p>对于位移较大的物体或背景，光流预测精度下降，实际机器人执行时的 3D 变换解算误差会随之增大。论文提到 "the model can struggle in optical flow prediction under rapidly changing lighting conditions or large object movements in object poses."</p>
+    </details>
+
+    <details class="lim">
+      <summary>抓取动作规划依赖外部分割与接触点估计</summary>
+      <p>当前实现中，对象掩码来自外部分割模型，抓取方向依赖预定义规则（top-grasp），尚不支持任意姿态抓取。集成更通用的操控模块（如抓取姿态预测、力传感器）是未来工作方向。论文指出集成 "various manipulation primitives such as grasp prediction modules (Sundermeyer et al., 2021) is important."</p>
+    </details>
+
+    <details class="lim">
+      <summary>视频生成质量限制了动作精度上限</summary>
+      <p>动作推导完全依赖合成视频的质量。若扩散模型生成的视频出现时间不一致或物理不合理的帧，下游光流估计和动作计算的质量也会受损。这是视频预测管线的固有局限，独立于动作回归模块。（inferred from the design）</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Learning to Act from Actionless Videos through Dense Correspondences · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2310.08576">https://arxiv.org/abs/2310.08576</a> &nbsp;·&nbsp;
+    Project: <a href="https://flow-diffusion.github.io/">flow-diffusion.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

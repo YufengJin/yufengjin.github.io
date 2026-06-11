@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playable Video Generation</title>
+<meta name="keywords" content="playable video generation, unsupervised action learning, video generation, 可交互视频生成, discrete action space, CADDY, encoder-decoder, Gumbel-Softmax, 深度聚类, recurrent dynamics">
+<meta name="description" content="CADDY：一种在无标注视频上自监督学习离散动作空间、并允许用户像打游戏一样实时控制视频生成的框架，被CVPR 2021收录为Oral。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">CVPR 2021 · Oral</span>
+    <h1>Playable Video Generation</h1>
+    <div class="sub">像打游戏一样控制视频生成——无监督学习可交互视频</div>
+    <div class="authors">Willi Menapace · Stéphane Lathuilière · Sergey Tulyakov · Aliaksandr Siarohin · Elisa Ricci &nbsp;|&nbsp; University of Trento · Télécom Paris · Snap Inc. · Fondazione Bruno Kessler</div>
+    <p class="lead">本文提出了一个全新任务——<strong>Playable Video Generation (PVG)</strong>：在完全无标注视频上，自监督地学习一组离散动作，使用户在测试阶段能够逐帧选择动作、像玩游戏一样实时控制生成视频的内容。方法 <strong>CADDY</strong> 采用编码-解码架构，以预测的动作标签作为信息瓶颈，以重建损失为主要驱动信号，无需任何动作标签监督，在机器人推物、Atari Breakout 和网球三个数据集上均取得最优性能。</p>
+    <div class="meta">
+      <span>CVPR 2021 (Oral)</span>
+      <span>cs.CV · cs.AI</span>
+      <span>arXiv: 2021-01-28</span>
+      <!-- REQUIRED: link back to the source paper. Prefer arXiv abs. Keep the footer link too. -->
+      <span><a href="https://arxiv.org/abs/2101.12195">📄 arXiv:2101.12195</a></span>
+      <span><a href="http://willi-menapace.github.io/playable-video-generation-website">Project page / Demo</a></span>
+    </div>
+    <!-- REQUIRED: 6-10 search keywords (mixed 中英 academic terms); mirror in <meta name=keywords> -->
+    <div class="kw">
+      <span>playable video generation</span>
+      <span>unsupervised action learning</span>
+      <span>可交互视频生成</span>
+      <span>discrete action space</span>
+      <span>CADDY</span>
+      <span>Gumbel-Softmax</span>
+      <span>encoder-decoder</span>
+      <span>深度聚类</span>
+      <span>recurrent dynamics</span>
+      <span>video generation</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">人类从很小就能识别关键物体及其与环境的交互方式——我们能够在从未被明确告知可能动作的情况下，自发地理解和预判视频中的行为。然而，现有视频生成方法要么需要帧级动作标注（限制于游戏或机器人场景），要么仅能用单个标签控制整段视频（无法逐帧实时交互）。</p>
+    <blockquote>"We aim at allowing a user to control the generated video by selecting a discrete action at every time step as when playing a video game."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="teaser">
+      <figcaption>图1：PVG 任务概览（左）与 CADDY 生成结果（右）。训练阶段仅使用无标注视频序列，自动学习一组离散动作；测试阶段用户逐帧提供动作标签，即可实时控制生成视频，类似于玩游戏的体验。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>3</b><small>数据集：BAIR、Atari Breakout、Tennis</small></div>
+      <div><b>0</b><small>动作标签监督（全程无需标注）</small></div>
+      <div><b>CVPR</b><small>2021 Oral 论文</small></div>
+      <div><b>SOTA</b><small>三个数据集上均超越所有基线</small></div>
+    </div>
+    <h3>问题的难点</h3>
+    <p>PVG 的核心挑战有两个：（1）<strong>动作的语义一致性</strong>——在无监督前提下学习到真正有意义的离散动作，而非任意划分；（2）<strong>真实视频生成</strong>——根据用户提供的离散动作，生成高质量且连贯的视频帧。现实视频中的随机性（如摄像机抖动、光照变化等）进一步增加了用离散标签完整描述帧间过渡的难度。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">CADDY（Clustering for Action Decomposition and DiscoverY）是一个端到端自监督框架，由四个主模块组成：编码器 E、动作网络 A、循环动力学网络 R、解码器 D。整体以视频帧重建损失为主要驱动，迫使动作网络学到语义一致的离散表示。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="architecture">
+      <figcaption>图2：CADDY 训练流程。编码器 E 从输入序列中提取帧表示 f_t；动作网络 A 推断相邻帧之间执行的离散动作 a_t 及连续变分嵌入 v_t；循环动力学网络 R（基于 convolutional LSTMs）根据当前状态、帧特征和动作预测下一时刻环境状态 s_{t+1}；解码器 D 从状态 s_{t+1} 重建下一帧。重建帧再次送入编码器，计算特征级和动作级辅助损失（绿色模块）。</figcaption>
+    </figure>
+    <h3>概率动作网络（Probabilistic Action Network）</h3>
+    <p>动作网络 A 的目标是将帧间过渡分解为：（1）<strong>离散动作标签</strong> a_t（高层语义）；（2）<strong>连续变分嵌入</strong> v_t（捕捉每个动作执行方式的细节差异）。具体做法是：先用动作状态子网络 A_s 预测当前帧特征 f_t 的动作嵌入 e_t 服从高斯分布；再将前后两帧嵌入之差 d_t = e_{t+1} − e_t 送入分类层；分类层采用 <strong>Gumbel-Softmax</strong> 实现端到端可微分的离散化，输出动作概率 p_t 及离散标签 a_t。v_t 定义为 d_t 与其对应动作簇质心 c_k 的差，强制 d_t 无法完全从 v_t 中恢复，从而迫使网络学习真正的离散动作。</p>
+    <h3>训练目标</h3>
+    <p>总损失函数由五项组成：
+    <ul>
+      <li><strong>帧重建损失 L_rec^x</strong>：基于 VGG-19 感知损失（perceptual loss），在多分辨率金字塔上计算，辅以 L1 损失；</li>
+      <li><strong>特征重建损失 L_rec^f</strong>：最小化输入帧特征与重建帧特征的欧氏距离，保证语义信息保真；</li>
+      <li><strong>动作匹配损失 L_act</strong>：最大化原始序列与重建序列所预测动作概率之间的<strong>互信息（mutual information）</strong>，同时防止动作空间退化（所有帧预测同一动作）；</li>
+      <li><strong>动作变分损失 L_rec^a</strong>：用 KL 散度约束 v_t 分布的一致性；</li>
+      <li><strong>KL 正则化 L_KL</strong>：将 d_t 的后验对齐到标准高斯先验。</li>
+    </ul>
+    <strong>混合训练（mixed training）</strong>：前 T_f 帧使用真实帧特征，之后切换为重建帧特征，缓解自回归生成中的分布偏移问题。测试时令 v_t = 0（对应后验分布的众数），仅由用户提供离散动作 a_t。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在三个数据集上评测：<strong>BAIR</strong>（机器人推物，约44K段30帧视频，256×256）、<strong>Atari Breakout</strong>（Rainbow DQN采集，1407段约32帧，160×210）、<strong>Tennis</strong>（YouTube网球比赛，约900段，256×96）。基线方法包括 MoCoGAN、MoCoGAN+、SAVP、SAVP+（增容量版）、SRVP。评估指标涵盖视频质量（LPIPS、FID、FVD）、动作空间质量（Δ-MSE、Δ-Acc）和动作条件生成质量（ADD、MDR）。</p>
+
+    <h3>BAIR 数据集对比（Table 2）</h3>
+    <table>
+      <tr><th>方法</th><th>LPIPS↓</th><th>FID↓</th><th>FVD↓</th><th>Δ-MSE↓ (%)</th><th>Δ-Acc↑ (%)</th></tr>
+      <tr><td>MoCoGAN</td><td>0.466</td><td>198</td><td>1380</td><td>88.8</td><td>20.7</td></tr>
+      <tr><td>MoCoGAN+</td><td>0.201</td><td>66.1</td><td>849</td><td>98.4</td><td>22.9</td></tr>
+      <tr><td>SAVP</td><td>0.433</td><td>220</td><td>1720</td><td>80.9</td><td>41.4</td></tr>
+      <tr><td>SAVP+</td><td>0.154</td><td>27.2</td><td>303</td><td>82.0</td><td>44.8</td></tr>
+      <tr><td>SRVP</td><td>0.491</td><td>224</td><td>3540</td><td>(100)</td><td>(100)</td></tr>
+      <tr><td class="good">CADDY (Ours)</td><td class="good">0.202</td><td class="good">35.9</td><td class="good">423</td><td class="good">54.8</td><td class="good">69.0</td></tr>
+    </table>
+    <p>CADDY 相比最佳基线在 Δ-MSE 上提升 <strong>26.1%</strong>，在 Δ-Acc 上提升 <strong>24.2%</strong>，展示出更强的离散动作学习能力。SRVP 因预测整个测试集只有单一动作类别（退化行为），Δ-MSE 和 Δ-Acc 均失去意义。</p>
+
+    <h3>Atari Breakout 数据集对比（Table 3）</h3>
+    <table>
+      <tr><th>方法</th><th>LPIPS↓</th><th>FID↓</th><th>FVD↓</th><th>Δ-MSE↓ (%)</th><th>Δ-Acc↑ (%)</th><th>ADD (px)↓</th><th>MDR (%)↓</th></tr>
+      <tr><td>MoCoGAN</td><td>0.234</td><td>99.9</td><td>447</td><td>81.9</td><td>—</td><td>46.0</td><td>0.795</td></tr>
+      <tr><td>MoCoGAN+</td><td>65.8e-3</td><td>10.4</td><td>103</td><td>57.5</td><td>—</td><td>54.6</td><td>17.4</td></tr>
+      <tr><td>SAVP</td><td>0.239</td><td>98.4</td><td>487</td><td>58.1</td><td>—</td><td>24.7</td><td>21.0</td></tr>
+      <tr><td>SAVP+</td><td>39.3e-3</td><td>4.84</td><td>104</td><td>85.6</td><td>—</td><td>15.8</td><td>51.5</td></tr>
+      <tr><td class="good">CADDY (Ours)</td><td class="good">7.66e-3</td><td class="good">0.716</td><td class="good">5.94</td><td class="good">82.7</td><td class="good">91.6</td><td class="good">7.29</td><td class="good">2.70</td></tr>
+    </table>
+    <p>CADDY 在 Atari Breakout 上取得最优性能：平均 ADD 仅 <strong>7.29</strong> 像素，MDR 仅 <strong>2.70%</strong>，说明学到的动作空间与用户控制平台的运动高度一致。</p>
+
+    <h3>Tennis 数据集对比（Table 4）</h3>
+    <table>
+      <tr><th>方法</th><th>LPIPS↓</th><th>FID↓</th><th>FVD↓</th><th>Δ-MSE↓ (%)</th><th>Δ-Acc↑ (%)</th><th>ADD (px)↓</th><th>MDR (%)↓</th></tr>
+      <tr><td>MoCoGAN</td><td>0.266</td><td>132</td><td>3400</td><td>101</td><td>26.4</td><td>28.5</td><td>20.2</td></tr>
+      <tr><td>MoCoGAN+</td><td>0.166</td><td>56.8</td><td>1410</td><td>103</td><td>28.3</td><td>48.2</td><td>27.0</td></tr>
+      <tr><td>SAVP</td><td>0.245</td><td>156</td><td>3270</td><td>112</td><td>19.6</td><td>10.7</td><td>19.7</td></tr>
+      <tr><td>SAVP+</td><td>0.104</td><td>25.2</td><td>223</td><td>116</td><td>33.1</td><td>13.4</td><td>19.2</td></tr>
+      <tr><td class="good">CADDY (Ours)</td><td class="good">0.102</td><td class="good">13.7</td><td class="good">239</td><td class="good">72.2</td><td class="good">45.5</td><td class="good">8.85</td><td class="good">1.01</td></tr>
+    </table>
+    <p>Tennis 数据集上，CADDY 在绝大多数指标取得最优，MDR 仅 <strong>1.01%</strong>，ADD 仅 <strong>8.85</strong> 像素，显著优于基线，说明能准确生成并追踪球员位置。</p>
+
+    <figure>
+      <img src="img/action_vis.webp" alt="action visualization">
+      <figcaption>图3：CADDY 在三个数据集上学到的动作空间可视化。对每个动作，以初始帧为起点，重复选取该动作生成序列并展示最终帧；下方为对应参考点位移 Δ 的分布。BAIR 上学到了 x、y、z 轴方向移动及无运动动作；Atari Breakout 上学到了三种平台移动及物理规律；Tennis 上学到了前进、后退、横向移动、无运动和击球。</figcaption>
+    </figure>
+
+    <h3>消融实验（Table 1，BAIR 数据集）</h3>
+    <table>
+      <tr><th>变体</th><th>G.S.</th><th>v_t</th><th>L_act</th><th>LPIPS↓</th><th>FID↓</th><th>FVD↓</th><th>Δ-MSE↓ (%)</th><th>Δ-Acc↑ (%)</th></tr>
+      <tr><td>(i) 无任何组件</td><td>—</td><td>—</td><td>—</td><td>0.263</td><td>80.0</td><td>1300</td><td>69.7</td><td>51.2</td></tr>
+      <tr><td>(ii) + G.S.</td><td>✓</td><td>—</td><td>—</td><td>0.209</td><td>42.3</td><td>571</td><td>64.8</td><td>37.9</td></tr>
+      <tr><td>(iii) + G.S. + L_act</td><td>✓</td><td>—</td><td>✓</td><td>0.249</td><td>76.4</td><td>1130</td><td>92.7</td><td>24.1</td></tr>
+      <tr><td>(iv) + G.S. + v_t</td><td>✓</td><td>✓</td><td>—</td><td>0.245</td><td>76.9</td><td>1130</td><td>93.7</td><td>27.6</td></tr>
+      <tr><td class="good">CADDY (完整)</td><td>✓</td><td>✓</td><td>✓</td><td class="good">0.202</td><td class="good">35.9</td><td class="good">423</td><td class="good">54.8</td><td class="good">69.0</td></tr>
+    </table>
+    <p>消融实验证明三个核心组件（Gumbel-Softmax、动作变分嵌入 v_t、互信息损失 L_act）缺一不可：去掉 G.S. 则学到连续而非离散动作；单独使用 L_act 优化会与重建目标冲突导致质量下降；v_t 和 L_act 必须配合使用，才能避免网络将所有信息编码进连续变量而忽略离散动作。</p>
+
+    <figure>
+      <img src="img/results.webp" alt="qualitative results">
+      <figcaption>图4 &amp; Tables 2–4：BAIR（左）和 Tennis（右）数据集上的重建结果对比。CADDY 对感兴趣目标的位置估计更为精准，相比基线方法（MoCoGAN+、SAVP+）具有明显优势。</figcaption>
+    </figure>
+
+    <h3>用户研究（Tennis 数据集）</h3>
+    <p>作者进行了用户研究，要求23名用户从生成序列中辨认出执行的动作（左/右/前进/后退/击球/静止）。CADDY 获得最高的 Fleiss' kappa 一致性（<strong>0.469</strong>），而基线方法（MoCoGAN: −3.15×10⁻³，MoCoGAN+: −2.84×10⁻³，SAVP: 0.0718，SAVP+: −1.97×10⁻³）均无法达到有意义的一致性，说明 CADDY 学到的动作具有稳定的语义含义。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>Note:</b> 论文未设专门的 Limitations 节。以下条目标注来源：<em>stated</em> = 作者明确提及；<em>inferred</em> = 从方法设计推断。</div>
+    <details class="lim" open><summary>仅支持单智能体场景（stated）</summary><p>CADDY 假设视频中只有<em>单个智能体</em>在环境中行动。论文在 Conclusions 中明确指出："As future work, we plan to extend our method to multi-agent environments."——多球员比赛、多机器人协作等场景当前无法处理。</p></details>
+    <details class="lim"><summary>动作数量 K 需手动指定（inferred）</summary><p>K 值（动作簇数量）作为超参数在实验前确定，方法本身没有自动选择最优 K 的机制。不同数据集需单独调整，且过小的 K 可能导致语义粒度不足，过大则可能出现冗余动作。</p></details>
+    <details class="lim"><summary>视频分辨率受限（inferred）</summary><p>基线方法（SAVP、MoCoGAN、SRVP）受内存限制仅能在 64×64 或更低分辨率下运行，CADDY 虽在全分辨率下测试，但当分辨率进一步提升时，convolutional LSTM 的计算成本将显著增加。</p></details>
+    <details class="lim"><summary>自回归误差积累（stated）</summary><p>测试时采用自回归方式（以重建帧作为下一步输入），论文指出这会引入"shift issue"——网络在训练时未完全暴露于自己生成的图像。混合训练策略（mixed training）可部分缓解但无法完全消除该问题。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Playable Video Generation · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2101.12195">https://arxiv.org/abs/2101.12195</a>
+  </div>
+</footer>
+
+</body>
+</html>

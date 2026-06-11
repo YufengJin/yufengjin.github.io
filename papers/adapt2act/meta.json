@@ -1,0 +1,22 @@
+{
+  "slug": "adapt2act",
+  "title": "Solving New Tasks by Adapting Internet Video Knowledge",
+  "arxiv_id": "2504.15369",
+  "url": "https://arxiv.org/abs/2504.15369",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "video model adaptation",
+    "机器人操作",
+    "inverse probabilistic adaptation",
+    "policy supervision",
+    "visual planning",
+    "text-conditioned generalization",
+    "diffusion model",
+    "MetaWorld",
+    "预训练视频模型",
+    "suboptimal demonstrations"
+  ],
+  "summary_zh": "通过将互联网预训练视频模型与少量机器人领域数据相结合，提出 Inverse Probabilistic Adaptation 方法，在 MetaWorld 等机器人任务中实现对新任务的泛化，即使只有次优演示数据也表现稳健。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf+project-page"
+}

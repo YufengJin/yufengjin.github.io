@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLA-JEPA: Enhancing Vision-Language-Action Model with Latent World Model</title>
+<meta name="keywords" content="VLA, JEPA, latent world model, 机器人操作, 预训练, flow matching, 视觉语言动作模型, 迁移鲁棒性">
+<meta name="description" content="VLA-JEPA 通过隐空间世界模型预训练，让视觉-语言-动作策略对相机运动和背景变化保持鲁棒，在 LIBERO 上取得 97.2% 成功率。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026</span>
+    <h1>VLA-JEPA</h1>
+    <div class="sub">Enhancing Vision-Language-Action Model with Latent World Model</div>
+    <div class="authors">Jingwen Sun, Wenyao Zhang, Zekun Qi, Shaojie Ren, Zezhi Liu, Hanxin Zhu, Guangzhong Sun, Xin Jin, Zhibo Chen &nbsp;·&nbsp; USTC · Zhongguancun Academy · SJTU · Tsinghua · EIT · UCAS · Nankai</div>
+    <p class="lead">VLA-JEPA 提出了一种基于 JEPA（Joint Embedding Predictive Architecture）的潜空间世界模型预训练框架，专为视觉-语言-动作（VLA）策略设计。通过在隐空间而非像素空间中预测未来帧的表示，模型能够学到对相机运动、光照变化和背景干扰均鲁棒的动态抽象，在 LIBERO、SimplerEnv 及真实机器人实验上均达到业界领先性能。</p>
+    <div class="meta">
+      <span>arXiv 2602.10098</span>
+      <span>提交 2026-02-10（v2: 2026-02-14）</span>
+      <span>LIBERO avg 97.2%</span>
+      <!-- REQUIRED: link back to the source paper. -->
+      <span><a href="https://arxiv.org/abs/2602.10098">📄 arXiv:2602.10098</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>JEPA</span>
+      <span>latent world model</span>
+      <span>机器人操作</span>
+      <span>预训练</span>
+      <span>flow matching</span>
+      <span>视觉语言动作模型</span>
+      <span>迁移鲁棒性</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">现有基于潜在动作预测的 VLA 预训练方法（如 LAPA、UniVLA）将优化目标锁定在像素级变化上，而非真正与控制相关的状态转移。这使得模型对相机抖动、背景变化等无关干扰极为敏感，难以在真实环境中稳健泛化。</p>
+    <blockquote>"For embodied control, we want a value-bearing latent state that discards nuisance appearance while preserving factors governing state evolution."</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="VLA-JEPA 整体概览">
+      <figcaption>图1：VLA-JEPA 整体框架概览。该系统在模拟与真实场景中均表现出色，通过隐空间世界模型预训练赋予策略对环境扰动的鲁棒性。</figcaption>
+    </figure>
+    <p>作者归纳了现有隐动作预训练的四类核心失效模式：</p>
+    <ul>
+      <li><b>像素级偏置（Pixel-level bias）：</b>优化目标锁定像素差异，而非动作相关的状态转移；</li>
+      <li><b>干扰运动（Nuisance motion）：</b>真实视频中相机运动等无关信号被放大，遮盖了真正的交互信号；</li>
+      <li><b>信息泄漏（Information leakage）：</b>未来帧的特征在预测网络中提前泄露，形成捷径；</li>
+      <li><b>多阶段复杂性（Multi-stage complexity）：</b>三阶段以上的流程引入额外脆弱性。</li>
+    </ul>
+    <div class="kpi">
+      <div><b>97.2%</b><small>LIBERO 平均成功率</small></div>
+      <div><b>65.2%</b><small>SimplerEnv Google Robot avg</small></div>
+      <div><b>79.5%</b><small>LIBERO-Plus 鲁棒性 avg</small></div>
+      <div><b>2-stage</b><small>简化预训练流程</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">VLA-JEPA 采用两阶段流程：先以 JEPA 目标进行世界模型预训练，再对 action head 进行微调。骨干网络使用 Qwen3-VL，视频编码采用 V-JEPA2 encoder，动作生成采用 flow matching。整体设计无需像素重建，无需复杂的多阶段解码器。</p>
+    <figure>
+      <img src="img/architecture.webp" alt="VLA-JEPA 模型结构">
+      <figcaption>图1（详细）：VLA-JEPA 模型架构。VLM 处理当前观测，通过可学习 token &lt;latent_i&gt; 和 &lt;action&gt; 生成世界状态预测与动作。Target encoder 编码未来帧，仅供损失计算，不参与前向推理。</figcaption>
+    </figure>
+
+    <h3>隐空间无泄漏状态预测（Leakage-Free State Prediction）</h3>
+    <p>核心创新：Target encoder 处理<b>未来帧</b>，而 student 网络（VLM）仅能看到<b>当前观测</b>。模型在隐空间对齐预测表示与目标表示：
+    <br><code>ℒ_WM = Σ(k=1 to T) 𝔼[||ŝ_tk − s_tk||²]</code><br>
+    其中 <code>ŝ_tk</code> 为预测的世界状态，<code>s_tk</code> 为 target encoder 产生的目标表示。通过在隐空间而非像素空间预测，模型天然过滤了像素级的无关变化（光照、背景、相机运动），专注于语义状态转移。</p>
+
+    <h3>Flow-Matching 动作头</h3>
+    <p>动作生成采用 flow matching 对连续轨迹分布建模：
+    <br><code>ℒ_FM = 𝔼[||v_θ(a_t,t|z_a) − (a₀:H − ε)||₂²]</code><br>
+    综合训练目标为：<code>ℒ = ℒ_FM + β·ℒ_WM</code>，β 为超参数权衡世界模型损失与动作预测损失。</p>
+
+    <figure>
+      <img src="img/training.webp" alt="跨域预训练示意">
+      <figcaption>图2：VLA-JEPA 支持跨域联合训练。人类视频数据仅使用隐空间对齐损失（alignment loss），机器人数据同时使用对齐损失与动作预测损失，在同一框架内无缝整合。</figcaption>
+    </figure>
+
+    <h3>跨域人类视频迁移</h3>
+    <p>框架支持无缝整合无动作标注的人类视频与有标注机器人数据。人类视频只需 world modeling loss，不需要动作标签。实验表明，人类视频主要强化"模型已有技能的鲁棒性和稳定性"，而非引入全新的动作动力学。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">在 LIBERO（4个任务套件）、LIBERO-Plus（7种扰动维度）、SimplerEnv（Google Robot + WidowX）和真实 Franka 机器人上进行评估，与 OpenVLA-OFT、π₀、π₀.₅、UniVLA、GR00T N1 等方法对比。</p>
+
+    <h3>LIBERO Benchmark（Table 1）</h3>
+    <table>
+      <tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>LIBERO-10</th><th>Avg</th></tr>
+      <tr><td>LAPA</td><td>73.8</td><td>74.6</td><td>58.8</td><td>55.4</td><td>65.7</td></tr>
+      <tr><td>UniVLA</td><td>96.5</td><td>96.8</td><td>95.6</td><td>92.0</td><td>95.2</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>97.6</td><td>98.4</td><td>97.9</td><td>94.5</td><td>97.1</td></tr>
+      <tr><td>π₀</td><td>96.8</td><td>98.8</td><td>95.8</td><td>85.2</td><td>94.2</td></tr>
+      <tr><td>π₀-Fast</td><td>96.4</td><td>96.8</td><td>88.6</td><td>60.2</td><td>85.5</td></tr>
+      <tr><td>π₀.₅</td><td>98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td></tr>
+      <tr><td>GR00T N1</td><td>94.4</td><td>97.6</td><td>93.0</td><td>90.6</td><td>93.9</td></tr>
+      <tr><td>WorldVLA</td><td>87.6</td><td>96.2</td><td>83.4</td><td>60.0</td><td>81.8</td></tr>
+      <tr><td><b>VLA-JEPA</b></td><td>96.2</td><td class="good">99.6</td><td class="good">97.2</td><td class="good">95.8</td><td class="good">97.2</td></tr>
+      <tr><td>VLA-JEPA w/o human videos</td><td>94.8</td><td>99.6</td><td>95.8</td><td>94.0</td><td>96.1</td></tr>
+    </table>
+
+    <h3>LIBERO-Plus 鲁棒性评估（Table 3）</h3>
+    <p>LIBERO-Plus 在 7 个扰动维度（相机、机器人、语言、光照、背景、噪声、布局）上评估策略鲁棒性。VLA-JEPA 在 7 项中 5 项最优：</p>
+    <table>
+      <tr><th>方法</th><th>Camera</th><th>Robot</th><th>Language</th><th>Light</th><th>Background</th><th>Noise</th><th>Layout</th><th>Avg</th></tr>
+      <tr><td>UniVLA</td><td>1.8</td><td>46.2</td><td>69.6</td><td>69.0</td><td>81.0</td><td>21.2</td><td>31.9</td><td>42.9</td></tr>
+      <tr><td>OpenVLA-OFT</td><td>56.4</td><td>31.9</td><td>79.5</td><td>88.7</td><td>93.3</td><td>75.8</td><td>74.2</td><td>69.6</td></tr>
+      <tr><td>π₀</td><td>13.8</td><td>6.0</td><td>58.8</td><td>85.0</td><td>81.4</td><td>79.0</td><td>68.9</td><td>53.6</td></tr>
+      <tr><td>π₀-Fast</td><td>65.1</td><td>21.6</td><td>61.0</td><td>73.2</td><td>73.2</td><td>74.4</td><td>68.8</td><td>61.6</td></tr>
+      <tr><td>WorldVLA</td><td>0.1</td><td>27.9</td><td>41.6</td><td>43.7</td><td>17.1</td><td>10.9</td><td>38.0</td><td>25.0</td></tr>
+      <tr><td><b>VLA-JEPA</b></td><td>63.3</td><td class="good">67.1</td><td class="good">85.4</td><td class="good">95.6</td><td class="good">93.6</td><td>66.3</td><td class="good">85.1</td><td class="good">79.5</td></tr>
+    </table>
+
+    <h3>SimplerEnv Benchmark（Table 2）</h3>
+    <div class="grid2">
+      <div>
+        <b>Google Robot</b>
+        <table>
+          <tr><th>方法</th><th>Pick</th><th>Move</th><th>Drawer</th><th>Place</th><th>Avg</th></tr>
+          <tr><td>RoboVLMs</td><td>77.3</td><td>61.7</td><td>43.5</td><td>24.1</td><td>51.7</td></tr>
+          <tr><td>villa-x</td><td>81.7</td><td>55.4</td><td>38.4</td><td>4.2</td><td>44.9</td></tr>
+          <tr><td>GR00T N1</td><td>0.7</td><td>1.9</td><td>2.9</td><td>0.0</td><td>1.4</td></tr>
+          <tr><td><b>VLA-JEPA</b></td><td class="good">88.3</td><td>64.1</td><td>51.3</td><td class="good">49.1</td><td class="good">65.2</td></tr>
+        </table>
+      </div>
+      <div>
+        <b>WidowX Robot</b>
+        <table>
+          <tr><th>方法</th><th>Spoon</th><th>Carrot</th><th>Block</th><th>Eggplant</th><th>Avg</th></tr>
+          <tr><td>LAPA</td><td>70.8</td><td>45.8</td><td>54.2</td><td>58.3</td><td class="good">57.3</td></tr>
+          <tr><td>UniVLA</td><td>—</td><td>—</td><td>—</td><td>—</td><td>42.7</td></tr>
+          <tr><td>OpenVLA-OFT</td><td>34.2</td><td>30.0</td><td>30.0</td><td>72.5</td><td>41.8</td></tr>
+          <tr><td><b>VLA-JEPA</b></td><td class="good">75.0</td><td class="good">70.8</td><td>12.5</td><td>70.8</td><td class="good">57.3</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实机器人实验结果">
+      <figcaption>图4：真实世界 Franka 机器人实验结果，对比分布内任务、任务分布外（Task OOD）和布局随机化（Layout OOD）三种场景。VLA-JEPA 在分布内表现最优，在布局随机化设置中同样表现最佳；注意力可视化显示模型更精准地关注机械臂和目标物体。</figcaption>
+    </figure>
+
+    <h3>消融实验（Ablations）</h3>
+    <p>视频时间窗口（video horizon）消融（Table 4）：T=4 帧时信息不足（avg 94.8%），T=16 帧时引入冗余信息（avg 95.5%），T=8 帧取得最优（avg 96.1%）。注意力可视化（Figure 6）显示：LAPA 呈现"excessively dense visual information"，UniVLA 过度关注背景元素，而 VLA-JEPA "focus[ed] more precisely on the operation, for instance, the robotic arm, the hand, and the objects"。</p>
+
+    <figure>
+      <img src="img/attention.webp" alt="注意力权重可视化">
+      <figcaption>图6：latent action token 对 image token 注意力权重矩阵可视化。左：LAPA 注意力分散；中：UniVLA 过度关注背景；右：VLA-JEPA 精准聚焦机械臂与操作目标。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/human_video.webp" alt="人类视频比例影响">
+      <figcaption>图5：人类视频数据在预训练中的占比对 LIBERO-Plus 各扰动维度成功率的影响。结论：人类视频主要增强模型在干扰场景下的鲁棒性，而非引入新的操作技能；随比例增大，鲁棒性指标持续提升。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>注：</b>论文未设专门的 Limitations 章节。以下内容部分为作者在实验讨论中明确指出（<em>stated</em>），部分为从设计中推断（<em>inferred</em>）。</div>
+    <details class="lim" open>
+      <summary>泛化能力弱于 π₀.₅（Stated）</summary>
+      <p>论文明确指出："the generalization capability of VLA-JEPA is less robust than π₀.₅, yet it produces more stable trajectories." 在真实任务 OOD 场景中，π₀.₅ 能更准确地跟随指令定位目标，而 VLA-JEPA "is prone to grasping objects that do not align with the command"，存在指令遵循精度不足的问题。</p>
+    </details>
+    <details class="lim">
+      <summary>人类视频未能引入新技能（Stated）</summary>
+      <p>实验分析显示，人类视频数据主要增强已有技能的鲁棒性，"而非教会模型新的操作动力学"。如何让大规模人类视频真正迁移新的操作能力，仍是开放问题。</p>
+    </details>
+    <details class="lim">
+      <summary>相机视角变化的适应能力有限（Inferred）</summary>
+      <p>LIBERO-Plus 的 Camera 扰动维度上，VLA-JEPA（63.3%）优于 π₀（13.8%）但仍落后于 π₀-Fast（65.1%），表明对剧烈相机运动的鲁棒性仍有提升空间。这是从 Table 3 数据推断得出，并非作者明确声明。</p>
+    </details>
+    <details class="lim">
+      <summary>依赖大型 VLM 骨干（Inferred）</summary>
+      <p>方法基于 Qwen3-VL + V-JEPA2 encoder，推理成本较高。论文未讨论模型压缩或小模型迁移方案。轻量化部署能力尚未验证。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · VLA-JEPA · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.10098">https://arxiv.org/abs/2602.10098</a>
+  </div>
+</footer>
+
+</body>
+</html>

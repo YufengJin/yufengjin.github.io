@@ -1,0 +1,11 @@
+{
+  "slug": "navigation-world-models",
+  "title": "Navigation World Models",
+  "arxiv_id": "2412.03572",
+  "url": "https://arxiv.org/abs/2412.03572",
+  "category": "机器人 · Robotics",
+  "keywords": ["导航世界模型", "world model", "视觉导航", "video generation", "diffusion transformer", "robot navigation", "轨迹规划", "egocentric video"],
+  "summary_zh": "NWM 是一个基于 Conditional Diffusion Transformer（CDiT）的可控视频生成模型，通过想象未来轨迹实现视觉导航规划，支持动态约束融入与陌生环境泛化，规模扩展至 10 亿参数，在 RECON 数据集上 FVD 达 200.97（DIAMOND 为 762.73）。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 自动生成，中文海报，无 EN 版本。
+  Paper: Humanoid Everyday: A Comprehensive Robotic Dataset for Open-World Humanoid Manipulation
+  arXiv: 2510.08807
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humanoid Everyday：面向开放世界类人机器人操作的综合数据集</title>
+<meta name="keywords" content="humanoid robot, manipulation dataset, teleoperation, imitation learning, 机器人数据集, 双臂操作, VLA, dexterous manipulation, 人机交互, policy evaluation">
+<meta name="description" content="Humanoid Everyday：一个包含 10.3k 条轨迹、260 个任务、超过 300 万帧的大规模多模态类人机器人操作数据集，并附有云端评测平台。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>Humanoid Everyday：面向开放世界类人机器人操作的综合数据集</h1>
+    <div class="sub">10.3k 条轨迹 · 260 个任务 · 超过 300 万帧 · 云端评测平台</div>
+    <div class="authors">Zhenyu Zhao, Hongyi Jing, Xiawei Liu, Jiageng Mao, Abha Jha, Hanwen Yang, Rong Xue, Sergey Zakharov, Vitor Guizilini, Yue Wang</div>
+    <p class="lead">Humanoid Everyday 是目前最大规模的类人机器人操作数据集之一，覆盖 260 个任务、7 大类别，采集自真实世界中的多模态传感器（RGB、深度、LiDAR、触觉），并附带自然语言标注与云端策略评测平台，旨在推动通用人形机器人能力的研究。</p>
+    <div class="meta">
+      <span>2025年10月</span>
+      <span>260 tasks · 10.3k trajectories</span>
+      <span>Unitree G1 &amp; H1</span>
+      <span><a href="https://arxiv.org/abs/2510.08807">📄 arXiv:2510.08807</a></span>
+    </div>
+    <div class="kw">
+      <span>humanoid robot</span>
+      <span>manipulation dataset</span>
+      <span>teleoperation</span>
+      <span>imitation learning</span>
+      <span>dexterous manipulation</span>
+      <span>机器人数据集</span>
+      <span>VLA</span>
+      <span>人机交互</span>
+      <span>policy evaluation</span>
+      <span>云端评测平台</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">通用人形机器人的进步依赖于大规模、多样化的数据，而现有数据集存在明显短板：任务种类少、传感器模态单一、缺乏标准化评测手段。Humanoid Everyday 旨在从根本上弥补这些缺口。</p>
+    <blockquote>
+      "现有机器人操作数据集往往局限于桌面操作场景，且大多基于非人形平台，难以捕捉类人机器人在真实世界中面临的高自由度、多任务挑战……我们提出 Humanoid Everyday——一个大规模、多模态的人形机器人操作数据集，覆盖 dextrous object manipulation、human-humanoid interaction 与 locomotion-integrated actions。"
+    </blockquote>
+    <figure>
+      <img src="img/overview.webp" alt="Humanoid Everyday 数据集总览">
+      <figcaption><strong>图1：数据集总览。</strong>Humanoid Everyday 覆盖 7 大类人形操作任务，提供丰富的多模态信息，并配备云端评测平台，支持标准化策略部署与协作研究。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>10.3k</b><small>条轨迹（trajectories）</small></div>
+      <div><b>3M+</b><small>帧数据（frames）</small></div>
+      <div><b>260</b><small>个独特任务（unique tasks）</small></div>
+      <div><b>7</b><small>大任务类别</small></div>
+    </div>
+    <h3>三大核心贡献</h3>
+    <ul>
+      <li><strong>大规模多模态数据集：</strong>真实世界采集，含 RGB、深度图、LiDAR、触觉及自然语言标注，优化后的遥控采集流水线将采集时间减半。</li>
+      <li><strong>代表性策略评测分析：</strong>对主流 imitation learning 方法（Diffusion Policy、ACT、OpenVLA、π₀ 等）进行系统评测，揭示其优劣势。</li>
+      <li><strong>云端评测平台：</strong>支持标准化、可复现、协作式的策略部署与测试，无需研究者自备硬件。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">数据集的核心是一套高效的采集系统：基于 Apple Vision Pro 的遥控接口 + 异步多进程流水线，搭载 Unitree G1/H1 两款人形机器人，以 30Hz 频率同步采集多模态传感数据。</p>
+
+    <h3>硬件平台</h3>
+    <div class="grid2">
+      <div class="card">
+        <h3>Unitree G1（29-DoF）</h3>
+        <ul>
+          <li>7-DoF 三指灵巧手（dexterous hands），内置触觉传感器</li>
+          <li>Intel RealSense RGB-D 相机 + Livox LiDAR 系统</li>
+          <li>总动作空间维度：28 DoFs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Unitree H1（27-DoF）</h3>
+        <ul>
+          <li>6-DoF INSPIRE 手爪</li>
+          <li>Intel RealSense RGB-D 相机 + Livox LiDAR 系统</li>
+          <li>支持 Loco-Manipulation（行走中操作）任务</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>遥控接口（Teleoperation Interface）</h3>
+    <p>操作员佩戴 Apple Vision Pro，利用其底部摄像头实时捕捉手腕与手指关键点；手指动作经由 dex-retargeting 系统映射到机器人灵巧手，手腕姿态则经基于 Pinocchio 的逆运动学算法（IK）转化为关节控制指令。</p>
+
+    <h3>高效采集流水线</h3>
+    <figure>
+      <img src="img/pipeline.webp" alt="数据采集流水线架构图">
+      <figcaption><strong>图2：数据采集流水线。</strong>将 IO 数据流、IK 计算与机器人关节控制解耦到独立进程，并通过共享内存缓冲区实现低延迟通信，配合多进程与异步 IO 确保高频遥控与高质量数据采集。</figcaption>
+    </figure>
+    <figure>
+      <img src="img/pipeline_perf.webp" alt="流水线性能对比">
+      <figcaption><strong>图3：性能对比。</strong>与 Unitree 官方遥控系统相比，本文流水线将控制延迟从 500ms 降至 2ms，数据采集时间减半。</figcaption>
+    </figure>
+    <blockquote>"Our pipeline halves data collection time compared to the official Unitree teleoperation system, while the control delay decreases from 500 ms to 2 ms."</blockquote>
+
+    <h3>任务分类体系</h3>
+    <figure>
+      <img src="img/task_distribution.webp" alt="任务分布图">
+      <figcaption><strong>图4：任务与技能类别分布。</strong>260 个任务按难度和场景分为 7 大类，每类均含约 40 条采集轨迹。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Basic Manipulation：</strong>抓取、放置等基础操作</li>
+      <li><strong>Deformable Manipulation：</strong>软体/柔性物体操作（如折叠布料）</li>
+      <li><strong>Articulated Manipulation：</strong>铰链物体操作（如开关门、抽屉）</li>
+      <li><strong>Tool Use：</strong>使用工具完成任务</li>
+      <li><strong>High-Precision Manipulation：</strong>高精度精细操作（如将玫瑰插入花瓶）</li>
+      <li><strong>Human-Robot Interaction (HRI)：</strong>人机协同任务</li>
+      <li><strong>Loco-Manipulation：</strong>行走与操作相结合的复合任务</li>
+    </ul>
+
+    <h3>云端评测平台</h3>
+    <figure>
+      <img src="img/platform.webp" alt="云端评测平台">
+      <figcaption><strong>图5：云端评测平台。</strong>研究者可通过云端接口将策略部署到真实人形机器人，无需自备硬件，支持标准化、可复现的实验流程。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">在 7 类任务的代表性子集上，对 7 种主流 imitation learning 策略进行系统评测，每种策略每个任务执行 10 次试验，成功率（success rate）为核心指标。</p>
+
+    <figure>
+      <img src="img/experiments.webp" alt="实验任务设置">
+      <figcaption><strong>图6：实验任务示例。</strong>7 大类别中各选取代表性任务；黄色区域为任务执行范围（含轻微位置扰动），箭头示意机器人手臂轨迹。</figcaption>
+    </figure>
+
+    <h3>主要策略性能对比（成功率 %）</h3>
+    <table>
+      <tr>
+        <th>策略 / Method</th>
+        <th>Articulate</th>
+        <th>Tool Use</th>
+        <th>Basic</th>
+        <th>Deformable</th>
+        <th>HRI</th>
+        <th>Loco-Manip</th>
+        <th>High Prec.</th>
+        <th>平均</th>
+      </tr>
+      <tr><td>Diffusion Policy</td><td>100%</td><td>0%</td><td>30%</td><td>0%</td><td>40%</td><td>30%</td><td>0%</td><td>29%</td></tr>
+      <tr><td>DP3</td><td>90%</td><td>70%</td><td>20%</td><td>20%</td><td>40%</td><td>0%</td><td>0%</td><td>34%</td></tr>
+      <tr><td>ACT</td><td>100%</td><td>0%</td><td>70%</td><td>0%</td><td>70%</td><td>0%</td><td>0%</td><td>34%</td></tr>
+      <tr><td>OpenVLA</td><td>70%</td><td>30%</td><td>30%</td><td>40%</td><td>60%</td><td>30%</td><td>10%</td><td>39%</td></tr>
+      <tr><td>π₀-FAST</td><td>100%</td><td>40%</td><td>60%</td><td>20%</td><td>30%</td><td>10%</td><td>0%</td><td>37%</td></tr>
+      <tr><td>π₀.₅</td><td>100%</td><td>40%</td><td>30%</td><td>40%</td><td>40%</td><td>0%</td><td>0%</td><td>36%</td></tr>
+      <tr><td>GR00T N1.5</td><td>100%</td><td>0%</td><td>80%</td><td>50%</td><td>100%</td><td>30%</td><td>0%</td><td class="good">51%</td></tr>
+    </table>
+
+    <p>GR00T N1.5 在平均成功率上以 <strong>51%</strong> 领先所有方法，尤其在 Articulated Manipulation 和 Human-Robot Interaction 任务上达到满分（100%）。High-Precision Manipulation 类别对所有策略均构成极高挑战，几乎所有方法均为 0%。</p>
+
+    <h3>Humanoid Everyday 作为预训练 Prior 的消融实验</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="预训练消融实验">
+      <figcaption><strong>图7：预训练消融对比。</strong>对比直接任务特定 fine-tuning 与先在 Humanoid Everyday 上预训练再 fine-tuning 的两阶段方案，结果显示以本数据集为 prior 可显著提升目标任务性能。</figcaption>
+    </figure>
+    <p>两阶段 fine-tuning（先在 Humanoid Everyday 预训练，再迁移到目标任务）优于直接 fine-tuning，验证了本数据集作为通用 humanoid prior 的价值。</p>
+
+    <h3>评测平台运行情况</h3>
+    <ul>
+      <li>评测系统可持续运行超过 <strong>100 分钟</strong>，直至电池耗尽</li>
+      <li>期间仅需 <strong>3 次人工干预</strong>（原因：电机过热）</li>
+      <li>每分钟可完成多步评测，显著提升评测吞吐量</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>注：</b>以下局限性均由论文作者明确陈述（Discussion and Conclusion 节），并非推断。</div>
+
+    <details class="lim" open>
+      <summary>高维动作空间导致端到端策略性能普遍偏低</summary>
+      <p>"all the end-to-end imitation policies struggle in humanoid manipulation tasks due to the high-dimensional action space in our dataset"——类人机器人 28 DoFs 的动作空间远超桌面机器人，现有策略架构尚未充分适配。</p>
+    </details>
+
+    <details class="lim">
+      <summary>Loco-Manipulation 任务中点云输入退化</summary>
+      <p>在机器人需要移动的 Loco-Manipulation 任务中，点云帧间变化剧烈，3D 输入的可靠性低于 RGB 图像，DP3 等依赖点云的方法在该类任务成功率为 0%。</p>
+    </details>
+
+    <details class="lim">
+      <summary>高精度操作任务对所有策略均构成极高挑战</summary>
+      <p>"nearly all policies achieve a 0% success rate" on high-precision tasks——现有模型缺乏 fine-grained visuospatial perception，无法完成如"将玫瑰插入花瓶"等精密操作。</p>
+    </details>
+
+    <details class="lim">
+      <summary>OpenVLA 在高频数据上训练效果差</summary>
+      <p>"OpenVLA does not compress the action space and thus when trained on high-frequency 30 Hz data, it often fails to produce meaningful motions"——不压缩动作空间的 VLA 方法对高频率数据适应性不足。</p>
+    </details>
+
+    <details class="lim">
+      <summary>云端平台暂不支持场景自动复位</summary>
+      <p>"our cloud-based evaluation system does not yet support automatic scene resetting, as current imitation learning policies are not sufficiently robust for humanoids to recover the environments without human assistance"——每次评测后场景仍需人工重置。</p>
+    </details>
+
+    <details class="lim">
+      <summary>需要更专门化的模型设计</summary>
+      <p>现有评测仅覆盖已有 imitation learning 架构，"their performance degrades on more challenging tasks due to the high dimensionality of humanoid action spaces, indicating the need for more specialized model designs"。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Humanoid Everyday · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2510.08807">https://arxiv.org/abs/2510.08807</a>
+  </div>
+</footer>
+
+</body>
+</html>

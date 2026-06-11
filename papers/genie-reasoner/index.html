@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unified Embodied VLM Reasoning with Robotic Action via Autoregressive Discretized Pre-training</title>
+<meta name="keywords" content="VLA, embodied reasoning, action tokenizer, flow matching, ERIQ, GenieReasoner, FACT, 机器人操作, VQ-VAE, 离散动作">
+<meta name="description" content="GenieReasoner 通过 FACT 流匹配动作分词器与 ERIQ 具身推理基准，实现了推理与精确动作执行的统一优化，在真实机器人任务中超越连续与离散动作基线。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">arXiv 2512.24125 · 机器人操作 · VLA</span>
+    <h1>Unified Embodied VLM Reasoning with Robotic Action via Autoregressive Discretized Pre-training</h1>
+    <div class="sub">GenieReasoner：在统一空间中联合优化具身推理与精确动作执行</div>
+    <div class="authors">Yi Liu, Sukai Wang, Dafeng Wei, Xiaowei Cai, Linqing Zhong, Jiange Yang, Guanghui Ren, Jinyu Zhang, Maoqing Yao, Chuankang Li, Xindong He, Liliang Chen, Jianlan Luo</div>
+    <p class="lead">
+      现有 VLA 模型在推理泛化与高精度动作执行之间存在根本性矛盾。本文提出两个互补贡献：
+      <strong>ERIQ</strong>（6,052 条具身推理问答，覆盖四个推理维度）用于系统量化该瓶颈，
+      <strong>FACT</strong>（基于 flow matching 的动作分词器）将连续动作离散化同时保留高保真轨迹重建能力。
+      整合后的 <strong>GenieReasoner</strong> 在真实机器人任务中超越连续与离散动作基线。
+    </p>
+    <div class="meta">
+      <span>arXiv 2512.24125</span>
+      <span>提交：2025-12-30</span>
+      <span>GenieReasoner-3B</span>
+      <span><a href="https://arxiv.org/abs/2512.24125">📄 arXiv:2512.24125</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>embodied reasoning</span>
+      <span>action tokenizer</span>
+      <span>flow matching</span>
+      <span>ERIQ benchmark</span>
+      <span>FACT</span>
+      <span>GenieReasoner</span>
+      <span>机器人操作</span>
+      <span>VQ-VAE</span>
+      <span>离散动作</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      通用机器人需要在开放世界环境中同时做到广泛泛化与高精度动作执行——这一组合对现有
+      Vision-Language-Action（VLA）模型而言仍是重大挑战。
+    </p>
+    <blockquote>
+      "models optimized for strong reasoning capabilities tend to exhibit reduced action precision,
+      while those achieving high-fidelity execution often demonstrate limited generalization."
+    </blockquote>
+
+    <p>
+      具体而言，现有方案存在三层缺陷：
+    </p>
+    <ul>
+      <li><strong>语义泛化不足：</strong>大型 VLM 提供语言理解，但具身推理（空间感知、任务规划、错误恢复）仍薄弱，导致机器人在分布外场景下行为脆弱。</li>
+      <li><strong>动作精度损失：</strong>现有离散动作分词器（均匀分箱或 VQ-VAE）在量化过程中丢失轨迹精细结构，重建误差较大。</li>
+      <li><strong>优化冲突：</strong>将连续动作头直接附加到 VLM 主干时，推理目标与动作预测目标相互干扰，难以联合优化。</li>
+    </ul>
+
+    <p>
+      为定量解耦这一瓶颈，作者构建了 <strong>ERIQ</strong>（Embodied Reasoning Intelligence Quotient）——
+      一个包含 <strong>6,052</strong> 条具身问答对的大规模基准，跨四个推理维度评测 VLM，
+      并证明具身推理能力与端到端 VLA 泛化性能之间存在显著正相关。
+    </p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="GenieReasoner 系统概览">
+      <figcaption>
+        <strong>图1：GenieReasoner 系统概览。</strong>
+        左侧展示统一架构将推理与控制结合；中部显示 FACT 分词器基于 flow matching 实现高保真轨迹重建；
+        右侧对比性能——GenieReasoner 在 ERIQ 上比基线提升 <strong>41%</strong> 准确率，重建 MSE 低于 π₀-FAST。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>6,052</b><small>ERIQ 问答对总量（四维度）</small></div>
+      <div><b>82.72%</b><small>GenieReasoner-3B 在 ERIQ 上的平均准确率</small></div>
+      <div><b>58.64%</b><small>基线 Qwen2.5-VL-3B 在 ERIQ 上的平均准确率</small></div>
+      <div><b>10×</b><small>FACT 轨迹重建误差低于 FAST+ 的幅度（相同码长）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      本文提出三个互补模块：<strong>ERIQ</strong>（评估框架）、<strong>FACT</strong>（动作分词器）
+      与 <strong>GenieReasoner</strong>（统一模型），共同构成从诊断到执行的完整框架。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="GenieReasoner 系统架构">
+      <figcaption>
+        <strong>图4：GenieReasoner 系统架构。</strong>
+        (a) 训练流程：VLM 主干联合优化 VLM 推理目标与离散动作预测目标，FACT 编码器将连续动作块转换为离散码；
+        (b) 推理流程：模型预测离散码序列，FACT 解码器通过 ODE 积分将其还原为连续控制信号。
+      </figcaption>
+    </figure>
+
+    <h3>ERIQ：具身推理智商基准</h3>
+    <p>
+      ERIQ 包含 <strong>6,052</strong> 条标准化多选问答对，覆盖四个具身推理维度，
+      共 <strong>15</strong> 个细粒度子任务：
+    </p>
+    <ul>
+      <li><strong>空间感知与定位（Spatial Perception &amp; Grounding）：</strong>场景理解、双视角感知、任务定位、相对位置。</li>
+      <li><strong>规划与监控（Planning &amp; Monitoring）：</strong>动作理解、成功检测、子任务规划、细粒度规划、轨迹跟踪、进度评估。</li>
+      <li><strong>错误检测与恢复（Error Detection &amp; Recovery）：</strong>错误识别、错误分类、恢复策略。</li>
+      <li><strong>人类意图理解（Human Intent Understanding）：</strong>意图理解、人机交互。</li>
+    </ul>
+    <p>
+      通过将推理与运动执行解耦，ERIQ 能够系统性评测 VLM 的具身推理短板，
+      并揭示推理能力与端到端 VLA 泛化之间的强正相关关系。
+    </p>
+
+    <figure>
+      <img src="img/benchmark.webp" alt="ERIQ 基准示例">
+      <figcaption>
+        <strong>图2：ERIQ 基准示例。</strong>
+        展示四个主要具身推理维度下的样本问答对，涵盖从空间感知到人类意图理解的多样化推理挑战。
+      </figcaption>
+    </figure>
+
+    <h3>FACT：基于 Flow Matching 的动作分词器</h3>
+    <p>
+      FACT（Flow-matching-based Action tokenizer for Control Tasks）结合 VQ-VAE 离散化与 flow matching 解码，
+      实现连续动作的无损压缩与高保真还原：
+    </p>
+    <ul>
+      <li>
+        <strong>编码器：</strong>通过 zero-initialized queries 将动作块映射到潜在表示
+        <code>e = ℰ_θ(a_{0:H}, e_{ini})</code>，在时间维度（L≤H）和空间维度（D≤S）进行压缩。
+        比特量化器通过 <code>c = sign(e)</code> 将连续嵌入转换为二值离散码。
+      </li>
+      <li>
+        <strong>解码器（Rectified Flow）：</strong>学习从高斯噪声到动作分布的速度场。
+        线性插值定义为 <code>a^(t) = (1−t)z + ta, t ∈ [0,1]</code>，通过 ODE 积分重建平滑轨迹。
+      </li>
+      <li>
+        <strong>训练目标：</strong>三重损失联合优化——熵损失（最大化码本利用率）、
+        承诺损失（保持连续嵌入接近量化值）、flow-matching 目标
+        <code>MSE of (a−z) − 𝒟_θ(a^(t), c, t)</code>。
+      </li>
+    </ul>
+
+    <figure>
+      <img src="img/fact_tokenizer.webp" alt="FACT 动作分词器架构">
+      <figcaption>
+        <strong>图5：FACT 动作分词器架构。</strong>
+        VQ-encoder 将机器人动作离散化为紧凑的 token 序列；
+        flow-matching decoder 从量化 token 与高斯噪声出发，通过速度场积分重建平滑连续轨迹。
+      </figcaption>
+    </figure>
+
+    <h3>GenieReasoner：统一推理-动作模型</h3>
+    <p>
+      GenieReasoner 将 VLM 主干（3B 参数规模）与 FACT 分词器统一训练。
+      训练阶段，VLM 在多模态数据上同时优化推理目标与离散动作预测目标；
+      推理阶段，模型自回归地预测离散码序列，FACT 解码器实时还原为连续控制信号，
+      避免了连续头与推理目标之间的优化冲突。
+    </p>
+
+    <p>训练数据来源涵盖：</p>
+    <ul>
+      <li><strong>通用 VLM 数据：</strong>Cambrian-10M、LLaVA-OneVision、Describe Anything、CogVLM-SFT-311K、BLIP3-Grounding-50M</li>
+      <li><strong>具身数据：</strong>NVIDIA Cosmos-Reason、ShareRobot、Robo2VLM、EmbSpatial-SFT、ManipulationVQA-60K、ERIQ</li>
+      <li><strong>专有数据：</strong>AgiBot World 平台提供的轨迹数据、定位标注、子任务规划数据及场景理解数据</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      实验分三部分：ERIQ 基准评测、FACT 轨迹重建对比、以及真实机器人任务验证。
+      基线包括连续动作模型 π₀、π₀.₅、GR00T 以及离散动作模型 π₀-FAST。
+    </p>
+
+    <h3>ERIQ 基准结果</h3>
+    <p>
+      GenieReasoner-3B 在 ERIQ 上取得 <strong>82.72%</strong> 平均准确率，
+      远超 Qwen2.5-VL-3B 基线的 <strong>58.64%</strong>，提升约 <strong>41%</strong>。
+      各维度详细结果如下：
+    </p>
+
+    <table>
+      <tr>
+        <th>ERIQ 子任务</th>
+        <th>维度</th>
+        <th>Qwen2.5-VL-3B（基线）</th>
+        <th>GenieReasoner-3B</th>
+      </tr>
+      <tr>
+        <td>Scene Understanding</td>
+        <td>空间感知</td>
+        <td>—</td>
+        <td class="good">84.18%</td>
+      </tr>
+      <tr>
+        <td>Dualview</td>
+        <td>空间感知</td>
+        <td>—</td>
+        <td class="good">68.54%</td>
+      </tr>
+      <tr>
+        <td>Task Grounding</td>
+        <td>空间感知</td>
+        <td>—</td>
+        <td class="good">93.21%</td>
+      </tr>
+      <tr>
+        <td>Relative Position</td>
+        <td>空间感知</td>
+        <td>—</td>
+        <td class="good">77.51%</td>
+      </tr>
+      <tr>
+        <td>Action Understanding</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td class="good">96.67%</td>
+      </tr>
+      <tr>
+        <td>Success Detection</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td class="good">85.25%</td>
+      </tr>
+      <tr>
+        <td>Subtask Planning</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td class="good">90.50%</td>
+      </tr>
+      <tr>
+        <td>Fine-grained Planning</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td>55.36%</td>
+      </tr>
+      <tr>
+        <td>Trajectory</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td>73.86%</td>
+      </tr>
+      <tr>
+        <td>Progress</td>
+        <td>规划与监控</td>
+        <td>—</td>
+        <td>51.60%</td>
+      </tr>
+      <tr>
+        <td>Mistake Existence</td>
+        <td>错误检测</td>
+        <td>—</td>
+        <td class="good">75.45%</td>
+      </tr>
+      <tr>
+        <td>Error Classification</td>
+        <td>错误检测</td>
+        <td>—</td>
+        <td class="good">93.10%</td>
+      </tr>
+      <tr>
+        <td>Recovery Strategy</td>
+        <td>错误检测</td>
+        <td>—</td>
+        <td class="good">85.71%</td>
+      </tr>
+      <tr>
+        <td>Intention Comprehension</td>
+        <td>意图理解</td>
+        <td>—</td>
+        <td class="good">96.44%</td>
+      </tr>
+      <tr>
+        <td>Human Interaction</td>
+        <td>意图理解</td>
+        <td>—</td>
+        <td class="good">83.26%</td>
+      </tr>
+      <tr>
+        <td><strong>ERIQ 总体平均</strong></td>
+        <td>—</td>
+        <td>58.64%</td>
+        <td class="good"><strong>82.72%</strong></td>
+      </tr>
+    </table>
+
+    <h3>FACT 轨迹重建对比</h3>
+
+    <figure>
+      <img src="img/reconstruction.webp" alt="FACT vs FAST+ 重建误差对比">
+      <figcaption>
+        <strong>图7：FACT vs FAST+ 重建 MSE 对比（不同码长）。</strong>
+        在相同压缩码长下，FACT 的均方误差显著低于 FAST+ 基线，
+        "often outperforming FAST+ by an entire order of magnitude"（常达一个数量级的差距）。
+      </figcaption>
+    </figure>
+
+    <h3>真实机器人任务结果</h3>
+    <p>
+      在真实机器人评测中，GenieReasoner 在以下五个复杂度设置下的语言跟随（language following）指标
+      与完整任务成功率（full task success rate，含抓取与物体操作）两项指标上均优于所有基线（π₀、π₀.₅、GR00T、π₀-FAST），
+      并在综合加权性能上取得最高分。
+    </p>
+
+    <figure>
+      <img src="img/realworld.webp" alt="真实机器人多样化操作任务可视化">
+      <figcaption>
+        <strong>图11：真实机器人多样化操作任务可视化。</strong>
+        包括细粒度 OOD 操作（Unseen Object、Color Variation）、长时序语义任务以及可变形物体处理（Spatial/Pose Variation），
+        展示了 GenieReasoner 在多种真实场景下的泛化能力。
+      </figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>
+      作者通过消融实验验证了两个核心设计选择：
+    </p>
+    <ul>
+      <li>
+        <strong>ERIQ 数据的作用：</strong>将具身推理数据加入训练后，VLA 任务的泛化性能显著提升，
+        印证了论文的核心假设——具身推理能力与动作泛化之间存在因果关联，而非仅相关。
+      </li>
+      <li>
+        <strong>FACT vs. 其他分词器：</strong>与均匀分箱和传统 VQ-VAE 相比，
+        FACT 的 flow matching 解码器在相同码本大小下显著降低重建误差，
+        为下游精确执行奠定基础。
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>论文未设专门的 Limitations 章节。
+      以下条目：前两条为作者在结论中明确提及的未来工作方向（<em>stated</em>）；
+      后两条为从方法设计推断的潜在局限（<em>inferred</em>）。
+    </div>
+
+    <details class="lim" open>
+      <summary>Chain-of-Thought 与动作生成的深层协同尚待探索（stated）</summary>
+      <p>
+        作者明确指出，未来工作将探索 "deeper synergies between Chain-of-Thought reasoning and action generation"。
+        当前 GenieReasoner 将推理与动作在同一序列空间中预测，但二者的交互机制（例如推理步骤如何动态调整动作码）
+        尚未深入研究。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>跨多样化真实环境的泛化与指令跟随鲁棒性（stated）</summary>
+      <p>
+        作者计划 "further enhance the system's generalization and instruction-following robustness
+        across diverse real-world environments"，隐含当前模型在分布外场景（极端光照、新型物体、
+        非结构化指令）下仍存在鲁棒性不足的问题。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>专有训练数据依赖（inferred）</summary>
+      <p>
+        GenieReasoner 的训练数据包含 AgiBot World 平台的专有轨迹数据、定位标注等，
+        这些数据未公开，限制了社区复现与公平对比。ERIQ 基准的构建过程同样依赖内部数据源，
+        外部研究者难以直接扩展。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>码长与精度的权衡未被完整刻画（inferred）</summary>
+      <p>
+        图7 展示了不同码长下的重建 MSE 对比，但论文未提供端到端任务成功率随码长变化的系统分析，
+        实践中最优码长选择仍依赖经验调参，缺乏理论指导。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Unified Embodied VLM Reasoning with Robotic Action via Autoregressive Discretized Pre-training · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2512.24125">https://arxiv.org/abs/2512.24125</a>
+  </div>
+</footer>
+
+</body>
+</html>

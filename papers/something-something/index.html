@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: "The 'something something' video database for learning and evaluating visual common sense"
+  arXiv: 1706.04261
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Something-Something：面向视觉常识学习与评估的大规模视频数据库</title>
+<meta name="keywords" content="video dataset, common sense, action recognition, crowd-sourcing, 视频数据库, temporal reasoning, 人机交互, 直觉物理, 动作识别, curriculum learning">
+<meta name="description" content="Something-Something 是一个包含 108,499 条短视频、174 个动作类别的大规模数据集，专为训练和评估视觉常识推理能力而设计。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ICCV 2017 · 视频数据集</span>
+    <h1>Something-Something：面向视觉常识学习与评估的大规模视频数据库</h1>
+    <div class="sub">The "something something" video database for learning and evaluating visual common sense</div>
+    <div class="authors">Raghav Goyal, Samira Ebrahimi Kahou, Vincent Michalski, Joanna Materzyńska, Susanne Westphal, Heuna Kim, Valentin Haenel, Ingo Fruend, Peter Yianilos, Moritz Mueller-Freitag, Florian Hoppe, Christian Thurau, Ingo Bax, Roland Memisevic &nbsp;·&nbsp; TwentyBN</div>
+    <p class="lead">Something-Something 是一个大规模众包视频数据集，包含 108,499 条 2–6 秒的短视频、174 个动作类别，专注于捕捉人类与物体之间的细粒度物理交互，旨在推动视觉常识推理研究。与以往动作识别数据集不同，本数据集强迫模型学习物体属性、时序动态和直觉物理，而非依赖单帧特征或场景偏见。</p>
+    <div class="meta">
+      <span>arXiv 2017</span>
+      <span>108,499 视频</span>
+      <span>174 动作类别</span>
+      <span><a href="https://arxiv.org/abs/1706.04261">📄 arXiv:1706.04261</a></span>
+      <span><a href="https://www.twentybn.com/datasets/something-something">数据集主页</a></span>
+    </div>
+    <div class="kw">
+      <span>video dataset</span>
+      <span>common sense</span>
+      <span>action recognition</span>
+      <span>crowd-sourcing</span>
+      <span>视频数据库</span>
+      <span>temporal reasoning</span>
+      <span>直觉物理</span>
+      <span>动作识别</span>
+      <span>curriculum learning</span>
+      <span>人机交互</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 数据集构建</a>
+  <a href="#exp">3 · 基线实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">现有大规模视频数据集（如 Sports-1M、ActivityNet）以高层动作识别为目标，使得模型可以依赖单帧特征或场景线索作弊，而无需真正理解物体的物理属性与因果关系。这一缺陷导致神经网络缺乏类似人类的"视觉常识"（visual common sense）。</p>
+    <blockquote>"One obstacle that prevents networks from reasoning more deeply about complex scenes and situations, and from integrating visual knowledge with natural language, like humans do, is their lack of common sense knowledge about the physical world."</blockquote>
+    <figure>
+      <img src="img/page1.webp" alt="论文首页：数据集示例视频与动机">
+      <figcaption>图1：数据集示例视频，动作描述为 "Picking [something] up"，众包工作者录制并填写 "something" = shoe。模板驱动的标注方式使标签兼具结构性与自然语言的灵活性。（来源：论文图1）</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>108,499</b><small>视频总数</small></div>
+      <div><b>174</b><small>动作类别数</small></div>
+      <div><b>4.03 s</b><small>平均视频时长</small></div>
+      <div><b>1,133</b><small>众包工作者人数</small></div>
+    </div>
+    <p>视频（而非静态图像）天然包含物体运动、形变、遮挡等信息，是学习直觉物理（intuitive physics）和空间关系的理想载体。作者认为，要真正学习"opening"这一概念，网络必须能跨越"opening a door"、"opening a zipper"、"opening a mouth"等不同场景进行泛化——而这正是 Something-Something 数据集的设计初衷：提供高度细粒度、专注于基础物理概念的视频-标签对。</p>
+    <p>与现有数据集的对比（Table 1）显示，Something-Something 视频数量（108,499）远超其他专注于物理交互的数据集（如 Physics 101：17,408），且视频更短（平均 4.03 秒），时序标注更精确。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 数据集构建</h2>
+    <p class="lead">Something-Something 数据集通过"大规模众包表演"（large-scale crowd acting）框架构建：不是从网上爬取视频再打标签，而是让众包工作者根据动作模板主动录制视频并填写占位词，从而确保视频内容与标签的高度一致性与时序对应。</p>
+
+    <figure>
+      <img src="img/page4.webp" alt="数据集统计：比较表与数据摘要">
+      <figcaption>Table 1：与其他为机器学习专门录制的视频数据集的对比。Something-Something 以 108,499 条视频、174 个细粒度人机交互类别大幅超越同类数据集。Table 2：数据集基本统计，平均每类约 620 条视频，视频时长 2–6 秒。（来源：论文第4页）</figcaption>
+    </figure>
+
+    <h3>模板驱动的自然语言标签</h3>
+    <p>标签采用含占位符（placeholder）的动作模板形式，如 "Dropping [something] into [something]"。工作者录制视频后需填写 "something" 对应的具体物体名词。当前版本共有 <strong>23,137</strong> 个不同的物体名称（含大小写、词形变化等），估计实际不同物体至少有几千个。这种标注方式兼具自然语言的表达力与结构化标签的可训练性，且支持"课程学习"（curriculum learning）——随着模型性能提升，逐步增加标签复杂度。</p>
+
+    <h3>动作分组与对抗性样本（Grouping & Contrastive Examples）</h3>
+    <p>为减少数据集偏见、强迫网络区分细微动作差异，作者引入了动作分组机制：每个分组包含多个视觉上相近但语义有别的动作。例如：
+    <ul>
+      <li>"Putting something on top of something" / "Putting something next to something" / "Putting something behind something"</li>
+      <li>"Poking something so lightly that it does not or almost does not move" / "Poking something so it slightly moves" / "Poking something so that it falls over"</li>
+      <li>部分分组还包含"假装"动作（pretending actions），如 "Pretending to pour something"，要求网络仔细观察物体状态变化而非仅依赖手部动作轨迹。</li>
+    </ul>
+
+    <figure>
+      <img src="img/page5.webp" alt="视频时长分布与物体出现频率分布">
+      <figcaption>图2（左）：每类视频数量的截断分布（truncated for better visualisation），平均约 620 条/类，最少 77 条（"Poking a hole into [some substance]"），最多 986 条（"Holding [something]"）。图3（右）：视频时长直方图（2–6 秒）与15个最常见物体的出现频率分布。（来源：论文第5页）</figcaption>
+    </figure>
+
+    <h3>数据收集平台</h3>
+    <p>作者为工作者专门开发了众包平台，支持批次提交、动态分配动作类别（维持类别平衡）、视频上传与回放、自动质量检查（视频长度、唯一性）以及人工审核流程。工作者在 Amazon Mechanical Turk（AMT）接受任务后被重定向至该平台，完成后系统自动与 AMT 通信完成支付。数据集按 8:1:1 分割为训练/验证/测试集，确保同一工作者的视频只出现在同一分割中。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 基线实验</h2>
+    <p class="lead">作者在 10 类、40 类、174 类三个子集上分别评估了多种标准视频理解架构的误差率（error rate），以量化数据集的难度并为社区提供参考基准。</p>
+
+    <h3>实验设置</h3>
+    <p>预处理：以 24 fps 采样帧，resize 到 84×84 像素（使用预训练模型时按对应分辨率），时域 Gaussian 低通滤波（variance=48 pixels），有效帧率为 6 fps。训练时随机时域增强（random temporal offset 0–4）。</p>
+    <p>测试了以下五种编码方法：</p>
+    <ul>
+      <li><strong>2D-CNN + Avg</strong>：VGG-16 逐帧提取特征后平均，从零训练。</li>
+      <li><strong>Pre-2D-CNN + Avg</strong>：ImageNet 预训练 VGG-16 逐帧特征平均。</li>
+      <li><strong>Pre-2D-CNN + LSTM</strong>：ImageNet 预训练 VGG-16 + hidden size 256 的 LSTM。</li>
+      <li><strong>3D-CNN + Stack</strong>：从零训练的 3D-CNN，clip size 9 帧，4096 维特征拼接。</li>
+      <li><strong>Pre-3D-CNN + Avg</strong>：Sports-1M 预训练的 3D-CNN，在本数据集上 finetune，8 fps，16 帧 clip，5 列平均。</li>
+      <li><strong>2D+3D-CNN</strong>：最优 2D 与 3D 模型特征拼接组合。</li>
+    </ul>
+
+    <table>
+      <tr><th>方法</th><th>10 类 top-1 (%)</th><th>40 类 top-1 (%)</th><th>174 类 top-1 (%)</th><th>174 类 top-5 (%)</th></tr>
+      <tr><td>2D CNN + Avg</td><td>76.5</td><td>88.0</td><td>—</td><td>—</td></tr>
+      <tr><td>Pre-2D CNN + Avg</td><td>58.9</td><td>78.5</td><td>—</td><td>—</td></tr>
+      <tr><td>Pre-2D CNN + LSTM</td><td>54.7</td><td>79.2</td><td>—</td><td>—</td></tr>
+      <tr><td>3D CNN + Stack</td><td>39.0</td><td>70.0</td><td>—</td><td>—</td></tr>
+      <tr><td>Pre-3D CNN + Avg</td><td>52.3</td><td>77.8</td><td>—</td><td>—</td></tr>
+      <tr><td class="good">2D+3D-CNN（最优）</td><td class="good">34.1</td><td class="good">68.0</td><td class="good">88.5</td><td class="good">70.3</td></tr>
+    </table>
+
+    <div class="note"><b>注意：</b>以上为错误率（error rate，越低越好）。即便是最优的 2D+3D-CNN 组合，在全部 174 类上 top-1 错误率仍高达 88.5%，top-5 错误率 70.3%，充分说明数据集的极高难度。作者指出，即使是 top-2 性能也表明该数据集对标准架构构成重大挑战。</div>
+
+    <figure>
+      <img src="img/page9.webp" alt="误差率对比表与结果分析">
+      <figcaption>Table 4：不同数据子集（10/40/174 类）上各基线方法的 top-1/top-2/top-5 误差率（%）对比。2D+3D-CNN 组合在 10 类上取得最低 top-1 误差 34.1%，但随类别数增加难度急剧上升。（来源：论文第9页）</figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/page7.webp" alt="数据收集平台与动作分组说明">
+      <figcaption>论文第7页展示了动作分组与众包平台设计细节：通过"对抗性样本"（pretending actions）和细粒度分组，强迫模型区分视觉上相似但语义不同的动作，防止网络依赖手部位置等间接线索作弊。（来源：论文第7页）</figcaption>
+    </figure>
+
+    <h3>关键发现</h3>
+    <p>实验结果揭示了若干重要现象：首先，3D-CNN 总体优于 2D-CNN，说明时序信息对本任务至关重要；其次，ImageNet 预训练的权重反而可能带来负迁移（Pre-2D-CNN 性能弱于从零训练的 2D-CNN on 10 classes），表明 Something-Something 所需特征与静态图像分类特征存在本质差异；第三，即便是最复杂的组合模型，在全部 174 类上 top-1 误差率仍达 88.5%，"这些细微区别（通过分组、对抗样本等设计选择）使这对标准架构而言成为一个极其困难的问题"（"makes this an extraordinarily difficult problem for standard architectures"）。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>Note：</b>论文本身无单独的 Limitations 章节。以下局限性部分来自作者在 Discussion/Introduction 中明确提及（标注为"stated"），部分为从数据集设计推断（标注为"inferred"）。</div>
+    <details class="lim" open><summary>类别仅覆盖基础物理概念，难以表达复杂文化/社会场景（stated）</summary><p>作者明确指出，当前数据集聚焦简单物理概念，"the level of complexity of the current version of the dataset may be viewed approximately as 'teaching a one-year-old child'"。更复杂的语言描述和高层概念被留给未来版本通过课程学习逐步引入。</p></details>
+    <details class="lim"><summary>标签歧义导致评估困难（stated）</summary><p>作者指出 "a difficulty for both training and interpreting results is the presence of ambiguities in the labels"。即使是人类标注者，对部分细粒度类别也难以达成共识。论文建议使用 top-K 误差率来缓解这一问题，但并未根本解决。</p></details>
+    <details class="lim"><summary>视频分辨率与帧率受限，基线实验采用 84×84 低分辨率（stated/inferred）</summary><p>基线实验将视频 resize 到 84×84 像素，这与真实部署场景相差甚远。更高分辨率与更复杂时序建模的实验效果留待后续工作。</p></details>
+    <details class="lim"><summary>数据集版本为"ongoing collection"，论文发布时仍在持续扩充（stated）</summary><p>作者明确表示 "The database introduced in this paper is an ongoing collection effort. We will continue to grow and extend the dataset over time"，论文中的数字（108,499 视频，174 类）仅代表当时状态，非最终版本。</p></details>
+    <details class="lim"><summary>众包质量控制主要依赖人工审核，规模扩展存在瓶颈（inferred）</summary><p>从数据收集平台描述可以推断，尽管有自动质量检查（长度、唯一性），每份提交最终仍需人工操作员审核，随着规模扩大，这一流程的成本和效率将成为制约因素。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · Something-Something Video Database · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1706.04261">https://arxiv.org/abs/1706.04261</a>
+  </div>
+</footer>
+
+</body>
+</html>

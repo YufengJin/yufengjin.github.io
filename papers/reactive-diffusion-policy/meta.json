@@ -1,0 +1,22 @@
+{
+  "slug": "reactive-diffusion-policy",
+  "title": "Reactive Diffusion Policy: Slow-Fast Visual-Tactile Policy Learning for Contact-Rich Manipulation",
+  "arxiv_id": "2503.02881",
+  "url": "https://arxiv.org/abs/2503.02881",
+  "category": "机器人 · Robotics",
+  "keywords": [
+    "reactive diffusion policy",
+    "触觉感知",
+    "slow-fast hierarchy",
+    "diffusion policy",
+    "imitation learning",
+    "接触丰富操作",
+    "TactAR",
+    "action chunking",
+    "双臂操作",
+    "closed-loop control"
+  ],
+  "summary_zh": "提出 TactAR（低成本 AR 触觉遥操作系统）与 Reactive Diffusion Policy（RDP，slow-fast 双频视觉-触觉策略），慢策略以低频 diffusion 建模复杂轨迹，快策略以高频（<1 ms）触觉反馈实现闭环修正，在 Peeling/Wiping/Bimanual Lifting 三项接触丰富任务上大幅超越纯视觉基线。",
+  "date": "2026-06-10",
+  "source": "arxiv-html"
+}

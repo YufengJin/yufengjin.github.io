@@ -1,0 +1,11 @@
+{
+  "slug": "planet",
+  "title": "Learning Latent Dynamics for Planning from Pixels",
+  "arxiv_id": "1811.04551",
+  "url": "https://arxiv.org/abs/1811.04551",
+  "category": "机器人 · Robotics",
+  "keywords": ["model-based RL", "latent dynamics", "RSSM", "latent overshooting", "CEM planning", "pixel observations", "连续控制", "隐空间规划", "变分推断", "world model"],
+  "summary_zh": "PlaNet 提出 RSSM（兼含确定性与随机性转移分量的隐状态空间模型）并结合 latent overshooting 训练目标，在隐空间中用 CEM 进行在线规划，仅需 model-free 方法约 1/50 的环境交互即可在六个连续控制任务上达到相近或更好的性能。",
+  "date": "2026-06-10",
+  "source": "arxiv-pdf"
+}

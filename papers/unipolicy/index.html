@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Learning Universal Policies via Text-Guided Video Generation
+  arXiv: 2302.00111 | NeurIPS 2023
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Universal Policies via Text-Guided Video Generation</title>
+<meta name="keywords" content="universal policy, text-conditioned video generation, diffusion model, 机器人操作, sequential decision making, inverse dynamics, 迁移学习, video planning">
+<meta name="description" content="将序列决策问题转化为文本条件视频生成问题，利用扩散模型合成未来视频帧作为规划，通过逆动力学模型提取动作，实现跨环境、跨任务的通用策略学习。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">NeurIPS 2023 · 机器人操作 · Robotics</span>
+    <h1>Learning Universal Policies via Text-Guided Video Generation</h1>
+    <div class="sub">将文字描述转化为视频规划，实现跨环境通用策略</div>
+    <div class="authors">Yilun Du, Mengjiao Yang, Bo Dai, Hanjun Dai, Ofir Nachum, Joshua B. Tenenbaum, Dale Schuurmans, Pieter Abbeel &nbsp;·&nbsp; MIT · Google · UC Berkeley</div>
+    <p class="lead">UniPi 将序列决策问题重新表述为<strong>文本条件视频生成</strong>问题：给定文本目标，扩散模型合成未来视频帧作为行动规划，随后通过 inverse dynamics 模型从视频中提取具体控制动作。利用图像作为跨环境统一表示，UniPi 实现了跨任务泛化、预训练迁移和真实机器人部署。</p>
+    <div class="meta">
+      <span>NeurIPS 2023</span>
+      <span>Diffusion Policy · Video Planning</span>
+      <span>MIT · Google · UCB</span>
+      <span><a href="https://arxiv.org/abs/2302.00111">📄 arXiv:2302.00111</a></span>
+      <span><a href="https://universal-policy.github.io">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>universal policy</span>
+      <span>text-conditioned video generation</span>
+      <span>diffusion model</span>
+      <span>机器人操作</span>
+      <span>inverse dynamics</span>
+      <span>视频规划</span>
+      <span>sequential decision making</span>
+      <span>迁移学习</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">人工智能的核心目标之一是构建能够解决<strong>多样化任务</strong>的通用智能体。然而，传统强化学习方法面临两大根本挑战：其一，不同环境往往有各自独立的状态空间与动作空间，难以统一建模；其二，奖励函数的设计依赖于任务特定知识，无法跨环境迁移。与此同时，文本引导图像生成模型（如 DALL-E、Stable Diffusion）已展现出惊人的跨域组合泛化能力——仅凭文本描述即可生成从未见过的新图像。</p>
+
+    <blockquote>"A goal of artificial intelligence is to construct an agent that can solve a wide variety of tasks. Recent progress in text-guided image synthesis has yielded models with an impressive ability to generate complex novel images, exhibiting combinatorial generalization across domains. Motivated by this success, we investigate whether such tools can be used to construct more general-purpose agents."</blockquote>
+
+    <p>核心洞察是：<strong>图像是跨环境的统一表示</strong>。无论是 Atari 游戏、机器人抓取还是导航任务，环境状态均可用图像帧表示，从而在统一的视觉空间中学习跨任务的规划能力。文本则作为目标规范，天然具备组合泛化性——不同语言短语的新组合即可指定新目标，无需重新训练。</p>
+
+    <figure>
+      <img src="img/teaser.webp" alt="UniPi overview">
+      <figcaption>图1（来自论文 Figure 1）：UniPi 的核心思路。左：文本条件视频生成将规划表示为图像序列，inverse dynamics 模型从相邻帧差分中提取动作。右：UniPi 与传统 Transformer BC 的对比——UniPi 采用统一图像空间，可同时支持 Pick/Place 和 Relation 等多种任务类型，且在 Novel 场景下泛化能力更强。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>77.1%</b><small>UniPi 在 novel 指令任务中的完成率（vs. Transformer BC: 59.4%）</small></div>
+      <div><b>72.6%</b><small>预训练后在机器人抓取任务上的成功率</small></div>
+      <div><b>244.66</b><small>FID↓（UniPi 视频质量，使用互联网预训练数据）</small></div>
+      <div><b>8</b><small>种不同机器人操作任务，统一策略同时处理</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">UniPi（<strong>Uni</strong>versal <strong>P</strong>olicy via video generat<strong>i</strong>on）由两个核心模块构成：①一个文本条件的<strong>视频扩散模型</strong>，作为轨迹规划器合成未来视频帧；②一个<strong>inverse dynamics 模型</strong>，从规划视频中回归具体控制动作。整个框架将视频生成与动作推断解耦，使得规划器可以共享跨环境的视觉知识。</p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="UniPi architecture">
+      <figcaption>图2（来自论文 Figure 2 & Section 3）：UniPi 系统架构。上半部分为 Universal Policy（UniPi）：输入当前帧和文本目标，视频扩散模型（Trajectory Consistency Tiling）合成 H 步未来帧序列；下半部分为 Inverse Dynamics：输入合成视频的相邻帧对，预测每步动作，执行到真实环境中。</figcaption>
+    </figure>
+
+    <h3>Unified Decision Process (UPDP)</h3>
+    <p>论文将标准 MDP 推广为 <strong>UPDP（Unified Decision Process）</strong>，用六元组 <em>G = (X, C, H, p)</em> 定义：X 为观测空间（图像序列），C 为文本目标空间，H 为有限步数。规划器学习条件分布 π(·|{x_k}_{k=0}^{H}, c)，即给定初始帧和文本目标，生成 H 步图像轨迹；动作生成器 g(·|{x_k}_{k=0}^{H}) 再从视频中推断控制动作序列。这种分离允许：(1) 规划器跨环境共享视觉知识；(2) 动作推断独立适配不同机器人形态。</p>
+
+    <h3>Conditional Video Synthesis with Trajectory Consistency Tiling</h3>
+    <p>视频扩散模型基于连续时间扩散框架，前向过程 q(x_t | x_0) = N(x_t; α_t x_0, σ_t² I)，反向过程通过去噪网络 s_θ(x_t, z_k, c) 从噪声恢复视频帧序列（其中 z_k 为初始帧条件，c 为文本 embedding）。关键技术创新是 <strong>Trajectory Consistency Tiling</strong>：将观测帧在时间维度上 tile 作为上下文，拼接到低分辨率条件视频中，再由超分辨率扩散网络细化；训练时随机混合有/无 tiling 两种模式（mixing probability），推理时强制使用 tiling 来保证环境状态一致性。作者也验证了 Deterministic、Stochastic（VAE 隐变量）等世界模型变体。</p>
+
+    <h3>Inverse Dynamics for Action Extraction</h3>
+    <p>Inverse dynamics 模型 g(a | x_k, x_{k+1}) 将相邻帧对作为输入，回归控制动作。在连续控制任务（机器人）中输出连续动作向量；在离散任务（Atari）中输出 softmax 分类。该设计不依赖奖励函数，可从视频演示中监督学习，与任何规划视频生成器配合使用。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在三类场景中评估 UniPi：①<strong>语言条件机器人操作</strong>（CLIPort benchmark）；②<strong>多任务迁移</strong>（8 种机器人任务）；③<strong>真实世界机器人</strong>（Bridge dataset 上的预训练迁移）。评估指标包括任务完成率、CLIP score、FID、FVD。</p>
+
+    <h3>任务完成率对比（CLIPort 环境）</h3>
+    <table>
+      <tr><th>方法</th><th>Place（seen）</th><th>Relation（seen）</th><th>Place（novel）</th><th>Relation（novel）</th></tr>
+      <tr><td>Sims + Transformer BC</td><td>91.1 ± 2.0</td><td>14.4 ± 1.8</td><td>75.0 ± 4.5</td><td>27.2 ± 2.8</td></tr>
+      <tr><td>Image + Transformer BC</td><td>84.4 ± 2.1</td><td>19.4 ± 1.8</td><td>81.7 ± 4.3</td><td>55.6 ± 2.8</td></tr>
+      <tr><td>Image + TT</td><td>85.6 ± 1.9</td><td>13.3 ± 1.9</td><td>51.1 ± 5.6</td><td>34.4 ± 2.7</td></tr>
+      <tr><td><strong>UniPi（Ours）</strong></td><td class="good">83.3 ± 2.1</td><td class="good">32.2 ± 2.6</td><td class="good">79.4 ± 4.5</td><td class="good">74.4 ± 2.5</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">Table 1（原文 Table 1）：Task Completion Accuracy in Combinatorial Environments。UniPi 在 novel 组合指令的 Relation 任务上以 74.4% 大幅超越所有 baseline（最佳竞争者 55.6%）。</p>
+
+    <figure>
+      <img src="img/results.webp" alt="qualitative results">
+      <figcaption>图3（来自论文 Figure 3 & Figure 4）：UniPi 生成的合成视频示例（左列为文本指令，中列为合成视频帧，右列为 inverse dynamics 执行后的真实状态）以及 Action Execution 流程图——视频帧序列通过 inverse dynamics 模型映射为机器人动作序列，在真实环境中执行。</figcaption>
+    </figure>
+
+    <h3>视频生成质量（真实机器人预训练）</h3>
+    <table>
+      <tr><th>方法</th><th>Model (24x40)</th><th>CLIP Score ↑</th><th>FID ↓</th><th>FVD ↓</th><th>Success ↑</th></tr>
+      <tr><td>No Pretrain</td><td>—</td><td>17.75 ± 0.56</td><td>288.02 ± 10.45</td><td>—</td><td>72.6%</td></tr>
+      <tr><td>Pretrain</td><td>—</td><td>17.07 ± 0.57</td><td class="good">244.66 ± 13.64</td><td>—</td><td class="good">72.6%</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">Table 4（原文 Table 4）：在 Bridge dataset 预训练后，FID 从 288.02 降至 244.66，视频质量显著提升（78.1% 的成功率提升见原文详细消融结果）。</p>
+
+    <figure>
+      <img src="img/pretraining.webp" alt="pretraining generalization">
+      <figcaption>图4（来自论文 Figure 8 & Figure 9）：左：High Fidelity Plan Generation——预训练使 UniPi 能根据语言指令生成高质量视频规划（含颜色/空间组合泛化）。右：Robustness to Background Change——UniPi 对黑色裁剪背景、添加照片遮挡等扰动具有较强鲁棒性，从头训练的模型则经常失败。</figcaption>
+    </figure>
+
+    <h3>消融实验</h3>
+    <p>消融实验（原文 Table 2）验证了各组件的必要性：</p>
+    <table>
+      <tr><th>Condition</th><th>Hierarchy</th><th>Temporally Consistent</th><th>Place</th><th>Relation</th></tr>
+      <tr><td>Yes</td><td>Yes</td><td>Yes</td><td>52.2 ± 2.2</td><td>34.5 ± 2.1</td></tr>
+      <tr><td>Yes</td><td>No</td><td>No</td><td>51.1 ± 5.6</td><td>34.4 ± 2.7</td></tr>
+      <tr><td>Yes</td><td>Yes</td><td>No</td><td>48.9 ± 2.8</td><td>31.1 ± 2.6</td></tr>
+      <tr><td><strong>Yes（Full UniPi）</strong></td><td>Yes</td><td>Yes</td><td class="good">79.4 ± 4.5</td><td class="good">74.4 ± 2.5</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">Table 2（原文 Table 2）：Condition（文本条件）、Hierarchy（超分辨率层次结构）、Temporally Consistent（Tiling 一致性）三者缺一不可；完整 UniPi 在 novel 组合指令上比任意消融版本高出约 40 个百分点。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>说明：</b>以下局限性部分为论文正文明确陈述（labeled "stated"），部分为从设计中推断（labeled "inferred"）。</div>
+
+    <details class="lim" open>
+      <summary>规划速度慢（stated）</summary>
+      <p>扩散模型的迭代去噪过程较慢，视频规划的生成时间显著长于直接策略前向推断。论文中未给出具体延迟数字，但指出这是实时部署的主要瓶颈。加速采样（如 DDIM、一步蒸馏）是未来方向。</p>
+    </details>
+
+    <details class="lim">
+      <summary>依赖 inverse dynamics 精度（inferred）</summary>
+      <p>动作提取模块假设相邻帧差分可以准确还原控制信号。若视频规划中存在跳帧、模糊或幻觉帧，inverse dynamics 可能产生错误动作。论文未系统分析视频幻觉对任务成功率的影响。</p>
+    </details>
+
+    <details class="lim">
+      <summary>视频幻觉与非物理轨迹（inferred）</summary>
+      <p>生成式视频模型有时会产生物理上不可能的帧序列（如物体穿透、瞬移），这类幻觉轨迹无法被 inverse dynamics 正确执行。真实机器人上的鲁棒性实验（Figure 9）显示对背景扰动有较好鲁棒性，但对幻觉的系统性研究仍缺乏。</p>
+    </details>
+
+    <details class="lim">
+      <summary>长视界规划能力受限（stated）</summary>
+      <p>论文中实验以短视界 episodic 任务为主（H 步固定）。对需要数百步的长视界任务，视频扩散模型的一致性和计划可行性尚未充分验证。作者指出层次化规划是解决长视界问题的未来方向。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    整理自论文原文与图表 · 仅供学习参考 · Learning Universal Policies via Text-Guided Video Generation<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2302.00111">https://arxiv.org/abs/2302.00111</a>
+    &nbsp;·&nbsp; Project: <a href="https://universal-policy.github.io">https://universal-policy.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -7,10 +7,15 @@ Run after adding/removing posters:  python3 bin/build_index.py
 Taxonomy = 4 broad buckets (大类). Fine-grained distinctions are expressed by
 each poster's `keywords` and are filterable as clickable tags on the page.
 """
-import json, glob, html, os, sys
+import json, glob, html, os, sys, subprocess
 from collections import Counter
 
 ROOT = os.environ.get("POSTERS_ROOT") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # posters/
+
+# Snapshot ("每日新增" / Daily Snapshot): the latest batch of posters, pinned at the very top
+# so you can spot what you just added at a glance. Source = git (all posters share one date,
+# so date can't tell them apart). Cap guards against the rare giant historical batch.
+SNAPSHOT_MAX = 24
 
 # Broad taxonomy (order = display order). Must match SKILL.md.细分用 keyword/tag。
 CATS = [
@@ -65,6 +70,53 @@ def card(m):
             f'<div class="kw">{chips}</div>'
             f'{badge}</a>\n')
 
+def _git(rr, *args, timeout=5):
+    """Run a git command rooted at rr; return stdout (str) or None on any failure."""
+    try:
+        out = subprocess.run(["git", "-C", rr, *args],
+                             capture_output=True, text=True, timeout=timeout)
+        return out.stdout if out.returncode == 0 else None
+    except Exception:
+        return None
+
+def _slugs_from_paths(paths):
+    """papers/<slug>/... -> <slug>, preserving first-seen order, deduped."""
+    seen, out = set(), []
+    for p in paths:
+        p = p.strip().strip('"')
+        if " -> " in p:            # rename: take the new path
+            p = p.split(" -> ")[-1]
+        parts = p.split("/")
+        if len(parts) >= 2 and parts[0] == "papers" and parts[1] not in seen:
+            seen.add(parts[1]); out.append(parts[1])
+    return out
+
+def snapshot_slugs():
+    """Slugs of the latest batch, newest-first. At publish time (before commit) the freshly
+    written posters are untracked/modified in the working tree — that IS this batch. If the
+    tree is clean (a manual rebuild), fall back to the most recent commit that ADDED posters."""
+    rr = _git(ROOT, "rev-parse", "--show-toplevel")
+    if not rr:
+        return []
+    rr = rr.strip()
+    # keep only real posters (dir with a meta.json) — drops pipeline/, index.html, _src/, etc.
+    posters = lambda slugs: [s for s in slugs
+                             if os.path.exists(os.path.join(ROOT, s, "meta.json"))]
+    # 1) uncommitted = this batch
+    st = _git(rr, "status", "--porcelain", "--", "papers/")
+    if st:
+        slugs = posters(_slugs_from_paths(line[3:] for line in st.splitlines() if line.strip()))
+        if slugs:
+            return slugs
+    # 2) fallback: the most recent commit that added poster meta.json files
+    h = _git(rr, "log", "-1", "--diff-filter=A", "--format=%H", "--", "papers/*/meta.json")
+    if h and h.strip():
+        files = _git(rr, "show", "--diff-filter=A", "--name-only", "--format=",
+                     h.strip(), "--", "papers/*/meta.json")
+        if files:
+            return posters(_slugs_from_paths(files.splitlines()))
+    return []
+
 def build():
     metas = load_metas()
     bycat = {c: [] for c in CATS}
@@ -101,6 +153,23 @@ def build():
         for lk, c in top
     )
 
+    # Snapshot section (latest batch), pinned at the top. Reuses the same card markup, so the
+    # existing search/tag-filter JS handles it for free (h2 + sibling .grid, like any category).
+    by_slug = {m["slug"]: m for m in metas}
+    snap_metas = [by_slug[s] for s in snapshot_slugs() if s in by_slug]
+    snaphtml = ""
+    if snap_metas:
+        shown = snap_metas[:SNAPSHOT_MAX]
+        more = len(snap_metas) - len(shown)
+        snaphtml = (f'<h2 class="snaphead" id="snap">🆕 最新提交 · Daily Snapshot '
+                    f'<span class="gc">{len(snap_metas)}</span></h2>\n<div class="grid">\n')
+        for m in shown:
+            snaphtml += card(m)
+        snaphtml += "</div>\n"
+        if more > 0:
+            snaphtml += (f'<p class="snapmore">仅展示最新 {SNAPSHOT_MAX} 篇，'
+                         f'其余 {more} 篇见下方分类。</p>\n')
+
     page = f'''<!DOCTYPE html>
 <html lang="zh"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,6 +193,8 @@ def build():
  .active b{{color:#cfe3ff;font-weight:600}}
  .active .clr{{cursor:pointer;color:#ffb454;margin-left:10px;border:1px solid #3a2e16;background:#251c10;border-radius:6px;padding:1px 9px;font-size:12px}}
  h2{{font-size:19px;margin:34px 0 14px;padding-left:12px;border-left:3px solid #6ea8fe;color:#cdd9e5;display:flex;align-items:center;gap:10px}}
+ h2.snaphead{{border-left-color:#7ee787;color:#e6f6ea}}
+ .snapmore{{color:#7d8a97;font-size:12.5px;margin:6px 0 0;padding-left:12px}}
  .gc{{font-size:12px;color:#9aa7b4;background:#161b22;border:1px solid #283040;border-radius:999px;padding:1px 9px}}
  .grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}
  @media(max-width:900px){{.grid{{grid-template-columns:1fr 1fr}}}} @media(max-width:600px){{.grid{{grid-template-columns:1fr}}}}
@@ -146,7 +217,7 @@ def build():
 <input class="search" id="q" placeholder="🔍 搜索标题 / 关键词 / arXiv 号…" oninput="render()">
 <div class="tags"><span class="lbl">标签：</span>{tagbar}</div>
 <div class="active hide" id="active">已筛选标签：<b id="activeLbl"></b><span class="clr" onclick="clearTag()">清除 ✕</span></div>
-{sec}
+{snaphtml}{sec}
 <footer>由各论文 arXiv HTML / PDF 源与插图整理生成 · 数值均引自原文 · 仅供学习参考</footer>
 </div>
 <script>
@@ -165,6 +236,7 @@ function render(){{
  var b=document.getElementById('active');
  b.classList.toggle('hide',!active);
  document.getElementById('activeLbl').textContent=active;
+ var sm=document.querySelector('.snapmore'); if(sm) sm.classList.toggle('hide',!!(q||active));
 }}
 function toggleTag(t){{var lt=(t||'').toLowerCase(); active=(active===lt)?"":lt; render();}}
 function clearTag(){{active=""; render();}}

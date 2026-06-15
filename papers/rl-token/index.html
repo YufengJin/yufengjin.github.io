@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Paper: RL Token: Bootstrapping Online RL with Vision-Language-Action Models
+  arXiv: 2604.23073
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RL Token: 用 VLA 引导小型 Actor-Critic 实现高效在线强化学习</title>
+<meta name="keywords" content="VLA, online reinforcement learning, RL token, actor-critic, robot manipulation, 样本效率, 在线微调, imitation learning">
+<meta name="description" content="把 VLA 中与任务相关的知识压缩成可供小型 actor-critic 快速利用的状态表征，从而不用整体重训 VLA 就能用少量真机交互做高效在线 RL。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · VLA + Online RL · 2026</span>
+    <h1>RL Token</h1>
+    <div class="sub">Bootstrapping Online RL with Vision-Language-Action Models</div>
+    <div class="authors">Charles Xu, Jost Tobias Springenberg, Michael Equi, Ali Amin, Adnan Esmail, Sergey Levine, Liyiming Ke</div>
+    <p class="lead">
+      将预训练 VLA 的"任务相关知识"压缩成一个紧凑的 RL token，再用这个 token 训练轻量 actor-critic——
+      无需整体重训 VLA，仅需少量真机交互（15 分钟至 5 小时），即可大幅提升精密操作任务的成功率与速度。
+    </p>
+    <div class="meta">
+      <span>arXiv 2026-04-24</span>
+      <span>4 个真机任务</span>
+      <span>chunk size C=10 · update-to-data ratio 5:1</span>
+      <span><a href="https://arxiv.org/abs/2604.23073">📄 arXiv:2604.23073</a></span>
+      <span><a href="https://arxiv.org/pdf/2604.23073">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>online reinforcement learning</span>
+      <span>RL token</span>
+      <span>actor-critic</span>
+      <span>robot manipulation</span>
+      <span>样本效率</span>
+      <span>在线微调</span>
+      <span>imitation learning</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">
+      VLA 模型（如 π₀、OpenVLA 等）在多样化操作任务上展现出强大的泛化能力，
+      但面对需要毫米级精度的关键阶段（如螺钉安装、以太网插头插拔），其成功率往往不尽如人意。
+      强化学习（RL）理论上可以弥补这一差距，但真机 RL 面临严峻挑战：
+    </p>
+    <blockquote>
+      "every episode takes time, every failure consumes effort and wear, and meaningful adaptation often has to happen within a few hours of practice."
+    </blockquote>
+    <p>
+      现有方案的两难困境：
+    </p>
+    <ul>
+      <li><strong>直接微调整个 VLA</strong>：参数量巨大，样本效率极低，难以在少量真机数据上收敛。</li>
+      <li><strong>从头训练小型 actor-critic</strong>（如 HIL-SERL）：丢弃了 VLA 预训练的感知与策略知识，探索空间大。</li>
+      <li><strong>残差/蒸馏方案</strong>（如 PLD、DSRL）：作用于单步动作或扩散噪声空间，未能充分利用 VLA 的完整表征。</li>
+    </ul>
+    <p>
+      核心问题：<strong>如何在保留 VLA 预训练知识的同时，让轻量级 RL 在极少量真机数据上高效工作？</strong>
+    </p>
+
+    <figure>
+      <img src="img/tasks.webp" alt="4个实验任务的关键阶段">
+      <figcaption>
+        <strong>图：实验中的 4 个真机操作任务。</strong>
+        每个任务都包含一个需要高精度的关键阶段（critical phase）：
+        （上）用螺丝刀安装 M3 螺钉；（中）穿扎带；（下）插入以太网线和电源充电器。
+        VLA 在这些精密阶段成功率有限，RLT 通过在线 RL 显著提升了速度与一致性。
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>3×</b><small>关键阶段最大速度提升倍数</small></div>
+      <div><b>+45%</b><small>螺钉任务成功率提升（20%→65%）</small></div>
+      <div><b>≤5h</b><small>每任务真机 RL 训练数据量</small></div>
+      <div><b>4</b><small>真实机器人操作任务</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">
+      RLT（RL Token）分两个阶段工作：首先将 VLA 最终层的 token 嵌入压缩成一个紧凑的"RL token"
+      （通过 encoder-decoder transformer 的信息瓶颈），然后在这个 RL token 上训练一个轻量 actor-critic，
+      在 VLA 冻结的情况下用在线 RL 精细化动作。
+    </p>
+
+    <figure>
+      <img src="img/rl-token-extract.webp" alt="RL Token 提取架构">
+      <figcaption>
+        <strong>图 2：RL token 提取的架构细节。</strong>
+        RLT 在预训练 VLA 之上添加一个 encoder-decoder transformer。
+        Encoder 接收 VLA 最终层的所有 token 嵌入，并引入一个可学习的特殊 token（<em>e</em><sub>rl</sub>）；
+        Decoder 从 RL token 自回归地重建原始 VLA 嵌入，形成信息瓶颈，
+        迫使 RL token 保留足够的任务相关信息。
+      </figcaption>
+    </figure>
+
+    <h3>阶段一：RL Token 适配（Adaptation Stage）</h3>
+    <p>
+      在特定任务的遥操作演示数据上，用<strong>重建损失</strong>训练 encoder-decoder（可选同时 SFT 微调 VLA 本身）。
+      重建目标确保：<em>"the representation for the RL token must retain enough information to enable the decoder to reconstruct the inputs。"</em>
+      此阶段使用任务演示数据（每任务 1–10 小时的遥操作数据）。
+    </p>
+
+    <h3>阶段二：在线 RL（Online RL Stage）</h3>
+    <p>
+      冻结 VLA 与 RL token encoder，在 RL token 加本体感知状态（proprioceptive state）上训练轻量 actor 和 critic：
+    </p>
+    <ul>
+      <li>
+        <strong>Reference action conditioning：</strong>Actor 以 VLA 采样的动作块（action chunk）为参考输入，
+        学习"偏移量"而非从头生成动作，大幅缩小探索空间。
+      </li>
+      <li>
+        <strong>Reference action dropout：</strong>训练时随机将参考动作块替换为零向量，防止 actor 退化为单纯复制 VLA。
+      </li>
+      <li>
+        <strong>BC regularization：</strong>策略目标为最小化 <code>−Q<sub>ψ</sub>(x,a) + β‖a − ã‖²</code>，
+        其中 ã 为 VLA 参考动作块，β 控制锚定强度，防止在线 RL 走向奇怪的局部最优。
+      </li>
+      <li>
+        <strong>Chunked actions（C=10）：</strong>以 50 Hz 控制频率下 10 步为一个动作块，
+        有效缩短时序差分（TD）学习的 horizon，使稀疏奖励下的 RL 更容易收敛。
+      </li>
+      <li>
+        <strong>高 update-to-data ratio（5:1）：</strong>每收集 1 步新数据就做 5 次梯度更新，
+        在低数据在线场景下至关重要。
+      </li>
+    </ul>
+    <p>
+      数据来源为 off-policy 混合：VLA rollout、RL 探索轨迹、以及人工干预纠正数据。
+      这种分工使得"VLA 提供广泛的感知理解与动作建议，轻量 actor-critic 在任务最难的部分做在线适配"。
+    </p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">
+      在 4 个真实机器人精密操作任务上评测，使用<strong>关键阶段吞吐量</strong>
+      （throughput：每 10 分钟完成的成功次数）和成功率作为核心指标。
+      每任务关键阶段评测 50 episodes，RL 训练数据量约 15 分钟至 5 小时。
+    </p>
+
+    <figure>
+      <img src="img/throughput.webp" alt="各任务吞吐量提升结果">
+      <figcaption>
+        <strong>图 4：RLT 在各任务关键阶段的吞吐量提升。</strong>
+        RLT 在速度与一致性两方面均显著超越基础 VLA 策略，
+        在最难的关键阶段实现最高约 3× 的速度提升。
+      </figcaption>
+    </figure>
+
+    <h3>关键阶段成功率对比</h3>
+    <table>
+      <tr><th>任务</th><th>Base VLA</th><th>RLT（本文）</th><th>变化</th></tr>
+      <tr><td>Screw Installation（螺钉安装）</td><td>20%</td><td class="good">65%</td><td>+45%</td></tr>
+      <tr><td>Ethernet Insertion（以太网插入）</td><td>高（维持）</td><td class="good">维持 + 速度 ≈3×</td><td>速度大幅提升</td></tr>
+      <tr><td>Charger Insertion（充电器插入）</td><td>高（维持）</td><td class="good">维持 + 速度 ≈3×</td><td>速度大幅提升</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">
+      注：论文中成功率以图表形式呈现；Screw 任务明确报告 20%→65%；
+      其余任务以 Ethernet 任务为代表详细比较基线。
+    </p>
+
+    <h3>全任务（full-task）成功率提升</h3>
+    <table>
+      <tr><th>任务</th><th>Base VLA</th><th>RLT</th><th>提升</th></tr>
+      <tr><td>Screw Installation</td><td>基线</td><td class="good">+40%</td><td>成功率大幅提升</td></tr>
+      <tr><td>Zip Tie Fastening</td><td>基线</td><td class="good">+60%</td><td>成功率大幅提升</td></tr>
+    </table>
+
+    <h3>与基线方法对比（Ethernet 任务，图 6）</h3>
+    <figure>
+      <img src="img/baselines.webp" alt="与基线方法对比">
+      <figcaption>
+        <strong>图 6：Ethernet 任务上 RLT 与各基线的对比。</strong>
+        HIL-SERL 和 PLD 使用单步动作（非 action chunk），效果差；
+        DSRL 成功率接近 RLT 但速度提升显著更少；
+        DAgger 受限于人类遥操作速度上限。
+      </figcaption>
+    </figure>
+    <table>
+      <tr><th>方法</th><th>关键设计</th><th>表现</th></tr>
+      <tr><td>HIL-SERL</td><td>ResNet encoder，单步动作</td><td>效果差，无法有效学习</td></tr>
+      <tr><td>PLD（Probe-Learn-Distill）</td><td>冻结 VLA 上的残差单步动作</td><td>效果差，单步动作不适合</td></tr>
+      <tr><td>DSRL</td><td>扩散 VLA 潜在噪声空间 RL</td><td>成功率接近 RLT，但速度提升明显更少</td></tr>
+      <tr><td>DAgger</td><td>干预数据微调 VLA</td><td>受限于人类演示速度</td></tr>
+      <tr><td><strong>RLT（本文）</strong></td><td>RL token + chunked actor-critic</td><td class="good">成功率与速度均最优</td></tr>
+    </table>
+
+    <h3>消融实验（Ethernet 任务）</h3>
+    <figure>
+      <img src="img/ablation.webp" alt="消融实验学习曲线">
+      <figcaption>
+        <strong>图 7：训练过程中各消融变体的吞吐量曲线。</strong>
+        每个组件的去除都会导致性能下降，证明方法各部分缺一不可。
+      </figcaption>
+    </figure>
+    <table>
+      <tr><th>消融变体</th><th>影响</th></tr>
+      <tr><td>w/o RL Token（改用 ResNet-10 encoder）</td><td>吞吐量降低约 50%</td></tr>
+      <tr><td>w/o Chunks（单步动作 C=1）</td><td>无法可靠超越 VLA 基线</td></tr>
+      <tr><td>w/o BC Regularizer（β=0）</td><td>单项去除中影响最大</td></tr>
+      <tr><td>w/o Pass-Through（不输入参考动作）</td><td>学习更慢，训练过程失败更多，最终可部分恢复</td></tr>
+    </table>
+
+    <h3>涌现行为（Emergent Behavior）</h3>
+    <p>
+      RLT 在 Ethernet 任务上学到了演示数据中不存在的策略：
+      基础 VLA 表现出"探测行为"（反复接近-退出-重调整），
+      而 RLT 学会了流畅插入并主动施加压力、利用顺从性——
+      <strong>约 50% 的 RLT 关键阶段 episodes 速度快于最快的人类遥操作示范。</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note">
+      <b>说明：</b>以下限制均为论文作者明确陈述（stated）。
+    </div>
+    <details class="lim" open>
+      <summary>需要持续人工干预（Human-in-the-loop）</summary>
+      <p>
+        论文明确指出："RLT...does require additional human intervention during training
+        to provide reward signals, intervention corrections, and switching between RL
+        (for the critical phase) and the base policy (for the other phases)。"
+        奖励信号、干预纠正、阶段切换均需人工参与，无法做到完全自主。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>依赖任务阶段人工分割</summary>
+      <p>
+        需要人工识别"关键阶段"的起止点，并为该阶段提供 episode 级别的二值成功/失败标签。
+        论文将"开发全自主 RL 改进流程"列为未来工作方向。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>仍需任务特定的遥操作演示数据</summary>
+      <p>
+        适配阶段需要每任务 1–10 小时的遥操作演示数据来训练 RL token 的 encoder-decoder，
+        限制了其在无演示数据场景下的适用性。
+      </p>
+    </details>
+    <details class="lim">
+      <summary>仅在精密关键阶段上 RL 微调</summary>
+      <p>
+        当前实验仅对任务中的"关键阶段"做 RL 优化，而非端到端全任务 RL。
+        在关键阶段之外（抓取、运输等），仍沿用基础 VLA 策略。
+        这简化了问题但也限制了适用范围（<em>inferred</em>）。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · RL Token: Bootstrapping Online RL with Vision-Language-Action Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2604.23073">https://arxiv.org/abs/2604.23073</a>
+  </div>
+</footer>
+
+</body>
+</html>

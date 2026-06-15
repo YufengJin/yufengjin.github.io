@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  QR-DQN: Distributional Reinforcement Learning with Quantile Regression
+  arXiv: 1710.10044
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR-DQN: 基于分位数回归的分布式强化学习</title>
+<meta name="keywords" content="distributional reinforcement learning, quantile regression, Wasserstein metric, DQN, Atari, 分布式强化学习, value distribution, Q-learning">
+<meta name="description" content="QR-DQN 将 DQN 从估计单一期望 Q 值扩展到用分位数回归预测回报分布，在 57 个 Atari 2600 游戏上以 211% 中位数得分超越 C51 等强基线。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  .algo{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:18px 22px;font-family:monospace;font-size:14px;color:#cdd9e5;margin:18px 0;line-height:1.8}
+  .algo .comment{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">理论与优化 · Theory &amp; Optimization &nbsp;·&nbsp; AAAI 2018</span>
+    <h1>QR-DQN：基于分位数回归的分布式强化学习</h1>
+    <div class="sub">Distributional Reinforcement Learning with Quantile Regression</div>
+    <div class="authors">Will Dabney (DeepMind) &nbsp;·&nbsp; Mark Rowland (University of Cambridge) &nbsp;·&nbsp; Marc G. Bellemare (Google Brain) &nbsp;·&nbsp; Rémi Munos (DeepMind) &nbsp;·&nbsp; 2017</div>
+    <p class="lead">传统强化学习只学习期望回报（value function），而 QR-DQN 将 DQN 扩展为学习完整的回报分布（value distribution）：用 N 个等权重的 Dirac 分量参数化分位数分布，通过分位数回归（quantile regression）在 Wasserstein 度量下端到端优化，在理论与实践两方面均弥合了此前 distributional RL 存在的缺口。</p>
+    <div class="meta">
+      <span>arXiv 2017-10</span>
+      <span>57 Atari 2600 games</span>
+      <span>N = 200 quantiles</span>
+      <span><a href="https://arxiv.org/abs/1710.10044">📄 arXiv:1710.10044</a></span>
+      <span><a href="https://arxiv.org/pdf/1710.10044">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>distributional reinforcement learning</span>
+      <span>quantile regression</span>
+      <span>Wasserstein metric</span>
+      <span>DQN</span>
+      <span>value distribution</span>
+      <span>Atari</span>
+      <span>分布式强化学习</span>
+      <span>分位数回归</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机（Motivation）</h2>
+    <p class="lead">传统的 Q-learning 将回报（return）的随机性平均掉，只估计期望值。Bellemare 等人（C51）虽然提出了分布式 Bellman 算子并证明其在 Wasserstein 度量下是收缩的，却因随机梯度无法直接最小化 Wasserstein 损失而被迫退而求其次，使用 KL 散度加上启发式投影，留下了一个理论与算法之间的缺口。</p>
+    <blockquote>
+      "This negative result left open the question as to whether it is possible to devise an online distributional reinforcement learning algorithm which takes advantage of the contraction result... In this paper, we answer this question affirmatively."
+    </blockquote>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/c51_projection.webp" alt="C51 projection step">
+        <figcaption><b>Figure 1（来自论文）：</b>C51 的投影方式——将目标分布按距最近支撑点的距离反比分配质量，然后最小化投影目标与预测之间的 KL 散度。此投影步骤是启发式的，与 Wasserstein 理论结果存在脱节。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/w1_min.webp" alt="1-Wasserstein minimizing projection">
+        <figcaption><b>Figure 2（来自论文）：</b>QR-DQN 的分位数投影——用 N=4 个等权 Dirac 的分位数中点最小化 1-Wasserstein 距离。阴影面积之和即为 1-Wasserstein 误差，可以通过分位数回归以无偏随机梯度直接优化。</figcaption>
+      </figure>
+    </div>
+
+    <div class="kpi">
+      <div><b>+33%</b><small>中位数得分相对 C51 提升（Huber 分位数损失）</small></div>
+      <div><b>211%</b><small>QR-DQN-1 在 57 Atari 游戏上的中位数人类归一化得分（best agent）</small></div>
+      <div><b>915%</b><small>QR-DQN-1 平均人类归一化得分（best agent）</small></div>
+      <div><b>N=200</b><small>最优分位数数量（超参数搜索结果）</small></div>
+    </div>
+
+    <h3>为何 Wasserstein 度量具有吸引力？</h3>
+    <p>
+      Wasserstein 度量（又称 Earth Mover's Distance，EMD）是分布间的积分概率度量，能够考虑不同结果之间的距离，而 KL 散度在支撑不相交时会产生问题。Lemma 3（来自 C51）已经证明分布式 Bellman 算子 <em>T<sup>π</sup></em> 在 <em>d̄<sub>p</sub></em>（最大化形式的 p-Wasserstein 度量）下是 γ-收缩的：
+      <br>
+      <code>d̄<sub>p</sub>(T<sup>π</sup>Z₁, T<sup>π</sup>Z₂) ≤ γ · d̄<sub>p</sub>(Z₁, Z₂)</code>
+    </p>
+    <p>
+      但随机梯度下降无法直接最小化 Wasserstein 损失（Theorem 1，Bellemare et al. 2017）：对于样本经验分布，期望样本损失的最优解与真实 Wasserstein 损失的最优解通常不同。因此，C51 实际用的是 KL 散度，而非 Wasserstein，导致理论与实现脱节。QR-DQN 的核心贡献是找到了一种参数化方式，使得分位数回归可以给出 Wasserstein 的无偏随机梯度。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法（Method）</h2>
+    <p class="lead">QR-DQN 将 C51 的参数化"转置"：C51 用固定位置 + 可变概率，而 QR-DQN 用<b>固定等概率（1/N）+ 可变位置</b>。每个位置对应一个分位数中点，通过分位数回归以无偏随机梯度端到端最小化 1-Wasserstein 距离。</p>
+
+    <h3>量化分位数分布（Quantile Distribution）</h3>
+    <p>
+      对于固定的 N，定义分位数分布为：
+      <br>
+      <code>Z<sub>θ</sub>(x,a) := (1/N) Σ<sub>i=1..N</sub> δ<sub>θᵢ(x,a)</sub></code>
+      <br>
+      其中 δ<sub>z</sub> 是在 z 处的 Dirac 质量，θᵢ 是可学习的位置参数。
+      分位数中点为 <code>τ̂ᵢ = (τᵢ₋₁ + τᵢ) / 2</code>，其中 <code>τᵢ = i/N</code>。
+    </p>
+    <p>
+      相比 C51，量化分位数分布有三大优势：
+      <ul>
+        <li>不需要预先指定回报范围（<em>V<sub>min</sub>, V<sub>max</sub></em>），分布可自适应扩展或收缩；</li>
+        <li>不需要 C51 的启发式投影步骤（不存在支撑不相交的问题）；</li>
+        <li>可以用分位数回归以无偏梯度最小化 Wasserstein 损失。</li>
+      </ul>
+    </p>
+
+    <h3>分位数回归损失（Quantile Regression Loss）</h3>
+    <p>
+      对于分位数 τ ∈ [0,1]，分位数回归损失是一种非对称凸损失，过高估计以权重 τ 惩罚，过低估计以权重 1-τ 惩罚：
+      <br>
+      <code>L<sup>τ</sup><sub>QR</sub>(θ) = E<sub>Ẑ∼Z</sub>[ρ<sub>τ</sub>(Ẑ - θ)]</code>，其中 <code>ρ<sub>τ</sub>(u) = u(τ - 𝟙{u&lt;0})</code>
+    </p>
+    <p>
+      由 Lemma（w1_midpoint）可知，令 θᵢ = F<sup>-1</sup><sub>Z</sub>(τ̂ᵢ) 即可最小化 1-Wasserstein 距离。
+      因此，以下目标函数的最小化等价于最小化 W₁(Z, Z<sub>θ</sub>)：
+      <br>
+      <code>Σᵢ E<sub>Ẑ∼Z</sub>[ρ<sub>τ̂ᵢ</sub>(Ẑ - θᵢ)]</code>
+    </p>
+    <p>
+      此损失提供无偏样本梯度，可直接用随机梯度下降优化。
+    </p>
+
+    <h3>Quantile Huber 损失</h3>
+    <p>
+      标准分位数回归损失在零点不光滑，可能限制非线性函数近似的性能。论文引入 <b>Quantile Huber Loss</b>：在 [-κ, κ] 区间内用非对称平方损失，超出区间回退到标准分位数损失：
+      <br>
+      <code>ρ<sup>κ</sup><sub>τ</sub>(u) = |τ - 𝟙{u&lt;0}| · L<sub>κ</sub>(u)</code>
+      <br>
+      其中 <code>L<sub>κ</sub>(u) = u²/2 if |u|≤κ, else κ(|u| - κ/2)</code>（Huber 损失）。实验中 κ=1，记为 QR-DQN-1。
+    </p>
+
+    <h3>理论保证：收缩性</h3>
+    <p>
+      论文证明（Proposition），分位数投影 Π<sub>W₁</sub> 与分布式 Bellman 算子 T<sup>π</sup> 的组合在 d̄<sub>∞</sub> 下是 γ-收缩的：
+      <br>
+      <code>d̄<sub>∞</sub>(Π<sub>W₁</sub> T<sup>π</sup> Z₁, Π<sub>W₁</sub> T<sup>π</sup> Z₂) ≤ γ · d̄<sub>∞</sub>(Z₁, Z₂)</code>
+      <br>
+      这意味着组合算子存在唯一不动点，算法（及其随机近似）收敛到该不动点，且对所有 p ∈ [1,∞] 收敛。这是 distributional RL 在 Wasserstein 度量下端到端保证的首个实例。
+    </p>
+
+    <h3>QR-DQN 算法</h3>
+    <p>
+      QR-DQN 相对 DQN 有三处修改：
+      <ul>
+        <li>输出层大小改为 |A| × N（每个动作 N 个分位数）；</li>
+        <li>Huber 损失替换为 Quantile Huber 损失（κ=1）；</li>
+        <li>优化器从 RMSProp 改为 Adam。</li>
+      </ul>
+    </p>
+    <div class="algo">
+      <b>Algorithm: Quantile Regression Q-Learning (QR-DQN)</b><br>
+      <span class="comment"># 输入: x, a, r, x', N 个分位数数量, κ (Huber 参数)</span><br>
+      Q(x', a') := Σ<sub>j</sub> q<sub>j</sub> θ<sub>j</sub>(x', a')  <span class="comment"># 计算期望 Q 值</span><br>
+      a* ← argmax<sub>a'</sub> Q(x', a')  <span class="comment"># 贪心动作选择</span><br>
+      TΘ<sub>j</sub> ← r + γ θ<sub>j</sub>(x', a*)  ∀j  <span class="comment"># 分布式 Bellman 目标</span><br>
+      <b>输出：</b>Σ<sub>i=1..N</sub> E<sub>j</sub>[ρ<sup>κ</sup><sub>τ̂ᵢ</sub>(TΘ<sub>j</sub> - θ<sub>i</sub>(x,a))]  <span class="comment"># Quantile Huber Loss</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验（Experiments）</h2>
+    <p class="lead">
+      实验分两部分：（1）在经典的两室风格子世界（windy gridworld）上验证 QR-TD 确实学习到真实回报分布；（2）在 57 个 Atari 2600 游戏上对比 DQN、DDQN、Dueling、Prioritized Replay、C51 等 baseline，使用人类归一化得分评估。
+    </p>
+
+    <h3>Atari 2600 — Best Agent 性能</h3>
+    <p>超参数搜索结果：α = 0.00005，ε<sub>ADAM</sub> = 0.01/32，N = 200。以下数据来自论文 Table 1（200 million 训练帧，57 游戏）：</p>
+
+    <table>
+      <tr><th>算法</th><th>Mean (human-norm.)</th><th>Median (human-norm.)</th><th>&gt;Human</th><th>&gt;DQN</th></tr>
+      <tr><td>DQN</td><td>228%</td><td>79%</td><td>24</td><td>0</td></tr>
+      <tr><td>DDQN</td><td>307%</td><td>118%</td><td>33</td><td>43</td></tr>
+      <tr><td>Dueling</td><td>373%</td><td>151%</td><td>37</td><td>50</td></tr>
+      <tr><td>Prioritized</td><td>434%</td><td>124%</td><td>39</td><td>48</td></tr>
+      <tr><td>Pr. Dueling</td><td>592%</td><td>172%</td><td>39</td><td>44</td></tr>
+      <tr><td>C51</td><td>701%</td><td>178%</td><td>40</td><td>50</td></tr>
+      <tr><td>QR-DQN-0 (κ=0)</td><td>881%</td><td>199%</td><td>38</td><td>52</td></tr>
+      <tr><td class="good">QR-DQN-1 (κ=1)</td><td class="good">915%</td><td class="good">211%</td><td class="good">41</td><td class="good">54</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/combined_atari.webp" alt="Online evaluation results on 57 Atari 2600 games">
+      <figcaption><b>Figure（来自论文）：</b>在线评估结果，57 个 Atari 2600 游戏，200 million 训练样本，人类归一化得分。左：单 seed 测试性能，显示各游戏中位数。右：三 seed 平均训练性能，显示第 10、20、30、40、50 百分位数。QR-DQN 在几乎所有阶段和百分位均优于 C51。</figcaption>
+    </figure>
+
+    <h3>Value Distribution 近似误差（Windy Gridworld）</h3>
+    <p>在含随机转移的两室风格子世界中，以 1K Monte-Carlo rollout 估计真实分布，运行 TD 和 QR-TD 各 10K episodes（N=32，学习率 α=0.1）。结果显示 QR-TD 正确收敛并最小化了与 MC 估计之间的 1-Wasserstein 距离，而标准 TD 仅收敛均值。</p>
+
+    <figure>
+      <img src="img/gridworld_exp.webp" alt="Windy gridworld value distribution experiment">
+      <figcaption><b>Figure（来自论文）：</b>(a) 两室风格子世界，底行显示风力大小；蓝色路径为策略轨迹。(b,c) 起始状态 x_S 的（累积）价值分布，MC 估计 Z<sup>π</sup><sub>MC</sub> 与 QR-TD 估计 Z<sub>θ</sub> 对比。(d,e) TD 与 QR-TD 的价值函数/分布近似误差随 episode 数变化。两种算法在均值上均收敛，而 QR-TD 额外最小化了 1-Wasserstein 距离。</figcaption>
+    </figure>
+
+    <h3>Online 性能分析</h3>
+    <p>论文在 online 评估协议下得出三个关键发现：</p>
+    <ul>
+      <li>训练早期，所有算法在至少 10% 的游戏上表现低于随机；</li>
+      <li>QR-TD 在样本复杂度上的提升与 Prioritized Replay 相当，同时还改善了最终性能；</li>
+      <li>即使到 200 million 帧，仍有 10% 的游戏所有算法均低于人类水平的 10%，说明近年进展在一小部分 Atari 游戏上仍严重受限。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性（Limitations）</h2>
+    <div class="note"><b>注：</b>论文无独立的 Limitations 节。以下第 1 条为论文明确指出；第 2–4 条为从设计推断（inferred from the design）。</div>
+
+    <details class="lim" open>
+      <summary>仍需期望值进行动作选择（stated）</summary>
+      <p>
+        QR-DQN 学习了完整的回报分布，但动作选择仍依赖期望值：<code>a* = argmax<sub>a'</sub> E<sub>z∼Z(x',a')</sub>[z]</code>。论文明确指出这是当前设计的限制，并提出更丰富的策略类——基于完整分布进行风险敏感决策（risk-sensitive decision making）——是重要的未来方向。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>尚未与 DQN 改进技术结合（stated）</summary>
+      <p>
+        论文测试的是"纯"QR-DQN，未叠加 Dueling architecture、Prioritized Replay 等近年对 DQN 的改进。论文明确指出："A natural next step would be to combine QR-DQN with the non-distributional methods found in Table 1。"（QR-DQN 在 54 个游戏上超过 DQN，但未必在所有改进组合上达到最优。）
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>收缩性仅在 d̄<sub>∞</sub> 下成立，p&lt;∞ 时不直接成立（inferred）</summary>
+      <p>
+        论文证明了 Π<sub>W₁</sub> T<sup>π</sup> 在 d̄<sub>∞</sub> 下是收缩的，但明确指出 "the contraction property does not directly hold for p &lt; ∞"（详见附录 Lemma）。这意味着理论保证最强在 ∞-Wasserstein 意义下成立，1-Wasserstein 下的收敛性需要额外论证。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>N 是额外超参数，计算成本随 N² 增长（inferred）</summary>
+      <p>
+        QR-DQN 将输出层从 |A| 扩展到 |A|×N，且损失对所有 N² 对 (θᵢ, TΘⱼ) 求和，计算与内存成本均随 N² 增长。最优 N=200 是通过在五个训练游戏上超参数搜索得到的，增加了调参代价。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · QR-DQN · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1710.10044">https://arxiv.org/abs/1710.10044</a>
+  </div>
+</footer>
+
+</body>
+</html>

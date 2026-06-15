@@ -1,0 +1,20 @@
+{
+  "slug": "iqn",
+  "title": "Implicit Quantile Networks for Distributional Reinforcement Learning",
+  "arxiv_id": "1806.06923",
+  "url": "https://arxiv.org/abs/1806.06923",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": [
+    "distributional RL",
+    "quantile regression",
+    "implicit quantile network",
+    "risk-sensitive policy",
+    "distortion risk measure",
+    "Atari benchmark",
+    "分布强化学习",
+    "分位数回归"
+  ],
+  "summary_zh": "IQN 将 QR-DQN 的固定分位点集合扩展为连续量化函数：网络以状态、动作和随机采样的分位数水平 τ 为输入，输出对应的回报分位值，隐式表示完整回报分布，并支持基于 distortion risk measure 的风险敏感策略，在 Atari-57 上的 human-gap 指标优于 Rainbow。",
+  "date": "2026-06-15",
+  "source": "arxiv-eprint"
+}

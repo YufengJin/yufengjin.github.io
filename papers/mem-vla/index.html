@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER TEMPLATE — self-contained, no dependencies. 中文海报，无 EN 版本。
+  Fill every {{PLACEHOLDER}} and the section bodies. Reference figures as img/<name>.png.
+  Body text in 中文; keep academic terms / names / metrics / quoted phrases in English.
+  REQUIRED: <meta name="keywords"> + visible .kw chips + arXiv link (header & footer).
+  Accent color: change --acc to re-theme (e.g. #6ea8fe blue, #4fd1c5 teal, #f59e0b amber).
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEM: Multi-Scale Embodied Memory for Vision Language Action Models</title>
+<meta name="keywords" content="VLA, multi-scale memory, long-horizon manipulation, video encoder, language memory, 机器人操作, 长时程任务, space-time separable attention">
+<meta name="description" content="将 multi-scale memory 引入 VLA：视觉短期记忆处理局部操作细节，压缩后的语言长期记忆跟踪任务进展与高层上下文，从而提升长时程任务表现。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2026.03</span>
+    <h1>MEM: Multi-Scale Embodied Memory for Vision Language Action Models</h1>
+    <div class="sub">将 multi-scale memory 引入 VLA，突破长时程操作任务的记忆瓶颈</div>
+    <div class="authors">Marcel Torne, Karl Pertsch, Homer Walke, Kyle Vedder, Suraj Nair, Brian Ichter, Allen Z. Ren, Haohuan Wang, Jiaming Tang, Kyle Stachowicz, Karan Dhabalia, Michael Equi, Quan Vuong, Jost Tobias Springenberg, Sergey Levine, Chelsea Finn, Danny Driess</div>
+    <p class="lead">MEM 为 VLA 模型引入两级记忆机制：一个高效的视频编码器提供短时观测记忆（short-horizon video memory），使策略能感知近几十秒内的局部操作细节；一个基于语言的长时记忆（long-horizon language memory）由高层策略维护，通过 LLM 压缩语义事件，跟踪任务进展与高层上下文。两者结合使机器人策略能完成长达 <strong>15 分钟</strong>的复杂操作任务，同时保持实时推理延迟。</p>
+    <div class="meta">
+      <span>cs.RO · cs.LG</span>
+      <span>提交：2026-03-04</span>
+      <span>Physical Intelligence (π) + UCB + CMU</span>
+      <!-- REQUIRED: link back to the source paper -->
+      <span><a href="https://arxiv.org/abs/2603.03596">📄 arXiv:2603.03596</a></span>
+      <span><a href="https://www.pi.website/research/memory">🌐 Project Page</a></span>
+    </div>
+    <div class="kw">
+      <span>VLA</span>
+      <span>multi-scale memory</span>
+      <span>long-horizon manipulation</span>
+      <span>video encoder</span>
+      <span>language memory</span>
+      <span>机器人操作</span>
+      <span>space-time separable attention</span>
+      <span>长时程任务</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">现有 VLA 模型（如 π₀.₆）在处理单步或短时操作任务时表现出色，但面对需要数分钟乃至十余分钟记忆的长时程任务时，性能急剧下降。它们缺乏一种既能捕捉细粒度局部操作动作、又能跟踪宏观任务状态的记忆机制。</p>
+    <blockquote>"Effective robotic memory should operate across multiple levels of abstraction: a short-horizon memory to track recent observations at a fine-grained level, and a long-horizon memory to track the state of a task at a semantic level." — 论文核心论点</blockquote>
+    <figure>
+      <img src="img/teaser.webp" alt="MEM system overview">
+      <figcaption><strong>Figure 0：MEM 系统概览。</strong>MEM 通过两个核心组件为 VLA 赋予长时程记忆：（1）高层策略通过更新语言记忆 mₜ 跟踪长时程语义事件（左侧，语言长时记忆）；（2）低层策略通过高效视频编码器处理短时观测记忆（右侧，视频短时记忆）。</figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>15 min</b><small>支持的最长任务记忆时长</small></div>
+      <div><b>54 s</b><small>短时视频记忆覆盖的观测时长（推理时）</small></div>
+      <div><b>42</b><small>Recipe Setup 训练菜谱数（5 道菜在未见场景评测）</small></div>
+      <div><b>4th</b><small>每第 4 层插入一次 temporal attention</small></div>
+    </div>
+    <p>核心挑战在于：简单地将多帧图像拼接送入 VLA backbone 会导致推理延迟急剧增加，无法满足实时控制需求；而仅依赖文本记忆则无法捕捉精细的操作细节（如擦拭表面的时间长短、当前抓握状态等）。MEM 通过两级异构记忆的组合解决这一矛盾。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">MEM 由两个互补的记忆模块组成：基于高效视频编码器的<strong>短时观测记忆</strong>（short-horizon video memory）处理近期细粒度观测；基于 LLM 压缩的<strong>长时语言记忆</strong>（long-horizon language memory）在更长的时间跨度上追踪任务语义状态。两者分别由低层策略和高层策略使用。</p>
+
+    <h3>短时记忆：高效视频编码器（Short-Horizon Video Memory）</h3>
+    <figure>
+      <img src="img/architecture.webp" alt="Video encoder architecture">
+      <figcaption><strong>Figure 2：视频编码器架构。</strong>在标准 ViT 的基础上，每隔第 4 层将空间 attention 替换为同时包含空间与时序上下文的 causal-temporal attention（黑色箭头），其余层保持双向空间 attention（白色箭头）。过去帧的 tokens 在 ViT 上层被丢弃，仅将当前帧的 token 表示传入 VLA backbone，从而压缩 token 数量。</figcaption>
+    </figure>
+    <p>视频编码器将标准 ViT 扩展为视频输入：在不引入任何新可学习参数的前提下（仅修改 attention 模式 + 固定正弦时序位置编码），每隔第 4 层插入一次 <em>space-time separable attention</em>。该设计将计算复杂度从朴素多帧拼接的 O(n²K²) 降至 O(Kn² + nK²)，其中 K 为帧数，n 为每帧 patch 数。</p>
+    <ul>
+      <li><strong>Pre-training：</strong>使用 6 帧观测序列（5 帧历史 + 当前帧），帧间隔 1 秒；在机器人遥操作数据、策略 rollout 数据、视频语言任务（视频描述等）的混合数据集上预训练。</li>
+      <li><strong>Post-training：</strong>灵活扩展至最多 18 帧、覆盖 54 秒的观测记忆，无需重新训练 backbone 结构。</li>
+      <li><strong>推理延迟控制：</strong>过去帧 tokens 在 ViT 上层被丢弃，只向 VLA backbone 传递当前帧的 patch 表示，保持实时推理吞吐。</li>
+    </ul>
+    <figure>
+      <img src="img/latency.webp" alt="Latency comparison">
+      <figcaption><strong>Figure 1：推理延迟对比（π₀.₆，4路摄像头，单张 NVIDIA H100 GPU）。</strong>朴素地增加帧数会使推理延迟急剧上升，超出实时控制阈值；MEM 的高效视频编码器在使用多帧历史时仍保持在可接受延迟范围内。</figcaption>
+    </figure>
+
+    <h3>长时记忆：压缩语言记忆（Long-Horizon Language Memory）</h3>
+    <p>高层策略维护一个自然语言记忆 mₜ，由一个 off-the-shelf 预训练 LLM 在每个子任务结束后负责更新与压缩。LLM 接收子任务指令序列及其成功/失败标记，输出精炼后的语言记忆，去除冗余细节，仅保留对未来决策有用的语义信息。</p>
+    <blockquote>"Instead of remembering the precise attributes of all objects that were manipulated ('I put a light green bowl, a dark blue bowl and a bright yellow bowl into the top right cabinet'), it is often sufficient to just remember where the bowls were placed ('I placed three bowls in the top right cabinet')." — 论文对语言压缩机制的举例说明</blockquote>
+    <p>这种压缩设计还解决了<strong>训练-推理分布偏移</strong>问题：训练时每个子任务指令通常只出现一次，而推理时策略可能反复失败并重试同一子任务，导致朴素拼接语言指令的方式分布失配。压缩记忆始终维持一个紧凑、语义丰富的历史摘要，避免了这一问题。</p>
+    <figure>
+      <img src="img/tasks.webp" alt="Long-horizon tasks">
+      <figcaption><strong>Figure 3：评测任务示例。</strong>MEM 在多个挑战性长时程灵巧操作任务上测试，包括 recipe setup（按菜谱摆放食材）、kitchen cleanup（厨房清理）、grilled cheese sandwich 制作等，任务时长最长可达 15 分钟。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">实验在真实机器人平台上进行，评估 MEM 在长时程任务、in-context 适应、核心记忆能力及非记忆任务（基线对比）四个维度的表现。基线包括：π₀.₆（无记忆）、Pool Memory（历史帧池化）、Proprio Memory（本体感知记忆）以及 Naive Language Memory（未压缩的语言拼接）。</p>
+
+    <h3>长时程任务表现（Figure 4）</h3>
+    <figure>
+      <img src="img/results_longhorizon.webp" alt="Long-horizon task results">
+      <figcaption><strong>Figure 4：长时程操作任务性能对比。</strong>无记忆的 π₀.₆ 在 recipe setup 和 kitchen cleanup 上成功率极低（约 10-20%）。完整 MEM（短时视频记忆 + 长时语言记忆）显著优于所有消融变体，验证了两级记忆协同的必要性。朴素语言记忆（未压缩）因训练-推理分布偏移而性能受限。</figcaption>
+    </figure>
+    <p>消融分析揭示了两级记忆各自的贡献：</p>
+    <ul>
+      <li><strong>去除视频短时记忆：</strong>策略难以判断已擦拭表面的时长或盘子是否已拿起，导致性能下降。</li>
+      <li><strong>去除语言长时记忆：</strong>策略无法跟踪任务进度（如哪些子任务已完成），成功率进一步下降。</li>
+      <li><strong>朴素语言拼接（无压缩）：</strong>面临训练-推理分布偏移，性能介于有无记忆之间。</li>
+    </ul>
+
+    <h3>In-Context 操作策略适应（Figure 5）</h3>
+    <figure>
+      <img src="img/results_adaptation.webp" alt="In-context adaptation results">
+      <figcaption><strong>Figure 5：In-context 操作策略适应。</strong>MEM 策略能根据历史失败经验调整操作策略（如调整抓握高度或开门方向）。无记忆的策略则会反复执行相同的失败动作。</figcaption>
+    </figure>
+
+    <h3>核心记忆能力基准（Figure 6）</h3>
+    <figure>
+      <img src="img/results_memory.webp" alt="Memory capabilities comparison">
+      <figcaption><strong>Figure 6：核心记忆能力对比（局部可观测性处理、计数、视觉记忆）。</strong>无记忆的 VLA 在所有记忆任务上均表现不佳（例如从 4 个抽屉中找到物体的成功率接近随机概率 25%）。仅 MEM 在全部核心记忆能力上均表现良好；Pool Memory 和 Proprio Memory 在部分能力上有一定效果，但无法全面覆盖。</figcaption>
+    </figure>
+
+    <h3>非记忆任务上的基线对等（Figure 8）</h3>
+    <p>MEM 在不需要记忆的灵巧操作任务（衬衫折叠、搭建积木、收拾餐桌等）上，与 state-of-the-art 无记忆 VLA π₀.₆ 表现持平，表明引入记忆模块不会损害模型的通用操作能力。</p>
+
+    <h3>预训练的重要性（Figure 7）</h3>
+    <p>在多样化机器人及非机器人视频数据上进行预训练对 MEM 的记忆利用能力至关重要：仅进行 post-training 而跳过预训练的 MEM，平均任务成功率约为 45%，而完整预训练后约为 75%，差距显著。这表明视频编码器需要从广泛的视频-语言数据中学习通用的时序表征。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note"><b>注：</b>论文正文无独立的 Limitations 章节。以下各点部分来自论文结论段的展望性表述（标注为<em>作者明确提及</em>），其余为从方法设计中合理推断（标注为<em>设计推断</em>）。</div>
+    <details class="lim" open><summary>单 Episode 内的记忆上限（作者明确提及）</summary><p>论文结论明确指出："We believe that MEM is only the first step towards building robot policies that can effectively manage very long-horizon memory. Future work can explore how we can scale memory to last beyond the horizon of a single episode, to span weeks, months, or years of deployment." 目前 MEM 的记忆仅覆盖单次任务执行期间，无法跨 episode 积累经验。</p></details>
+    <details class="lim"><summary>语言记忆依赖高层策略的子任务分割（设计推断）</summary><p>长时语言记忆的更新由高层策略触发，需要子任务级别的语言标注（成功/失败标记）。这对标注质量和高层策略的可靠性有一定依赖，若子任务识别出错，记忆更新可能引入噪声。</p></details>
+    <details class="lim"><summary>视频编码器预训练数据需求（设计推断）</summary><p>实验表明，跳过预训练会导致约 30% 的性能下降。这意味着 MEM 的有效性高度依赖多样化机器人及非机器人视频数据的预训练，在数据受限场景下可能难以复现相同效果。</p></details>
+    <details class="lim"><summary>持续学习能力尚待探索（作者明确提及）</summary><p>论文展望未来工作将探索"allow us to build robots that learn continually at deployment time"，表明 MEM 当前版本尚不支持部署时在线学习与记忆更新。</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · MEM: Multi-Scale Embodied Memory for Vision Language Action Models · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2603.03596">https://arxiv.org/abs/2603.03596</a>
+  </div>
+</footer>
+
+</body>
+</html>

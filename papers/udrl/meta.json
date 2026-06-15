@@ -1,0 +1,11 @@
+{
+  "slug": "udrl",
+  "title": "Training Agents using Upside-Down Reinforcement Learning",
+  "arxiv_id": "1912.02877",
+  "url": "https://arxiv.org/abs/1912.02877",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": ["upside-down reinforcement learning", "UDRL", "behavior function", "supervised learning for RL", "command-conditioned policy", "hindsight relabeling", "无值函数 RL", "sparse reward"],
+  "summary_zh": "UDRL 将强化学习「倒置」：不预测值函数，而是将期望奖励与期望步长作为输入命令，用纯监督学习训练行为函数直接映射命令到动作；在多个基准任务上可与甚至超越传统 RL 算法，尤其在稀疏延迟奖励场景下表现突出。",
+  "date": "2026-06-15",
+  "source": "arxiv-latex"
+}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--
+  OmniXtreme 中文海报 — 自包含，无依赖。
+  原文: https://arxiv.org/abs/2602.23843
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OmniXtreme: Breaking the Generality Barrier in High-Dynamic Humanoid Control</title>
+<meta name="keywords" content="humanoid whole-body control, flow matching, residual RL, actuation-aware, motion tracking, fidelity-scalability trade-off, sim-to-real, 人形机器人运控">
+<meta name="description" content="先用 flow matching 学到可扩展的统一运动先验，再用 actuation-aware residual RL 把它修到真机可执行，从而打破高动态 humanoid tracking 里的 fidelity-scalability trade-off。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">RSS 2026 · 机器人 · Robotics</span>
+    <h1>OmniXtreme: Breaking the Generality Barrier in High-Dynamic Humanoid Control</h1>
+    <div class="sub">先学可扩展统一运动先验，再做 actuation-aware 残差强化精调，打破 fidelity–scalability trade-off</div>
+    <div class="authors">Yunshen Wang*, Shaohang Zhu*, Peiyuan Zhi, Yuhan Li, Jiaxin Li, Yong-Lu Li, Yuchen Xiao, Xingxing Wang, Baoxiong Jia†, Siyuan Huang† · arXiv 2602.23843 · 2026.02.27</div>
+    <p class="lead">当前 humanoid 运动追踪面临"泛化壁垒"：motion library 规模一大，追踪保真度就会崩溃，尤其在高动态动作上。OmniXtreme 将通用运动技能学习与 sim-to-real 物理精调解耦——Phase 1 用 DAgger-based flow matching 聚合多专家先验，Phase 2 用 actuation-aware residual RL 将策略对齐到真机执行约束，在 Unitree G1 上以单一统一策略完成翻跟头、空翻、霹雳舞、武术等极限动作，157 次真机实验综合成功率 91.08%。</p>
+    <div class="meta">
+      <span>cs.RO · RSS 2026</span>
+      <span>Unitree G1 humanoid</span>
+      <span>50 Hz 实机控制 · 10 ms 端到端延迟</span>
+      <span><a href="https://arxiv.org/abs/2602.23843">📄 arXiv:2602.23843</a></span>
+      <span><a href="https://extreme-humanoid.github.io/">🌐 Project page</a></span>
+    </div>
+    <div class="kw">
+      <span>humanoid whole-body control</span>
+      <span>flow matching</span>
+      <span>residual RL</span>
+      <span>actuation-aware</span>
+      <span>motion tracking</span>
+      <span>fidelity-scalability trade-off</span>
+      <span>sim-to-real</span>
+      <span>人形机器人运控</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">高保真运动追踪是检验 humanoid 运动技能泛化能力的"终极试金石"。但当 motion library 覆盖越来越多样的风格、接触状态与节奏模式时，追踪质量反而系统性下降，高动态动作尤甚。</p>
+    <blockquote>"when we scale to larger, more heterogeneous motion libraries spanning diverse styles, contact regimes, and timing modes, motion tracking quality tends to degrade. Controllers become conservative and 'average,' break on the hardest motions, or prove brittle to the small deviations that inevitably occur in sim-to-real transfer."</blockquote>
+    <p>作者将这一"泛化壁垒"归因于两个叠加障碍：</p>
+    <ul>
+      <li><strong>学习瓶颈（learning bottleneck）</strong>：现有方法依赖简单 MLP，在多运动联合 RL 训练中存在梯度干扰，导致策略向"保守均值"退化，在高动态行为上选择性失败。</li>
+      <li><strong>物理可执行性瓶颈（physical executability bottleneck）</strong>：即便仿真中追踪保真，真机部署时仍因建模缺失（力矩–速度特性、速度相关力矩损耗、再生制动等致动器非线性）而快速失稳。</li>
+    </ul>
+    <figure>
+      <img src="img/teaser.webp" alt="OmniXtreme teaser — pipeline overview">
+      <figcaption><strong>图 1（Figure 2 原文）：OmniXtreme 总览。</strong>
+        (a) 预训练阶段：通过 DAgger-based Flow Matching，将多个运动追踪专家的行为聚合进一个统一 base policy；
+        (b) 后训练阶段：冻结 base policy，在严格电机约束、大规模域随机化和 power-safety 正则化下优化残差策略以跨越 sim-to-real gap；
+        (c) 板载部署：整个推理流水线经 TensorRT 加速，完全在机器人板载 Orin NX 上运行，端到端延迟 10 ms，控制频率 50 Hz。
+      </figcaption>
+    </figure>
+    <div class="kpi">
+      <div><b>91.08%</b><small>真机综合成功率（157 次）</small></div>
+      <div><b>96.36%</b><small>翻跟头（Flip）成功率（55 次）</small></div>
+      <div><b>30.93 mm</b><small>仿真 MPJPE（LaFAN1 + XtremeMotion）</small></div>
+      <div><b>10 ms</b><small>板载推理端到端延迟</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">OmniXtreme 将多运动控制分为两个解耦阶段：Phase 1 以高容量 flow matching 模型建立可扩展的统一运动先验，绕开干扰密集的多运动 RL 优化；Phase 2 冻结 base policy，用轻量级残差策略在 actuation-aware 约束下对齐真机特性。</p>
+
+    <h3>Phase 1：基于 DAgger 的 Flow Matching 预训练</h3>
+    <p>首先对每条运动单独训练 PPO 专家策略（teacher），数据来源涵盖 LAFAN1、AMASS、MimicKit 和 Reallusion，运动重定向至 Unitree G1。随后用 DAgger 从专家处蒸馏出统一 flow matching policy：</p>
+    <blockquote>ℒ<sub>FM</sub>(θ) = 𝔼[‖v<sub>θ</sub>(a<sub>t</sub>, t, o) − (ε − a<sub>expert</sub>)‖²]</blockquote>
+    <p>速度场学习目标为 u = ε − a<sub>expert</sub>，推理时通过前向 Euler 积分从噪声重建动作。预训练阶段采用"保真度保护型域随机化"（较小噪声水平，如关节位置噪声 ±0.01 rad），以避免对 base policy 的精度造成损害。高容量架构（Transformer/大 MLP）相比普通 MLP 有更强的容量可扩展性。</p>
+
+    <h3>Phase 2：Actuation-Aware 残差后训练</h3>
+    <p>冻结 base policy 后，用轻量级 MLP 残差策略叠加修正动作：<em>a = a<sub>flow</sub> + a<sub>res</sub></em>，经 PPO 优化。该阶段引入三项针对真机约束的关键机制：</p>
+    <ul>
+      <li><strong>激进域随机化（ADR）</strong>：标准随机化幅度放大至 50%，包括初始位姿噪声 ±0.15 rad、线速度 xy ±0.75 m/s / z ±0.3 m/s、角速度（滚仰）±0.78 rad/s /（偏航）±1.17 rad/s；引入地形面噪声与竖直台阶放置；终止阈值放宽 1.5×。</li>
+      <li><strong>Power-Safe 致动正则化</strong>：对膝关节负机械功率施加惩罚，防止再生制动引发过流保护：ℒ<sub>neg-power</sub> = Σ<sub>j</sub>(max(−P<sub>j</sub> − P<sub>db</sub>, 0) / K)²。</li>
+      <li><strong>力矩–速度约束（Torque-Speed Constraints）</strong>：引入分段线性力矩上限（|v| &lt; v<sub>x1</sub> 时为 τ<sub>max,0</sub>，线性降至 v<sub>x2</sub> 处为 0），叠加非线性摩擦模型：τ<sub>applied</sub> = τ<sub>clipped</sub> − (μ<sub>s</sub>·tanh(v/v<sub>act</sub>) + μ<sub>d</sub>·v)，精确模拟真实致动器包络。</li>
+    </ul>
+
+    <div class="grid2">
+      <figure>
+        <img src="img/scalability.webp" alt="Fidelity-scalability trade-off curve">
+        <figcaption><strong>Figure 3：Fidelity–scalability trade-off。</strong> 随运动多样性与难度逐步扩大，OmniXtreme 在固定前 10 条运动集上保持较高追踪成功率；从零训练的 RL 在超过某临界规模后出现"急剧鲁棒性崩溃"。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/capacity.webp" alt="Capacity scaling curve">
+        <figcaption><strong>Figure 4：Capacity scaling。</strong> OmniXtreme 随模型容量增加有更强的追踪保真度增益，"而传统 MLP 控制器更早饱和"（原文引用）。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">评估在 Unitree G1 humanoid 上进行，仿真使用 LAFAN1 + XtremeMotion（约 60 条高动态运动）数据集，评估指标包括 MPJPE (mm)、Δvel (mm/frame)、Δacc (mm/frame²) 和 成功率（Succ）。真机实验涵盖 157 次试验、5 类技能。</p>
+
+    <h3>Table II · 可扩展高保真运动追踪（仿真）</h3>
+    <table>
+      <tr>
+        <th>方法</th>
+        <th>LaFAN1+XtremeMotion MPJPE↓</th>
+        <th>成功率↑</th>
+        <th>XtremeMotion MPJPE↓</th>
+        <th>成功率↑</th>
+      </tr>
+      <tr>
+        <td>From-scratch RL</td>
+        <td>47.95</td>
+        <td>82.95%</td>
+        <td>54.19</td>
+        <td>79.45%</td>
+      </tr>
+      <tr>
+        <td>Specialist → Unified MLP</td>
+        <td>33.35</td>
+        <td>94.91%</td>
+        <td>43.43</td>
+        <td>89.22%</td>
+      </tr>
+      <tr>
+        <td>OmniXtreme（仅预训练）</td>
+        <td>32.65</td>
+        <td>97.17%</td>
+        <td>37.11</td>
+        <td>95.16%</td>
+      </tr>
+      <tr>
+        <td class="good">OmniXtreme（完整）</td>
+        <td class="good">30.93</td>
+        <td class="good">98.54%</td>
+        <td class="good">36.17</td>
+        <td class="good">95.64%</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;">另：泛化到未见运动集成功率 89.54%（OmniXtreme 完整版）。</p>
+
+    <h3>Table III · 真机评估（Unitree G1，157 次试验）</h3>
+    <table>
+      <tr><th>技能类别</th><th>试验次数</th><th>成功率</th></tr>
+      <tr><td>Flip（翻跟头）</td><td>55</td><td class="good">96.36%</td></tr>
+      <tr><td>Handspring（手翻）</td><td>35</td><td>88.57%</td></tr>
+      <tr><td>Acrobatics（杂技）</td><td>15</td><td>80.00%</td></tr>
+      <tr><td>Breakdance（霹雳舞）</td><td>22</td><td>86.36%</td></tr>
+      <tr><td>Martial arts（武术）</td><td>30</td><td>93.33%</td></tr>
+      <tr><td><strong>合计</strong></td><td><strong>157</strong></td><td class="good"><strong>91.08%</strong></td></tr>
+    </table>
+
+    <figure>
+      <img src="img/qualitative.webp" alt="Qualitative real-world rollouts">
+      <figcaption><strong>Figure 5：定性结果。</strong> OmniXtreme 在真机上产出的代表性 rollout，涵盖翻跟头、杂技、霹雳舞和武术等定性差异显著的全身动作，"展示了在快速接触切换和时序敏感阶段下的稳定协调执行"（原文）。</figcaption>
+    </figure>
+
+    <h3>消融实验（Table IV）</h3>
+    <p>对后训练各机制的逐步消融（真机可执行性）显示：</p>
+    <ul>
+      <li><strong>None（仅 base 预训练策略）</strong>：Flip 和 Breakdance 均不稳定，Acrobatics 完全失败。</li>
+      <li><strong>+Motor Constraints（MC）</strong>：Flip 稳定，Breakdance 仍不稳定，Acrobatics 仍失败。</li>
+      <li><strong>+ADR</strong>：Flip 和 Breakdance 稳定，Acrobatics 部分成功（主要由 power-safety 保护触发失败）。</li>
+      <li><strong>完整版（MC + ADR + PS）</strong>：三类技能全部稳定执行。</li>
+    </ul>
+    <p>结论："不同类别的高动态动作具有各自独特的失败模式，每种执行导向机制各自解决了互补的方面。"</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文在附录 V-M "Failure Cases and Discussion" 中给出了明确讨论；主论文结论节亦有展望，以下内容均为<em>作者明确陈述</em>。</div>
+
+    <details class="lim" open>
+      <summary>极限着陆阶段的硬件保护触发</summary>
+      <p>真机部署中观察到少量失败案例，"主要发生在某些极限动作的高冲量着陆阶段，巨大的瞬态制动载荷触发了硬件保护机制，包括电机过流、功率限制或电池欠压事件"（原文）。这些动作在仿真和 sim-to-sim 中均可稳定执行，表明失败并非追踪精度或平衡丧失所致，而是揭示了"仿真致动模型与极端动态条件下真实硬件能力包络之间的残余差距"（原文）。</p>
+    </details>
+    <details class="lim">
+      <summary>残差后训练对 base policy 全容量利用的限制</summary>
+      <p>当前后训练冻结 flow-based base policy，仅训练轻量级残差 MLP。"虽然这种设计提供了稳定性和采样效率，但也可能限制大型 flow-based 模型的全部表示容量被进一步适应到硬件特定约束的程度"（原文）。未来可探索直接微调完整 base policy 的后训练策略。</p>
+    </details>
+    <details class="lim">
+      <summary>致动器与电源系统建模的不完整性</summary>
+      <p>作者指出，进一步提升极限动作鲁棒性需要"对真实致动器和电源系统限制进行更全面的建模，包括力矩、速度、电流、功率流和电池电压动态的耦合效应，这些在仿真中仍难以精确捕捉"（原文）。</p>
+    </details>
+    <details class="lim">
+      <summary>数据多样性与模型容量的联合扩展</summary>
+      <p>结论节指出，"联合扩展数据多样性和模型容量对于增强全身 humanoid 运动技能的泛化能力至关重要"（原文），是未来研究的主要方向。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    整理自论文原文与图表，仅供学习参考 · OmniXtreme: Breaking the Generality Barrier in High-Dynamic Humanoid Control<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2602.23843">https://arxiv.org/abs/2602.23843</a> &nbsp;|&nbsp;
+    Project: <a href="https://extreme-humanoid.github.io/">extreme-humanoid.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

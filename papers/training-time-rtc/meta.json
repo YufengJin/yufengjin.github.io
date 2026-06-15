@@ -1,0 +1,11 @@
+{
+  "slug": "training-time-rtc",
+  "title": "Training-Time Action Conditioning for Efficient Real-Time Chunking",
+  "arxiv_id": "2512.05964",
+  "url": "https://arxiv.org/abs/2512.05964",
+  "category": "机器人 · Robotics",
+  "keywords": ["实时动作块执行", "action chunking", "real-time chunking", "VLA", "flow matching", "inference acceleration", "training-time conditioning", "机器人控制"],
+  "summary_zh": "把 RTC 里原本推理时做的 action-prefix inpainting，变成在训练阶段的学习：训练时随机模拟推理延迟 d，将 ground-truth prefix 动作作为条件（τ=1.0，无噪声），只对 postfix 做去噪监督，使模型在部署时直接做标准 forward pass 即可连续执行，彻底消除推理时的 inpainting 开销。",
+  "date": "2026-06-15",
+  "source": "arxiv-html"
+}

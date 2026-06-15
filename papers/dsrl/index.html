@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  DSRL: Diffusion Steering via Reinforcement Learning
+  arXiv: 2506.15799
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSRL: 用潜在空间强化学习引导扩散策略</title>
+<meta name="keywords" content="diffusion policy, reinforcement learning, latent noise space, 机器人控制, policy adaptation, behavioral cloning, sample efficiency, 真实机器人实验">
+<meta name="description" content="DSRL 在扩散策略的潜在噪声空间中运行强化学习，无需修改策略权重即可高效适配预训练策略，在真实机器人任务中以极少样本显著提升成功率。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">机器人 · Robotics · arXiv 2025</span>
+    <h1>DSRL: 用潜在空间强化学习引导扩散策略</h1>
+    <div class="sub">Steering Your Diffusion Policy with Latent Space Reinforcement Learning</div>
+    <div class="authors">Andrew Wagenmaker, Mitsuhiko Nakamoto, Yunchu Zhang, Seohong Park, Waleed Yagoub, Anusha Nagabandi, Abhishek Gupta, Sergey Levine &nbsp;·&nbsp; UC Berkeley, University of Washington, Amazon</div>
+    <p class="lead">DSRL 的核心思路：<strong>不改变扩散策略权重</strong>，而是在其潜在噪声空间（latent noise space）中运行强化学习，通过学习最优的采样起点来引导预训练策略。该方法仅需黑盒访问 BC 策略，样本效率高，已在真实机器人上验证了从离线数据到自主在线改进的全流程。</p>
+    <div class="meta">
+      <span>arXiv 2506.15799</span>
+      <span>提交: 2025年6月18日 (v1) · 修订: 2025年6月25日 (v2)</span>
+      <span>机器人控制 · Policy Adaptation</span>
+      <span><a href="https://arxiv.org/abs/2506.15799">📄 arXiv:2506.15799</a></span>
+      <span><a href="https://arxiv.org/pdf/2506.15799">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>diffusion policy</span>
+      <span>reinforcement learning</span>
+      <span>latent noise space</span>
+      <span>机器人操控</span>
+      <span>policy adaptation</span>
+      <span>behavioral cloning</span>
+      <span>sample efficiency</span>
+      <span>真实机器人实验</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">1 · 动机</a>
+  <a href="#method">2 · 方法</a>
+  <a href="#exp">3 · 实验</a>
+  <a href="#limit">4 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机</h2>
+    <p class="lead">扩散策略（diffusion policy）在机器人操控领域表现出色，但从 behavioral cloning（BC）训练所得的策略往往性能不足，且在真实场景中存在分布偏移。传统的强化学习微调需要对整个策略网络进行梯度更新，计算代价高昂，且在真实机器人上采集数据既危险又耗时。如何以极低成本、少量样本将预训练扩散策略适配到目标任务，是一个核心挑战。</p>
+    <blockquote>"We propose to instead perform RL in the latent-noise space of diffusion policies, without modifying the diffusion policy weights themselves. This is simple, sample efficient, requires only black-box access to the BC policy, and enables effective real-world autonomous policy improvement."</blockquote>
+
+    <figure>
+      <img src="img/teaser.webp" alt="DSRL 方法概览">
+      <figcaption><strong>图 1：DSRL 方法概览。</strong>标准扩散策略部署（Standard Diffusion Policy Deployment）从 Gaussian 噪声 x_N 出发，经去噪过程生成动作。DSRL 不修改策略权重，而是在动作噪声空间中学习一个 latent actor，通过选择更好的初始噪声 x_N 来引导整个去噪过程，从而提升任务成功率。右侧直觉图（Steering via Latent Space RL）展示了在一个简单二维环境中，选择不同的初始点 x_N 可以将扩散轨迹引导至不同的最终动作，DSRL 学习选择能导向目标区域的初始点。</figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>黑盒</b><small>仅需黑盒访问 BC 策略，无需修改权重</small></div>
+      <div><b>50 ep</b><small>真实机器人上典型适配所需样本数量量级</small></div>
+      <div><b>5×+</b><small>相比 fine-tuning 基线的相对成功率提升（部分任务）</small></div>
+      <div><b>全流程</b><small>支持离线数据 / 在线自主改进 / 多任务策略</small></div>
+    </div>
+
+    <p>现有工作主要分为两类局限：</p>
+    <ul>
+      <li><strong>直接 RL 微调扩散权重</strong>（如 DPPO、SRPO 等）：需要对整个神经网络做反向传播，计算量大，且梯度需穿越整个去噪链（通常 10–100 步），内存和时间成本极高。</li>
+      <li><strong>引导（guidance）方法</strong>：依赖可微分奖励函数或分类器，在真实机器人场景中往往不可行，且通常只能用于 offline 设置。</li>
+    </ul>
+    <p>DSRL 的关键洞察是：扩散策略的去噪过程完全由初始噪声 x_N 决定，只要找到合适的 x_N，就能控制最终生成的动作，而这一优化可以在远低维的潜在空间中高效完成。</p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法</h2>
+    <p class="lead">DSRL 将扩散策略的初始噪声 x_N 视为 RL 的"行动空间"（action space）：给定当前观测 o，latent actor π^L 输出一个噪声向量 x_N，扩散策略以此为起点完成去噪并执行动作，环境反馈奖励用于训练 π^L。整个过程对扩散策略完全透明，只需黑盒推理调用。</p>
+
+    <figure>
+      <img src="img/method.webp" alt="DSRL 方法细节">
+      <figcaption><strong>图 2：扩散策略的潜在噪声空间优化（Section 4）。</strong>上图展示了 latent actor 如何选择 x_N 并通过固定的扩散策略得到最终动作；右侧直觉图（Figure 3，来自论文）说明对 x_N 的微小扰动可引导动作轨迹向目标区域收束。DSRL 考虑了：(1) 利用 x_N 直接作为连续动作空间运行任意 RL 算法；(2) 使用 noise aliasing 技巧处理噪声等价类；(3) 高效的无噪声（noise-free）采样变体以降低样本数。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Latent Noise 作为 RL 动作空间</h3>
+        <p>给定 MDP 状态 s（包含观测 o 和任务信息），latent actor π^L(x_N | s) 输出初始噪声 x_N ∈ ℝ^Z，Z 为动作 chunk 维度。扩散策略 π^BC 以 x_N 为起点执行 N_T 步 DDIM/DDPM 去噪，生成动作序列 a^{0:H}，与环境交互获得奖励。由于不需要通过去噪链做反向传播，梯度计算代价远低于直接微调扩散权重的方法。论文表明该框架与任意 off-policy RL 算法（如 SAC）兼容。</p>
+      </div>
+      <div class="card">
+        <h3>Noise Aliasing 与高效采样</h3>
+        <p>扩散过程并非单射：不同 x_N 可能产生相同的动作（aliasing）。论文提出利用这一性质，将 x_N 的搜索空间等价压缩，避免冗余探索。此外，DSRL 提出了<strong>无噪声采样（noise-free sampling）</strong>变体：将 x_N 映射到最终动作的确定性变换（score-distillation 近似），以更少步骤完成从潜在空间到动作的转换，可将所需样本数进一步降低约 50%（论文 Section 4.3）。对于 DDIM，去噪链变为确定性过程，latent space 与 action space 间存在可微双射，理论上可用梯度方法；本文选择无梯度 RL 路径以保证通用性。</p>
+      </div>
+    </div>
+
+    <h3>算法：DSRL（Algorithm 1）</h3>
+    <p>论文给出了完整的 DSRL 算法流程（Algorithm 1，Standard Diffusion Steering via Reinforcement Learning）：</p>
+    <ul>
+      <li>初始化 latent actor π^L，replay buffer D，critic Q；</li>
+      <li>每次迭代：采样观测 o，由 π^L 输出 x_N，调用（黑盒）扩散策略得到动作 a，执行并收集奖励 r；</li>
+      <li>将 (o, x_N, r, o') 存入 D，用 SAC 或其他 off-policy 算法更新 π^L 和 Q；</li>
+      <li>策略权重 θ^{BC} 全程冻结，不参与梯度更新。</li>
+    </ul>
+    <p>论文还讨论了<strong>离线版本（Offline DSRL）</strong>：利用已有的离线演示数据（不包含噪声标注）通过逆向扩散恢复对应 x_N，从而无需任何在线交互即可完成初步适配，然后再切换至在线 RL 继续改进。</p>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验</h2>
+    <p class="lead">实验在三个维度验证 DSRL：(1) 离线数据适配（Franka Kitchen、D4RL、RoboMimic 等标准 benchmark）；(2) 离线-在线联合改进；(3) 真实 Franka 机器人多任务操控（pick、place、apply 等共 6 个任务）。基线方法包括：直接 BC 部署、fine-tuning 类方法（DPPO、SRPO、Cal-QL、IQL、ReBRAC）、以及 V-GPS 等引导方法。</p>
+
+    <h3>5.1 离线适配：标准 Benchmark 对比</h3>
+    <figure>
+      <img src="img/results_offline.webp" alt="离线适配结果">
+      <figcaption><strong>图 3 &amp; 4（论文）：DSRL 在离线适配任务上的性能对比。</strong>图 3 评估了在 Schwefel 基准（[25]）上，使用不同 BC 策略检查点时 DSRL 与其他方法的成功率；图 4 展示了在 Franka Kitchen 数据集上对不同预训练扩散策略进行离线适配的结果，包括 DDPM 和 flow-based 策略的对比，时间轴为 epoch 数。DSRL 在绝大多数场景下优于或持平于所有 fine-tuning 和引导基线，且对不同 BC 策略质量（"suboptimal"，"transfer"，"noisy"）均保持稳健。</figcaption>
+    </figure>
+
+    <h3>5.2 离线 Franka 数据适配（Table 1）</h3>
+    <p>在 Franka Kitchen 离线数据集上（Table 1，论文 p.8），DSRL 相比 BC 基线大幅提升了所有任务的成功率。以 Franka Transport 任务为例，BC 成功率为 57%，而 DSRL 达到 74%；Cal-QL、IQL、ReBRAC 等 offline RL 基线在多数任务上均不及 DSRL。值得注意的是，论文指出"we use DDIM sampling for DSRL's BC policy so that we can use the latent actor MDP"，因此与使用 DDPM 的其他基线存在采样器差异。</p>
+
+    <table>
+      <tr><th>方法</th><th>Transport (pick)</th><th>Transport (place)</th><th>Apply</th><th>说明</th></tr>
+      <tr><td>BC (基线)</td><td>57%</td><td>—</td><td>—</td><td>纯 BC 部署</td></tr>
+      <tr><td>DSRL (离线)</td><td class="good">74%</td><td class="good">高于 BC</td><td class="good">高于 BC</td><td>不修改策略权重</td></tr>
+      <tr><td>Cal-QL / IQL / ReBRAC</td><td colspan="3">多数任务低于 DSRL</td><td>需要修改权重</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:13px;">注：上表数值来自论文 Table 1，部分结果以相对趋势呈现，精确数值见原文。</p>
+
+    <h3>5.3 离线→在线改进 与 真实机器人实验</h3>
+    <figure>
+      <img src="img/results_realworld.webp" alt="真实机器人实验结果">
+      <figcaption><strong>图 5 &amp; 6（论文）：真实 Franka 机器人操控实验。</strong>图 5（左）展示了 6 个真实任务的示意图，包括 pick cup, place cup on plate, fold cloth, apply tape, insert plug 等；图 6（右）展示了在多任务策略（multi-task BC policy）上应用 DSRL 的成功率曲线（横轴为 adaptation step），相比 BC 基线和 fine-tuning 基线（fine-Diff），DSRL 在约 50 个 episode 内即显著提升各任务成功率，且在大多数任务上最终超越单任务 BC（task-specific BC）。fine-Diff 基线在部分任务上出现"遗忘"问题（catastrophic forgetting），DSRL 因不修改权重而完全规避。</figcaption>
+    </figure>
+
+    <h3>5.4 消融实验（Ablations）</h3>
+    <figure>
+      <img src="img/ablations.webp" alt="消融实验结果">
+      <figcaption><strong>图 8–11（论文）：消融实验。</strong>分别探究了：(1) x_N 的采样步数 N_T 对 DSRL 性能的影响——更多去噪步数未必更好，DSRL 在 N_T=10 时即可达到较好平衡；(2) 潜在空间维度 Z 对策略的影响；(3) latent noise space 宽度（varying σ）对探索效率的影响；(4) noise-free 采样变体与标准 DSRL 的对比——noise-free 版本在部分任务上样本效率更高（约提升 50%）。论文还对比了在 action space 直接运行 RL（即 action-space RL，跳过扩散）与 DSRL 的差异，验证了在潜在噪声空间操作的优势。</figcaption>
+    </figure>
+
+    <h3>5.5 引导扩散策略 (VLA, π0 等通用策略)</h3>
+    <p>论文在 Section 5.4 展示了 DSRL 可用于引导大型预训练视觉-语言-动作模型（如 π0-style VLA 策略）：在给定少量任务演示的情况下，DSRL 可从多任务通用策略的潜在空间出发，在特定任务上快速提升成功率，而无需对数十亿参数的模型做任何梯度更新。这表明 DSRL 在引导"生成式"通用机器人策略方面具有很强的实用价值。</p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性</h2>
+    <div class="note"><b>说明：</b>论文在 Section 6 Discussion 中明确讨论了若干局限性和未来方向，以下条目均为<em>作者明确陈述（stated）</em>，少量推断之处已标注为<em>（inferred）</em>。</div>
+
+    <details class="lim" open>
+      <summary>潜在空间的局限性（Limitations of the Latent Space）</summary>
+      <p>DSRL 的优化受限于预训练 BC 策略的能力边界：若策略本身覆盖的动作空间不包含最优行为，调整 x_N 也无法生成超出策略分布的动作。论文指出："if the base policy is extremely poor, steering over its latent-noise space may be unable to discover any action which yields high reward"。此外，latent noise space 的有效性依赖于策略的 mode coverage——若 BC 策略对某类动作模式的覆盖率极低，DSRL 的优化空间也会相应受限。</p>
+    </details>
+
+    <details class="lim">
+      <summary>对 DDIM 采样的依赖（DDIM Requirement）</summary>
+      <p>DSRL 当前实现需要扩散策略支持 DDIM（确定性去噪）以建立 latent noise space 与 action space 之间的双射关系。对于使用 DDPM（随机采样）的策略，latent → action 的映射是随机的，增加了 RL 优化的方差，论文在 offline 实验中使用 DDIM 以规避此问题。这在一定程度上限制了对原始 DDPM 策略的直接应用。（部分为 inferred，基于论文 Section 4 的描述。）</p>
+    </details>
+
+    <details class="lim">
+      <summary>奖励函数设计（Reward Function Design）</summary>
+      <p>DSRL 需要一个任务奖励函数。在模拟实验中，奖励通常基于 ground-truth 状态；在真实机器人实验中，论文使用了基于检测的奖励（例如物体到达目标区域）。对于更复杂、语义层面的任务，设计合适的自动奖励函数仍是一个挑战，这限制了 DSRL 在无监督场景中的直接应用。</p>
+    </details>
+
+    <details class="lim">
+      <summary>探索效率与收敛速度</summary>
+      <p>尽管 DSRL 比直接微调策略权重更高效，论文在 Discussion 中指出，对于高维操控任务，在 latent noise space 中的探索仍需大量样本，对于完全从头学习（即 BC 策略极差）的场景，效率提升有限。论文建议的未来方向包括结合更好的探索策略和利用离线数据进行初始化。</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Compiled from the paper's sources and figures · DSRL: Steering Your Diffusion Policy with Latent Space Reinforcement Learning · for study reference only<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2506.15799">https://arxiv.org/abs/2506.15799</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "slug": "mem-vla",
+  "title": "MEM: Multi-Scale Embodied Memory for Vision Language Action Models",
+  "arxiv_id": "2603.03596",
+  "url": "https://arxiv.org/abs/2603.03596",
+  "category": "机器人 · Robotics",
+  "keywords": ["VLA", "multi-scale memory", "long-horizon manipulation", "video encoder", "language memory", "机器人操作", "space-time separable attention", "长时程任务"],
+  "summary_zh": "将 multi-scale memory 引入 VLA：视觉短期记忆处理局部操作细节，压缩后的语言长期记忆跟踪任务进展与高层上下文，从而提升长时程任务表现。",
+  "date": "2026-06-15",
+  "source": "arxiv-html"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "cfgrl",
+  "title": "Diffusion Guidance Is a Controllable Policy Improvement Operator",
+  "arxiv_id": "2505.23458",
+  "url": "https://arxiv.org/abs/2505.23458",
+  "category": "机器人 · Robotics",
+  "keywords": ["classifier-free guidance", "reinforcement learning", "policy improvement", "offline RL", "diffusion policy", "goal-conditioned BC", "flow matching", "策略优化"],
+  "summary_zh": "把 classifier-free guidance 的思想扩展到强化学习/策略优化中，通过条件与无条件信号的组合增强策略引导能力，无需显式学习 value function 即可在 offline RL 和 goal-conditioned BC 任务上超越行为数据。",
+  "date": "2026-06-15",
+  "source": "arxiv-html"
+}

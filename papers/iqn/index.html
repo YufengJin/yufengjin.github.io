@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — 中文海报，无 EN 版本。
+  Paper: Implicit Quantile Networks for Distributional Reinforcement Learning
+  arXiv: 1806.06923  |  ICML 2018
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQN: Implicit Quantile Networks for Distributional Reinforcement Learning</title>
+<meta name="keywords" content="distributional reinforcement learning, quantile regression, implicit quantile network, risk-sensitive policy, Atari, 分布强化学习, 分位数回归, 风险敏感策略">
+<meta name="description" content="IQN 将 QR-DQN 的固定分位点扩展为隐式量化函数，以任意 τ 为输入输出对应分位值，实现对回报分布的完整隐式表示，并支持 distortion risk measure 风险敏感策略。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#f59e0b; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(245,158,11,.15),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:40px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:30px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700} .best{color:var(--acc);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  code{background:var(--chip);border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-size:14px;font-family:monospace}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">理论与优化 · Theory &amp; Optimization · ICML 2018</span>
+    <h1>Implicit Quantile Networks for Distributional Reinforcement Learning</h1>
+    <div class="sub">IQN：用隐式量化网络实现分布强化学习的完整回报分布表示</div>
+    <div class="authors">Will Dabney · Georg Ostrovski · David Silver · Rémi Munos &nbsp;|&nbsp; DeepMind, London, UK</div>
+    <p class="lead">
+      IQN 将 QR-DQN 的"固定 N 个分位点"推广为"连续量化函数"：网络以状态、动作和随机采样的分位数水平 τ 为输入，输出对应的回报分位值，从而隐式地表示完整的回报分布。这一改变消除了分位点数量对近似误差的上限约束，并天然地支持基于 distortion risk measure 的风险敏感策略。
+    </p>
+    <div class="meta">
+      <span>ICML 2018</span>
+      <span>Atari-57 Benchmark</span>
+      <span>DeepMind</span>
+      <span><a href="https://arxiv.org/abs/1806.06923">📄 arXiv:1806.06923</a></span>
+      <span><a href="https://arxiv.org/pdf/1806.06923">PDF 全文</a></span>
+    </div>
+    <div class="kw">
+      <span>distributional RL</span>
+      <span>quantile regression</span>
+      <span>implicit quantile network</span>
+      <span>risk-sensitive policy</span>
+      <span>distortion risk measure</span>
+      <span>Atari benchmark</span>
+      <span>分布强化学习</span>
+      <span>分位数回归</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · 动机</a>
+  <a href="#method">02 · 方法</a>
+  <a href="#exp">03 · 实验</a>
+  <a href="#limit">04 · 局限性</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> 动机 Motivation</h2>
+    <p class="lead">
+      分布强化学习（Distributional RL）将关注点从标量值函数 Q(x,a) 转向完整的回报分布 Z(x,a)，已被证明能显著提升数据效率、最终性能和稳定性。然而，现有算法在参数化方式上存在根本限制：
+    </p>
+    <div class="grid2">
+      <div class="card">
+        <h3>C51 的局限</h3>
+        <p>将回报分布参数化为固定区间上的 categorical 分布，要求预先知道回报的上下界，且固定离散点集牺牲了均值保持性。</p>
+      </div>
+      <div class="card">
+        <h3>QR-DQN 的局限</h3>
+        <p>通过 quantile regression 将分布参数化为 N 个固定分位点处的 Dirac 混合。尽管无需指定回报范围，但近似误差的上限仍受 N 控制，且分位点为静态固定集合，无法表示完整连续分布。</p>
+      </div>
+    </div>
+    <blockquote>
+      "In this paper, we extend the approach of [QR-DQN], from learning a discrete set of quantiles to learning the full quantile function, a continuous map from probabilities to returns."
+    </blockquote>
+    <p>
+      IQN 的核心思路是用神经网络 <em>隐式</em> 地表示量化函数（quantile function）：网络接受任意 τ ∈ [0,1] 作为输入并输出对应分位值，从而一举解决"固定分位点数量限制近似精度"和"无法支持任意风险偏好策略"两个问题。
+    </p>
+    <div class="kpi">
+      <div><b>1019%</b><small>IQN 在 Atari-57 人类归一化均值（no-op starts）</small></div>
+      <div><b>218%</b><small>IQN 在 Atari-57 人类归一化中位数（no-op starts）</small></div>
+      <div><b>162%</b><small>IQN human-starts 中位数，优于 Rainbow 的 153%</small></div>
+      <div><b>0.141</b><small>IQN human-gap（所有算法中最低，含 Rainbow）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> 方法 Method</h2>
+    <p class="lead">
+      IQN 将 DQN 的标量 Q 网络替换为一个接受 (状态 x, 动作 a, 分位数水平 τ) 三元输入的量化函数近似器，输出分位值 Z_τ(x,a)。结合任意基础分布（如 U([0,1])）即可在推断时对回报分布进行任意粒度的采样。
+    </p>
+
+    <figure>
+      <img src="img/network_arch.webp" alt="IQN 网络架构对比图">
+      <figcaption>
+        <strong>图1：DQN 及近期分布 RL 算法的网络架构对比。</strong>
+        左起：DQN（输出标量 Q 值）、C51（输出固定离散概率向量）、QR-DQN（输出 N 个固定分位点处的值）、IQN（输出以 τ 为条件的分位值，τ 在训练时随机采样）。IQN 只在 DQN 基础上增加了一个 τ embedding 分支，参数量增加极少。
+      </figcaption>
+    </figure>
+
+    <h3>核心公式：隐式量化函数</h3>
+    <p>
+      设 Z_τ(x,a) := F⁻¹_{Z(x,a)}(τ) 为回报分布在分位数 τ 处的逆 CDF 值。IQN 通过以下网络结构近似该量化函数：
+    </p>
+    <blockquote>
+      Z_τ(x, a) ≈ f(ψ(x) ⊙ φ(τ))_a
+    </blockquote>
+    <p>其中：</p>
+    <ul>
+      <li><strong>ψ(x)</strong>：DQN 中原有的卷积特征提取器，输出 d 维向量</li>
+      <li><strong>φ(τ)</strong>：τ 的嵌入函数，将 [0,1] 中的标量映射为 d 维向量</li>
+      <li><strong>⊙</strong>：element-wise（Hadamard）乘积，迫使卷积特征与 τ 嵌入早期交互</li>
+      <li><strong>f</strong>：后续全连接层，输出各动作的分位值</li>
+    </ul>
+    <p>作者最终采用的 τ 嵌入公式（embedding dimension n = 64）为：</p>
+    <blockquote>
+      φ_j(τ) := ReLU(Σ_{i=0}^{n-1} cos(πiτ) · w_{ij} + b_j)
+    </blockquote>
+    <p>即对 τ 计算余弦基函数特征后经线性变换和 ReLU 激活。消融实验表明，多种架构变体（MLP embedding、concatenation、residual fusion 等）均能稳定超过 QR-DQN 基线，整体对超参数选择鲁棒。</p>
+
+    <h3>损失函数</h3>
+    <p>
+      训练时从 U([0,1]) 中分别采样 N 个 τ 和 N' 个 τ'，对所有 N×N' 对 TD 误差计算 Huber quantile regression loss：
+    </p>
+    <blockquote>
+      L(x_t, a_t, r_t, x_{t+1}) = (1/N') Σ_{i=1}^{N} Σ_{j=1}^{N'} ρ^κ_{τ_i}(δ_t^{τ_i, τ_j'})
+    </blockquote>
+    <p>
+      其中 δ_t^{τ,τ'} = r_t + γ Z_{τ'}(x_{t+1}, π_β(x_{t+1})) − Z_τ(x_t, a_t) 为采样 TD 误差，ρ^κ_τ 为 Huber 分位数损失。
+    </p>
+
+    <h3>风险敏感策略（Risk-Sensitive Policies）</h3>
+    <p>
+      IQN 的隐式分布表示天然支持 distortion risk measure：给定连续单调函数 β:[0,1]→[0,1]（称为 distortion risk measure），只需将策略中 τ 的采样分布从 U([0,1]) 替换为 β 变换后的分布即可实现风险偏好调整：
+    </p>
+    <blockquote>
+      π_β(x) = argmax_{a} E_{τ~U([0,1])} [Z_{β(τ)}(x, a)]
+    </blockquote>
+    <p>论文考察了四种 distortion risk measure：CPW（cumulative prospect theory 中的概率权重函数，η=0.71 最接近人类行为）、Wang、Pow 和 CVaR，涵盖风险厌恶和风险追求两类策略。</p>
+
+    <figure>
+      <img src="img/n_atoms.webp" alt="样本数量 N 和 N' 对性能的影响">
+      <figcaption>
+        <strong>图2：N 和 N' 的消融实验（六款 Atari 游戏平均，人类归一化分数）。</strong>
+        左图为训练前 10M 帧，右图为训练最后 10M 帧（190M–200M）。基线参照：DQN (32, 253)，QR-DQN (144, 1243)。N 对早期性能影响显著，N' 对长期性能影响在 N'≥8 后趋于平稳。即便 N=N'=1（损失项数量与 DQN 相当），长期性能仍约为 DQN 的 3 倍。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> 实验 Experiments</h2>
+    <p class="lead">
+      主实验在 Atari-57 基准（ALE，57 款 Atari 2600 游戏）上进行，采用 30 no-op starts 和 human-starts 两种评估协议，报告人类归一化均值和中位数。IQN 均值平均 5 个随机种子。
+    </p>
+
+    <h3>Atari-57 整体结果（no-op starts）</h3>
+    <table>
+      <tr>
+        <th>算法</th>
+        <th>Mean (%)</th>
+        <th>Median (%)</th>
+        <th>Human-Gap</th>
+        <th>Seeds</th>
+      </tr>
+      <tr><td>DQN</td><td>228%</td><td>79%</td><td>0.334</td><td>1</td></tr>
+      <tr><td>Prioritized DQN</td><td>434%</td><td>124%</td><td>0.178</td><td>1</td></tr>
+      <tr><td>C51</td><td>701%</td><td>178%</td><td>0.152</td><td>1</td></tr>
+      <tr><td>QR-DQN</td><td>864%</td><td>193%</td><td>0.165</td><td>3</td></tr>
+      <tr><td class="best">Rainbow</td><td class="best">1189%</td><td class="best">230%</td><td>0.144</td><td>2</td></tr>
+      <tr><td><strong>IQN（本文）</strong></td><td>1019%</td><td>218%</td><td class="good">0.141</td><td>5</td></tr>
+    </table>
+    <p>
+      IQN 在均值和中位数上均大幅超过 QR-DQN，在 100M 帧处即达到 QR-DQN 200M 帧的性能水平。Rainbow 综合了 C51、prioritized replay、Double DQN、Dueling、Noisy Nets 和 n-step 等多项改进，IQN 在不引入任何额外技术的情况下，将 QR-DQN 与 Rainbow 之间差距缩小约一半。在 <strong>human-gap</strong> 指标（智能体在仍不如人类的游戏上平均差距）上，IQN 以 0.141 超过所有算法（含 Rainbow 的 0.144）。
+    </p>
+
+    <h3>Human-starts 中位数</h3>
+    <table>
+      <tr><th>DQN</th><th>Prioritized</th><th>A3C</th><th>C51</th><th>Rainbow</th><th>IQN</th></tr>
+      <tr><td>68%</td><td>128%</td><td>116%</td><td>125%</td><td>153%</td><td class="good">162%</td></tr>
+    </table>
+    <p>在 human-starts 协议下，IQN 中位数人类归一化分数为 <strong>162%</strong>，而 Rainbow 为 <strong>153%</strong>，IQN 在这一最难条件下（最接近真实人类起点）取得更好表现。</p>
+
+    <figure>
+      <img src="img/atari57_full.webp" alt="Atari-57 训练曲线">
+      <figcaption>
+        <strong>图3：Atari-57 基准训练过程中的人类归一化均值（左）和中位数（右）。</strong>
+        IQN（5个随机种子）、QR-DQN（3个种子）、Rainbow（2个种子）。IQN 在约 100M 帧时即赶上 QR-DQN 的最终性能，全程大幅领先 QR-DQN，并接近仅略低于 Rainbow（后者叠加了多项正交改进）。
+      </figcaption>
+    </figure>
+
+    <h3>风险敏感策略实验</h3>
+    <figure>
+      <img src="img/atari_risky_iqn.webp" alt="风险敏感策略实验结果">
+      <figcaption>
+        <strong>图4：不同 distortion risk measure 对六款 Atari 游戏的影响（左：各游戏得分；右：不同采样分布对应的隐式回报分布形状）。</strong>
+        风险厌恶策略（CVaR、Wang 负参数）在 Asterix 和 Assault 游戏中有显著收益；CPW(0.71) 整体接近风险中性；风险追求策略在多数游戏中表现更差。
+      </figcaption>
+    </figure>
+
+    <h3>部分游戏逐项对比（精选）</h3>
+    <p>下表摘自原文 Table 3（30 no-op starts，单种子原始分数），IQN 与 QR-DQN 的典型差距：</p>
+    <table>
+      <tr><th>Game</th><th>DQN</th><th>QR-DQN</th><th>IQN</th></tr>
+      <tr><td>James Bond</td><td>768.5</td><td>4,703</td><td class="good">35,108</td></tr>
+      <tr><td>Seaquest</td><td>5,860.6</td><td>8,268</td><td class="good">30,140</td></tr>
+      <tr><td>Venture</td><td>163.0</td><td>43.9</td><td class="good">1,318</td></tr>
+      <tr><td>Assault</td><td>4,280.4</td><td>22,012</td><td class="good">29,091</td></tr>
+      <tr><td>Q*Bert</td><td>13,117.3</td><td class="good">572,510</td><td>25,750</td></tr>
+      <tr><td>Asteroids</td><td>1,364.5</td><td class="good">4,226</td><td>2,898</td></tr>
+    </table>
+    <p>IQN 在绝大多数游戏上领先或持平 QR-DQN，少数游戏（如 Q*Bert、Asteroids）QR-DQN 更优——论文未隐藏这些不利数字，原文完整 57 游戏数据均已公开。</p>
+
+    <h3>样本数量消融（N 和 N'）</h3>
+    <p>
+      对 N, N' ∈ {1, 8, 32, 64} 共 16 种配置在六款游戏上评估：N 对前期性能影响显著，持续增大可加速学习；N' 对长期性能影响在超过 8 后趋于饱和。论文建议：<em>"N = N' = 8 appears to be sufficient to achieve the majority of improvements offered by IQN for long-term performance."</em>
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> 局限性 Limitations</h2>
+    <div class="note">
+      <b>说明：</b>论文在 Discussion &amp; Conclusions 部分明确提出若干理论开放问题（标注为 <em>作者明示</em>）；此外还有若干由设计本身推断出的实践局限（标注为 <em>设计推断</em>）。
+    </div>
+
+    <details class="lim" open>
+      <summary>缺乏收敛理论保证（作者明示）</summary>
+      <p>
+        论文明确指出三个未解决的理论问题：（1）QR-DQN 的固定分位网格下已有收缩映射结果，能否推广到 IQN 的近似量化函数类？（2）分类分布算法已有基于样本的收敛证明，能否推广到基于分位回归的算法？（3）风险敏感策略下分布 Bellman 算子的收敛性能否建立？作者原文："Despite the significant empirical successes in this paper there are many areas in need of additional theoretical analysis."
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>与 Rainbow 的差距：未叠加正交改进（设计推断）</summary>
+      <p>
+        IQN 仅是对 DQN 的分布扩展，未引入 prioritized replay、n-step updates、Dueling 架构、Noisy Nets 等 Rainbow 中的正交增强。作者明确指出 IQN 与 Rainbow 的差距完全来自这些缺失组件，并预期 "Creating a Rainbow-IQN agent could yield even greater improvements on Atari-57"，但该组合在本文中未被评估。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>风险敏感策略的行为不符合预期（作者明示）</summary>
+      <p>
+        在六款 Atari 游戏的风险敏感实验中，作者坦承："Intuitively, we expected to see a qualitative effect from risk-sensitive training, e.g. strengthened exploration from a risk-seeking objective. Although we did see qualitative differences, these did not always match our expectations." 风险追求策略在多数游戏上表现更差，而风险厌恶策略在部分游戏中意外提升性能——背后机制仍是开放问题。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>计算开销略高于 QR-DQN（设计推断）</summary>
+      <p>
+        IQN 每次更新需对 N×N' 对 TD 误差计算损失，且需为每个 τ 单独计算 embedding 并前向传播，单样本计算量高于 QR-DQN。论文提到 "IQN will generally be more computationally expensive per-sample than QR-DQN"，但指出 IQN 所需每次更新的样本数更少，实际运行时间相当。在资源受限环境下，这一权衡仍需考量。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    海报整理自原始论文及图表，仅供学习参考 · Implicit Quantile Networks for Distributional Reinforcement Learning<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/1806.06923">https://arxiv.org/abs/1806.06923</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<!--
+  PAPER POSTER — Decision Transformer: Reinforcement Learning via Sequence Modeling
+  arXiv: 2106.01345 | Chen et al., NeurIPS 2021
+  语言: 中文（学术术语保留英文）
+-->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Transformer: Reinforcement Learning via Sequence Modeling</title>
+<meta name="keywords" content="Decision Transformer, offline RL, sequence modeling, return-to-go conditioning, GPT, Atari, D4RL, 离线强化学习, credit assignment, transformer policy">
+<meta name="description" content="Decision Transformer 将强化学习重塑为序列建模问题，使用 GPT 架构在离线数据上通过 return-to-go 条件生成最优动作，无需时序差分学习或动态规划。">
+<style>
+  :root{ --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --acc:#6ea8fe; --acc2:#7ee787; --warn:#ffb454; --line:#283040; --chip:#222b3a; }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 38px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -120px,rgba(110,168,254,.18),transparent)}
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .kw span{font-size:12.5px;color:var(--acc2);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.12em;color:var(--acc);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;margin-bottom:18px;background:var(--chip)}
+  h1{font-size:42px;line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:18px;margin-bottom:8px}
+  .authors{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+  .lead{font-size:18.5px;color:#d6dee6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .meta span{font-size:13.5px;color:var(--muted);background:var(--chip);border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 22px}
+  nav a{font-size:14px;color:var(--muted);padding:7px 13px;border-radius:8px}
+  nav a:hover{color:var(--ink);background:var(--panel2);text-decoration:none}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:15px;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:2px 10px;background:var(--chip);font-weight:600}
+  h3{font-size:20px;margin:30px 0 8px;color:#cdd9e5}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+  .kpi div{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+  .kpi b{display:block;font-size:30px;color:var(--acc);font-weight:800;line-height:1.1}
+  .kpi small{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+  figure{margin:26px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+  figure img{max-width:100%;border-radius:8px;display:block;margin:0 auto;background:#fff}
+  figcaption{color:var(--muted);font-size:14px;margin-top:12px;text-align:left;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px} .card h3{margin-top:0}
+  ul{padding-left:22px}li{margin:7px 0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:var(--panel2);color:#cdd9e5}
+  td:not(:first-child){text-align:center} .good{color:var(--acc2);font-weight:700}
+  blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;color:#cdd9e5;font-style:italic}
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-left:4px solid var(--warn);border-radius:10px;padding:14px 18px;margin:18px 0;color:#f0e2cf}
+  .note b{color:var(--warn)}
+  .lim{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin:16px 0}
+  .lim summary{cursor:pointer;font-weight:600;color:#cdd9e5;padding:14px 0;font-size:17px;list-style:none}
+  .lim summary::-webkit-details-marker{display:none}
+  .lim summary:before{content:"▸";color:var(--acc);margin-right:10px} .lim[open] summary:before{content:"▾"}
+  .lim p{color:var(--muted);margin-top:0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px;text-align:center}
+  code{font-family:"Fira Code","SF Mono",monospace;font-size:14px;background:var(--chip);padding:2px 6px;border-radius:4px;color:#e0cc8a}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">NeurIPS 2021 · 理论与优化 · Theory &amp; Optimization</span>
+    <h1>Decision Transformer</h1>
+    <div class="sub">Reinforcement Learning via Sequence Modeling</div>
+    <div class="authors">Lili Chen · Kevin Lu · Aravind Rajeswaran · Kimin Lee · Aditya Grover · Michael Laskin · Pieter Abbeel · Aravind Srinivas · Igor Mordatch &nbsp;|&nbsp; UC Berkeley / Facebook AI</div>
+    <p class="lead">
+      Decision Transformer 将强化学习（RL）彻底重新表述为<strong>条件序列生成</strong>问题：给定期望的 return-to-go（未来累积奖励），用 GPT 风格的 Transformer 自回归地预测动作——完全绕过 TD 学习与动态规划，仅凭序列建模就能在 Atari、D4RL/OpenAI Gym 和稀疏奖励任务上匹敌甚至超越最先进的离线 RL 算法。
+    </p>
+    <div class="meta">
+      <span>arXiv 2021</span>
+      <span>离线 RL</span>
+      <span>GPT-style Transformer</span>
+      <span><a href="https://arxiv.org/abs/2106.01345">📄 arXiv:2106.01345</a></span>
+      <span><a href="https://arxiv.org/pdf/2106.01345">PDF</a></span>
+    </div>
+    <div class="kw">
+      <span>Decision Transformer</span>
+      <span>offline RL</span>
+      <span>sequence modeling</span>
+      <span>return-to-go conditioning</span>
+      <span>GPT</span>
+      <span>Atari</span>
+      <span>D4RL</span>
+      <span>离线强化学习</span>
+      <span>credit assignment</span>
+      <span>transformer policy</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#motivation">01 · Motivation</a>
+  <a href="#method">02 · Method</a>
+  <a href="#exp">03 · Experiments</a>
+  <a href="#limit">04 · Limitations</a>
+</div></nav>
+
+<!-- ===== MOTIVATION ===== -->
+<section id="motivation">
+  <div class="wrap">
+    <h2><span class="n">01</span> Motivation — 为什么要用序列建模代替 RL？</h2>
+    <p class="lead">
+      传统 RL 依赖时序差分（TD）学习进行长程信用分配（credit assignment），存在"deadly triad"（函数近似 + bootstrapping + 离策略）带来的不稳定性，且需要折扣因子，容易导致短视行为。
+      本文探索一个根本性的范式转移：<em>能否用 Transformer 的序列建模能力直接替代传统 RL 算法？</em>
+    </p>
+    <blockquote>
+      "Instead of training a policy through conventional RL algorithms like temporal difference (TD) learning, we will train transformer models on collected experience using a <strong>sequence modeling objective</strong>. This will allow us to bypass the need for bootstrapping for long term credit assignment — thereby avoiding one of the 'deadly triad' known to destabilize RL."
+    </blockquote>
+
+    <figure>
+      <img src="img/graph_example.webp" alt="有向图最短路径示例">
+      <figcaption>
+        <strong>直观示例：</strong>在有向图上寻找最短路径（等价于 RL 问题）。训练集仅为随机游走轨迹及其 return-to-go。
+        通过条件生成最大 return，Decision Transformer 能在<em>测试时</em>自动规划出最优路径——无需任何专家演示或动态规划。
+        （来源：Figure 1，论文原图）
+      </figcaption>
+    </figure>
+
+    <div class="kpi">
+      <div><b>267.5</b><small>DT on Breakout<br>（专家归一化分，1% DQN replay）</small></div>
+      <div><b>74.7</b><small>D4RL 平均得分<br>（不含 Reacher，超越 CQL 63.9）</small></div>
+      <div><b>94.6%</b><small>Key-to-Door 成功率<br>（10K 随机轨迹训练）</small></div>
+      <div><b>3K</b><small>每步输入 token 数<br>（K 个时间步 × 3 种模态）</small></div>
+    </div>
+
+    <h3>与 Upside-Down RL 的关系</h3>
+    <p>
+      Decision Transformer 在思想上与 Upside-Down RL 一脉相承：两者都通过<strong>条件期望回报</strong>来驱动动作生成，而非显式优化值函数。
+      核心区别在于 DT 使用 GPT 风格的因果 Transformer，将 return-to-go、状态、动作显式组织为长序列 token，借助 self-attention 直接完成长程信用分配；
+      Upside-Down RL 则通常用更简单的前馈网络将"命令"（目标回报）与状态拼接后预测动作，缺乏长上下文建模能力。
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2><span class="n">02</span> Method — Decision Transformer 架构</h2>
+    <p class="lead">
+      Decision Transformer 的核心思想极为简洁：将轨迹表示为 <code>(R̂₁, s₁, a₁, R̂₂, s₂, a₂, …, R̂ₜ, sₜ, aₜ)</code> 的 token 序列，
+      用 GPT（因果 Transformer）自回归地预测动作——其中 <strong>R̂ₜ</strong> 为 return-to-go（当前时刻到终止的累积奖励之和），
+      既作为"目标"约束策略行为，也替代了传统 RL 中对折扣回报的 bootstrapping。
+    </p>
+
+    <figure>
+      <img src="img/architecture.webp" alt="Decision Transformer 架构图">
+      <figcaption>
+        <strong>Decision Transformer 架构（Figure 2）：</strong>每个时间步产生三个 token（return-to-go、state、action），
+        分别通过可学习的线性嵌入层映射到 embedding 空间，并叠加时间步级别的位置编码（注意：一个时间步对应三个 token，
+        而非标准 Transformer 的逐 token 位置编码）。随后由 GPT（因果掩码 Transformer）处理，
+        从 state token 对应的 hidden state 预测该时步的动作。
+      </figcaption>
+    </figure>
+
+    <h3>轨迹表示（Trajectory Representation）</h3>
+    <p>
+      将原始奖励替换为 <strong>return-to-go</strong>：<code>R̂ₜ = Σ_{t'=t}^{T} rₜ'</code>。
+      这样模型学习的是"若未来总回报为 R̂，当前应采取什么动作"，而非被动拟合过去奖励。
+      每次执行动作后，将目标 return 减去实际获得的奖励，动态更新下一步的 R̂ 条件。
+    </p>
+
+    <h3>架构细节（Architecture）</h3>
+    <p>
+      每步输入最近 <strong>K</strong> 个时间步，共 <strong>3K</strong> 个 token：
+    </p>
+    <ul>
+      <li>每种模态（return-to-go、state、action）各用独立的<strong>线性层</strong>投影到 embedding 维度，后接 layer normalization。</li>
+      <li>视觉任务（如 Atari）中，state 经<strong>卷积编码器</strong>处理后再线性投影。</li>
+      <li>位置编码为<strong>时间步级别</strong>（per-timestep）的可学习嵌入，一个时间步的三个 token 共享同一位置嵌入。</li>
+      <li>backbone 为标准 <strong>GPT</strong>（因果自注意力掩码），输出 action token 的 hidden state，经线性层预测动作——连续动作用 MSE loss，离散动作用 cross-entropy loss。</li>
+    </ul>
+
+    <h3>训练与推理（Training &amp; Inference）</h3>
+    <p>
+      训练阶段：在离线轨迹数据集上随机采样长度为 K 的片段，<em>仅优化 action 预测损失</em>（论文发现同时预测 state 或 return-to-go 并不提升性能）。
+      推理阶段：以目标 return（如专家级别）作为初始条件，通过自回归采样生成动作序列；每执行一步后，将 R̂ 减去实际奖励，循环直至终止。
+    </p>
+
+    <figure>
+      <img src="img/method.webp" alt="Decision Transformer 方法示意">
+      <figcaption>
+        方法示意（来源：论文图示）：return-to-go、state、action 三种模态的 token 交错排列，
+        因果注意力确保每个 action token 只能看到其之前的 token，从而实现自回归生成。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIMENTS ===== -->
+<section id="exp">
+  <div class="wrap">
+    <h2><span class="n">03</span> Experiments</h2>
+    <p class="lead">
+      在三大离线 RL 基准上评估：<strong>Atari</strong>（高维视觉输入，需长程信用分配）、<strong>D4RL/OpenAI Gym</strong>（连续控制，MuJoCo 仿真）、<strong>Key-to-Door</strong>（稀疏奖励，极端长程信用分配）。
+      主要对比方法：Conservative Q-Learning（CQL，TD 学习的 SOTA）、行为克隆（BC）、BEAR、BRAC、AWR。
+    </p>
+
+    <figure>
+      <img src="img/results_summary.webp" alt="各任务归一化得分汇总">
+      <figcaption>
+        <strong>Figure 3（归一化得分汇总）：</strong>跨 Atari、OpenAI Gym 和 Minigrid 的平均归一化 episode return。
+        "On a diverse set of tasks, Decision Transformer performs comparably or better than traditional approaches."
+      </figcaption>
+    </figure>
+
+    <h3>Atari — 1% DQN-replay 数据集</h3>
+    <p>
+      使用 DQN-replay 数据集的 <strong>1%</strong>（约 50 万条轨迹）训练，以专业玩家为 100 分进行归一化。
+      上下文长度 K=30（Pong 用 K=50）。
+    </p>
+
+    <table>
+      <tr><th>游戏</th><th>DT（本文）</th><th>CQL</th><th>QR-DQN</th><th>REM</th><th>BC</th></tr>
+      <tr>
+        <td>Breakout</td>
+        <td class="good">267.5 ± 97.5</td>
+        <td>211.1</td><td>17.1</td><td>8.9</td><td>138.9 ± 61.7</td>
+      </tr>
+      <tr>
+        <td>Qbert</td>
+        <td>15.4 ± 11.4</td>
+        <td class="good">104.2</td><td>0.0</td><td>0.0</td><td>17.3 ± 14.7</td>
+      </tr>
+      <tr>
+        <td>Pong</td>
+        <td>106.1 ± 8.1</td>
+        <td class="good">111.9</td><td>18.0</td><td>0.5</td><td>85.2 ± 20.0</td>
+      </tr>
+      <tr>
+        <td>Seaquest</td>
+        <td class="good">2.5 ± 0.4</td>
+        <td>1.7</td><td>0.4</td><td>0.7</td><td>2.1 ± 0.3</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">均值 ± 标准差（3 seeds）。论文原数据，Table 1。</p>
+
+    <h3>D4RL / OpenAI Gym — 连续控制</h3>
+    <p>
+      评估 HalfCheetah、Hopper、Walker 及 Reacher 在 Medium、Medium-Replay、Medium-Expert 三种数据集上的表现。得分归一化（100 = 专家策略）。
+    </p>
+
+    <table>
+      <tr><th>数据集</th><th>环境</th><th>DT（本文）</th><th>CQL</th><th>BEAR</th><th>BRAC-v</th><th>BC</th></tr>
+      <tr><td>Medium-Expert</td><td>HalfCheetah</td><td class="good">86.8 ± 1.3</td><td>62.4</td><td>53.4</td><td>41.9</td><td>59.9</td></tr>
+      <tr><td>Medium-Expert</td><td>Hopper</td><td>107.6 ± 1.8</td><td class="good">111.0</td><td>96.3</td><td>0.8</td><td>79.6</td></tr>
+      <tr><td>Medium-Expert</td><td>Walker</td><td class="good">108.1 ± 0.2</td><td>98.7</td><td>40.1</td><td>81.6</td><td>36.6</td></tr>
+      <tr><td>Medium</td><td>HalfCheetah</td><td>42.6 ± 0.1</td><td>44.4</td><td>41.7</td><td class="good">46.3</td><td>43.1</td></tr>
+      <tr><td>Medium</td><td>Hopper</td><td class="good">67.6 ± 1.0</td><td>58.0</td><td>52.1</td><td>31.1</td><td>63.9</td></tr>
+      <tr><td>Medium</td><td>Walker</td><td>74.0 ± 1.4</td><td>79.2</td><td>59.1</td><td class="good">81.1</td><td>77.3</td></tr>
+      <tr><td>Medium-Replay</td><td>HalfCheetah</td><td>36.6 ± 0.8</td><td>46.2</td><td>38.6</td><td class="good">47.7</td><td>4.3</td></tr>
+      <tr><td>Medium-Replay</td><td>Hopper</td><td class="good">82.7 ± 7.0</td><td>48.6</td><td>33.7</td><td>0.6</td><td>27.6</td></tr>
+      <tr><td>Medium-Replay</td><td>Walker</td><td class="good">66.6 ± 3.0</td><td>26.7</td><td>19.2</td><td>0.9</td><td>36.9</td></tr>
+      <tr><td colspan="2"><strong>Average（不含 Reacher）</strong></td><td class="good"><strong>74.7</strong></td><td>63.9</td><td>48.2</td><td>36.9</td><td>46.4</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">论文原数据，Table 2。"Decision Transformer (DT) outperforms conventional RL algorithms on almost all tasks."</p>
+
+    <h3>Key-to-Door — 长程信用分配</h3>
+    <p>
+      三阶段网格环境：拾取钥匙（阶段一）→空房间（阶段二）→到达门（阶段三）。只有拾取钥匙后到达门才能获得二值奖励。
+      训练数据全为<strong>随机游走</strong>轨迹，评估成功率（3 seeds）。
+    </p>
+    <table>
+      <tr><th>数据集</th><th>DT（本文）</th><th>CQL</th><th>BC</th><th>%BC</th><th>Random</th></tr>
+      <tr>
+        <td>1K 随机轨迹</td>
+        <td class="good">71.8%</td>
+        <td>13.1%</td><td>1.4%</td><td>69.9%</td><td>3.1%</td>
+      </tr>
+      <tr>
+        <td>10K 随机轨迹</td>
+        <td>94.6%</td>
+        <td>13.3%</td><td>1.6%</td>
+        <td class="good">95.1%</td>
+        <td>3.1%</td>
+      </tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px">
+      "Methods using hindsight (Decision Transformer, %BC) can learn successful policies, while TD learning struggles to perform credit assignment."（Table 4）
+    </p>
+
+    <h3>Ablation — 上下文长度（Context Length K）的重要性</h3>
+    <p>
+      对比 K=1（无历史）与标准 K（K=30 或 K=50）。实验表明长上下文对性能至关重要，尤其在 Breakout（267.5 vs 73.9）和 Pong（106.1 vs 2.5）上差异显著。
+      论文假设：在建模策略分布时，上下文帮助 Transformer 识别轨迹来自哪类策略，从而实现更好的学习与生成。
+    </p>
+
+    <figure>
+      <img src="img/attention.webp" alt="Transformer attention 权重可视化">
+      <figcaption>
+        <strong>关键时刻的注意力权重（Key-to-Door）：</strong>Transformer 将注意力集中在"拾取钥匙"与"到达门"等关键事件附近，
+        验证了模型能够形成状态-奖励关联（state-reward association），实现精准的价值预测与长程归因。
+        （来源：论文 Figure 7 右图，attention weights 叠加可视化）
+      </figcaption>
+    </figure>
+
+    <h3>稀疏/延迟奖励下的鲁棒性</h3>
+    <p>
+      在 D4RL Hopper 的延迟奖励设置下（所有中间奖励为 0，仅终止时给出累积奖励），CQL 性能崩溃（Medium-Expert: 111.0 → 9.0），
+      而 Decision Transformer 几乎不受影响（107.6 → 107.3 ± 3.5）。这证明 DT 对奖励稀疏性天然具有鲁棒性。
+    </p>
+  </div>
+</section>
+
+<!-- ===== LIMITATIONS ===== -->
+<section id="limit">
+  <div class="wrap">
+    <h2><span class="n">04</span> Limitations</h2>
+    <div class="note">
+      <b>Note：</b>以下局限性部分来自论文"Conclusion"节中作者的明确陈述（标注为 <em>stated</em>），部分为从设计中推断（标注为 <em>inferred</em>）。
+    </div>
+
+    <details class="lim" open>
+      <summary>需要准确的目标 return 估计（<em>stated</em>）</summary>
+      <p>
+        测试时需要指定合理的目标 return-to-go 初始值。若目标设置过高（超出数据分布）或不合理，
+        模型可能生成低质量动作。论文提到"conditioning on return distributions to model stochastic settings
+        instead of deterministic returns"是未来值得研究的方向。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>局限于离线 RL，在线探索未研究（<em>stated</em>）</summary>
+      <p>
+        本文仅研究了离线 RL 场景，未扩展至在线 RL。论文指出"Decision Transformer can meaningfully improve
+        online RL methods by serving as a strong model for behavior generation"，但这仅为展望而非实验验证。
+      </p>
+    </details>
+
+    <details class="lim" open>
+      <summary>无法显式进行策略改进（<em>inferred</em>）</summary>
+      <p>
+        Decision Transformer 本质是监督学习：它能复现数据集中高回报轨迹对应的行为，但<em>无法</em>通过优化学到的价值函数
+        来发现<strong>超出数据集</strong>的更优策略（Qbert 上明显落后于 CQL，104.2 vs 15.4，印证了这一点）。
+        TD 方法在数据质量高、状态覆盖好的任务上仍有优势。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>计算复杂度随上下文长度增长（<em>inferred</em>）</summary>
+      <p>
+        Transformer 的 self-attention 复杂度为 O(K²)（K = 上下文时间步数）。在需要超长上下文（如 Key-to-Door 使用整集长度作为上下文）的任务中，
+        计算和内存开销显著增大，限制了在超长时程任务上的扩展能力。
+      </p>
+    </details>
+
+    <details class="lim">
+      <summary>数据偏差与对抗性风险（<em>stated</em>）</summary>
+      <p>
+        论文明确提出："reward design by nefarious actors can potentially generate unintended behaviors as our model
+        generates behaviors by conditioning on desired returns."
+        训练数据的来源与质量直接决定生成行为的安全性，存在被恶意设计的数据或奖励函数所利用的风险。
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    研究笔记 · 仅供学习参考 · Decision Transformer: Reinforcement Learning via Sequence Modeling<br>
+    Chen, Lu, Rajeswaran et al. NeurIPS 2021<br>
+    原文 / Paper: <a href="https://arxiv.org/abs/2106.01345">https://arxiv.org/abs/2106.01345</a>
+  </div>
+</footer>
+
+</body>
+</html>

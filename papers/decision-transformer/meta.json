@@ -1,0 +1,22 @@
+{
+  "slug": "decision-transformer",
+  "title": "Decision Transformer: Reinforcement Learning via Sequence Modeling",
+  "arxiv_id": "2106.01345",
+  "url": "https://arxiv.org/abs/2106.01345",
+  "category": "理论与优化 · Theory & Optimization",
+  "keywords": [
+    "Decision Transformer",
+    "offline RL",
+    "sequence modeling",
+    "return-to-go conditioning",
+    "GPT",
+    "Atari",
+    "D4RL",
+    "离线强化学习",
+    "credit assignment",
+    "transformer policy"
+  ],
+  "summary_zh": "Decision Transformer 将强化学习重塑为条件序列生成问题：用 GPT 风格的 Transformer 以 return-to-go 为条件自回归预测动作，完全绕过 TD 学习，在 Atari、D4RL 和稀疏奖励任务上匹敌乃至超越主流离线 RL 算法。",
+  "date": "2026-06-15",
+  "source": "arxiv-eprint"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "omnixtream",
+  "title": "OmniXtreme: Breaking the Generality Barrier in High-Dynamic Humanoid Control",
+  "arxiv_id": "2602.23843",
+  "url": "https://arxiv.org/abs/2602.23843",
+  "category": "机器人 · Robotics",
+  "keywords": ["humanoid whole-body control", "flow matching", "residual RL", "actuation-aware", "motion tracking", "fidelity-scalability trade-off", "sim-to-real", "人形机器人运控"],
+  "summary_zh": "先用 DAgger-based flow matching 学到可扩展的统一运动先验，再用 actuation-aware residual RL 把它修到真机可执行，从而打破高动态 humanoid tracking 里的 fidelity-scalability trade-off；Unitree G1 上 157 次真机实验综合成功率 91.08%。",
+  "date": "2026-06-15",
+  "source": "arxiv-html"
+}
